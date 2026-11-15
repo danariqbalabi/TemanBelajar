@@ -18,14 +18,7 @@ import { Reader } from "./reader";
 import { Planner } from "./planner";
 import { ProgressView } from "./progress";
 import { Dashboard } from "./dashboard";
-const navigation = [
-  "Beranda",
-  "Rencana Belajar",
-  "Materi Saya",
-  "Mulai Belajar",
-  "Progres",
-  "Pengaturan",
-];
+import { DesignShell } from "./design-shell";
 export type Run = (action: () => Promise<void>) => Promise<void>;
 export default function Home() {
   const [account, setAccount] = useState<Session | null>(null),
@@ -136,7 +129,14 @@ export default function Home() {
     const existing = sessions.find(
       (s) => s.material_id === material.id && s.status !== "completed",
     );
-    const chosenMode = mode || existing?.mode || profile.preferences.mode;
+    const preferredMode = mode || existing?.mode || profile.preferences.mode;
+    const supported =
+      preferredMode === "transcript"
+        ? material.concepts.every((c) => c.transcript)
+        : preferredMode === "explore"
+          ? material.concepts.every((c) => c.diagram_description)
+          : true;
+    const chosenMode = supported ? preferredMode : "reading";
     const create = mutation<LearningSession>("/sessions", {
       material_id: material.id,
       mode: chosenMode,
@@ -188,6 +188,7 @@ export default function Home() {
       <Account
         landing={landing}
         onContinue={() => setLanding(false)}
+        onBack={() => setLanding(true)}
         run={run}
         busy={busy}
         error={error}
@@ -205,8 +206,11 @@ export default function Home() {
   const selected = materials.find((m) => m.id === active?.material_id),
     prefs = profile.preferences;
   return (
-    <div
-      className={`app ${prefs.reduced_motion ? "calm" : ""} ${prefs.high_contrast ? "high-contrast" : ""}`}
+    <DesignShell
+      profile={profile}
+      page={page}
+      navigate={setPage}
+      className={`${prefs.reduced_motion ? "calm" : ""} ${prefs.high_contrast ? "high-contrast" : ""}`}
       style={
         {
           "--reader-size": `${prefs.font_size}px`,
@@ -216,212 +220,143 @@ export default function Home() {
         } as React.CSSProperties
       }
     >
-      <a className="skip" href="#main">
-        Lewati ke konten
-      </a>
-      <aside className="sidebar">
-        <button className="brand" onClick={() => setPage("Beranda")}>
-          <span className="brand-mark">tb</span>
-          <span>
-            TemanBelajar<small>SMP &amp; SMA</small>
-          </span>
-        </button>
-        <div className="calm-label">
-          <span className="leaf-icon" />
-          <span>
-            Mode Tenang<small>Ruang belajar bebas cemas</small>
-          </span>
-          <i />
-        </div>
-        <nav aria-label="Navigasi utama">
-          {navigation.map((n, i) => (
+      {" "}
+      {error && (
+        <div className="notice" role="alert">
+          <p>{error}</p>
+          <p>
+            Input tetap tersedia. Jika versi berubah, muat data terbaru lalu
+            tinjau kembali.
+          </p>
+          <div className="actions">
             <button
-              key={n}
-              aria-current={page === n ? "page" : undefined}
-              onClick={() => {
-                setPage(n);
-                setNotice("");
-              }}
+              disabled={busy}
+              onClick={() => retry.current && run(retry.current)}
             >
-              <span aria-hidden="true">
-                {["⌂", "▦", "▤", "▷", "↗", "☷"][i]}
-              </span>
-              {n}
+              Coba lagi
             </button>
-          ))}
-        </nav>
-        <div className="sidebar-bottom">
-          <div className="badge">Ramah aksesibilitas</div>
-          <div className="person">
-            <b>{profile.display_name[0]}</b>
-            <span>
-              {profile.display_name}
-              <small>
-                {account.user.is_anonymous
-                  ? "Sesi demo pribadi"
-                  : "Akun pelajar"}
-              </small>
-            </span>
-          </div>
-        </div>
-      </aside>
-      <div className="workspace">
-        <header>
-          <button onClick={() => setPage("Pengaturan")}>
-            Pintasan Aksesibilitas <kbd>Alt+A</kbd>
-          </button>
-          <span className="friendly">● Lingkungan Belajar Ramah</span>
-          <button
-            className="avatar"
-            aria-label="Buka pengaturan akun"
-            onClick={() => setPage("Pengaturan")}
-          >
-            {profile.display_name[0]}
-          </button>
-        </header>
-        <main id="main">
-          <div className="ribbon">
-            Mode Tenang • Ritme Santai {profile.daily_minutes} Menit
-          </div>
-          {error && (
-            <div className="notice" role="alert">
-              <p>{error}</p>
-              <p>
-                Input tetap tersedia. Jika versi berubah, muat data terbaru lalu
-                tinjau kembali.
-              </p>
-              <div className="actions">
-                <button
-                  disabled={busy}
-                  onClick={() => retry.current && run(retry.current)}
-                >
-                  Coba lagi
-                </button>
-                <button
-                  disabled={busy}
-                  onClick={() =>
-                    run(async () => {
-                      await refresh();
-                      if (active)
-                        setActive(
-                          await api<LearningSession>(`/sessions/${active.id}`),
-                        );
-                      setNotice(
-                        "Data terbaru dimuat. Tinjau kembali sebelum menyimpan.",
-                      );
-                    })
-                  }
-                >
-                  Muat data terbaru
-                </button>
-              </div>
-            </div>
-          )}
-          {notice && (
-            <p className="success" role="status">
-              {notice}
-            </p>
-          )}
-          {busy && (
-            <p role="status" className="working">
-              Menyimpan langkahmu...
-            </p>
-          )}
-          {page === "Beranda" ? (
-            <Dashboard
-              profile={profile}
-              materials={materials}
-              sessions={sessions}
-              plans={plans}
-              recommendation={recommendation}
-              start={start}
-              navigate={setPage}
-            />
-          ) : page === "Materi Saya" ? (
-            <Materials
-              materials={materials}
-              run={run}
-              busy={busy}
-              refresh={refresh}
-              start={start}
-            />
-          ) : page === "Rencana Belajar" ? (
-            <Planner
-              plans={plans}
-              materials={materials}
-              profile={profile}
-              run={run}
-              busy={busy}
-              refresh={refresh}
-              start={start}
-            />
-          ) : page === "Progres" ? (
-            <ProgressView
-              materials={materials}
-              sessions={sessions}
-              run={run}
-              start={start}
-            />
-          ) : page === "Pengaturan" ? (
-            <Settings
-              profile={profile}
-              onSave={(p) => run(() => saveProfile(p))}
-              busy={busy}
-              account={account}
-              signOut={() =>
+            <button
+              disabled={busy}
+              onClick={() =>
                 run(async () => {
-                  await auth!.auth.signOut();
-                  setProfile(defaultProfile);
-                  setMaterials([]);
-                  setSessions([]);
-                  setPlans([]);
-                  setActive(null);
-                  setLanding(true);
+                  await refresh();
+                  if (active)
+                    setActive(
+                      await api<LearningSession>(`/sessions/${active.id}`),
+                    );
+                  setNotice(
+                    "Data terbaru dimuat. Tinjau kembali sebelum menyimpan.",
+                  );
                 })
               }
-            />
-          ) : selected && active ? (
-            <Reader
-              key={active.id}
-              material={selected}
-              session={active}
-              preferences={prefs}
-              run={run}
-              busy={busy}
-              onUpdate={(s) => {
-                setActive(s);
-                setSessions((items) =>
-                  items.map((x) => (x.id === s.id ? s : x)),
-                );
-              }}
-              refresh={refresh}
-              onPlanner={() => setPage("Rencana Belajar")}
-            />
-          ) : (
-            <section>
-              <h1>Mulai dengan satu langkah kecil</h1>
-              <p>Pilih materi dan format yang nyaman.</p>
-              <div className="material-grid">
-                {materials.map((m) => (
-                  <button
-                    className="material-card"
-                    key={m.id}
-                    onClick={() => start(m)}
-                  >
-                    <small>{m.subject}</small>
-                    <h2>{m.title}</h2>
-                    <span>Mulai belajar →</span>
-                  </button>
-                ))}
-              </div>
-            </section>
-          )}
-          <footer>
-            TemanBelajar — Pembelajaran Adaptif SMP &amp; SMA
-            <span>Tenang, sesuai ritmemu.</span>
-          </footer>
-        </main>
-      </div>
-    </div>
+            >
+              Muat data terbaru
+            </button>
+          </div>
+        </div>
+      )}
+      {notice && (
+        <p className="success" role="status">
+          {notice}
+        </p>
+      )}
+      {busy && (
+        <p role="status" className="working">
+          Menyimpan langkahmu...
+        </p>
+      )}
+      {page === "Beranda" ? (
+        <Dashboard
+          profile={profile}
+          materials={materials}
+          sessions={sessions}
+          plans={plans}
+          recommendation={recommendation}
+          start={start}
+          navigate={setPage}
+          onPreferences={(patch) =>
+            run(() =>
+              saveProfile({ ...profile, preferences: { ...prefs, ...patch } }),
+            )
+          }
+        />
+      ) : page === "Materi Saya" ? (
+        <Materials
+          materials={materials}
+          run={run}
+          busy={busy}
+          refresh={refresh}
+          start={start}
+        />
+      ) : page === "Rencana Belajar" ? (
+        <Planner
+          plans={plans}
+          materials={materials}
+          profile={profile}
+          run={run}
+          busy={busy}
+          refresh={refresh}
+          start={start}
+        />
+      ) : page === "Progres" ? (
+        <ProgressView
+          materials={materials}
+          sessions={sessions}
+          run={run}
+          start={start}
+        />
+      ) : page === "Pengaturan" ? (
+        <Settings
+          profile={profile}
+          onSave={(p) => run(() => saveProfile(p))}
+          busy={busy}
+          account={account}
+          signOut={() =>
+            run(async () => {
+              await auth!.auth.signOut();
+              setProfile(defaultProfile);
+              setMaterials([]);
+              setSessions([]);
+              setPlans([]);
+              setActive(null);
+              setLanding(true);
+            })
+          }
+        />
+      ) : selected && active ? (
+        <Reader
+          key={active.id}
+          material={selected}
+          session={active}
+          preferences={prefs}
+          run={run}
+          busy={busy}
+          onUpdate={(s) => {
+            setActive(s);
+            setSessions((items) => items.map((x) => (x.id === s.id ? s : x)));
+          }}
+          refresh={refresh}
+          onPlanner={() => setPage("Rencana Belajar")}
+        />
+      ) : (
+        <section>
+          <h1>Mulai dengan satu langkah kecil</h1>
+          <p>Pilih materi dan format yang nyaman.</p>
+          <div className="material-grid">
+            {materials.map((m) => (
+              <button
+                className="material-card"
+                key={m.id}
+                onClick={() => start(m)}
+              >
+                <small>{m.subject}</small>
+                <h2>{m.title}</h2>
+                <span>Mulai belajar →</span>
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
+    </DesignShell>
   );
 }

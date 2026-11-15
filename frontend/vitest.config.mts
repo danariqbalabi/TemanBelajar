@@ -4,6 +4,8 @@ export default defineConfig({
   resolve: { alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) } },
   test: {
     environment: "jsdom",
+    fileParallelism: false,
+    maxWorkers: 1,
     include: ["tests/**/*.test.{ts,tsx}"],
     clearMocks: true,
   },

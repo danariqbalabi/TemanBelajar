@@ -1,6 +1,6 @@
 # frontend temanbelajar
 
-Next.js App Router, React, TypeScript, Supabase Auth SDK, dan CSS dengan token
+Next.js App Router, React, TypeScript, Supabase Auth SDK, Tailwind CSS, dan CSS dengan token
 dari `DESIGN.md`. Font Jakarta Sans dan Nunito dibundel lokal; browser tidak
 perlu meminta font ke Google.
 
@@ -61,7 +61,7 @@ Tes interaksi mencakup perpindahan format, latihan berurutan, kegiatan
 terlindungi, peninjauan usulan, sumber unggahan, dan pratinjau onboarding.
 Tes API mencakup idempotensi retry, refresh token, dan konflik versi.
 Pemeriksaan aplikasi juga memastikan field milik server tidak ikut dikirim
-saat profil diedit. Total 11 tes frontend, typecheck, lint, format, dan build
+saat profil diedit. Total 13 tes frontend, typecheck, lint, format, dan build
 produksi sudah lolos. Sebanyak 24 tes backend juga tetap lolos.
 
 Pemeriksaan ulang 15 november 2026 berhasil menjalankan modul API frontend
@@ -88,6 +88,10 @@ Token masuk ke proses Node lewat stdin. Kunci server tetap di backend dan
 tidak disalin ke konfigurasi frontend. Opsi Gemini menggunakan kuota API.
 
 ## batas yang perlu diketahui
+
+- Screen 01–07 menggunakan struktur HTML Stitch asli, logo/Mimo dari arsip
+  pengguna, dan ikon Material Symbols lokal. Tampilan dashboard tetap memakai
+  data akun. Perbandingan visual browser belum terverifikasi.
 
 - PDF pindai belum didukung OCR; sumber PDF tersimpan sebagai teks halaman.
 - Jelajah visual dan transkrip tersedia bila materi memiliki konten yang sesuai.

@@ -1,195 +1,43 @@
 "use client";
+import Image from "next/image";
 import { useState } from "react";
+import { Landing } from "./design-landing";
+import { AccountDesign } from "./design-account";
+import { OnboardingDesign } from "./design-onboarding";
 import type { Session } from "@supabase/supabase-js";
-import { auth } from "@/lib/api";
 import type { Profile, Preferences } from "@/lib/types";
 import type { Run } from "./page";
 export function Mimo() {
   return (
-    <svg
-      viewBox="0 0 100 100"
+    <Image
+      src="/design/mimo.png"
+      width={1024}
+      height={1024}
       className="mimo-svg"
-      role="img"
-      aria-label="Mimo, teman belajarmu"
-    >
-      <path
-        d="M22 69Q9 41 29 27L28 12 44 24Q70 13 82 37Q96 69 74 83Q44 99 22 69Z"
-        fill="#91af87"
-        stroke="#435a49"
-        strokeWidth="3"
-      />
-      <ellipse cx="55" cy="65" rx="23" ry="20" fill="#c8d8ad" />
-      <circle cx="38" cy="43" r="4" fill="#273b35" />
-      <circle cx="67" cy="40" r="4" fill="#273b35" />
-      <path
-        d="M46 50Q54 60 62 49"
-        fill="none"
-        stroke="#435a49"
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
-      <ellipse cx="30" cy="51" rx="7" ry="4" fill="#e8a69a" />
-      <ellipse cx="75" cy="48" rx="7" ry="4" fill="#e8a69a" />
-    </svg>
+      alt="Mimo, bunglon ramah yang duduk di atas buku"
+    />
   );
 }
 export function Account({
   landing,
   onContinue,
+  onBack,
   run,
   busy,
   error,
 }: {
   landing: boolean;
   onContinue: () => void;
+  onBack: () => void;
   run: Run;
   busy: boolean;
   error: string;
 }) {
-  const [email, setEmail] = useState(""),
-    [password, setPassword] = useState(""),
-    [signup, setSignup] = useState(false),
-    [message, setMessage] = useState("");
-  return (
-    <main className="welcome">
-      <div className="brand">
-        <span className="brand-mark">tb</span>TemanBelajar
-      </div>
-      {landing ? (
-        <section className="landing-hero">
-          <span className="pill">TEMAN BELAJAR ADAPTIF SMP &amp; SMA</span>
-          <Mimo />
-          <h1>
-            Belajar dengan caramu.
-            <br />
-            Tumbuh dengan ritmemu.
-          </h1>
-          <p>
-            Materi terasa panjang? Mulai satu konsep bersama Mimo. Pilih membaca
-            santai, fokus satu langkah, atau dengarkan penjelasannya.
-          </p>
-          <div className="actions">
-            <button className="primary" onClick={onContinue}>
-              Mulai perjalananmu →
-            </button>
-            <button
-              disabled={busy || !auth}
-              onClick={() =>
-                run(async () => {
-                  const { error } = await auth!.auth.signInAnonymously();
-                  if (error) throw error;
-                })
-              }
-            >
-              Coba demo tanpa email
-            </button>
-          </div>
-          <div className="feature-row">
-            <span>Tanpa timer wajib</span>
-            <span>Format yang fleksibel</span>
-            <span>Tanpa rasa bersalah</span>
-          </div>
-        </section>
-      ) : (
-        <section>
-          <h1>{signup ? "Buat ruang belajarmu" : "Selamat datang kembali"}</h1>
-          <p>Mimo siap menemani langkah kecilmu hari ini.</p>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              run(async () => {
-                if (!auth) throw Error("Layanan akun belum tersedia.");
-                const result = signup
-                  ? await auth.auth.signUp({
-                      email,
-                      password,
-                      options: { emailRedirectTo: window.location.origin },
-                    })
-                  : await auth.auth.signInWithPassword({ email, password });
-                if (result.error) throw result.error;
-                if (signup && !result.data.session)
-                  setMessage(
-                    "Periksa email untuk mengonfirmasi akun, lalu masuk kembali.",
-                  );
-              });
-            }}
-          >
-            <label>
-              Email
-              <input
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </label>
-            <label>
-              Kata sandi
-              <input
-                type="password"
-                autoComplete={signup ? "new-password" : "current-password"}
-                minLength={8}
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </label>
-            <button className="primary" disabled={busy || !auth}>
-              {signup ? "Daftar" : "Masuk"}
-            </button>
-          </form>
-          <div className="actions">
-            <button disabled={busy} onClick={() => setSignup(!signup)}>
-              {signup ? "Sudah punya akun? Masuk" : "Belum punya akun? Daftar"}
-            </button>
-            <button
-              disabled={busy || !auth}
-              onClick={() =>
-                run(async () => {
-                  const { error } = await auth!.auth.signInAnonymously();
-                  if (error) throw error;
-                })
-              }
-            >
-              Coba demo
-            </button>
-            <button
-              disabled={busy || !auth || !email}
-              onClick={() =>
-                run(async () => {
-                  const { error } = await auth!.auth.signInWithOtp({
-                    email,
-                    options: {
-                      emailRedirectTo: window.location.origin,
-                      shouldCreateUser: false,
-                    },
-                  });
-                  if (error) throw error;
-                  setMessage("Tautan masuk sudah dikirim. Periksa emailmu.");
-                })
-              }
-            >
-              Kirim tautan masuk
-            </button>
-          </div>
-          {message && <p role="status">{message}</p>}
-        </section>
-      )}
-      {!auth && (
-        <p className="notice">
-          Layanan akun belum dikonfigurasi. Isi konfigurasi publik Supabase pada
-          frontend untuk melanjutkan.
-        </p>
-      )}
-      {error && (
-        <p className="notice" role="alert">
-          {error}
-        </p>
-      )}
-      <p>Istirahat juga bagian dari belajar.</p>
-    </main>
-  );
+  if (!landing)
+    return (
+      <AccountDesign onBack={onBack} run={run} busy={busy} error={error} />
+    );
+  return <Landing onContinue={onContinue} error={error} />;
 }
 function PreferenceFields({
   value,
@@ -385,135 +233,13 @@ function GoalFields({
     </>
   );
 }
-export function Onboarding({
-  initial,
-  onSave,
-  busy,
-  error,
-}: {
+export function Onboarding(props: {
   initial: Profile;
   onSave: (p: Profile) => void;
   busy: boolean;
   error: string;
 }) {
-  const [step, setStep] = useState(0),
-    [value, setValue] = useState(initial);
-  return (
-    <main className="welcome">
-      <div className="brand">TemanBelajar</div>
-      <section>
-        <span className="pill">LANGKAH {step + 1} DARI 4</span>
-        <h1>
-          {
-            [
-              "Kenalan dulu, yuk.",
-              "Bikin nyaman ruang bacamu.",
-              "Apa langkah kecilmu?",
-              "Rencana awalmu siap.",
-            ][step]
-          }
-        </h1>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (step < 3) setStep(step + 1);
-            else
-              onSave({
-                ...value,
-                display_name: value.display_name.trim(),
-                onboarding_step: 4,
-              });
-          }}
-        >
-          {step === 0 ? (
-            <>
-              <label>
-                Nama panggilan
-                <input
-                  required
-                  maxLength={80}
-                  value={value.display_name}
-                  onChange={(e) =>
-                    setValue({ ...value, display_name: e.target.value })
-                  }
-                />
-              </label>
-              <fieldset>
-                <legend>Pelajaran yang ingin kamu pelajari</legend>
-                <div className="day-picker">
-                  {[
-                    "IPA",
-                    "Matematika",
-                    "Bahasa Indonesia",
-                    "Bahasa Inggris",
-                    "IPS",
-                  ].map((s) => (
-                    <label key={s}>
-                      <input
-                        type="checkbox"
-                        checked={value.subjects.includes(s)}
-                        onChange={(e) =>
-                          setValue({
-                            ...value,
-                            subjects: e.target.checked
-                              ? [...value.subjects, s]
-                              : value.subjects.filter((x) => x !== s),
-                          })
-                        }
-                      />
-                      {s}
-                    </label>
-                  ))}
-                </div>
-              </fieldset>
-              <p>Pilih sesuai kebutuhanmu. Semua pilihan bisa diubah nanti.</p>
-            </>
-          ) : step === 1 ? (
-            <PreferenceFields
-              value={value.preferences}
-              onChange={(preferences) => setValue({ ...value, preferences })}
-            />
-          ) : step === 2 ? (
-            <GoalFields value={value} onChange={setValue} />
-          ) : (
-            <>
-              <Mimo />
-              <h2>Halo, {value.display_name}!</h2>
-              <p>
-                Kita mulai dengan {value.daily_minutes} menit per hari. Pilih
-                materi contoh atau unggah materi dari sekolah. Rencana selalu
-                bisa ditinjau dan diubah.
-              </p>
-              <dl>
-                <dt>Pelajaran pilihan</dt>
-                <dd>{value.subjects.join(", ") || "Belum dipilih"}</dd>
-                <dt>Tujuanmu</dt>
-                <dd>{value.goal || "Mulai belajar dengan nyaman"}</dd>
-              </dl>
-            </>
-          )}
-          <div className="actions">
-            {step > 0 && (
-              <button type="button" onClick={() => setStep(step - 1)}>
-                ← Kembali
-              </button>
-            )}
-            <button
-              className="primary"
-              disabled={busy || !value.display_name.trim()}
-            >
-              {step === 3 ? "Buka ruang belajar →" : "Lanjut →"}
-            </button>
-          </div>
-        </form>
-        {error && (
-          <p className="notice" role="alert">
-            {error}
-          </p>
-        )}
-      </section>
-    </main>
-  );
+  return <OnboardingDesign {...props} />;
 }
 export function Settings({
   profile,

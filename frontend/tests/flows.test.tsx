@@ -324,13 +324,30 @@ it("onboarding menampilkan pratinjau sebelum menyimpan profil", async () => {
   render(
     <Onboarding initial={defaultProfile} onSave={save} busy={false} error="" />,
   );
-  await userEvent.click(screen.getByText("Lanjut →"));
-  await userEvent.click(screen.getByText("Lanjut →"));
-  await userEvent.click(screen.getByText("Lanjut →"));
-  expect(screen.getByText("Halo, Manda!")).toBeTruthy();
+  await userEvent.click(
+    screen.getByRole("button", { name: "Lanjut ke langkah berikutnya" }),
+  );
+  await userEvent.click(
+    screen.getByRole("button", { name: "Lanjut ke langkah berikutnya" }),
+  );
+  const math = screen.getByRole("checkbox", { name: /Matematika/ });
+  expect((math as HTMLInputElement).checked).toBe(false);
+  await userEvent.click(math);
+  expect((math as HTMLInputElement).checked).toBe(true);
+
+  await userEvent.click(
+    screen.getByRole("button", { name: "Lanjut ke langkah berikutnya" }),
+  );
+  expect(screen.getByText("Halo, Manda! Rencana awalmu siap.")).toBeTruthy();
   expect(save).not.toHaveBeenCalled();
-  await userEvent.click(screen.getByText("Buka ruang belajar →"));
+  await userEvent.click(
+    screen.getByRole("button", { name: "Mulai Belajar Sekarang" }),
+  );
   expect(save).toHaveBeenCalledWith(
-    expect.objectContaining({ display_name: "Manda", onboarding_step: 4 }),
+    expect.objectContaining({
+      display_name: "Manda",
+      onboarding_step: 4,
+      subjects: expect.arrayContaining(["IPA", "Matematika"]),
+    }),
   );
 });
