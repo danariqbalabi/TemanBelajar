@@ -25,6 +25,7 @@ ditinjau. gunakan request id baru setelah pengguna menyetujui isi terbaru.
 | `404` | objek belum dibuat atau tidak dapat diakses akun ini |
 | `409` | versi konflik, request id berbeda isi, atau proses masih berjalan |
 | `413` | unggahan terlalu besar |
+| `429` | kuota tercapai atau proses lain masih berjalan; jangan retry otomatis |
 | `422` | isian, rujukan, kapasitas, atau jadwal perlu diperbaiki |
 | `502` | respons provider belum valid; data sebelumnya tetap tersedia |
 | `503` | konfigurasi belum lengkap atau provider belum tersedia |
@@ -137,3 +138,13 @@ mempertahankan keadaan terlindungi terbaru lalu memeriksa konflik ulang.
 jadwal dengan konflik, prasyarat tidak sah, kegiatan melewati tengah malam,
 atau total harian berlebih ditolak. batas usulan otomatis 15 hari; kegiatan
 yang tidak muat memerlukan durasi atau waktu pilihan pengguna.
+
+
+## batas pemakaian pemrosesan
+
+PDF maksimal 4 MiB agar multipart tetap di bawah batas payload Vercel.
+Setiap akun dibatasi 10 unggahan baru dan 20 percobaan AI per hari UTC,
+serta satu pemrosesan AI aktif. Percobaan gagal tetap memakai kuota AI.
+Retry unggahan dengan request_id dan isi sama serta job ready tidak memakai
+kuota lagi. Batas per akun ini belum menggantikan pembatasan global/IP untuk
+pembuatan akun anonim; proteksi tersebut masih perlu disiapkan sebelum publik.

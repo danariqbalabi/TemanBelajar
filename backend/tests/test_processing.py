@@ -93,3 +93,88 @@ def test_text_pdf_keeps_page_references(client):
     sources = client.get(f"/v1/jobs/{response.json()['id']}/source").json()["sources"]
     assert [source["id"] for source in sources] == ["page-1", "page-2"]
     assert sources[1]["text"].startswith("Klorofil")
+
+
+def test_upload_quota_preserves_retry(client):
+    first = {
+        "request_id": str(uuid4()),
+        "title": "Materi",
+        "text": "teks sumber pembelajaran yang cukup panjang",
+    }
+    assert client.post("/v1/materials/text", json=first).status_code == 202
+    for _ in range(9):
+        upload(client)
+    assert client.post("/v1/materials/text", json=first).status_code == 202
+    assert (
+        client.post(
+            "/v1/materials/text", json={**first, "request_id": str(uuid4())}
+        ).status_code
+        == 429
+    )
+
+
+def test_ai_budget_survives_failed_calls(client, monkeypatch):
+    job = upload(client)
+    calls = []
+
+    async def failed(job):
+        calls.append(job["id"])
+        raise HTTPException(503, "provider gagal")
+
+    monkeypatch.setattr(material_processing, "generate_material", failed)
+    url = f"/v1/jobs/{job['id']}/process"
+    for _ in range(20):
+        assert client.post(url).status_code == 503
+    assert client.post(url).status_code == 429
+    assert len(calls) == 20
+
+
+def test_pdf_transport_limit(client):
+    response = client.post(
+        "/v1/materials/pdf",
+        data={"request_id": str(uuid4()), "title": "PDF"},
+        files={
+            "file": (
+                "large.pdf",
+                b"x" * (material_processing.MAX_BYTES + 1),
+                "application/pdf",
+            )
+        },
+    )
+    assert response.status_code == 413
+    assert client.get("/v1/jobs").json()["items"] == []
+
+
+def test_only_one_live_ai_lease_per_account(client, store, monkeypatch):
+    from datetime import UTC, datetime, timedelta
+
+    async def fail(job):
+        raise HTTPException(503, "provider indisponibel")
+
+    monkeypatch.setattr(material_processing, "generate_material", fail)
+    first = upload(client)
+    second = upload(client)
+    record = store.snapshot.data["jobs"][first["id"]]
+    record.update(
+        status="processing", lease="held", updated_at=datetime.now(UTC).isoformat()
+    )
+    assert client.post(f"/v1/jobs/{second['id']}/process").status_code == 429
+    assert store.snapshot.data.get("ai_usage", {}) == {}
+    record["updated_at"] = (datetime.now(UTC) - timedelta(minutes=3)).isoformat()
+    # Expired leases no longer block a different job; provider configuration
+    # can fail, but the admission itself must consume one attempt.
+    client.post(f"/v1/jobs/{second['id']}/process")
+    assert sum(store.snapshot.data["ai_usage"].values()) == 1
+
+
+def test_timed_out_generation_releases_lease(client, monkeypatch):
+    job = upload(client)
+
+    async def timeout(job):
+        raise TimeoutError()
+
+    monkeypatch.setattr(material_processing, "generate_material", timeout)
+    url = f"/v1/jobs/{job['id']}"
+    assert client.post(url + "/process").status_code == 504
+    assert client.get(url).json()["status"] == "failed"
+    assert client.get(url + "/source").status_code == 200

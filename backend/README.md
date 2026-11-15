@@ -47,7 +47,7 @@ materi demo fotosintesis dan pythagoras ditulis di `app/demo.py`, termasuk
 rujukan, deskripsi diagram, transkrip, dan soal. audio dapat dibuat frontend
 melalui baca nyaring atas teks tersebut.
 
-unggahan mendukung pdf berbasis teks maksimal 10 mb, 50 halaman, dan total
+unggahan mendukung pdf berbasis teks maksimal 4 mb, 50 halaman, dan total
 100.000 karakter, atau teks tempel. sumber tersimpan sebagai teks per halaman
 atau bagian. berkas pdf biner asli tidak disimpan pada tahap ini. pdf pindai
 memerlukan teks tempel atau versi dengan teks yang dapat diekstrak.

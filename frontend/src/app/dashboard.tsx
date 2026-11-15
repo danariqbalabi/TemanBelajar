@@ -591,7 +591,7 @@ export function Dashboard({
                   {"Tambahkan file PDF atau teks materi"}
                 </span>
                 <span className="font-metadata text-[11px] text-muted-gray mt-0.5">
-                  {"PDF berbasis teks (Maks. 10 MB) atau teks tempel"}
+                  {"PDF berbasis teks (Maks. 4 MB) atau teks tempel"}
                 </span>
                 <button
                   className="mt-3 px-3 py-1.5 rounded-lg bg-surface text-primary font-label text-[12px] shadow-sm hover:bg-surface-container-high transition-colors"

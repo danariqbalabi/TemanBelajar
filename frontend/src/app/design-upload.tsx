@@ -209,7 +209,7 @@ export function UploadDesign({
                       Tarik dan lepaskan PDF berbasis teks ke sini
                     </p>
                     <p className="font-metadata text-metadata text-text-secondary">
-                      Maksimal 10 MB, 50 halaman. PDF pindai memerlukan versi
+                      Maksimal 4 MB, 50 halaman. PDF pindai memerlukan versi
                       teks.
                     </p>
                     <button

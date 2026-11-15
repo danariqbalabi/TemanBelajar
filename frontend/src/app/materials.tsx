@@ -85,8 +85,8 @@ export function Materials({
       setValidation("Beri judul materi terlebih dahulu.");
       return;
     }
-    if (file && file.size > 10 * 1024 * 1024) {
-      setValidation("Ukuran PDF maksimal 10 MB.");
+    if (file && file.size > 4 * 1024 * 1024) {
+      setValidation("Ukuran PDF maksimal 4 MB.");
       return;
     }
     if (!file && !text.trim()) {
