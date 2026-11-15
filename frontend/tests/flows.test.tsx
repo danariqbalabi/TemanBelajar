@@ -21,6 +21,9 @@ vi.mock("../src/lib/api", () => ({
 import { Reader } from "../src/app/reader";
 import { Planner } from "../src/app/planner";
 import { Materials } from "../src/app/materials";
+import { ProgressView } from "../src/app/progress";
+import { SettingsDesign } from "../src/app/design-settings";
+import type { Session } from "@supabase/supabase-js";
 import { Onboarding } from "../src/app/profile";
 const material: Material = {
   id: "demo",
@@ -88,6 +91,78 @@ afterEach(() => {
   request.mockReset();
 });
 describe("alur belajar", () => {
+  it("menampilkan hasil tersimpan dan alasan rekomendasi dari server tanpa metrik contoh", async () => {
+    localStorage.setItem("temanbelajar-attempt:session", "done");
+    const completed: Attempt = {
+      id: "done",
+      session_id: "session",
+      material_id: "demo",
+      version: 3,
+      status: "completed",
+      question_ids: ["q1", "q2"],
+      answers: {
+        q1: { selected_index: 0, correct: true, answered_at: "" },
+        q2: { selected_index: 0, correct: false, answered_at: "" },
+      },
+      questions: [
+        {
+          id: "q1",
+          concept_id: "c1",
+          prompt: "Apa peran cahaya?",
+          options: ["Energi", "Bahan gula"],
+          source_ids: ["source"],
+          correct_index: 0,
+          explanation: "Cahaya memasok energi yang dibutuhkan.",
+        },
+        {
+          id: "q2",
+          concept_id: "c1",
+          prompt: "Mana sumber energi fotosintesis?",
+          options: ["Air", "Cahaya"],
+          source_ids: ["source"],
+          correct_index: 1,
+          explanation: "Cahaya, bukan air, menjadi sumber energi.",
+        },
+      ],
+    };
+    const reason =
+      "Satu jawaban sebelumnya belum tepat. Ulangi konsep peran cahaya.";
+    request.mockImplementation(async (path: string) =>
+      path.startsWith("/attempts/")
+        ? completed
+        : {
+            action: "REVIEW",
+            material_id: "demo",
+            concept_id: "c1",
+            estimated_minutes: 5,
+            reason,
+            title: "Peran cahaya",
+            alternatives: [],
+            estimate: null,
+          },
+    );
+    render(
+      <Reader
+        material={material}
+        session={session}
+        preferences={defaultProfile.preferences}
+        run={run}
+        busy={false}
+        onUpdate={() => {}}
+        refresh={async () => {}}
+        onPlanner={() => {}}
+      />,
+    );
+    expect(await screen.findByText("1 dari 2 Soal Tepat (50%)")).toBeTruthy();
+    expect(
+      screen.getByText("Cahaya, bukan air, menjadi sumber energi."),
+    ).toBeTruthy();
+    await userEvent.click(
+      screen.getByRole("button", { name: "Lihat langkah berikutnya" }),
+    );
+    expect((await screen.findAllByText(reason)).length).toBeGreaterThan(0);
+    expect(screen.queryByText(/42%/)).toBeNull();
+  });
   it("melanjutkan latihan tersimpan dari soal yang belum dijawab", async () => {
     localStorage.setItem("temanbelajar-attempt:session", "saved-attempt");
     request.mockResolvedValue({
@@ -224,14 +299,18 @@ describe("alur belajar", () => {
     expect(await screen.findByText("Apa peran cahaya?")).toBeTruthy();
     expect(screen.queryByText("Apa bahan fotosintesis?")).toBeNull();
     await userEvent.click(screen.getByLabelText("Energi"));
-    await userEvent.click(screen.getByText("Simpan jawaban →"));
+    await userEvent.click(
+      screen.getByRole("button", { name: "Kirim Jawaban & Lihat Penjelasan" }),
+    );
     expect(await screen.findByText("Cahaya menyediakan energi.")).toBeTruthy();
     expect(request.mock.calls[1][1]).toMatchObject({
       question_id: "q1",
       selected_index: 0,
       expected_version: 1,
     });
-    await userEvent.click(screen.getByText("Pertanyaan berikutnya →"));
+    await userEvent.click(
+      screen.getByRole("button", { name: "Pertanyaan berikutnya" }),
+    );
     expect(await screen.findByText("Apa bahan fotosintesis?")).toBeTruthy();
   });
 });
@@ -248,7 +327,9 @@ describe("planner yang dapat ditinjau", () => {
         start={() => {}}
       />,
     );
-    await userEvent.click(screen.getByText("Edit rencana manual"));
+    await userEvent.click(
+      screen.getByRole("button", { name: "Edit rencana manual" }),
+    );
     expect(
       (screen.getByText("Hapus dari draf") as HTMLButtonElement).disabled,
     ).toBe(true);
@@ -278,9 +359,13 @@ describe("planner yang dapat ditinjau", () => {
         start={() => {}}
       />,
     );
-    await userEvent.click(screen.getByText("Edit rencana manual"));
+    await userEvent.click(
+      screen.getByRole("button", { name: "Edit rencana manual" }),
+    );
     await userEvent.click(screen.getByText("Buat usulan perubahan"));
-    expect(await screen.findByText("Terima perubahan")).toBeTruthy();
+    expect(
+      await screen.findByRole("button", { name: "Pakai Rencana Ini" }),
+    ).toBeTruthy();
     expect(request.mock.calls[0][0]).toBe("/plans/plan/proposals");
     expect(
       request.mock.calls.some((c) => String(c[0]).endsWith("/accept")),
@@ -390,4 +475,74 @@ it("onboarding menampilkan pratinjau sebelum menyimpan profil", async () => {
       subjects: expect.arrayContaining(["IPA", "Matematika"]),
     }),
   );
+});
+
+it("menyimpan preferensi eksplisit dan mempertahankan profil saat tab diganti", async () => {
+  const save = vi.fn();
+  render(
+    <SettingsDesign
+      profile={defaultProfile}
+      account={{ user: { is_anonymous: true } } as Session}
+      busy={false}
+      onSave={save}
+      signOut={vi.fn()}
+      onBack={vi.fn()}
+    />,
+  );
+  await userEvent.click(screen.getByRole("button", { name: "Nunito Ramah" }));
+  expect(save).not.toHaveBeenCalled();
+  await userEvent.click(
+    screen.getByRole("checkbox", { name: "Penggaris Baca" }),
+  );
+  await userEvent.click(screen.getByRole("button", { name: "Profil" }));
+  const name = screen.getByLabelText("Nama panggilan");
+  await userEvent.clear(name);
+  await userEvent.type(name, "Manda santai");
+  await userEvent.click(
+    screen.getByRole("button", { name: "Simpan Semua Preferensi" }),
+  );
+  expect(save).toHaveBeenCalledWith(
+    expect.objectContaining({
+      display_name: "Manda santai",
+      preferences: expect.objectContaining({
+        font_family: "nunito",
+        reading_ruler: true,
+      }),
+    }),
+  );
+});
+it("memisahkan jawaban teramati dari estimasi model yang belum tersedia", async () => {
+  request.mockImplementation(async (path: string) =>
+    path.startsWith("/progress")
+      ? {
+          concepts: [
+            {
+              id: "c1",
+              title: "Peran cahaya",
+              mastery: null,
+              mastery_status: "unavailable",
+              model_version: null,
+              observed: { correct: 1, total: 2 },
+            },
+          ],
+        }
+      : null,
+  );
+  render(
+    <ProgressView
+      materials={[material]}
+      sessions={[{ ...session, updated_at: new Date().toISOString() }]}
+      run={run}
+      start={vi.fn()}
+      onPlan={vi.fn()}
+      onSettings={vi.fn()}
+      onBack={vi.fn()}
+      displayName="Manda"
+      timezone="Asia/Jakarta"
+    />,
+  );
+  expect(await screen.findByText("1/2 jawaban tepat")).toBeTruthy();
+  expect(screen.queryByRole("progressbar")).toBeNull();
+  expect(screen.getByText(/Estimasi penguasaan belum tersedia/)).toBeTruthy();
+  expect(screen.queryByText(/82%/)).toBeNull();
 });

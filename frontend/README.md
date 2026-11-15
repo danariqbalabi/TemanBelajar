@@ -61,7 +61,7 @@ Tes interaksi mencakup perpindahan format, latihan berurutan, kegiatan
 terlindungi, peninjauan usulan, sumber unggahan, dan pratinjau onboarding.
 Tes API mencakup idempotensi retry, refresh token, dan konflik versi.
 Pemeriksaan aplikasi juga memastikan field milik server tidak ikut dikirim
-saat profil diedit. Total 14 tes frontend, typecheck, lint, format, dan build
+saat profil diedit. Total 17 tes frontend, typecheck, lint, format, dan build
 produksi sudah lolos. Sebanyak 24 tes backend juga tetap lolos.
 
 Pemeriksaan ulang 15 november 2026 berhasil menjalankan modul API frontend
@@ -91,7 +91,16 @@ tidak disalin ke konfigurasi frontend. Opsi Gemini menggunakan kuota API.
 
 - Screen 01–12 menggunakan struktur HTML Stitch asli, logo/Mimo dari arsip
   pengguna, dan ikon Material Symbols lokal. Tampilan dashboard tetap memakai
-  data akun. Perbandingan visual browser belum terverifikasi.
+  data akun. Screen 13?19 mencakup format baca, latihan, hasil, dan rekomendasi;
+  screen 20?21 mencakup rencana dan peninjauan usulan; screen 22?24 mencakup
+  progres, aksesibilitas, dan profil. Isi contoh desain diganti data server.
+  Perbandingan visual browser belum terverifikasi: pemeriksaan terakhir tetap
+  melaporkan `The browser access host is unavailable`.
+- Pilihan pengaturan mengikuti field yang dapat disimpan backend. Huruf yang
+  tersedia adalah Jakarta Sans, Nunito, dan font sistem. Baca nyaring memakai
+  suara peramban, tanpa klaim suara Mimo prarekaman atau pencarian detik audio.
+  Ekspor preferensi berisi profil JSON; cetak progres memakai dialog cetak
+  peramban. Riwayat emosi, reset riwayat, dan hapus akun belum tersedia.
 
 - PDF pindai belum didukung OCR; sumber PDF tersimpan sebagai teks halaman.
 - Jelajah visual dan transkrip tersedia bila materi memiliki konten yang sesuai.
