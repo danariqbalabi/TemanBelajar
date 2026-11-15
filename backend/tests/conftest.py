@@ -12,6 +12,9 @@ class MemoryStore:
     def __init__(self):
         self.snapshot = Snapshot()
 
+    async def reserve_ai_attempt(self):
+        pass
+
     async def load(self):
         return deepcopy(self.snapshot)
 

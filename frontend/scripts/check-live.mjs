@@ -14,7 +14,12 @@ const { error } = await auth.auth.setSession(credentials);
 assert.equal(error, null, "sesi pengujian harus valid");
 try {
   await api("/profile", { ...defaultProfile, onboarding_step: 4 }, "PUT");
-  assert.equal((await api("/profile")).display_name, "Manda");
+  const profile = await api("/profile");
+  assert.equal(profile.display_name, "Manda");
+  const changed = await api("/profile", {...defaultProfile, display_name:"Manda tes", expected_revision:profile.revision}, "PUT");
+  assert.equal(changed.revision, profile.revision+1);
+  await assert.rejects(api("/profile", {...defaultProfile, expected_revision:profile.revision}, "PUT"), e=>e.status===409);
+  assert.equal((await api("/profile")).display_name,"Manda tes");
   const { items } = await api("/materials");
   const material = items.find((m) => m.id === "demo-fotosintesis");
   assert.ok(material);

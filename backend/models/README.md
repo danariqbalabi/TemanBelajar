@@ -6,7 +6,7 @@ validation, dan test berbeda. Prediksi tiap jawaban dihitung sebelum pembaruan
 penguasaan dari jawaban tersebut.
 
 ```powershell
-uv run python -m training.train_bkt --download
+uv run --group training python -m training.train_bkt --download
 ```
 
 Dataset berasal dari salinan ASSISTments pada repositori riset CAHLR.

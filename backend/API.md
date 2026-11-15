@@ -148,5 +148,7 @@ PDF maksimal 4 MiB agar multipart tetap di bawah batas payload Vercel.
 Setiap akun dibatasi 10 unggahan baru dan 20 percobaan AI per hari UTC,
 serta satu pemrosesan AI aktif. Percobaan gagal tetap memakai kuota AI.
 Retry unggahan dengan request_id dan isi sama serta job ready tidak memakai
-kuota lagi. Batas per akun ini belum menggantikan pembatasan global/IP untuk
-pembuatan akun anonim; proteksi tersebut masih perlu disiapkan sebelum publik.
+kuota lagi. Kuota global default 100 percobaan AI per hari UTC berlaku untuk seluruh akun,
+termasuk anonim, dan direservasi atomik di PostgreSQL. Atur melalui
+AI_DAILY_GLOBAL_LIMIT. Reservasi yang diikuti konflik simpan tetap terhitung
+secara konservatif. Kuota ini membatasi jumlah panggilan, bukan nominal biaya.

@@ -287,6 +287,7 @@ async def process_job(job_id: str, store: StoreDep):
                 raise HTTPException(429, "tunggu pemrosesan materi sebelumnya selesai")
     if today not in usage:
         usage.clear()
+    await store.reserve_ai_attempt()
     usage[today] = usage.get(today, 0) + 1
     lease = str(uuid4())
     job.update(

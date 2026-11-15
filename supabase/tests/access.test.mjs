@@ -42,7 +42,12 @@ test('migrasi, akses antar akun, dan konflik versi berjalan di postgres', async 
     assert.equal((await db.query('select revision from public.learner_profiles where id=$1',[first])).rows[0].revision,1);
     assert.equal((await db.query('update public.learner_profiles set display_name=$1 where id=$2 and revision=1 returning revision',['Manda baru',first])).rows[0].revision,2);
     assert.equal((await db.query('update public.learner_profiles set display_name=$1 where id=$2 and revision=1 returning revision',['tab lama',first])).rows.length,0);
+    await assert.rejects(db.query('select public.reserve_ai_attempt(2)'), /permission denied/);
     await db.exec('set role service_role');
+    assert.equal((await db.query('select public.reserve_ai_attempt(2) as allowed')).rows[0].allowed,true);
+    assert.equal((await db.query('select public.reserve_ai_attempt(2) as allowed')).rows[0].allowed,true);
+    assert.equal((await db.query('select public.reserve_ai_attempt(2) as allowed')).rows[0].allowed,false);
+
     const save = (learner, version, data) => db.query(
       'select public.save_learning_state($1, $2, $3::jsonb) as revision',
       [learner, version, JSON.stringify(data)],

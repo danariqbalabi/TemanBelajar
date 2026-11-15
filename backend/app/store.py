@@ -58,6 +58,22 @@ class Store:
             raise HTTPException(503, "akses penyimpanan backend belum dikonfigurasi")
         return token
 
+    async def reserve_ai_attempt(self):
+        response = await request_supabase(
+            "POST",
+            "/rest/v1/rpc/reserve_ai_attempt",
+            self.service_token(),
+            server=True,
+            json={"daily_limit": settings().ai_daily_global_limit},
+        )
+        allowed = response_json(response)
+        if allowed is False:
+            raise HTTPException(
+                429, "kuota AI layanan hari ini sudah penuh, coba besok"
+            )
+        if allowed is not True:
+            raise HTTPException(502, "kuota AI belum dapat diverifikasi")
+
     async def load(self) -> Snapshot:
         response = await request_supabase(
             "GET",

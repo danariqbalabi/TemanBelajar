@@ -63,7 +63,7 @@ parameter, dan batas evaluasi. artefak `models/bkt.json` memuat metrik lengkap.
 data mentah berada di `data/raw` dan diabaikan git.
 
 ```powershell
-uv run python -m training.train_bkt --download
+uv run --group training python -m training.train_bkt --download
 ```
 
 ## pengujian
@@ -105,3 +105,20 @@ pendekatan ini menjaga konsistensi lintas sesi, jawaban, dan rencana untuk mvp.
 riwayat dan receipt masih tumbuh bersama dokumen. penggunaan jangka panjang
 dengan banyak materi membutuhkan pemisahan tabel, pagination, dan kebijakan
 arsip setelah kebutuhan nyata diukur.
+
+
+## persiapan vercel
+
+Buat proyek backend dengan Root Directory `backend` dan framework FastAPI.
+`vercel.json` mengatur entrypoint `app/main.py`, durasi 120 detik, dan artefak
+BKT. Training memakai dependency group terpisah; runtime tidak memerlukan
+NumPy atau SciPy. Konfigurasi ini belum dibuktikan lewat deploy Vercel.
+
+Isi variabel Supabase dan Gemini serta CORS_ORIGINS dengan origin frontend
+produksi. DATABASE_URL hanya diperlukan saat migrasi; jangan masukkan ke
+frontend. AI_DAILY_GLOBAL_LIMIT default 100 percobaan per hari UTC di seluruh
+akun. Migrasi harus diterapkan sebelum backend versi ini dipakai.
+
+Pengujian live terbaru mencakup konflik revisi profil serta upload sampai
+Gemini menghasilkan materi. Kuota global diuji di PostgreSQL; pembatasan
+pembuatan akun anonim di provider masih perlu dikonfigurasi sebelum publik.
