@@ -106,6 +106,7 @@ export function Materials({
       const job = await request();
       setJobs((items) => [job, ...items.filter((x) => x.id !== job.id)]);
       setUpload(false);
+      setActiveJob(job);
       setTitle("");
       setText("");
       setFile(null);

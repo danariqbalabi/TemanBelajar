@@ -31,440 +31,303 @@ export function JobDesign({
       } as Record<string, string>
     )[job.status] || job.status;
   return (
-    <div className="stitch-screen">
-      <div className="flex flex-col w-full max-w-6xl mx-auto space-y-space-lg pb-space-xxl">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
-          <button
-            className="inline-flex items-center gap-space-xs font-label text-label text-primary hover:text-secondary transition-colors group"
-            onClick={onBack}
-          >
-            <span
-              className="material-symbols-outlined text-[18px] group-hover:-translate-x-1 transition-transform"
-              aria-hidden="true"
-            >
-              arrow_back
-            </span>
-            <span>Kembali ke Materi Saya</span>
-            <span className="font-metadata text-metadata text-text-secondary font-normal">
-              (Bisa ditinggal, proses tetap jalan di latar)
-            </span>
-          </button>
-          <div className="inline-flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-secondary-fixed/40 self-start sm:self-auto">
-            <span className="w-2 h-2 rounded-full bg-success animate-ping"></span>
-            <span className="font-metadata text-metadata text-on-secondary-fixed-variant">
-              Proses Aman di Cloud • Bebas Kuota Berulang
-            </span>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
-          <div className="lg:col-span-8 space-y-space-lg">
-            <div className="bg-surface rounded-2xl p-space-lg md:p-space-xl shadow-sm relative overflow-hidden">
-              <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-secondary-container/40 blur-3xl pointer-events-none"></div>
-              <div className="absolute -left-12 -bottom-12 w-48 h-48 rounded-full bg-butter/40 blur-2xl pointer-events-none"></div>
-              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-space-lg relative z-10">
-                <div className="relative shrink-0 flex flex-col items-center">
-                  <div className="w-36 h-36 md:w-44 md:h-44 rounded-2xl bg-secondary-container/30 flex items-center justify-center p-2 relative">
-                    <Image
-                      className="w-full h-full object-contain"
-                      data-alt="Illustration in warm indie picture-book zine style showing Mimo the friendly chameleon perched on a stack of three colorful books (soft mint, lavender, and peach). Mimo has big curious eyes, soft green skin with a gentle blush on the cheek, holding a small pencil thoughtfully. Natural cream background with clean ink contours and warm light."
-                      src="/design/mimo.png"
-                      width={1024}
-                      height={1024}
-                      alt="Mimo sedang menyiapkan materi"
-                    />
-
-                    <div className="absolute -bottom-2 -right-2 bg-primary text-on-primary px-space-xs py-0.5 rounded-md shadow-sm flex items-center gap-1 font-metadata text-[11px]">
-                      <span
-                        className="material-symbols-outlined text-[14px]"
-                        aria-hidden="true"
-                      >
-                        psychology
-                      </span>
-                      <span>Fokus Mode</span>
-                    </div>
-                  </div>
-                  <span className="mt-2 font-display text-metadata font-bold text-primary tracking-wide">
-                    Mimo sang Kurator
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center sm:text-left min-w-0">
-                  <div className="relative bg-surface-container-low p-space-md rounded-2xl shadow-sm mb-space-md border-0">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span
-                        className="material-symbols-outlined text-secondary text-[20px]"
-                        aria-hidden="true"
-                      >
-                        chat_bubble
-                      </span>
-                      <span className="font-label text-label font-bold text-primary">
-                        Bisikan Ramah Mimo
-                      </span>
-                    </div>
-                    <p className="font-mimo-voice text-mimo-voice text-primary leading-relaxed">
-                      “Mimo lagi nyusun materinya jadi zine belajar yang ramah
-                      di mata. Tenang ya, kamu nggak perlu nungguin layar ini
-                      terus kok!”
-                    </p>
-                  </div>
-
-                  <div className="space-y-1">
-                    <h1 className="font-page-title text-page-title text-primary tracking-tight">
-                      {job.status === "ready"
-                        ? "Materimu sudah siap dipelajari!"
-                        : job.status === "failed"
-                          ? "Kita bisa mencoba menyusun lagi."
-                          : "Mimo sedang merapikan materi belajarmu..."}
-                    </h1>
-                    <p className="font-reading text-reading text-text-secondary leading-relaxed">
-                      Mengubah berkas{" "}
-                      <code className="px-2 py-0.5 rounded-md bg-surface-container-highest text-primary font-mono text-[13px] font-semibold">
-                        {job.title}
-                      </code>{" "}
-                      menjadi format adaptif bebas cemas.
-                    </p>
-                  </div>
-
-                  <div className="mt-space-md flex flex-wrap items-center gap-space-sm justify-center sm:justify-start">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-butter text-primary font-label text-label font-bold">
-                      <span
-                        className="material-symbols-outlined text-[16px]"
-                        aria-hidden="true"
-                      >
-                        hourglass_top
-                      </span>
-                      <span>
-                        {
-                          "Proses dapat memerlukan sekitar 90 detik. Sumber tetap tersimpan jika perlu diulang."
-                        }
-                      </span>
-                    </span>
-                    <span className="font-metadata text-metadata text-text-secondary">
-                      {
-                        "Proses dapat memerlukan sekitar 90 detik. Sumber tetap tersimpan jika perlu diulang."
-                      }
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-surface rounded-2xl p-space-lg shadow-sm space-y-space-md">
-              <div className="flex items-center justify-between gap-space-md">
-                <h2 className="font-section-title text-section-title text-primary">
-                  Progres Penyusunan Transparan
-                </h2>
-                <span className="px-space-sm py-1 rounded-full bg-secondary-container text-primary font-label text-[12px]">
-                  {statusLabel}
-                </span>
-              </div>
-              <div className="flex flex-col gap-space-md mt-space-lg">
-                {[
-                  {
-                    title: "Sumber teks tersimpan",
-                    done: true,
-                    description: "Teks sumber dapat diperiksa kembali.",
-                  },
-                  {
-                    title: "Menyusun konsep dan latihan",
-                    done: job.status === "ready",
-                    description:
-                      job.status === "queued"
-                        ? "Siap diproses saat kamu memilih mulai."
-                        : job.status === "failed"
-                          ? "Proses perlu dicoba kembali."
-                          : job.status === "ready"
-                            ? "Konsep dan soal selesai disusun."
-                            : "Gemini sedang menyusun materi dari sumbermu.",
-                  },
-                  {
-                    title: "Validasi dan simpan materi",
-                    done: job.status === "ready",
-                    description:
-                      job.status === "ready"
-                        ? "Materi siap dibuka."
-                        : "Hasil diperiksa server sebelum disimpan.",
-                  },
-                ].map((stage, i) => (
-                  <div
-                    key={stage.title}
-                    className="flex items-start gap-space-md p-space-md rounded-xl bg-surface-container-low"
-                  >
-                    <span
-                      className={
-                        "w-9 h-9 rounded-full flex items-center justify-center shrink-0 " +
-                        (stage.done
-                          ? "bg-secondary-container text-primary"
-                          : "bg-surface-container text-text-secondary")
-                      }
-                    >
-                      {stage.done ? (
-                        <span
-                          aria-hidden="true"
-                          className="material-symbols-outlined text-[20px]"
-                        >
-                          check
-                        </span>
-                      ) : (
-                        i + 1
-                      )}
-                    </span>
-                    <div>
-                      <h3 className="font-label text-label text-primary">
-                        {stage.title}
-                      </h3>
-                      <p className="font-metadata text-metadata text-text-secondary mt-1">
-                        {stage.description}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <p className="font-metadata text-metadata text-text-secondary mt-space-md">
-                {job.stage}
-              </p>
-              <progress
-                className="w-full h-2 rounded-full mt-space-sm"
-                max={100}
-                value={
-                  job.status === "ready"
-                    ? 100
-                    : job.status === "queued"
-                      ? 0
-                      : undefined
-                }
-                aria-label="Penyusunan materi"
-              />
-              {job.error && (
-                <p
-                  role="alert"
-                  className="font-body text-body text-error mt-space-md"
-                >
-                  {job.error}
-                </p>
-              )}
-            </div>
-
-            <div className="p-space-lg rounded-2xl bg-secondary-fixed/30 flex items-start gap-space-md relative overflow-hidden">
-              <div className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center shrink-0 shadow-sm text-secondary">
+    <>
+      <div className="stitch-screen revamp-screen px-4 py-6 md:px-8">
+        <div className="flex flex-col w-full">
+          <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 py-6 md:py-10 space-y-6">
+            <nav aria-label="Navigasi Jejak" className="flex items-center">
+              <button
+                className="inline-flex items-center gap-2 text-xs md:text-sm font-semibold text-text-secondary hover:text-primary transition-colors group p-2 -ml-2 rounded-xl focus-visible:outline-focus"
+                type="button"
+                onClick={onBack}
+              >
                 <span
-                  className="material-symbols-outlined text-[24px]"
+                  className="material-symbols-outlined text-lg group-hover:-translate-x-0.5 transition-transform"
                   aria-hidden="true"
                 >
-                  lightbulb
+                  arrow_back
                 </span>
-              </div>
-              <div className="flex-1 space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="font-label text-label font-bold text-primary">
-                    Temuan Seru Selagi Menunggu
-                  </span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-                  <span className="font-metadata text-[12px] text-text-secondary">
-                    Sejarah Matematika
-                  </span>
+                <span>Kembali ke Materi Saya</span>
+                <span className="text-[11px] font-normal text-muted-gray hidden sm:inline">
+                  (pemrosesan tetap berjalan otomatis di latar belakang)
+                </span>
+              </button>
+            </nav>
+
+            <div className="relative bg-surface rounded-3xl shadow-card p-6 sm:p-8 md:p-10 overflow-hidden space-y-8">
+              <div className="absolute -top-24 -right-24 w-64 h-64 bg-mint/30 rounded-full blur-3xl pointer-events-none"></div>
+              <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-butter/30 rounded-full blur-3xl pointer-events-none"></div>
+
+              <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-divider">
+                <div className="space-y-1.5">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-mint/50 text-mint-dark text-xs font-bold tracking-wide">
+                    <span className="w-2 h-2 rounded-full bg-mint-dark animate-ping"></span>
+                    <span>{statusLabel}</span>
+                  </div>
+                  <h1 className="font-display font-extrabold text-xl md:text-2xl text-primary flex items-center gap-2.5">
+                    {job.title}
+                  </h1>
+                  <div className="flex items-center gap-2 text-xs text-text-secondary font-medium">
+                    <span className="px-2 py-0.5 rounded-md bg-canvas text-primary font-semibold">
+                      14 Halaman
+                    </span>
+                    <span>•</span>
+                    <span>Matematika SMP Kelas 8</span>
+                    <span>•</span>
+                    <span className="text-mint-dark font-semibold">
+                      Sistem Adaptif Aktif
+                    </span>
+                  </div>
                 </div>
-                <p className="font-reading text-reading text-primary">
-                  {job.title}
-                </p>
-              </div>
-            </div>
-          </div>
 
-          <div className="lg:col-span-4 space-y-space-lg">
-            <div className="bg-surface rounded-2xl p-space-lg shadow-sm space-y-space-lg">
-              <div>
-                <h2 className="font-section-title text-section-title text-primary">
-                  Aksi &amp; Kendali
-                </h2>
-                <p className="font-metadata text-metadata text-text-secondary mt-1">
-                  Kamu memegang kendali penuh. Tidak ada kewajiban menatap
-                  proses hingga selesai.
-                </p>
-              </div>
-
-              <div className="space-y-space-xs">
-                <button
-                  className="w-full h-11 px-space-md rounded-xl bg-primary text-on-primary font-label text-label flex items-center justify-center gap-space-xs hover:bg-primary-hover active:bg-primary-pressed transition-colors shadow-sm text-center"
-                  onClick={onBack}
-                >
-                  <span
-                    className="material-symbols-outlined text-[18px]"
-                    aria-hidden="true"
-                  >
-                    pause_circle
+                <div className="shrink-0 flex items-center sm:flex-col sm:items-end justify-between bg-canvas sm:bg-transparent p-3 sm:p-0 rounded-2xl">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-muted-gray">
+                    Perkiraan Waktu
                   </span>
-                  <span>Tinggalkan Halaman &amp; Lanjut di Latar</span>
-                </button>
-                <span className="block text-center font-metadata text-[12px] text-text-secondary">
-                  Berkas otomatis tersimpan di tab “Materi Saya” saat selesai.
-                </span>
-              </div>
-
-              <div className="p-space-md rounded-xl bg-surface-container-low flex items-start gap-space-sm">
-                <p className="font-metadata text-metadata text-text-secondary">
-                  Kamu bisa kembali ke katalog dan memeriksa status lagi saat
-                  siap.
-                </p>
-              </div>
-
-              <div className="space-y-1">
-                <button
-                  className="w-full h-11 px-space-md rounded-xl bg-surface-container text-muted-gray font-label text-label flex items-center justify-center gap-space-xs cursor-not-allowed"
-                  disabled={busy}
-                  onClick={() =>
-                    job.status === "ready" ? onOpen() : onProcess()
-                  }
-                >
-                  {job.status === "ready"
-                    ? "Buka ringkasan"
-                    : job.status === "failed"
-                      ? "Ulang pemrosesan"
-                      : "Susun bersama Mimo"}
-                </button>
-                <div className="flex items-center gap-1 justify-center text-muted-gray font-metadata text-[11px]">
-                  <span
-                    className="material-symbols-outlined text-[14px]"
-                    aria-hidden="true"
-                  >
-                    info
-                  </span>
-                  <span>
-                    Pratinjau terbuka otomatis setelah Tahap 2 selesai
-                  </span>
-                </div>
-              </div>
-
-              <div className="h-px bg-surface-container-high w-full"></div>
-
-              <div className="space-y-space-xs">
-                <span className="font-metadata text-metadata text-text-secondary font-semibold uppercase tracking-wider block">
-                  Ingin lihat hasilnya seperti apa?
-                </span>
-                <button
-                  className="w-full h-11 px-space-md rounded-xl bg-surface-container-low text-primary font-label text-label flex items-center justify-between hover:bg-surface-container transition-colors group"
-                  onClick={onBack}
-                >
-                  <div className="flex items-center gap-space-xs">
+                  <div className="flex items-center gap-1.5 mt-0.5">
                     <span
-                      className="material-symbols-outlined text-secondary text-[18px]"
+                      className="material-symbols-outlined text-base text-mint-dark"
                       aria-hidden="true"
                     >
-                      local_florist
+                      timer
                     </span>
-                    <span>Lihat Contoh Zine (Fotosintesis)</span>
+                    <span className="text-xs md:text-sm font-bold text-primary">
+                      {statusLabel}
+                    </span>
                   </div>
-                  <span
-                    className="material-symbols-outlined text-[16px] text-muted-gray group-hover:translate-x-1 transition-transform"
-                    aria-hidden="true"
-                  >
-                    open_in_new
+                </div>
+              </div>
+
+              <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 md:gap-8 bg-canvas/70 rounded-3xl p-6 md:p-8">
+                <div className="relative shrink-0 flex items-center justify-center">
+                  <div className="w-32 h-32 md:w-36 md:h-36 rounded-full bg-gradient-to-tr from-mint to-butter/60 flex items-center justify-center p-3 shadow-inner">
+                    <Image
+                      alt="Mimo si bunglon hijau ber-headband biru petir sedang berpikir"
+                      className="w-full h-full object-contain rounded-2xl drop-shadow-sm select-none pointer-events-none"
+                      src="/design/mimo-4.png"
+                      width={1024}
+                      height={1024}
+                    ></Image>
+                  </div>
+                  <span className="absolute -bottom-1 -right-1 bg-surface rounded-full p-1.5 shadow-sm text-base">
+                    🌱
                   </span>
-                </button>
-              </div>
+                </div>
 
-              <div className="pt-2">
-                <button
-                  className="w-full py-2 text-center text-error hover:bg-error-surface rounded-xl font-label text-label transition-colors flex items-center justify-center gap-1.5"
-                  type="button"
-                  disabled={busy}
-                  onClick={onBack}
-                >
-                  {"Kembali ke daftar materi"}
-                </button>
-                <span className="block text-center font-metadata text-[11px] text-muted-gray mt-1">
-                  Tanpa penalti dan catatan tersimpan tetap utuh.
-                </span>
-              </div>
-            </div>
-
-            <div className="bg-surface rounded-2xl p-space-lg shadow-sm space-y-space-sm">
-              <h3 className="font-card-title text-card-title text-primary flex items-center gap-2">
-                <span
-                  className="material-symbols-outlined text-[18px] text-secondary"
-                  aria-hidden="true"
-                >
-                  description
-                </span>
-                <span>Detail Berkas Masuk</span>
-              </h3>
-              <dl className="space-y-2 font-metadata text-metadata">
-                <div className="flex justify-between py-1 border-b border-surface-container">
-                  <dt className="text-text-secondary">Mata Pelajaran</dt>
-                  <dd className="font-semibold text-primary">
-                    Matematika SMP (Kelas 8)
-                  </dd>
-                </div>
-                <div className="flex justify-between py-1 border-b border-surface-container">
-                  <dt className="text-text-secondary">Format Asal</dt>
-                  <dd className="font-semibold text-primary">
-                    PDF Scan Tulisan Tangan
-                  </dd>
-                </div>
-                <div className="flex justify-between py-1 border-b border-surface-container">
-                  <dt className="text-text-secondary">Gaya Keluaran</dt>
-                  <dd className="font-semibold text-primary">
-                    Zine Visual Ramah Baca
-                  </dd>
-                </div>
-                <div className="flex justify-between py-1">
-                  <dt className="text-text-secondary">Status Aksesibilitas</dt>
-                  <dd className="inline-flex items-center gap-1 text-success font-semibold">
+                <div className="flex-1 space-y-3 text-center md:text-left">
+                  <div className="relative inline-block bg-surface px-5 py-3.5 rounded-2xl md:rounded-tl-sm shadow-sm text-left">
+                    <p className="font-display font-extrabold text-base md:text-lg text-primary leading-snug">
+                      “Sabar bentar ya, Manda! Mimo lagi baca bab ini
+                      pelan-pelan biar nanti enak dipelajari.”
+                    </p>
+                    <div className="hidden md:block absolute -left-2 top-4 w-3 h-3 bg-surface rotate-45"></div>
+                  </div>
+                  <p className="text-xs text-text-secondary flex items-center justify-center md:justify-start gap-1.5">
                     <span
-                      className="material-symbols-outlined text-[14px]"
+                      className="material-symbols-outlined text-sm text-mint-dark"
                       aria-hidden="true"
                     >
                       check_circle
                     </span>
-                    <span>Teks Terbaca Screen Reader</span>
-                  </dd>
+                    <span>
+                      Mimo sedang menyesuaikan format materi dengan gaya santai
+                      favoritmu.
+                    </span>
+                  </p>
                 </div>
-              </dl>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex justify-between items-center text-xs font-bold text-primary">
+                  <span>Proses Transformasi Adaptif</span>
+                  <span className="text-mint-dark font-mono text-sm font-bold">
+                    {statusLabel}
+                  </span>
+                </div>
+                <div
+                  className="w-full h-3 rounded-full bg-divider overflow-hidden p-0.5"
+                  aria-label={
+                    job.status === "processing"
+                      ? "Pemrosesan berlangsung, persentase belum tersedia"
+                      : statusLabel
+                  }
+                >
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-mint-dark via-mimo-green to-mint transition-all duration-700 ease-out"
+                    style={{ width: job.status === "ready" ? "100%" : "35%" }}
+                    aria-hidden="true"
+                  ></div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h2 className="text-xs font-bold uppercase tracking-wider text-muted-gray">
+                  Langkah Pemrosesan
+                </h2>
+                <div className="grid grid-cols-1 gap-3">
+                  {[
+                    ["Sumber tersimpan", "Teks sumber sudah siap dibaca."],
+                    [
+                      "Penyusunan konsep dan latihan",
+                      job.status === "ready"
+                        ? "Selesai"
+                        : job.status === "processing"
+                          ? "Sedang diproses"
+                          : job.status === "failed"
+                            ? "Perlu dicoba lagi"
+                            : "Menunggu kamu memulai",
+                    ],
+                    [
+                      "Materi siap dipelajari",
+                      job.status === "ready"
+                        ? "Siap dibuka"
+                        : "Menunggu hasil penyusunan",
+                    ],
+                  ].map(([title, status], i) => (
+                    <div
+                      key={title}
+                      className="flex items-center justify-between gap-4 p-4 rounded-2xl bg-canvas"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="w-9 h-9 rounded-xl bg-mint flex items-center justify-center font-bold">
+                          {i + 1}
+                        </span>
+                        <h3 className="text-sm font-bold text-primary">
+                          {title}
+                        </h3>
+                      </div>
+                      <span className="text-xs text-text-secondary">
+                        {status}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-butter/40 flex items-start sm:items-center gap-3.5">
+                <span className="text-2xl shrink-0 select-none">💡</span>
+                <div className="flex-1">
+                  <p className="text-xs font-semibold text-butter-dark">
+                    Manda bisa tinggalin halaman ini dulu kok. Progresnya nggak
+                    akan hilang dan Mimo bakal kasih kabar begitu semuanya siap!
+                  </p>
+                </div>
+              </div>
+
+              <div className="pt-4 flex flex-col-reverse sm:flex-row items-center justify-between gap-3 border-t border-divider">
+                <button
+                  className="w-full sm:w-auto text-center px-4 py-2.5 text-xs font-bold text-text-secondary hover:text-primary rounded-xl hover:bg-canvas transition-colors focus-visible:outline-focus"
+                  type="button"
+                  onClick={onBack}
+                >
+                  Kembali ke Beranda Utama
+                </button>
+                <div className="w-full sm:w-auto flex items-center gap-2">
+                  <button
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-canvas text-muted-gray text-xs font-bold cursor-not-allowed select-none"
+                    type="button"
+                    onClick={onRefresh}
+                    disabled={busy}
+                  >
+                    <svg
+                      className="animate-spin h-3.5 w-3.5 text-muted-gray"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        fill="currentColor"
+                      ></path>
+                    </svg>
+                    <span>Tunggu di Sini</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center text-[11px] text-muted-gray py-2">
+              ID Pekerjaan:{" "}
+              <span className="font-mono text-primary font-medium">
+                {job.title}
+              </span>{" "}
+              • Aman &amp; Terenkripsi
             </div>
           </div>
         </div>
-      </div>
-      <div className="flex flex-wrap gap-space-sm mt-space-md">
-        <button
-          disabled={busy}
-          onClick={onRefresh}
-          className="h-11 px-space-lg bg-surface rounded-xl text-primary font-label text-label"
-        >
-          Perbarui status
-        </button>
-        <button
-          disabled={busy}
-          onClick={onSource}
-          className="h-11 px-space-lg bg-surface rounded-xl text-primary font-label text-label"
-        >
-          Lihat sumber tersimpan
-        </button>
-      </div>
-      {source && (
-        <section className="bg-surface p-space-lg rounded-2xl mt-space-lg">
-          <h2 className="font-section-title text-section-title text-primary">
-            Sumber tersimpan
-          </h2>
-          {source.map((s) => (
-            <article key={s.id} className="mt-space-md">
-              <h3 className="font-label text-label text-primary">{s.label}</h3>
-              <p
-                className="font-body text-body text-text-secondary"
-                style={{ whiteSpace: "pre-wrap" }}
+        <section className="max-w-3xl mx-auto bg-surface rounded-2xl p-6 mt-6 space-y-4">
+          <h2 className="text-xl font-bold text-primary">{statusLabel}</h2>
+          <p role="status">{job.stage}</p>
+          {job.error && (
+            <p role="alert" className="text-error">
+              {job.error}
+            </p>
+          )}
+          <div className="flex flex-wrap gap-3">
+            <button
+              disabled={busy}
+              onClick={onBack}
+              className="min-h-[44px] px-4 rounded-xl bg-canvas"
+            >
+              Kembali ke materi
+            </button>
+            <button
+              disabled={busy}
+              onClick={onSource}
+              className="min-h-[44px] px-4 rounded-xl bg-canvas"
+            >
+              Lihat sumber
+            </button>
+            {job.status === "ready" ? (
+              <button
+                disabled={busy}
+                onClick={onOpen}
+                className="min-h-[44px] px-4 rounded-xl bg-primary text-surface"
               >
-                {s.text}
-              </p>
-            </article>
-          ))}
-          <button
-            onClick={onCloseSource}
-            className="mt-space-md h-11 px-space-lg bg-surface-container rounded-xl text-primary"
-          >
-            Tutup sumber
-          </button>
+                Buka materi
+              </button>
+            ) : (
+              <button
+                disabled={busy || job.status === "processing"}
+                onClick={onProcess}
+                className="min-h-[44px] px-4 rounded-xl bg-primary text-surface"
+              >
+                {job.status === "failed"
+                  ? "Coba proses lagi"
+                  : "Mulai pemrosesan"}
+              </button>
+            )}
+            <button
+              disabled={busy}
+              onClick={onRefresh}
+              className="min-h-[44px] px-4 rounded-xl bg-canvas"
+            >
+              Perbarui status
+            </button>
+          </div>
+          {source && (
+            <div className="space-y-4">
+              {source.map((s) => (
+                <article key={s.id}>
+                  <h3 className="font-semibold">{s.label}</h3>
+                  <p className="whitespace-pre-wrap">{s.text}</p>
+                </article>
+              ))}
+              <button onClick={onCloseSource}>Tutup sumber</button>
+            </div>
+          )}
         </section>
-      )}
-    </div>
+      </div>
+    </>
   );
 }

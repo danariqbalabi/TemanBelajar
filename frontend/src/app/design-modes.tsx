@@ -64,7 +64,7 @@ export function ModePicker({
                 change_history
               </span>
               <span>
-                Topik: <strong>Teorema Pythagoras (Sisi Miring)</strong>
+                Topik: <strong>{material.title}</strong>
               </span>
             </div>
           </header>
