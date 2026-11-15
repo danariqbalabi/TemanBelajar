@@ -44,6 +44,28 @@ export function Reader({
     index = material.concepts.indexOf(concept),
     paragraph = session.paragraph;
   useEffect(() => {
+    let alive = true;
+    const saved = attemptPointer(session.id);
+    if (saved)
+      api<Attempt>(`/attempts/${saved}`)
+        .then(async (result) => {
+          if (!alive) return;
+          setAttempt(result);
+          if (result.status === "completed") {
+            const suggestion = await api<Recommendation>(
+              `/recommendations?material_id=${encodeURIComponent(material.id)}&available_minutes=15`,
+            );
+            if (alive) setRec(suggestion);
+          }
+        })
+        .catch(() => {
+          /* A missing pointer never blocks the source reading session. */
+        });
+    return () => {
+      alive = false;
+    };
+  }, [session.id, material.id]);
+  useEffect(() => {
     return () => {
       if ("speechSynthesis" in window) speechSynthesis.cancel();
     };
@@ -61,7 +83,7 @@ export function Reader({
         concept_id: session.concept_id,
         paragraph,
         mode: session.mode,
-        status: "active",
+        status: session.status === "completed" ? "completed" : "active",
         completed_concepts: session.completed_concepts,
         draft,
         ...patch,
@@ -74,13 +96,19 @@ export function Reader({
       setFeedback("Tersimpan. Kamu bisa melanjutkan kapan saja.");
     });
   }
-  function practice() {
+  function practice(forceNew = false) {
     const create = mutation<Attempt>("/attempts", { session_id: session.id });
     run(async () => {
-      setAttempt(await create());
+      const pointer = !forceNew && attemptPointer(session.id);
+      const result = pointer
+        ? await api<Attempt>(`/attempts/${pointer}`)
+        : await create();
+      setAttempt(result);
+      attemptPointer(session.id, result.id);
       setChoice(null);
       setFeedback(null);
       setRec(null);
+      if (result.status === "completed") await recommendation();
     });
   }
   async function recommendation() {
@@ -244,7 +272,7 @@ export function Reader({
               </div>
             )}
             <div className="actions">
-              <button onClick={practice} disabled={busy}>
+              <button onClick={() => practice(true)} disabled={busy}>
                 Ulang latihan
               </button>
               <button
@@ -448,7 +476,7 @@ export function Reader({
               ? "Tandai selesai & lanjut →"
               : "Tandai konsep selesai"}
           </button>
-          <button disabled={busy} onClick={practice}>
+          <button disabled={busy} onClick={() => practice()}>
             Coba latihan
           </button>
         </div>
@@ -460,4 +488,13 @@ export function Reader({
       </section>
     </>
   );
+}
+function attemptPointer(sessionId: string, value?: string): string | null {
+  try {
+    const key = `temanbelajar-attempt:${sessionId}`;
+    if (value) localStorage.setItem(key, value);
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
 }

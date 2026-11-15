@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { api, mutation } from "@/lib/api";
+import { userMessage } from "@/lib/errors";
 import type { Job, Material, Mode } from "@/lib/types";
 import type { Run } from "./page";
 export function Materials({
@@ -23,7 +24,9 @@ export function Materials({
     [file, setFile] = useState<File | null>(null),
     [jobs, setJobs] = useState<Job[]>([]),
     [detail, setDetail] = useState<Material | null>(null),
-    [validation, setValidation] = useState("");
+    [validation, setValidation] = useState(""),
+    [loadError, setLoadError] = useState(""),
+    [source, setSource] = useState<Material["sources"] | null>(null);
   const mounted = useRef(true);
   useEffect(() => {
     mounted.current = true;
@@ -31,7 +34,9 @@ export function Materials({
       .then((d) => {
         if (mounted.current) setJobs(d.items);
       })
-      .catch(() => {});
+      .catch((e) => {
+        if (mounted.current) setLoadError(userMessage(e));
+      });
     return () => {
       mounted.current = false;
     };
@@ -160,6 +165,36 @@ export function Materials({
     );
   return (
     <>
+      {loadError && (
+        <div role="alert" className="notice">
+          <p>{loadError}</p>
+          <button
+            onClick={() =>
+              run(async () => {
+                const result = await api<{ items: Job[] }>("/jobs");
+                setJobs(result.items);
+                setLoadError("");
+              })
+            }
+          >
+            Muat pemrosesan lagi
+          </button>
+        </div>
+      )}
+      {source && (
+        <section>
+          <div className="section-title">
+            <h2>Sumber tersimpan</h2>
+            <button onClick={() => setSource(null)}>Tutup sumber</button>
+          </div>
+          {source.map((s) => (
+            <article key={s.id}>
+              <h3>{s.label}</h3>
+              <p style={{ whiteSpace: "pre-wrap" }}>{s.text}</p>
+            </article>
+          ))}
+        </section>
+      )}
       <div className="section-title">
         <div>
           <h1>Materi Saya</h1>
@@ -271,6 +306,19 @@ export function Materials({
                   }
                 >
                   Perbarui status
+                </button>
+                <button
+                  disabled={busy}
+                  onClick={() =>
+                    run(async () => {
+                      const result = await api<{
+                        sources: Material["sources"];
+                      }>(`/jobs/${j.id}/source`);
+                      setSource(result.sources);
+                    })
+                  }
+                >
+                  Lihat sumber tersimpan
                 </button>
               </div>
             </div>

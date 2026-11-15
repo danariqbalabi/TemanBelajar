@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { api, ApiError, auth, mutation } from "@/lib/api";
+import { userMessage } from "@/lib/errors";
 import {
   defaultProfile,
   type Material,
@@ -53,7 +54,7 @@ export default function Home() {
       await action();
       retry.current = null;
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Permintaan belum berhasil.");
+      setError(userMessage(e));
     } finally {
       running.current = false;
       setBusy(false);
@@ -80,10 +81,16 @@ export default function Home() {
       queueMicrotask(() => setReady(true));
       return;
     }
-    auth.auth.getSession().then(({ data }) => {
-      setAccount(data.session);
-      setReady(true);
-    });
+    auth.auth
+      .getSession()
+      .then(({ data }) => {
+        setAccount(data.session);
+        setReady(true);
+      })
+      .catch((e) => {
+        setReady(true);
+        setError(userMessage(e));
+      });
     const { data } = auth.auth.onAuthStateChange((_event, s) => {
       setAccount(s);
       setReady(true);
@@ -109,7 +116,7 @@ export default function Home() {
         }),
       Promise.resolve().then(refresh),
     ]).catch((e) => {
-      if (alive) setError(e.message);
+      if (alive) setError(userMessage(e));
     });
     return () => {
       alive = false;
