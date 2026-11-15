@@ -299,8 +299,13 @@ it("menyimpan sumber terlebih dahulu tanpa memulai AI diam-diam", async () => {
       start={() => {}}
     />,
   );
-  await userEvent.click(screen.getByText("+ Tambah materi"));
+  await userEvent.click(
+    screen.getByRole("button", { name: "+ Tambah materi" }),
+  );
   await userEvent.type(screen.getByLabelText("Judul"), "Catatan IPA");
+  await userEvent.click(
+    screen.getByRole("button", { name: "Tempel Teks Mandiri" }),
+  );
   await userEvent.type(
     screen.getByLabelText("Teks materi"),
     "Cahaya menyediakan energi untuk fotosintesis pada daun.",
@@ -318,6 +323,41 @@ it("menyimpan sumber terlebih dahulu tanpa memulai AI diam-diam", async () => {
   expect(
     request.mock.calls.some((c) => String(c[0]).endsWith("/process")),
   ).toBe(false);
+});
+it("menghubungkan katalog, ringkasan, dan mode belajar tanpa membuka format yang belum tersedia", async () => {
+  request.mockResolvedValue({ items: [] });
+  const start = vi.fn();
+  const noMedia = {
+    ...material,
+    concepts: material.concepts.map((c) => ({
+      ...c,
+      diagram_description: null,
+      transcript: null,
+    })),
+  };
+  render(
+    <Materials
+      materials={[noMedia]}
+      run={run}
+      busy={false}
+      refresh={async () => {}}
+      start={start}
+    />,
+  );
+  await userEvent.click(screen.getByRole("button", { name: "Buka Ringkasan" }));
+  await userEvent.click(
+    screen.getByRole("button", { name: "Pilih Cara Belajar" }),
+  );
+  const alternatives = screen.getAllByRole("button", {
+    name: "Pilih Mode Ini",
+  });
+  expect(
+    alternatives.filter((b) => (b as HTMLButtonElement).disabled),
+  ).toHaveLength(2);
+  await userEvent.click(
+    screen.getByRole("button", { name: "Mulai dengan Cara Ini" }),
+  );
+  expect(start).toHaveBeenCalledWith(noMedia, "reading");
 });
 it("onboarding menampilkan pratinjau sebelum menyimpan profil", async () => {
   const save = vi.fn();

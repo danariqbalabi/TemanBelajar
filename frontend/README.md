@@ -61,7 +61,7 @@ Tes interaksi mencakup perpindahan format, latihan berurutan, kegiatan
 terlindungi, peninjauan usulan, sumber unggahan, dan pratinjau onboarding.
 Tes API mencakup idempotensi retry, refresh token, dan konflik versi.
 Pemeriksaan aplikasi juga memastikan field milik server tidak ikut dikirim
-saat profil diedit. Total 13 tes frontend, typecheck, lint, format, dan build
+saat profil diedit. Total 14 tes frontend, typecheck, lint, format, dan build
 produksi sudah lolos. Sebanyak 24 tes backend juga tetap lolos.
 
 Pemeriksaan ulang 15 november 2026 berhasil menjalankan modul API frontend
@@ -89,7 +89,7 @@ tidak disalin ke konfigurasi frontend. Opsi Gemini menggunakan kuota API.
 
 ## batas yang perlu diketahui
 
-- Screen 01–07 menggunakan struktur HTML Stitch asli, logo/Mimo dari arsip
+- Screen 01–12 menggunakan struktur HTML Stitch asli, logo/Mimo dari arsip
   pengguna, dan ikon Material Symbols lokal. Tampilan dashboard tetap memakai
   data akun. Perbandingan visual browser belum terverifikasi.
 

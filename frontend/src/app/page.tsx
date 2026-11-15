@@ -282,6 +282,12 @@ export default function Home() {
         />
       ) : page === "Materi Saya" ? (
         <Materials
+          sessions={sessions}
+          onSettings={() => setPage("Pengaturan")}
+          onPlan={() => setPage("Rencana Belajar")}
+          onDefaultMode={(mode) =>
+            saveProfile({ ...profile, preferences: { ...prefs, mode } })
+          }
           materials={materials}
           run={run}
           busy={busy}

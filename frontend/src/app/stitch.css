@@ -39,7 +39,7 @@
   max-width: 100%;
 }
 .stitch-shell
-  :where(.stitch-dashboard, .stitch-landing)
+  :where(.stitch-dashboard, .stitch-landing, .stitch-screen)
   :where(p, h1, h2, h3, h4, figure, section) {
   margin: 0;
 }
@@ -53,7 +53,7 @@
   text-decoration: none;
 }
 .stitch-shell
-  :where(.stitch-dashboard, .stitch-landing)
+  :where(.stitch-dashboard, .stitch-landing, .stitch-screen)
   :where(h1, h2, h3, h4) {
   font-weight: inherit;
   font-size: inherit;
@@ -263,6 +263,22 @@
 .preview-ruler p:hover,
 .preview-ruler p:focus {
   background: #c8e8ce;
+}
+.stitch-screen :where(section, article, figure) {
+  margin: 0;
+  border: 0;
+}
+.stitch-shell .stitch-screen :where(a, button) {
+  text-decoration: none;
+  border: 0;
+  padding: 0;
+}
+.stitch-screen label.sr-only {
+  padding: 0;
+  margin: 0;
+}
+.stitch-screen section:empty {
+  display: none;
 }
 @tailwind utilities;
 @media (max-width: 1023px) {
