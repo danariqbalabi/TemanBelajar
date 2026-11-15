@@ -4,9 +4,9 @@
 
 TemanBelajar adalah web app pembelajaran inklusif dan adaptif yang dirancang untuk siswa SMP dan SMA. Siswa bisa membawa materi sendiri, memilih cara belajar yang sesuai dengan kebutuhannya, lalu mendapat saran dan rencana belajar berdasarkan hasil latihan. Mimo, bunglon 2D, menemani siswa saat mulai belajar dan meninjau langkah berikutnya.
 
-**status proyek:** backend mvp tersedia di branch `feat/backend-temanbelajar`, dengan migrasi supabase, pemrosesan gemini, dan model bkt terlatih. frontend serta integrasi antarmuka menjadi tahap berikutnya.
+**status proyek:** backend mvp tersedia di branch `feat/backend-temanbelajar`. branch `feat/frontend-temanbelajar` menambahkan alur antarmuka dari akun dan onboarding sampai materi, sesi, latihan, rekomendasi, progres, dan planner berversi. verifikasi browser dan deployment masih menjadi pemeriksaan berikutnya.
 
-lihat [panduan backend](backend/README.md), [kontrak api](backend/API.md), dan [evaluasi model](backend/models/README.md) untuk menjalankan serta menguji layanan.
+lihat [panduan frontend](frontend/README.md), [panduan backend](backend/README.md), [kontrak api](backend/API.md), dan [evaluasi model](backend/models/README.md) untuk menjalankan serta menguji layanan.
 
 ## Masalah yang ingin diselesaikan
 
@@ -34,7 +34,7 @@ Siswa dapat memilih beberapa dukungan sekaligus dan mengubahnya saat belajar. Pr
 
 | Bagian | Teknologi yang direncanakan |
 | --- | --- |
-| Antarmuka | Next.js, React, TypeScript, dan Tailwind CSS |
+| Antarmuka | Next.js, React, TypeScript, dan CSS dengan design tokens |
 | Akun, data, dan penyimpanan privat | Supabase Auth, PostgreSQL, dan Storage |
 | Pengolahan materi | Gemini API dengan validasi hasil di server |
 | Estimasi penguasaan | Bayesian Knowledge Tracing dalam Python, disajikan melalui FastAPI |
