@@ -38,6 +38,10 @@ test('migrasi, akses antar akun, dan konflik versi berjalan di postgres', async 
     assert.equal((await db.query('select * from public.learner_profiles')).rows.length, 0);
     const changed = await db.query('update public.learner_profiles set display_name = $1 where id = $2 returning id', ['diganti', first]);
     assert.equal(changed.rows.length, 0);
+    await db.query("select set_config('request.jwt.claim.sub', $1, false)", [first]);
+    assert.equal((await db.query('select revision from public.learner_profiles where id=$1',[first])).rows[0].revision,1);
+    assert.equal((await db.query('update public.learner_profiles set display_name=$1 where id=$2 and revision=1 returning revision',['Manda baru',first])).rows[0].revision,2);
+    assert.equal((await db.query('update public.learner_profiles set display_name=$1 where id=$2 and revision=1 returning revision',['tab lama',first])).rows.length,0);
     await db.exec('set role service_role');
     const save = (learner, version, data) => db.query(
       'select public.save_learning_state($1, $2, $3::jsonb) as revision',

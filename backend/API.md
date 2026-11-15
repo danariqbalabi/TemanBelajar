@@ -40,7 +40,9 @@ yang menyimpan progres, lakukan `supabase.auth.signInAnonymously()`, kemudian
 pakai token yang diperoleh untuk endpoint privat.
 
 `GET /v1/profile` mengembalikan `404` jika belum ada profil.
-`PUT /v1/profile` menyimpan dokumen profil lengkap. field penting mencakup
+`PUT /v1/profile` menyimpan dokumen profil lengkap dengan `expected_revision`.
+Gunakan 0 untuk profil baru, atau `revision` hasil GET terakhir untuk perubahan.
+Konflik mengembalikan 409; pertahankan draf lalu tinjau profil terbaru. field penting mencakup
 `display_name`, `timezone`, `daily_minutes`, `goal`, `subjects`,
 `available_days` (senin 0 sampai minggu 6), `exam_date`, `onboarding_step`,
 dan `preferences`. baca nilai tersimpan sebelum menyimpan perubahan satu bagian.

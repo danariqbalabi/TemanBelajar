@@ -89,6 +89,11 @@ class Identity(BaseModel):
 
 class ProfileResponse(ProfileInput):
     id: UUID
+    revision: int
+
+
+class ProfileUpdate(ProfileInput):
+    expected_revision: int = Field(default=0, ge=0)
 
 
 def response_json(response: httpx.Response):
@@ -122,6 +127,8 @@ async def request_supabase(
         raise HTTPException(503, "layanan akun sedang tidak tersedia") from exc
     if response.status_code in (401, 403):
         raise HTTPException(401, "sesi masuk tidak valid atau sudah berakhir")
+    if response.status_code == 409:
+        raise HTTPException(409, "profil sudah berubah, muat ulang sebelum menyimpan")
     if response.is_error:
         raise HTTPException(503, "permintaan belum tersimpan, coba lagi")
     return response
@@ -157,17 +164,32 @@ async def get_profile(user: Annotated[Identity, Depends(identity)]):
 
 @router.put("", response_model=ProfileResponse)
 async def save_profile(
-    profile: ProfileInput, user: Annotated[Identity, Depends(identity)]
+    profile: ProfileUpdate, user: Annotated[Identity, Depends(identity)]
 ):
-    response = await request_supabase(
-        "POST",
-        "/rest/v1/learner_profiles",
-        user.token,
-        params={"on_conflict": "id"},
-        headers={"Prefer": "resolution=merge-duplicates,return=representation"},
-        json={"id": str(user.id), **profile.model_dump(mode="json")},
-    )
+    payload = profile.model_dump(mode="json", exclude={"expected_revision"})
+    if profile.expected_revision == 0:
+        response = await request_supabase(
+            "POST",
+            "/rest/v1/learner_profiles",
+            user.token,
+            headers={"Prefer": "return=representation"},
+            json={"id": str(user.id), **payload},
+        )
+    else:
+        response = await request_supabase(
+            "PATCH",
+            "/rest/v1/learner_profiles",
+            user.token,
+            params={
+                "id": f"eq.{user.id}",
+                "revision": f"eq.{profile.expected_revision}",
+            },
+            headers={"Prefer": "return=representation"},
+            json=payload,
+        )
     rows = response_json(response)
-    if not isinstance(rows, list) or not rows:
+    if not isinstance(rows, list):
         raise HTTPException(502, "respons penyimpanan profil belum valid")
+    if not rows:
+        raise HTTPException(409, "profil sudah berubah, muat ulang sebelum menyimpan")
     return rows[0]

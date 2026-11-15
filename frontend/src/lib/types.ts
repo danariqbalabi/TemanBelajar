@@ -35,6 +35,7 @@ export type Preferences = {
   captions: boolean;
 };
 export type Profile = {
+  revision?: number;
   display_name: string;
   timezone: string;
   daily_minutes: number;

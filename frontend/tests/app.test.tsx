@@ -38,7 +38,12 @@ it("saves the complete editable profile while excluding server-owned fields", as
       if (path === "/profile")
         return method === "PUT"
           ? body
-          : { ...defaultProfile, id: "server-owned-id", onboarding_step: 4 };
+          : {
+              ...defaultProfile,
+              id: "server-owned-id",
+              revision: 2,
+              onboarding_step: 4,
+            };
       if (path.startsWith("/recommendations")) return null;
       return { items: [] };
     },

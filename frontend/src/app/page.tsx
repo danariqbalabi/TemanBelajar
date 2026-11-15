@@ -180,8 +180,12 @@ export default function Home() {
     const clean = Object.fromEntries(
       Object.keys(defaultProfile).map((key) => [key, p[key as keyof Profile]]),
     ) as Profile;
-    await api("/profile", clean, "PUT");
-    setProfile(clean);
+    const saved = await api<Profile>(
+      "/profile",
+      { ...clean, expected_revision: p.revision || 0 },
+      "PUT",
+    );
+    setProfile(saved);
     setOnboarding(false);
     setNotice("Preferensi tersimpan. Ritmemu bisa diubah kapan saja.");
   }
