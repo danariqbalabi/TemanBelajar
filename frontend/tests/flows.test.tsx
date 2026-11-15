@@ -440,7 +440,7 @@ it("menghubungkan katalog, ringkasan, dan mode belajar tanpa membuka format yang
     alternatives.filter((b) => (b as HTMLButtonElement).disabled),
   ).toHaveLength(2);
   await userEvent.click(
-    screen.getByRole("button", { name: "Mulai dengan Cara Ini" }),
+    screen.getByRole("button", { name: "Mulai dengan Teman Baca" }),
   );
   expect(start).toHaveBeenCalledWith(noMedia, "reading");
 });

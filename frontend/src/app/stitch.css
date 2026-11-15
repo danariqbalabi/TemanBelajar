@@ -447,3 +447,51 @@
   font-size: clamp(36px, 4vw, 56px) !important;
   line-height: 1.15 !important;
 }
+
+.revamp-workspace {
+  padding-left: 224px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.revamp-main {
+  flex: 1;
+  min-width: 0;
+}
+.revamp-shell .revamp-topbar {
+  position: static;
+}
+.revamp-shell .revamp-sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.revamp-shell .revamp-sidebar img {
+  max-height: 48px;
+  width: auto;
+  object-fit: contain;
+}
+@media (max-width: 1023px) {
+  .revamp-workspace {
+    padding-left: 0;
+  }
+  .revamp-shell > .revamp-sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+  .revamp-shell .revamp-sidebar nav {
+    flex-direction: row;
+    overflow: auto;
+  }
+  .revamp-shell .revamp-sidebar nav button {
+    width: auto;
+    white-space: nowrap;
+  }
+  .revamp-shell .revamp-sidebar > div:last-child {
+    display: none;
+  }
+  .revamp-shell .revamp-topbar {
+    padding: 16px;
+  }
+}

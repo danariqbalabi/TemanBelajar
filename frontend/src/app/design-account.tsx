@@ -15,13 +15,7 @@ export function AccountDesign({
   error: string;
 }) {
   const [email, setEmail] = useState(""),
-    [password, setPassword] = useState(""),
-    [name, setName] = useState("Manda"),
-    [signup, setSignup] = useState(false),
-    [message, setMessage] = useState(""),
-    [showPasswordForm, setShowPasswordForm] = useState(false),
-    [showPassword, setShowPassword] = useState(false),
-    [calm, setCalm] = useState(true);
+    [message, setMessage] = useState("");
   function demo() {
     run(async () => {
       if (!auth) throw Error("Layanan akun belum tersedia.");
@@ -32,75 +26,45 @@ export function AccountDesign({
   function sendLink() {
     run(async () => {
       if (!auth) throw Error("Layanan akun belum tersedia.");
-      if (!email.includes("@"))
-        throw Error("Isi alamat email terlebih dahulu.");
       const { error } = await auth.auth.signInWithOtp({
         email,
         options: {
           emailRedirectTo: window.location.origin,
-          shouldCreateUser: false,
+          shouldCreateUser: true,
         },
       });
       if (error) throw error;
       setMessage("Tautan masuk sudah dikirim. Periksa emailmu.");
     });
   }
-  function login() {
-    run(async () => {
-      if (!auth) throw Error("Layanan akun belum tersedia.");
-      if (!email.includes("@"))
-        throw Error("Isi alamat email terlebih dahulu.");
-      const { error } = await auth.auth.signInWithPassword({ email, password });
-      if (error) throw error;
-    });
-  }
-  function registerAccount() {
-    run(async () => {
-      if (!auth) throw Error("Layanan akun belum tersedia.");
-      const { data, error } = await auth.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: window.location.origin,
-          data: { display_name: name.trim() },
-        },
-      });
-      if (error) throw error;
-      if (!data.session)
-        setMessage(
-          "Periksa email untuk mengonfirmasi akun, lalu masuk kembali.",
-        );
-    });
-  }
   return (
-    <div
-      className={
-        "stitch-shell stitch-landing stitch-account " + (calm ? "calm" : "")
-      }
-    >
+    <div className="stitch-shell stitch-landing stitch-account">
       <a
         className="sr-only focus:not-sr-only focus:fixed focus:top-space-sm focus:left-space-sm focus:z-50 focus:px-space-md focus:py-space-sm focus:bg-surface focus:text-primary focus:outline-none focus:ring-2 focus:ring-focus rounded-xl shadow-[0_4px_16px_rgba(39,59,53,0.08)] font-label text-label"
-        href="#"
-        onClick={(e) => {
-          e.preventDefault();
-          onBack();
-        }}
+        href="#main-content"
       >
         Lewati ke konten utama
       </a>
       <header className="fixed top-0 left-0 right-0 z-40 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
         <div className="h-20 max-w-[1280px] mx-auto px-gutter flex items-center justify-between gap-space-md">
           <div className="flex items-center gap-space-sm">
-            <Image
-              alt="TemanBelajar"
-              className="h-8 w-auto object-contain"
-              src="/design/logo.png"
-              width={640}
-              height={240}
-            />
-            <span className="font-display text-card-title text-primary tracking-tight font-extrabold">
-              TemanBelajar
-            </span>
+            <a
+              href="#"
+              data-path="beranda"
+              className="flex items-center"
+              onClick={(e) => {
+                e.preventDefault();
+                onBack();
+              }}
+            >
+              <Image
+                src="/design/logo-revamp.png"
+                alt="TemanBelajar Logo"
+                className="h-10 w-auto object-contain"
+                width={1024}
+                height={1024}
+              ></Image>
+            </a>
           </div>
           <nav
             className="hidden lg:flex items-center gap-space-lg"
@@ -151,691 +115,289 @@ export function AccountDesign({
               Untuk Sekolah
             </a>
           </nav>
-          <div className="flex items-center gap-space-sm">
+          <div className="flex items-center gap-2">
             <a
-              className="hidden sm:inline-flex items-center justify-center h-11 px-space-lg rounded-xl bg-surface text-primary-container font-label text-label hover:bg-surface-container-low transition-colors outline-none focus:outline-none focus:ring-2 focus:ring-focus"
-              data-path="masuk"
               href="#"
+              data-path="bantuan"
+              className="px-3 py-1.5 rounded-full bg-surface-container hover:bg-surface text-xs font-semibold text-text-secondary hover:text-primary transition-colors"
               onClick={(e) => {
                 e.preventDefault();
                 onBack();
               }}
             >
-              Masuk
+              Butuh Bantuan?
             </a>
-            <a
-              className="inline-flex items-center justify-center h-11 px-space-lg rounded-xl bg-primary-container text-on-primary font-label text-label hover:bg-primary-hover hover:text-on-primary active:bg-primary-pressed transition-colors shadow-[0_4px_16px_rgba(39,59,53,0.08)] outline-none focus:outline-none focus:ring-2 focus:ring-focus"
-              data-path="mulai-belajar"
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                onBack();
-              }}
-            >
-              Mulai Belajar
-            </a>
-            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center ml-space-xs shrink-0">
-              <span
-                className="material-symbols-outlined text-on-primary text-[18px]"
-                aria-hidden="true"
-              >
-                person
-              </span>
-            </div>
           </div>
         </div>
       </header>
       <main className="w-full pt-20 bg-background" id="main-content">
-        <div className="flex flex-col w-full">
-          <div className="max-w-[1280px] w-full mx-auto px-gutter py-space-xl">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md mb-space-xl">
-              <div className="flex items-center gap-space-sm text-text-secondary font-metadata text-metadata">
-                <span className="inline-flex items-center gap-1 font-label text-label text-primary">
-                  <span
-                    className="material-symbols-outlined text-[18px] text-secondary"
-                    aria-hidden="true"
-                  >
-                    eco
-                  </span>
-                  Ruang Masuk Siswa
-                </span>
-                <span className="text-outline-variant">•</span>
-                <span className="text-text-secondary">
-                  SMP &amp; SMA Se-Indonesia
-                </span>
-              </div>
-              <div className="flex items-center gap-space-sm self-start sm:self-auto">
-                <button
-                  className="inline-flex items-center gap-space-xs px-space-md h-9 rounded-full bg-surface text-primary font-label text-metadata shadow-sm hover:bg-surface-container-low transition-colors"
-                  id="calm-mode-btn"
-                  title="Mode Tenang: Minim kontras tajam & animasi"
-                  type="button"
-                  disabled={busy}
-                  onClick={() => setCalm(!calm)}
+        <div className="flex flex-col w-full relative overflow-hidden py-6 sm:py-10">
+          <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-secondary-container/40 blur-3xl pointer-events-none"></div>
+          <div className="absolute top-1/2 -right-24 w-80 h-80 rounded-full bg-butter/30 blur-3xl pointer-events-none"></div>
+          <div className="max-w-[720px] w-full mx-auto px-4 sm:px-6 relative z-10 flex flex-col items-center">
+            <div className="w-full flex items-center justify-between mb-8 sm:mb-10">
+              <a
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface/80 hover:bg-surface text-text-secondary hover:text-primary transition-all duration-200 text-sm font-semibold shadow-sm group"
+                data-path="beranda"
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onBack();
+                }}
+              >
+                <span
+                  className="material-symbols-outlined text-[18px] transition-transform group-hover:-translate-x-1"
+                  aria-hidden="true"
                 >
-                  <span
-                    className="material-symbols-outlined text-[18px] text-secondary"
-                    aria-hidden="true"
-                  >
-                    spa
-                  </span>
-                  <span>
-                    {calm ? "Mode Tenang: Aktif" : "Mode Tenang: Nonaktif"}
-                  </span>
-                </button>
-                <div className="inline-flex items-center gap-1 px-space-sm h-9 rounded-full bg-surface text-text-secondary font-metadata text-metadata shadow-sm">
-                  <span
-                    className="material-symbols-outlined text-[16px] text-success"
-                    aria-hidden="true"
-                  >
-                    verified
-                  </span>
-                  <span>Bebas Tekanan</span>
-                </div>
+                  arrow_back
+                </span>
+                Kembali ke Halaman Utama
+              </a>
+              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-gray bg-surface-container/60 px-3 py-1.5 rounded-full">
+                <span className="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+                Ruang Tenang Aktif
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
-              <div className="lg:col-span-7 flex flex-col gap-space-lg">
-                <div className="bg-surface rounded-2xl p-space-lg sm:p-space-xl shadow-sm relative overflow-hidden">
-                  <div className="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-secondary-container/40 pointer-events-none blur-2xl"></div>
-                  <div className="absolute -bottom-8 -left-8 w-40 h-40 rounded-full bg-butter/30 pointer-events-none blur-xl"></div>
-                  <div className="relative z-10 flex flex-col sm:flex-row items-center sm:items-start gap-space-lg">
-                    <div className="relative shrink-0 flex flex-col items-center">
-                      <div className="w-36 h-36 sm:w-44 sm:h-44 rounded-2xl bg-surface-container-low flex items-center justify-center p-space-sm shadow-sm">
-                        <Image
-                          alt="Mimo, teman belajarmu"
-                          className="w-full h-full object-contain"
-                          src="/design/mimo.png"
-                          width={1024}
-                          height={1024}
-                        />
-                      </div>
-                      <span className="mt-space-xs inline-flex items-center gap-1 font-metadata text-metadata text-secondary bg-secondary-container px-space-sm py-0.5 rounded-full font-bold">
-                        <span className="w-2 h-2 rounded-full bg-success animate-pulse"></span>
-                        Mimo siap nemenin
-                      </span>
-                    </div>
-
-                    <div className="flex-1 flex flex-col items-start text-left">
-                      <div className="bg-secondary-container/70 text-primary-container p-space-md sm:p-space-lg rounded-2xl rounded-tl-none relative shadow-sm w-full">
-                        <div className="hidden sm:block absolute -left-2.5 top-5 w-0 h-0 border-t-[8px] border-t-transparent border-r-[10px] border-r-secondary-container/70 border-b-[8px] border-b-transparent"></div>
-                        <h1 className="font-display text-page-title text-primary tracking-tight mb-space-xs">
-                          Hai! Aku Mimo. Yuk, kenalan dulu! 👋
-                        </h1>
-                        <p className="font-mimo-voice text-mimo-voice text-primary-container leading-relaxed">
-                          “Di TemanBelajar, kamu nggak perlu tes rumit atau kuis
-                          membingungkan. Cukup pilih caramu belajar dan kita
-                          susun jadwal yang pas buat energimu.”
-                        </p>
-                      </div>
-
-                      <p className="mt-space-md font-body text-body text-text-secondary">
-                        Belajar mandiri itu bukan perlombaan cepat-cepatan. Di
-                        sini, kamu yang memegang kendali penuh atas ritme,
-                        istirahat, dan format materi.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mt-space-xl pt-space-lg grid grid-cols-1 sm:grid-cols-3 gap-space-md bg-surface-container-low p-space-md rounded-xl">
-                    <div className="flex items-start gap-space-xs">
-                      <div className="w-8 h-8 rounded-full bg-peach/50 flex items-center justify-center shrink-0 mt-0.5 text-primary">
-                        <span
-                          className="material-symbols-outlined text-[18px]"
-                          aria-hidden="true"
-                        >
-                          timer_off
-                        </span>
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="font-label text-label text-primary font-bold">
-                          Bebas Tekanan Waktu
-                        </span>
-                        <span className="font-metadata text-metadata text-text-secondary">
-                          Tidak ada hitung mundur kuis yang memicu panik.
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-space-xs">
-                      <div className="w-8 h-8 rounded-full bg-butter flex items-center justify-center shrink-0 mt-0.5 text-primary">
-                        <span
-                          className="material-symbols-outlined text-[18px]"
-                          aria-hidden="true"
-                        >
-                          event_repeat
-                        </span>
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="font-label text-label text-primary font-bold">
-                          Jadwal Fleksibel
-                        </span>
-                        <span className="font-metadata text-metadata text-text-secondary">
-                          Atur ulang sesi kapan pun energimu menurun.
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-space-xs">
-                      <div className="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center shrink-0 mt-0.5 text-primary">
-                        <span
-                          className="material-symbols-outlined text-[18px]"
-                          aria-hidden="true"
-                        >
-                          accessibility_new
-                        </span>
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="font-label text-label text-primary font-bold">
-                          Aksesibilitas Penuh
-                        </span>
-                        <span className="font-metadata text-metadata text-text-secondary">
-                          {
-                            "Ukuran teks, baca nyaring, dan mode fokus pilihanmu."
-                          }
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-surface rounded-2xl p-space-lg shadow-sm flex flex-col sm:flex-row items-center gap-space-md justify-between">
-                  <div className="flex items-center gap-space-md">
-                    <div className="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center text-primary shrink-0">
-                      <span
-                        className="material-symbols-outlined text-[24px]"
-                        aria-hidden="true"
-                      >
-                        school
-                      </span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="font-card-title text-card-title text-primary">
-                        Untuk Siswa SMP &amp; SMA Se-Indonesia
-                      </span>
-                      <span className="font-metadata text-metadata text-text-secondary">
-                        {
-                          "Materi contoh untuk dicoba, atau unggah catatan dari sekolahmu."
-                        }
-                      </span>
-                    </div>
-                  </div>
-                  <div className="inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-surface-container font-label text-metadata text-primary shrink-0">
+            <div className="w-full bg-surface rounded-3xl shadow-[0_12px_40px_rgba(27,48,41,0.06)] p-6 sm:p-10 relative mt-8 flex flex-col items-center">
+              <div className="absolute -top-20 left-1/2 -translate-x-1/2 flex flex-col items-center z-20 pointer-events-none">
+                <div className="relative flex flex-col items-center">
+                  <div className="mb-1.5 px-3.5 py-1.5 bg-white text-primary text-xs font-bold rounded-full shadow-[0_4px_16px_rgba(39,59,53,0.08)] border border-secondary-container/60 flex items-center gap-1.5 animate-bounce">
                     <span
-                      className="material-symbols-outlined text-[16px] text-success"
+                      className="material-symbols-outlined text-[16px] text-primary"
                       aria-hidden="true"
                     >
-                      lock
+                      waving_hand
                     </span>
-                    100% Gratis Siswa
+                    <span>Hai! Aku Mimo. Yuk kenalan dulu!</span>
+                  </div>
+                  <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-secondary-fixed/40 p-1.5 shadow-md border-2 border-white backdrop-blur-sm">
+                    <div className="w-full h-full rounded-full overflow-hidden bg-white flex items-center justify-center">
+                      <Image
+                        src="/design/mimo-welcome.png"
+                        alt="Mimo Maskot TemanBelajar"
+                        className="w-24 h-24 object-contain mx-auto drop-shadow-sm"
+                        width={1024}
+                        height={1024}
+                      ></Image>
+                    </div>
+                    <div className="absolute bottom-0 right-1 w-7 h-7 rounded-full bg-secondary-container flex items-center justify-center text-primary text-xs shadow-sm border border-white">
+                      ✨
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="lg:col-span-5 flex flex-col">
-                <div className="bg-surface rounded-2xl p-space-lg sm:p-space-xl shadow-md flex flex-col gap-space-lg relative">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-space-xs">
-                      <Image
-                        alt="TemanBelajar"
-                        className="h-7 w-auto object-contain"
-                        src="/design/logo.png"
-                        width={640}
-                        height={240}
-                      />
-                    </div>
-                    <span className="px-space-sm py-1 rounded-full bg-secondary-container text-primary font-label text-metadata font-bold">
-                      Langkah Cepat
-                    </span>
-                  </div>
+              <div className="pt-10 pb-4 text-center max-w-md flex flex-col items-center">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-xs font-bold tracking-wide uppercase mb-3">
+                  Ruang Masuk Pelajar
+                </span>
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-primary tracking-tight font-display mb-2">
+                  Hai Manda! Senang ketemu kamu 🦎
+                </h1>
+                <p className="text-text-secondary text-sm sm:text-base leading-relaxed">
+                  Pilih cara masukmu untuk mulai menyusun ruang belajar yang
+                  nyaman dan bebas distraksi.
+                </p>
+              </div>
 
-                  <div
-                    aria-label="Pilihan Akses Masuk"
-                    className="bg-surface-container p-1 rounded-xl flex items-center gap-1"
-                    role="tablist"
-                  >
-                    <button
-                      aria-controls="panel-login"
-                      aria-selected={!signup}
-                      className={
-                        "flex-1 h-10 rounded-lg font-label text-label " +
-                        (!signup
-                          ? "bg-surface text-primary shadow-sm"
-                          : "bg-transparent text-text-secondary")
-                      }
-                      id="tab-btn-login"
-                      role="tab"
-                      type="button"
-                      onClick={() => setSignup(false)}
-                      disabled={busy}
-                    >
-                      Masuk Cepat
-                    </button>
-                    <button
-                      aria-controls="panel-register"
-                      aria-selected={signup}
-                      className={
-                        "flex-1 h-10 rounded-lg font-label text-label " +
-                        (signup
-                          ? "bg-surface text-primary shadow-sm"
-                          : "bg-transparent text-text-secondary")
-                      }
-                      id="tab-btn-register"
-                      role="tab"
-                      type="button"
-                      onClick={() => setSignup(true)}
-                      disabled={busy}
-                    >
-                      Buat Akun Siswa
-                    </button>
+              <div className="w-full grid grid-cols-1 gap-5 mt-6 mb-8">
+                <div className="relative rounded-2xl bg-secondary-container/40 p-5 sm:p-6 transition-all duration-300 hover:shadow-md hover:bg-secondary-container/60 group">
+                  <div className="absolute -top-3 right-6 bg-primary text-on-primary text-[11px] font-bold tracking-wider uppercase px-3 py-1 rounded-full shadow-sm">
+                    Paling Cepat
                   </div>
-
-                  <div
-                    className={signup ? "hidden" : "flex flex-col gap-space-md"}
-                    id="panel-login"
-                  >
-                    <form
-                      className="flex flex-col gap-space-md"
-                      id="magic-link-form"
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        sendLink();
-                      }}
-                    >
-                      <div className="flex flex-col gap-space-xs text-left">
-                        <label
-                          className="font-label text-label text-primary font-bold flex items-center justify-between"
-                          htmlFor="student-identifier"
-                        >
-                          <span>{"Alamat email"}</span>
-                          <span className="text-text-secondary font-metadata text-metadata font-normal">
-                            Contoh: nadia@smp8.id
-                          </span>
-                        </label>
-                        <div className="relative flex items-center">
-                          <span
-                            className="material-symbols-outlined absolute left-space-md text-muted-gray text-[20px] pointer-events-none"
-                            aria-hidden="true"
-                          >
-                            mail
-                          </span>
-                          <input
-                            className="w-full h-11 pl-11 pr-space-md rounded-xl bg-surface text-primary font-body text-body placeholder:text-muted-gray focus:outline-none focus:ring-2 focus:ring-focus shadow-sm"
-                            id="student-identifier"
-                            aria-label="Alamat email"
-                            name="identifier"
-                            placeholder="nama@sekolah.id"
-                            required
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            autoComplete="email"
-                          />
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="flex items-start gap-4">
+                      <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center text-primary shrink-0 p-1">
+                        <div className="w-11 h-11 rounded-xl bg-primary-fixed flex items-center justify-center text-primary font-bold text-lg">
+                          M
                         </div>
-                        <p className="font-metadata text-metadata text-text-secondary">
-                          Kami kirimkan tautan masuk langsung tanpa perlu
-                          mengingat kata sandi.
+                      </div>
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <h3 className="font-bold text-primary text-base sm:text-lg">
+                            Masuk Akun Demo Manda
+                          </h3>
+                          <span className="text-xs bg-white text-secondary font-semibold px-2 py-0.5 rounded-full">
+                            SMP Kelas 8
+                          </span>
+                        </div>
+                        <p className="text-xs sm:text-sm text-text-secondary leading-normal">
+                          Profil siap pakai, catatan tersusun, dan target
+                          belajar mingguan sudah disiapkan.
                         </p>
                       </div>
-
-                      <button
-                        className="w-full h-11 rounded-xl bg-primary-container text-on-primary font-label text-label hover:bg-primary-hover active:bg-primary-pressed transition-colors shadow-sm flex items-center justify-center gap-space-xs focus:outline-none focus:ring-2 focus:ring-focus"
-                        type="submit"
-                        disabled={busy}
-                      >
-                        <span
-                          className="material-symbols-outlined text-[18px]"
-                          aria-hidden="true"
-                        >
-                          send
-                        </span>
-                        <span>Kirim Tautan Masuk ke Email</span>
-                      </button>
-                    </form>
-
-                    <div className="pt-space-xs">
-                      <button
-                        className="text-left font-label text-label text-secondary hover:text-primary transition-colors flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-focus rounded-lg px-1 py-0.5"
-                        id="toggle-password-view-btn"
-                        type="button"
-                        onClick={() => setShowPasswordForm(!showPasswordForm)}
-                        aria-expanded={showPasswordForm}
-                        disabled={busy}
-                      >
-                        <span
-                          className="material-symbols-outlined text-[18px]"
-                          id="toggle-icon"
-                          aria-hidden="true"
-                        >
-                          expand_more
-                        </span>
-                        <span>Atau masuk dengan kata sandi sekolah</span>
-                      </button>
-                      <form
-                        className={
-                          showPasswordForm
-                            ? "flex flex-col gap-space-sm mt-space-sm bg-surface-container-low p-space-md rounded-xl"
-                            : "hidden"
-                        }
-                        id="password-subfield"
-                        onSubmit={(e) => {
-                          e.preventDefault();
-                          login();
-                        }}
-                      >
-                        <label
-                          className="font-label text-label text-primary font-bold"
-                          htmlFor="student-password"
-                        >
-                          Kata Sandi
-                        </label>
-                        <div className="relative flex items-center">
-                          <span
-                            className="material-symbols-outlined absolute left-space-md text-muted-gray text-[20px] pointer-events-none"
-                            aria-hidden="true"
-                          >
-                            key
-                          </span>
-                          <input
-                            className="w-full h-11 pl-11 pr-11 rounded-xl bg-surface text-primary font-body text-body placeholder:text-muted-gray focus:outline-none focus:ring-2 focus:ring-focus"
-                            id="student-password"
-                            placeholder="Masukkan kata sandimu"
-                            type={showPassword ? "text" : "password"}
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required={true}
-                            minLength={8}
-                            autoComplete="current-password"
-                          />
-                          <button
-                            aria-label="Lihat kata sandi"
-                            className="absolute right-space-md text-muted-gray hover:text-primary transition-colors"
-                            id="show-password-btn"
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            disabled={busy}
-                          >
-                            <span
-                              className="material-symbols-outlined text-[20px]"
-                              id="eye-icon"
-                              aria-hidden="true"
-                            >
-                              visibility
-                            </span>
-                          </button>
-                        </div>
-                        <div className="flex items-center justify-between text-metadata">
-                          <a
-                            className="font-metadata text-metadata text-secondary hover:underline"
-                            href="#"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              sendLink();
-                            }}
-                          >
-                            Lupa kata sandi?
-                          </a>
-                          <button
-                            className="h-9 px-space-md rounded-lg bg-primary text-on-primary font-label text-metadata hover:bg-primary-hover"
-                            type="submit"
-                            disabled={busy}
-                          >
-                            Masuk
-                          </button>
-                        </div>
-                      </form>
                     </div>
 
-                    <div className="relative flex items-center justify-center my-space-xs">
-                      <div className="w-full h-[1px] bg-divider"></div>
-                      <span className="absolute bg-surface px-space-md font-metadata text-metadata text-muted-gray">
-                        atau eksplorasi instan
-                      </span>
-                    </div>
-
-                    <a
-                      className="w-full min-h-[52px] p-space-sm sm:px-space-md rounded-xl bg-secondary-container hover:bg-secondary-fixed text-primary font-label text-label flex items-center justify-between transition-all shadow-sm group focus:outline-none focus:ring-2 focus:ring-focus"
-                      data-path="demo-nadia"
-                      href="#"
-                      id="instant-demo-btn"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (!busy) demo();
-                      }}
-                      aria-disabled={busy}
+                    <button
+                      className="h-12 w-full sm:w-auto px-6 rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-bold text-sm tracking-wide transition-all duration-200 flex items-center justify-center gap-2 shadow-sm shrink-0"
+                      type="button"
+                      disabled={busy}
+                      onClick={demo}
                     >
-                      <div className="flex items-center gap-space-sm text-left">
-                        <div className="w-9 h-9 rounded-full bg-surface flex items-center justify-center text-primary shrink-0 shadow-xs">
-                          <span
-                            className="material-symbols-outlined text-[20px] text-success group-hover:scale-110 transition-transform"
-                            aria-hidden="true"
-                          >
-                            play_circle
-                          </span>
-                        </div>
-                        <div className="flex flex-col">
-                          <span className="font-card-title text-label text-primary font-extrabold flex items-center gap-1">
-                            Coba Demo Langsung
-                            <span className="bg-primary text-on-primary text-[10px] px-1.5 py-0.2 rounded-full font-bold uppercase tracking-wider">
-                              Tanpa Daftar
-                            </span>
-                          </span>
-                          <span className="font-metadata text-metadata text-text-secondary">
-                            {"Profil Manda • Materi contoh SMP & SMA"}
-                          </span>
-                        </div>
-                      </div>
+                      <span>Mulai Bersama Manda</span>
                       <span
-                        className="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform"
+                        className="material-symbols-outlined text-[18px]"
                         aria-hidden="true"
                       >
                         arrow_forward
                       </span>
-                    </a>
+                    </button>
                   </div>
-
-                  <div
-                    className={signup ? "flex flex-col gap-space-md" : "hidden"}
-                    id="panel-register"
-                  >
-                    <div className="bg-surface-container-low p-space-md rounded-xl flex items-center gap-space-sm">
+                  <div className="mt-4 pt-3 flex items-center gap-3 text-xs text-secondary font-medium">
+                    <span className="flex items-center gap-1">
                       <span
-                        className="material-symbols-outlined text-secondary text-[24px]"
+                        className="material-symbols-outlined text-[16px] text-success"
                         aria-hidden="true"
                       >
-                        verified
+                        check_circle
                       </span>
-                      <p className="font-metadata text-metadata text-text-secondary leading-snug">
-                        {
-                          "Buat akun untuk menyimpan preferensi dan progres belajarmu."
-                        }
+                      Sekali klik langsung belajar
+                    </span>
+                    <span className="w-1 h-1 rounded-full bg-outline-variant"></span>
+                    <span className="flex items-center gap-1">
+                      <span
+                        className="material-symbols-outlined text-[16px] text-success"
+                        aria-hidden="true"
+                      >
+                        timer
+                      </span>
+                      Tanpa ketik kata sandi
+                    </span>
+                  </div>
+                </div>
+
+                <div className="rounded-2xl bg-surface-container-low p-5 sm:p-6 transition-all duration-300">
+                  <div className="flex items-start gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center text-text-secondary shadow-sm shrink-0">
+                      <span
+                        className="material-symbols-outlined text-[20px]"
+                        aria-hidden="true"
+                      >
+                        alternate_email
+                      </span>
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-on-surface text-base">
+                        Masuk dengan Email
+                      </h3>
+                      <p className="text-xs sm:text-sm text-text-secondary">
+                        Tanpa kata sandi rumit. Kami mengirimkan tautan masuk
+                        instan ke kontakmu.
                       </p>
                     </div>
-                    <form
-                      className="flex flex-col gap-space-sm"
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        registerAccount();
-                      }}
-                    >
-                      <div className="flex flex-col gap-space-xs text-left">
-                        <label
-                          className="font-label text-label text-primary font-bold"
-                          htmlFor="register-name"
-                        >
-                          Nama Panggilan
-                        </label>
-                        <input
-                          className="w-full h-11 px-space-md rounded-xl bg-surface text-primary font-body text-body placeholder:text-muted-gray focus:outline-none focus:ring-2 focus:ring-focus shadow-sm"
-                          id="register-name"
-                          placeholder="Nama yang kamu sukai (misal: Rian)"
-                          required
-                          type="text"
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
-                          maxLength={80}
-                          autoComplete="nickname"
-                        />
-                      </div>
-                      <div className="flex flex-col gap-space-xs text-left">
-                        <label
-                          className="font-label text-label text-primary font-bold"
-                          htmlFor="register-email"
-                        >
-                          Alamat Email
-                        </label>
-                        <input
-                          className="w-full h-11 px-space-md rounded-xl bg-surface text-primary font-body text-body placeholder:text-muted-gray focus:outline-none focus:ring-2 focus:ring-focus shadow-sm"
-                          id="register-email"
-                          placeholder="emailmu@gmail.com atau email sekolah"
-                          required
-                          type="email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          autoComplete="email"
-                        />
-                      </div>
-                      <div className="flex flex-col gap-space-xs text-left">
-                        <label
-                          htmlFor="register-password"
-                          className="font-label text-label text-primary font-bold"
-                        >
-                          Kata sandi
-                        </label>
-                        <input
-                          id="register-password"
-                          type="password"
-                          autoComplete="new-password"
-                          minLength={8}
-                          required
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          className="w-full h-11 px-space-md rounded-xl bg-surface text-primary font-body text-body focus:outline-none focus:ring-2 focus:ring-focus shadow-sm"
-                        />
-                      </div>
-                      <button
-                        className="w-full h-11 mt-space-xs rounded-xl bg-primary-container text-on-primary font-label text-label hover:bg-primary-hover active:bg-primary-pressed transition-colors shadow-sm flex items-center justify-center gap-space-xs focus:outline-none focus:ring-2 focus:ring-focus"
-                        type="submit"
-                        disabled={busy}
-                      >
-                        <span
-                          className="material-symbols-outlined text-[18px]"
-                          aria-hidden="true"
-                        >
-                          how_to_reg
-                        </span>
-                        <span>Mulai Belajar Mandiri (Gratis)</span>
-                      </button>
-                    </form>
                   </div>
-
-                  <div
-                    className={
-                      message
-                        ? "p-space-md rounded-xl bg-secondary-container text-primary font-body text-metadata flex items-center gap-space-sm"
-                        : "hidden"
-                    }
-                    id="status-toast"
-                    role="status"
+                  <form
+                    className="flex flex-col sm:flex-row gap-2.5"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      sendLink();
+                    }}
                   >
-                    <span
-                      className="material-symbols-outlined text-success"
-                      aria-hidden="true"
-                    >
-                      mark_email_read
-                    </span>
-                    <span id="toast-message">{message}</span>
-                  </div>
-
-                  <div className="pt-space-md flex flex-col gap-space-xs text-left bg-surface-container-low p-space-md rounded-xl">
-                    <div className="flex items-center gap-space-xs text-text-secondary font-label text-metadata font-bold">
+                    <div className="relative flex-grow">
                       <span
-                        className="material-symbols-outlined text-[18px] text-success"
+                        className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-gray text-[18px]"
                         aria-hidden="true"
                       >
-                        shield
+                        mail
                       </span>
-                      Komitmen Privasi Pelajar TemanBelajar
+                      <input
+                        className="w-full h-11 pl-10 pr-4 rounded-xl bg-surface text-on-surface text-sm placeholder:text-muted-gray focus:outline-none focus:ring-2 focus:ring-focus shadow-xs"
+                        placeholder="nama@sekolah.id atau email pribadimu"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required={true}
+                        aria-label="Alamat email"
+                      />
                     </div>
-                    <p className="font-metadata text-metadata text-muted-gray leading-relaxed">
-                      {
-                        "Progres dan preferensi belajarmu tersimpan pada akunmu. Kamu memilih materi yang ingin dibantu susun oleh AI."
-                      }
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mt-space-md text-center">
-                  <p className="font-metadata text-metadata text-text-secondary">
-                    Mengalami kesulitan masuk?{" "}
-                    <a
-                      className="text-primary font-bold hover:underline"
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        onBack();
-                      }}
+                    <button
+                      className="h-11 px-5 rounded-xl bg-surface-container-highest hover:bg-surface-variant active:bg-surface-container text-primary font-bold text-sm transition-all duration-200 flex items-center justify-center gap-1.5 shrink-0"
+                      type="submit"
+                      disabled={busy}
                     >
-                      Hubungi Tim Bantuan Siswa
-                    </a>{" "}
-                    lewat WhatsApp atau panduan audio.
-                  </p>
+                      <span>Kirim Tautan</span>
+                      <span
+                        className="material-symbols-outlined text-[16px]"
+                        aria-hidden="true"
+                      >
+                        send
+                      </span>
+                    </button>
+                  </form>
                 </div>
+              </div>
+
+              <div className="w-full flex flex-wrap items-center justify-center gap-y-2 gap-x-6 pb-6 text-xs text-muted-gray">
+                <span className="flex items-center gap-1.5">
+                  <span
+                    className="material-symbols-outlined text-[16px] text-primary"
+                    aria-hidden="true"
+                  >
+                    spa
+                  </span>{" "}
+                  Mode Tenang Sensorik
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span
+                    className="material-symbols-outlined text-[16px] text-primary"
+                    aria-hidden="true"
+                  >
+                    visibility
+                  </span>{" "}
+                  Teks Ramah Disleksia
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span
+                    className="material-symbols-outlined text-[16px] text-primary"
+                    aria-hidden="true"
+                  >
+                    do_not_disturb_on
+                  </span>{" "}
+                  Bebas Notifikasi Mengejutkan
+                </span>
+              </div>
+
+              <div className="w-full bg-surface-container rounded-2xl p-3.5 sm:p-4 flex items-center justify-center gap-3 text-center sm:text-left">
+                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-primary shrink-0 shadow-xs">
+                  <span
+                    className="material-symbols-outlined text-[18px] text-success"
+                    aria-hidden="true"
+                  >
+                    lock
+                  </span>
+                </div>
+                <p className="text-xs text-text-secondary leading-snug">
+                  <strong className="font-bold text-primary">
+                    Privasi terjaga:
+                  </strong>{" "}
+                  Data belajarmu tersimpan aman di perangkat dan tidak pernah
+                  dibagikan kepada pihak lain.
+                </p>
               </div>
             </div>
 
-            <div className="mt-space-xxl pt-space-xl grid grid-cols-1 md:grid-cols-4 gap-gutter">
-              <div className="bg-surface p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-xs">
-                <span className="font-label text-metadata text-secondary uppercase font-bold tracking-wider">
-                  01 · Format Bebas
-                </span>
-                <h2 className="font-card-title text-card-title text-primary">
-                  Teks Singkat &amp; Komik Mini
-                </h2>
-                <p className="font-metadata text-metadata text-text-secondary">
-                  Ringkasan konsep sains dan sosial dalam kartu padat tanpa
-                  dinding teks membosankan.
-                </p>
-              </div>
-              <div className="bg-surface p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-xs">
-                <span className="font-label text-metadata text-secondary uppercase font-bold tracking-wider">
-                  02 · Kontrol Stimulasi
-                </span>
-                <h2 className="font-card-title text-card-title text-primary">
-                  Bebas Bunyi Mengagetkan
-                </h2>
-                <p className="font-metadata text-metadata text-text-secondary">
-                  Tidak ada bunyi buzzer saat keliru menjawab. Mimo membantumu
-                  mencoba lagi secara perlahan.
-                </p>
-              </div>
-              <div className="bg-surface p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-xs">
-                <span className="font-label text-metadata text-secondary uppercase font-bold tracking-wider">
-                  03 · Kurikulum Merdeka
-                </span>
-                <h2 className="font-card-title text-card-title text-primary">
-                  Capaian Pembelajaran Pas
-                </h2>
-                <p className="font-metadata text-metadata text-text-secondary">
-                  Sesuai materi semester sekolah tanpa beban PR ganda yang
-                  membebani sore harimu.
-                </p>
-              </div>
-              <div className="bg-surface p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-xs">
-                <span className="font-label text-metadata text-secondary uppercase font-bold tracking-wider">
-                  04 · Ramah Ponsel Lemot
-                </span>
-                <h2 className="font-card-title text-card-title text-primary">
-                  {"Ramah Perangkat"}
-                </h2>
-                <p className="font-metadata text-metadata text-text-secondary">
-                  {
-                    "Teks yang ringkas dan kontrol bacaan untuk belajar sesuai ritmemu."
-                  }
-                </p>
-              </div>
+            <div className="mt-6 text-center text-xs text-muted-gray space-y-1">
+              <p>
+                Mengalami kendala saat masuk? Hubungi wali kelas atau guru
+                pendampingmu.
+              </p>
+              <p className="font-medium">
+                TemanBelajar hadir mendampingi ritme belajarmu tanpa buru-buru.
+              </p>
             </div>
           </div>
         </div>
+        {message && (
+          <p role="status" className="max-w-xl mx-auto p-4 text-primary">
+            {message}
+          </p>
+        )}
+        {error && (
+          <p role="alert" className="max-w-xl mx-auto p-4 text-error">
+            {error}
+          </p>
+        )}
       </main>
       <footer className="w-full bg-surface-container-low mt-space-section">
         <div className="max-w-[1280px] mx-auto px-gutter py-space-xxl">
@@ -843,15 +405,12 @@ export function AccountDesign({
             <div className="md:col-span-5 flex flex-col gap-space-md">
               <div className="flex items-center gap-space-sm">
                 <Image
-                  alt="TemanBelajar"
-                  className="h-7 w-auto object-contain"
-                  src="/design/logo.png"
-                  width={640}
-                  height={240}
-                />
-                <span className="font-display text-card-title text-primary font-extrabold">
-                  TemanBelajar
-                </span>
+                  src="/design/logo-revamp.png"
+                  alt="TemanBelajar Logo"
+                  className="h-9 w-auto object-contain"
+                  width={1024}
+                  height={1024}
+                ></Image>
               </div>
               <p className="font-body text-body text-text-secondary max-w-md">
                 Platform belajar adaptif berbasis pendekatan editorial zine yang
@@ -1050,11 +609,6 @@ export function AccountDesign({
           </div>
         </div>
       </footer>
-      {error && (
-        <p role="alert" className="stitch-landing-error">
-          {error}
-        </p>
-      )}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { ReactNode } from "react";
+import type { ReactNode, CSSProperties } from "react";
 import type { Profile } from "@/lib/types";
 export function DesignShell({
   children,
@@ -14,241 +14,239 @@ export function DesignShell({
   page: string;
   navigate: (p: string) => void;
   className: string;
-  style: React.CSSProperties;
+  style: CSSProperties;
 }) {
   return (
-    <div className={"stitch-shell " + className} style={style}>
+    <div className={"stitch-shell revamp-shell " + className} style={style}>
       <a className="skip" href="#main">
         Lewati ke konten
       </a>
-      <aside className="fixed left-0 top-0 h-full w-60 bg-surface z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
-        <div className="flex flex-col">
-          <div className="h-16 px-space-md flex items-center gap-space-sm">
+      <aside
+        aria-label="Navigasi Utama"
+        className="revamp-sidebar fixed left-0 top-0 h-full w-56 bg-surface border-r border-divider z-40 flex flex-col justify-between"
+      >
+        <div className="p-5 space-y-6">
+          <div className="flex items-center px-2 py-1">
             <Image
-              alt="TemanBelajar"
-              className="stitch-logo"
               src="/design/logo-revamp.png"
-              width={640}
-              height={240}
-            />
+              alt="TemanBelajar"
+              className="h-10 w-auto object-contain"
+              width={1024}
+              height={1024}
+            ></Image>
           </div>
-          <div className="px-space-md py-space-sm">
-            <div className="p-space-sm rounded-xl bg-surface-container-low flex items-center justify-between">
-              <div className="flex items-center gap-space-xs">
-                <span
-                  aria-hidden="true"
-                  className="material-symbols-outlined text-secondary text-[20px]"
-                >
-                  self_improvement
-                </span>
-                <div className="flex flex-col">
-                  <span className="font-label text-[12px] text-primary leading-tight">
-                    Mode Tenang
-                  </span>
-                  <span className="font-metadata text-[11px] text-text-secondary">
-                    Aktif bebas cemas
-                  </span>
-                </div>
-              </div>
-              <div className="w-2.5 h-2.5 rounded-full bg-secondary"></div>
-            </div>
-          </div>
-          <nav
-            className="px-space-sm flex flex-col gap-1 mt-2"
-            data-active-classes="bg-secondary-container text-on-secondary-container font-label font-bold rounded-xl"
-            aria-label="Navigasi utama"
-          >
+
+          <nav aria-label="Menu Aplikasi" className="space-y-1">
             <button
               className={
-                "flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-left " +
+                "flex w-full items-center gap-3 px-3.5 py-2.5 rounded-xl text-left text-sm min-h-[44px] " +
                 (page === "Beranda"
-                  ? "bg-secondary-container text-on-secondary-container font-bold"
-                  : "text-on-surface-variant hover:bg-surface-container")
+                  ? "bg-mint/50 text-primary font-semibold border border-divider"
+                  : "text-text-secondary hover:bg-canvas font-medium")
               }
-              data-path="beranda"
-              aria-current={page === "Beranda" ? "page" : undefined}
               onClick={() => navigate("Beranda")}
+              aria-current={page === "Beranda" ? "page" : undefined}
             >
-              <span
-                aria-hidden="true"
-                className="material-symbols-outlined text-[20px]"
+              <svg
+                className="w-5 h-5 text-mint-dark"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                home
-              </span>
-              <span className="font-label text-label">Beranda</span>
+                <path
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                ></path>
+              </svg>
+              <span>Beranda</span>
             </button>
             <button
               className={
-                "flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-left " +
+                "flex w-full items-center gap-3 px-3.5 py-2.5 rounded-xl text-left text-sm min-h-[44px] " +
                 (page === "Rencana Belajar"
-                  ? "bg-secondary-container text-on-secondary-container font-bold"
-                  : "text-on-surface-variant hover:bg-surface-container")
+                  ? "bg-mint/50 text-primary font-semibold border border-divider"
+                  : "text-text-secondary hover:bg-canvas font-medium")
               }
-              data-path="rencana-belajar"
-              aria-current={page === "Rencana Belajar" ? "page" : undefined}
               onClick={() => navigate("Rencana Belajar")}
+              aria-current={page === "Rencana Belajar" ? "page" : undefined}
             >
-              <span
-                aria-hidden="true"
-                className="material-symbols-outlined text-[20px]"
+              <svg
+                className="w-5 h-5 text-muted-gray"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                calendar_today
-              </span>
-              <span className="font-label text-label">Rencana Belajar</span>
+                <path
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                ></path>
+              </svg>
+              <span>Rencana Belajar</span>
             </button>
             <button
               className={
-                "flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-left " +
+                "flex w-full items-center gap-3 px-3.5 py-2.5 rounded-xl text-left text-sm min-h-[44px] " +
                 (page === "Materi Saya"
-                  ? "bg-secondary-container text-on-secondary-container font-bold"
-                  : "text-on-surface-variant hover:bg-surface-container")
+                  ? "bg-mint/50 text-primary font-semibold border border-divider"
+                  : "text-text-secondary hover:bg-canvas font-medium")
               }
-              data-path="materi-saya"
-              aria-current={page === "Materi Saya" ? "page" : undefined}
               onClick={() => navigate("Materi Saya")}
+              aria-current={page === "Materi Saya" ? "page" : undefined}
             >
-              <span
-                aria-hidden="true"
-                className="material-symbols-outlined text-[20px]"
+              <svg
+                className="w-5 h-5 text-muted-gray"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                menu_book
-              </span>
-              <span className="font-label text-label">Materi Saya</span>
+                <path
+                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                ></path>
+              </svg>
+              <span>Materi Saya</span>
             </button>
             <button
               className={
-                "flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-left " +
-                (page === "Mulai Belajar"
-                  ? "bg-secondary-container text-on-secondary-container font-bold"
-                  : "text-on-surface-variant hover:bg-surface-container")
-              }
-              data-path="mulai-belajar"
-              aria-current={page === "Mulai Belajar" ? "page" : undefined}
-              onClick={() => navigate("Mulai Belajar")}
-            >
-              <span
-                aria-hidden="true"
-                className="material-symbols-outlined text-[20px]"
-              >
-                play_circle
-              </span>
-              <span className="font-label text-label">Mulai Belajar</span>
-            </button>
-            <button
-              className={
-                "flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-left " +
+                "flex w-full items-center gap-3 px-3.5 py-2.5 rounded-xl text-left text-sm min-h-[44px] " +
                 (page === "Progres"
-                  ? "bg-secondary-container text-on-secondary-container font-bold"
-                  : "text-on-surface-variant hover:bg-surface-container")
+                  ? "bg-mint/50 text-primary font-semibold border border-divider"
+                  : "text-text-secondary hover:bg-canvas font-medium")
               }
-              data-path="progres-belajar"
-              aria-current={page === "Progres" ? "page" : undefined}
               onClick={() => navigate("Progres")}
+              aria-current={page === "Progres" ? "page" : undefined}
             >
-              <span
-                aria-hidden="true"
-                className="material-symbols-outlined text-[20px]"
+              <svg
+                className="w-5 h-5 text-muted-gray"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                insights
-              </span>
-              <span className="font-label text-label">Progres</span>
+                <path
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                ></path>
+              </svg>
+              <span>Progres</span>
             </button>
             <button
               className={
-                "flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-left " +
+                "flex w-full items-center gap-3 px-3.5 py-2.5 rounded-xl text-left text-sm min-h-[44px] " +
                 (page === "Pengaturan"
-                  ? "bg-secondary-container text-on-secondary-container font-bold"
-                  : "text-on-surface-variant hover:bg-surface-container")
+                  ? "bg-mint/50 text-primary font-semibold border border-divider"
+                  : "text-text-secondary hover:bg-canvas font-medium")
               }
-              data-path="pengaturan-aksesibilitas"
-              aria-current={page === "Pengaturan" ? "page" : undefined}
               onClick={() => navigate("Pengaturan")}
+              aria-current={page === "Pengaturan" ? "page" : undefined}
             >
-              <span
-                aria-hidden="true"
-                className="material-symbols-outlined text-[20px]"
+              <svg
+                className="w-5 h-5 text-muted-gray"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                tune
-              </span>
-              <span className="font-label text-label">Pengaturan</span>
+                <path
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                ></path>
+                <path
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                ></path>
+              </svg>
+              <span>Pengaturan</span>
             </button>
           </nav>
         </div>
-        <div className="p-space-md flex flex-col gap-space-sm">
-          <div className="p-space-sm rounded-xl bg-secondary-fixed/50 flex items-center gap-space-xs">
-            <span
-              aria-hidden="true"
-              className="material-symbols-outlined text-secondary text-[18px]"
-            >
-              verified_user
-            </span>
-            <span className="font-metadata text-[12px] text-on-secondary-fixed-variant">
-              {"Target WCAG 2.2 AA"}
-            </span>
-          </div>
-          <div className="flex items-center gap-space-sm p-space-xs">
-            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-              <span
-                aria-hidden="true"
-                className="material-symbols-outlined text-on-primary text-[18px]"
-              >
-                person
-              </span>
+
+        <div className="p-4 m-3 rounded-2xl bg-canvas border border-divider space-y-3">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-peach/40 border border-peach flex items-center justify-center font-bold text-sm text-primary">
+              M
             </div>
-            <div className="flex flex-col min-w-0">
-              <span className="font-label text-[13px] text-primary truncate leading-tight">
+            <div className="overflow-hidden">
+              <div className="font-bold text-xs text-primary truncate">
                 {profile.display_name}
-              </span>
-              <span className="font-metadata text-[11px] text-text-secondary truncate">
-                SMP Kelas 8
-              </span>
+              </div>
+              <div className="text-[10px] text-text-secondary truncate">
+                SMP Kelas 8 · Santai
+              </div>
             </div>
           </div>
+          <button
+            className={
+              "flex w-full items-center gap-3 px-3.5 py-2.5 rounded-xl text-left text-sm min-h-[44px] " +
+              (page === "Pengaturan"
+                ? "bg-mint/50 text-primary font-semibold border border-divider"
+                : "text-text-secondary hover:bg-canvas font-medium")
+            }
+            onClick={() => navigate("Pengaturan")}
+            aria-current={page === "Pengaturan" ? "page" : undefined}
+          >
+            ♿ Aksesibilitas Cepat
+          </button>
         </div>
       </aside>
-      <div className="stitch-workspace pl-60 min-h-screen flex flex-col">
-        <header className="fixed top-0 left-60 right-0 h-16 bg-surface/90 backdrop-blur-xl z-40 px-space-lg flex items-center justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
-          <div className="flex items-center gap-space-sm">
+      <div className="revamp-workspace">
+        <header className="revamp-topbar bg-surface border-b border-divider px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div>
+              <h1 className="font-display font-extrabold text-xl text-primary">
+                {profile.display_name}
+              </h1>
+              <p className="text-xs text-text-secondary">
+                {new Date().toLocaleDateString("id-ID", {
+                  weekday: "long",
+                  day: "numeric",
+                  month: "long",
+                  timeZone: profile.timezone,
+                })}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-mint/50 text-mint-dark border border-[#BCE0C3]">
+              <span className="w-2 h-2 rounded-full bg-success mr-1.5 animate-pulse"></span>
+              Mode Adaptif Aktif
+            </span>
             <button
-              className="inline-flex items-center gap-space-xs h-10 px-space-md rounded-xl bg-surface-container text-primary font-label text-label hover:bg-surface-container-high transition-colors focus:outline-none focus:ring-2 focus:ring-focus"
-              type="button"
+              aria-label="Bantuan atau Glosarium"
+              className="p-2 rounded-xl text-text-secondary hover:text-primary hover:bg-canvas border border-divider transition-all"
               onClick={() => navigate("Pengaturan")}
             >
-              <span
-                aria-hidden="true"
-                className="material-symbols-outlined text-[18px]"
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                accessibility_new
-              </span>
-              <span>Pintasan Aksesibilitas</span>
-              <kbd className="px-1.5 py-0.5 rounded text-[11px] bg-surface font-metadata text-text-secondary shadow-sm">
-                Alt+A
-              </kbd>
+                <path
+                  d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                ></path>
+              </svg>
             </button>
           </div>
-          <div className="flex items-center gap-space-md">
-            <div className="hidden md:flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-surface-container-low">
-              <span className="w-2 h-2 rounded-full bg-success"></span>
-              <span className="font-metadata text-[12px] text-text-secondary">
-                Lingkungan Belajar Ramah
-              </span>
-            </div>
-            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-              <span
-                aria-hidden="true"
-                className="material-symbols-outlined text-on-primary text-[18px]"
-              >
-                person
-              </span>
-            </div>
-          </div>
         </header>
-        <main id="main" className="stitch-main">
+        <main id="main" className="revamp-main">
           {children}
         </main>
         <footer className="stitch-footer">
-          TemanBelajar — Pembelajaran Adaptif SMP &amp; SMA{" "}
-          <span>Desain tenang &amp; bebas tekanan</span>
+          TemanBelajar ? Belajar sesuai ritmemu
         </footer>
       </div>
     </div>
