@@ -23,6 +23,7 @@ export type Run = (action: () => Promise<void>) => Promise<void>;
 export default function Home() {
   const [account, setAccount] = useState<Session | null>(null),
     [ready, setReady] = useState(false),
+    [loadedUserId, setLoadedUserId] = useState<string | null>(null),
     [profile, setProfile] = useState<Profile>(defaultProfile),
     [onboarding, setOnboarding] = useState(false),
     [materials, setMaterials] = useState<Material[]>([]),
@@ -99,18 +100,25 @@ export default function Home() {
         .then((p) => {
           if (alive) {
             setProfile(p);
-            setOnboarding(p.onboarding_step < 4);
+            setOnboarding(false);
           }
         })
         .catch((e) => {
           if (e instanceof ApiError && e.status === 404) {
-            if (alive) setOnboarding(true);
+            if (alive) {
+              setProfile(defaultProfile);
+              setOnboarding(false);
+            }
           } else throw e;
         }),
       Promise.resolve().then(refresh),
-    ]).catch((e) => {
-      if (alive) setError(userMessage(e));
-    });
+    ])
+      .catch((e) => {
+        if (alive) setError(userMessage(e));
+      })
+      .finally(() => {
+        if (alive) setLoadedUserId(userId);
+      });
     return () => {
       alive = false;
     };
@@ -183,7 +191,7 @@ export default function Home() {
         <p role="status">Menyiapkan ruang belajarmu...</p>
       </main>
     );
-  if (!account)
+  if (landing || !account)
     return (
       <Account
         landing={landing}
@@ -194,10 +202,17 @@ export default function Home() {
         error={error}
       />
     );
+  if (loadedUserId !== userId)
+    return (
+      <main className="welcome">
+        <p role="status">Memuat ruang belajarmu...</p>
+      </main>
+    );
   if (onboarding)
     return (
       <Onboarding
         initial={profile}
+        onBack={() => setOnboarding(false)}
         onSave={(p) => run(() => saveProfile(p))}
         busy={busy}
         error={error}
@@ -265,6 +280,23 @@ export default function Home() {
           Menyimpan langkahmu...
         </p>
       )}
+      {page === "Beranda" && profile.onboarding_step < 4 && (
+        <section className="stitch-screen bg-secondary-container rounded-2xl p-space-lg mb-space-lg">
+          <h2 className="font-card-title text-card-title text-primary">
+            Atur ritme belajarmu saat kamu siap
+          </h2>
+          <p className="font-body text-body text-text-secondary">
+            Kamu bisa langsung belajar dengan preferensi awal, atau
+            menyesuaikannya lewat empat langkah singkat.
+          </p>
+          <button
+            onClick={() => setOnboarding(true)}
+            className="h-11 px-space-md mt-space-sm rounded-xl bg-primary text-on-primary font-label text-label"
+          >
+            Atur preferensi belajar
+          </button>
+        </section>
+      )}
       {page === "Beranda" ? (
         <Dashboard
           profile={profile}
@@ -328,6 +360,8 @@ export default function Home() {
           signOut={() =>
             run(async () => {
               await auth!.auth.signOut();
+              setLoadedUserId(null);
+              setOnboarding(false);
               setProfile(defaultProfile);
               setMaterials([]);
               setSessions([]);

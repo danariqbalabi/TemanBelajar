@@ -7,11 +7,13 @@ export function OnboardingDesign({
   onSave,
   busy,
   error,
+  onBack,
 }: {
   initial: Profile;
   onSave: (p: Profile) => void;
   busy: boolean;
   error: string;
+  onBack?: () => void;
 }) {
   const [step, setStep] = useState(0),
     [value, setValue] = useState(initial),
@@ -102,6 +104,15 @@ export function OnboardingDesign({
             height={240}
             className="stitch-logo"
           />
+          {onBack && (
+            <button
+              type="button"
+              onClick={onBack}
+              className="h-11 px-space-md rounded-xl bg-surface-container text-primary font-label text-label"
+            >
+              Kembali ke beranda
+            </button>
+          )}
           <span className="font-label text-label text-secondary">
             Langkah {step + 1} dari 4
           </span>

@@ -44,6 +44,9 @@ it("saves the complete editable profile while excluding server-owned fields", as
     },
   );
   render(<Home />);
+  await userEvent.click(
+    await screen.findByRole("link", { name: "Mulai belajar" }),
+  );
   await screen.findByRole("navigation");
   await userEvent.click(
     within(screen.getByRole("navigation")).getByRole("button", {
@@ -69,4 +72,42 @@ it("saves the complete editable profile while excluding server-owned fields", as
   expect(payload.preferences).toEqual(defaultProfile.preferences);
   expect(payload.available_days).toEqual(defaultProfile.available_days);
   expect(payload).not.toHaveProperty("id");
+});
+
+it("menampilkan landing meski sesi tersimpan dan tidak memaksa onboarding yang belum selesai", async () => {
+  request.mockImplementation(async (path: string) =>
+    path === "/profile"
+      ? { ...defaultProfile, onboarding_step: 0 }
+      : path.startsWith("/recommendations")
+        ? null
+        : { items: [] },
+  );
+  render(<Home />);
+  expect(
+    await screen.findByRole("heading", {
+      name: "Setiap orang punya cara belajarnya sendiri.",
+    }),
+  ).toBeTruthy();
+  expect(
+    screen.queryByRole("button", { name: "Atur preferensi belajar" }),
+  ).toBeNull();
+  await userEvent.click(screen.getByRole("link", { name: "Mulai belajar" }));
+  expect(
+    await screen.findByRole("button", { name: "Atur preferensi belajar" }),
+  ).toBeTruthy();
+  expect(
+    screen.queryByRole("button", { name: "Kembali ke beranda" }),
+  ).toBeNull();
+  await userEvent.click(
+    screen.getByRole("button", { name: "Atur preferensi belajar" }),
+  );
+  await userEvent.click(
+    await screen.findByRole("button", { name: "Kembali ke beranda" }),
+  );
+  expect(
+    await screen.findByRole("button", { name: "Atur preferensi belajar" }),
+  ).toBeTruthy();
+  expect(
+    request.mock.calls.some((c) => c[0] === "/profile" && c[2] === "PUT"),
+  ).toBe(false);
 });

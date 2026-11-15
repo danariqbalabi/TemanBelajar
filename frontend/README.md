@@ -35,6 +35,12 @@ URL Supabase.
 | 22 | hasil jawaban teramati dan estimasi BKT ditampilkan terpisah |
 | 23–24 | pengaturan aksesibilitas, profil/tujuan/jadwal, keluar akun |
 
+Saat aplikasi dibuka, landing ditampilkan lebih dahulu meski sesi login masih
+tersimpan. Tombol mulai melanjutkan ke beranda untuk sesi aktif, atau ke halaman
+masuk jika belum login. Onboarding empat langkah bersifat pilihan melalui
+?Atur preferensi belajar? di beranda; status profil yang belum selesai tidak
+mengalihkan pengguna secara otomatis. Preferensi awal tetap dapat dipakai.
+
 Layar terkait memakai komponen bersama pada aplikasi utama. `/welcome`
 mengarahkan ke aplikasi utama. Navigasi di dalam ruang belajar mempertahankan
 state komponen induk. Muat ulang halaman membaca data akun kembali; pilih
@@ -61,7 +67,7 @@ Tes interaksi mencakup perpindahan format, latihan berurutan, kegiatan
 terlindungi, peninjauan usulan, sumber unggahan, dan pratinjau onboarding.
 Tes API mencakup idempotensi retry, refresh token, dan konflik versi.
 Pemeriksaan aplikasi juga memastikan field milik server tidak ikut dikirim
-saat profil diedit. Total 17 tes frontend, typecheck, lint, format, dan build
+saat profil diedit. Total 18 tes frontend, typecheck, lint, format, dan build
 produksi sudah lolos. Sebanyak 24 tes backend juga tetap lolos.
 
 Pemeriksaan ulang 15 november 2026 berhasil menjalankan modul API frontend
