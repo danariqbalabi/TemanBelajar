@@ -296,6 +296,8 @@ export default function Home() {
         />
       ) : page === "Rencana Belajar" ? (
         <Planner
+          onMaterials={() => setPage("Materi Saya")}
+          onBack={() => setPage("Beranda")}
           plans={plans}
           materials={materials}
           profile={profile}
@@ -306,6 +308,11 @@ export default function Home() {
         />
       ) : page === "Progres" ? (
         <ProgressView
+          onPlan={() => setPage("Rencana Belajar")}
+          onSettings={() => setPage("Pengaturan")}
+          onBack={() => setPage("Beranda")}
+          displayName={profile.display_name}
+          timezone={profile.timezone}
           materials={materials}
           sessions={sessions}
           run={run}
@@ -313,6 +320,7 @@ export default function Home() {
         />
       ) : page === "Pengaturan" ? (
         <Settings
+          onBack={() => setPage("Beranda")}
           profile={profile}
           onSave={(p) => run(() => saveProfile(p))}
           busy={busy}
@@ -335,6 +343,14 @@ export default function Home() {
           material={selected}
           session={active}
           preferences={prefs}
+          displayName={profile.display_name}
+          onSettings={() => setPage("Pengaturan")}
+          onBack={() => setPage("Materi Saya")}
+          onPreferences={(patch) =>
+            run(() =>
+              saveProfile({ ...profile, preferences: { ...prefs, ...patch } }),
+            )
+          }
           run={run}
           busy={busy}
           onUpdate={(s) => {

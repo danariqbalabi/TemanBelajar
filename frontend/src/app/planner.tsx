@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import { api, mutation } from "@/lib/api";
+import { PlanDesign } from "./design-plan";
+import { ProposalDesign } from "./design-proposal";
 import type {
   Activity,
   Material,
@@ -18,8 +20,12 @@ export function Planner({
   busy,
   refresh,
   start,
+  onMaterials = () => {},
+  onBack = () => {},
 }: {
   plans: Plan[];
+  onMaterials?: () => void;
+  onBack?: () => void;
   materials: Material[];
   profile: Profile;
   run: Run;
@@ -139,120 +145,22 @@ export function Planner({
     ]);
     setTitle("");
   }
-  return (
+  function restore(version: number) {
+    if (!plan) return;
+    const send = mutation(`/plans/${plan.id}/restore`, {
+      expected_version: plan.version,
+      target_version: version,
+    });
+    run(async () => {
+      await send();
+      await refresh();
+      await load(plan.id);
+      setMessage("Versi dipulihkan dengan menjaga kegiatan terlindungi.");
+    });
+  }
+  const editorPanel = (
     <>
-      <div className="section-title">
-        <div>
-          <h1>Rencana Belajar</h1>
-          <p>
-            Rencana adalah teman, bukan beban. Tinjau setiap perubahan sebelum
-            diterapkan.
-          </p>
-        </div>
-        {plan && <span className="pill">Versi {plan.version}</span>}
-      </div>
-      {message && (
-        <p role="status" className="success">
-          {message}
-        </p>
-      )}
-      <section>
-        <h2>{plan ? "Sesuaikan langkah berikutnya" : "Buat rencana ringan"}</h2>
-        {plans.length > 1 && (
-          <label>
-            Pilih rencana
-            <select
-              value={plan?.id}
-              onChange={(e) => run(() => load(e.target.value))}
-            >
-              {plans.map((p) => (
-                <option key={p.id} value={p.id}>
-                  Rencana {p.id.slice(0, 8)} • versi {p.version}
-                </option>
-              ))}
-            </select>
-          </label>
-        )}
-        <div className="form-grid">
-          <label>
-            Materi
-            <select
-              value={material}
-              onChange={(e) => setMaterial(e.target.value)}
-            >
-              {materials.map((m) => (
-                <option key={m.id} value={m.id}>
-                  {m.title}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Waktu mulai
-            <input
-              type="datetime-local"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
-          </label>
-        </div>
-        <p>
-          Waktu harian tersedia: {plan?.daily_minutes || profile.daily_minutes}{" "}
-          menit. Zona rencana: {plan?.timezone || profile.timezone}. Waktu isian
-          mengikuti perangkatmu.
-        </p>
-        <div className="actions">
-          {!plan ? (
-            <button disabled={busy || !date || !material} onClick={suggest}>
-              Susun usulan awal
-            </button>
-          ) : (
-            <>
-              <button
-                disabled={busy}
-                onClick={() => {
-                  setActivities(plan.activities.map((a) => ({ ...a })));
-                  setMessage(
-                    "Edit kegiatan yang belum berjalan, lalu buat usulan.",
-                  );
-                }}
-              >
-                Edit rencana manual
-              </button>
-              <button disabled={busy || !date || !material} onClick={recompute}>
-                Minta saran dari hasil belajar
-              </button>
-              <button disabled={busy} onClick={() => run(() => load(plan.id))}>
-                Perbarui rencana
-              </button>
-            </>
-          )}
-        </div>
-        <details>
-          <summary>Tambah kegiatan sendiri</summary>
-          <label>
-            Judul
-            <input
-              value={title}
-              maxLength={160}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </label>
-          <label>
-            Durasi (menit)
-            <input
-              type="number"
-              min={1}
-              max={240}
-              value={duration}
-              onChange={(e) => setDuration(+e.target.value)}
-            />
-          </label>
-          <button disabled={!date || !title.trim()} onClick={addManual}>
-            Tambahkan ke draf
-          </button>
-        </details>
-      </section>
+      {" "}
       {activities && (
         <section>
           <h2>Tinjau draf kegiatan</h2>
@@ -330,92 +238,11 @@ export function Planner({
           </div>
         </section>
       )}
-      {plan && (
-        <section>
-          <h2>Rencana aktif</h2>
-          {plan.activities.length === 0 && (
-            <p>Belum ada kegiatan. Tambahkan satu langkah kecil lewat draf.</p>
-          )}
-          {plan.activities.map((a) => (
-            <div className={`schedule status-${a.status}`} key={a.id}>
-              <div>
-                <span className="pill">
-                  {
-                    (
-                      {
-                        pending: "Siap dijalani",
-                        active: "Sedang berjalan",
-                        completed: "Selesai",
-                        skipped: "Dilewati",
-                      } as Record<string, string>
-                    )[a.status]
-                  }
-                </span>
-                <h3>{a.title}</h3>
-                <p>
-                  {new Date(a.start_at).toLocaleString("id-ID", {
-                    timeZone: plan.timezone,
-                  })}{" "}
-                  • {a.duration_minutes} menit
-                </p>
-              </div>
-              <div className="actions">
-                {a.material_id && (
-                  <button
-                    disabled={busy}
-                    onClick={() => {
-                      const m = materials.find((m) => m.id === a.material_id);
-                      if (m) start(m, undefined, a.concept_id || undefined);
-                    }}
-                  >
-                    Buka materi
-                  </button>
-                )}
-                {a.status === "pending" && (
-                  <>
-                    <button disabled={busy} onClick={() => status(a, "active")}>
-                      Mulai kegiatan
-                    </button>
-                    <button
-                      disabled={busy}
-                      onClick={() => status(a, "skipped")}
-                    >
-                      Lewati
-                    </button>
-                  </>
-                )}
-                {a.status === "active" && (
-                  <button
-                    disabled={busy}
-                    onClick={() => status(a, "completed")}
-                  >
-                    Tandai selesai
-                  </button>
-                )}
-              </div>
-            </div>
-          ))}
-        </section>
-      )}
-      {proposal && (
-        <ProposalCard
-          proposal={proposal}
-          busy={busy}
-          accept={() => decide("accept")}
-          dismiss={() => decide("dismiss")}
-        />
-      )}
-      {plan?.proposals
-        ?.filter((p) => p.status === "pending" && p.id !== proposal?.id)
-        .map((p) => (
-          <ProposalCard
-            key={p.id}
-            proposal={p}
-            busy={busy}
-            accept={() => decide("accept", p)}
-            dismiss={() => decide("dismiss", p)}
-          />
-        ))}
+    </>
+  );
+  const historyPanel = (
+    <>
+      {" "}
       {plan && (
         <section>
           <h2>Riwayat versi</h2>
@@ -453,52 +280,82 @@ export function Planner({
       )}
     </>
   );
-}
-function ProposalCard({
-  proposal,
-  busy,
-  accept,
-  dismiss,
-}: {
-  proposal: Proposal;
-  busy: boolean;
-  accept: () => void;
-  dismiss: () => void;
-}) {
+  if (plan && proposal)
+    return (
+      <>
+        <p role="status" className="success">
+          {message}
+        </p>
+        <ProposalDesign
+          plan={plan}
+          proposal={proposal}
+          busy={busy}
+          onAccept={() => decide("accept")}
+          onDismiss={() => decide("dismiss")}
+          onBack={() => run(() => load(plan.id))}
+          onEdit={() => {
+            setActivities(proposal.activities.map((a) => ({ ...a })));
+            setProposal(null);
+          }}
+          onRestore={restore}
+          onRefresh={() =>
+            run(async () => setDetail(await api<Plan>(`/plans/${plan.id}`)))
+          }
+        />
+      </>
+    );
   return (
-    <section className="proposal">
-      <span className="pill">USULAN • BELUM DITERAPKAN</span>
-      <h2>Rencana bisa menyesuaikanmu</h2>
-      <p>{proposal.reason}</p>
-      {proposal.changes.map((c) => (
-        <div className="change" key={c.activity_id}>
-          <h3>{c.after?.title || c.before?.title}</h3>
-          <p>
-            Sebelum:{" "}
-            {c.before
-              ? `${new Date(c.before.start_at).toLocaleString("id-ID")} • ${c.before.duration_minutes} menit`
-              : "Belum ada"}
-          </p>
-          <p>
-            Sesudah:{" "}
-            {c.after
-              ? `${new Date(c.after.start_at).toLocaleString("id-ID")} • ${c.after.duration_minutes} menit`
-              : "Dihapus dari rencana"}
-          </p>
-        </div>
-      ))}
-      {proposal.changes.length === 0 && <p>Tidak ada perubahan jadwal.</p>}
-      <div className="actions">
-        <button className="primary" disabled={busy} onClick={accept}>
-          Terima perubahan
-        </button>
-        <button disabled={busy} onClick={dismiss}>
-          Nanti dulu
-        </button>
-      </div>
-    </section>
+    <>
+      {message && (
+        <p role="status" className="success">
+          {message}
+        </p>
+      )}
+      <PlanDesign
+        key={plan?.id || "new"}
+        plans={plans}
+        plan={plan}
+        materials={materials}
+        profile={profile}
+        busy={busy}
+        date={date}
+        materialId={material}
+        title={title}
+        duration={duration}
+        setDate={setDate}
+        setMaterialId={setMaterial}
+        setTitle={setTitle}
+        setDuration={setDuration}
+        onSelectPlan={(id) => run(() => load(id))}
+        onSuggest={suggest}
+        onRecompute={recompute}
+        onEdit={() => {
+          if (plan) setActivities(plan.activities.map((a) => ({ ...a })));
+        }}
+        onAddManual={addManual}
+        onSave={plan ? propose : create}
+        onRefresh={() =>
+          run(async () => {
+            await refresh();
+            if (plan) await load(plan.id);
+          })
+        }
+        onReview={setProposal}
+        onOpen={(a) => {
+          const m = materials.find((m) => m.id === a.material_id);
+          if (m) start(m, undefined, a.concept_id || undefined);
+        }}
+        onStatus={status}
+        onMaterials={onMaterials}
+        onBack={onBack}
+        editor={editorPanel}
+        history={historyPanel}
+        hasDraft={activities !== null}
+      />
+    </>
   );
 }
+
 function localDate(value: string) {
   const d = new Date(value);
   return new Date(d.getTime() - d.getTimezoneOffset() * 60000)

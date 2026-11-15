@@ -280,6 +280,75 @@
 .stitch-screen section:empty {
   display: none;
 }
+.stitch-reader .reference-reading p {
+  font-size: inherit !important;
+  line-height: inherit !important;
+  letter-spacing: inherit !important;
+  font-family: inherit !important;
+}
+.stitch-reader .reference-ruler p:hover,
+.stitch-reader .reference-ruler p:focus {
+  background: #d1e8df;
+  box-shadow: 0 2px 0 #91af87;
+}
+.stitch-reader :where(label) {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  gap: 8px;
+}
+.stitch-shell:has(.stitch-reader[data-zen="true"]) > aside,
+.stitch-shell:has(.stitch-reader[data-zen="true"]) .stitch-workspace > header {
+  display: none;
+}
+.stitch-shell:has(.stitch-reader[data-zen="true"]) .stitch-workspace {
+  padding-left: 0 !important;
+}
+.stitch-shell:has(.stitch-reader[data-zen="true"]) .stitch-main {
+  padding-top: 24px !important;
+}
+.stitch-quiz label {
+  margin: 0;
+  gap: 16px;
+  background: white;
+}
+.stitch-quiz label[data-selected="true"] {
+  background: #c8e8ce66;
+}
+.stitch-quiz label:focus-within {
+  outline: 3px solid #3b4c9b;
+  outline-offset: 3px;
+}
+.stitch-settings :where(label) {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  align-items: stretch;
+  justify-content: initial;
+  gap: 8px;
+}
+.stitch-settings label:has(input[type="checkbox"]),
+.stitch-settings label:has(input[type="radio"]) {
+  align-items: center;
+}
+.stitch-settings input[type="range"] {
+  max-width: 100%;
+}
+.stitch-settings button[aria-pressed="true"] {
+  box-shadow: inset 0 0 0 2px #45654b;
+}
+.stitch-settings section {
+  scroll-margin-top: 90px;
+}
+.high-contrast
+  .stitch-shell
+  :is(.text-text-secondary, .text-secondary, .text-on-surface-variant) {
+  color: #101a16 !important;
+}
+[hidden] {
+  display: none !important;
+}
 @tailwind utilities;
 @media (max-width: 1023px) {
   .stitch-shell > aside {
@@ -346,5 +415,28 @@
   }
   .stitch-footer span {
     display: none;
+  }
+}
+
+@media print {
+  .stitch-shell > aside,
+  .stitch-workspace > header,
+  .stitch-footer,
+  .stitch-screen button,
+  .stitch-screen nav {
+    display: none !important;
+  }
+  .stitch-shell .stitch-workspace {
+    padding-left: 0 !important;
+  }
+  .stitch-shell .stitch-main {
+    padding: 0 !important;
+  }
+  .stitch-screen {
+    color: black;
+    background: white;
+  }
+  .stitch-screen section {
+    break-inside: avoid;
   }
 }
