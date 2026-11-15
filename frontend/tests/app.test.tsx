@@ -50,7 +50,7 @@ it("saves the complete editable profile while excluding server-owned fields", as
   );
   render(<Home />);
   await userEvent.click(
-    await screen.findByRole("link", { name: "Mulai belajar" }),
+    await screen.findByRole("link", { name: "Mulai Sekarang (Demo Manda)" }),
   );
   await screen.findByRole("navigation");
   await userEvent.click(
@@ -90,13 +90,15 @@ it("menampilkan landing meski sesi tersimpan dan tidak memaksa onboarding yang b
   render(<Home />);
   expect(
     await screen.findByRole("heading", {
-      name: "Setiap orang punya cara belajarnya sendiri.",
+      name: /Belajar Santai, Pakai Caramu Sendiri/,
     }),
   ).toBeTruthy();
   expect(
     screen.queryByRole("button", { name: "Atur preferensi belajar" }),
   ).toBeNull();
-  await userEvent.click(screen.getByRole("link", { name: "Mulai belajar" }));
+  await userEvent.click(
+    screen.getByRole("link", { name: "Mulai Sekarang (Demo Manda)" }),
+  );
   expect(
     await screen.findByRole("button", { name: "Atur preferensi belajar" }),
   ).toBeTruthy();

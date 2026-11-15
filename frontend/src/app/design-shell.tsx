@@ -27,7 +27,7 @@ export function DesignShell({
             <Image
               alt="TemanBelajar"
               className="stitch-logo"
-              src="/design/logo.png"
+              src="/design/logo-revamp.png"
               width={640}
               height={240}
             />
