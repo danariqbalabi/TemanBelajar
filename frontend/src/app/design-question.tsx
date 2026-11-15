@@ -71,673 +71,358 @@ export function QuestionDesign({
     persist(scratch, i);
   }
   return (
-    <div className="stitch-screen stitch-quiz">
-      {answered && (
-        <section
-          className="p-space-lg rounded-2xl bg-secondary-container/50 mb-space-lg"
-          role="status"
-        >
-          <h2 className="font-section-title text-section-title text-primary">
-            {attempt.answers[question.id]?.correct
-              ? "Pemahamanmu sudah tepat."
-              : "Belum tepat, kita pahami bareng."}
-          </h2>
-          <p className="font-reading text-reading text-primary mt-space-sm">
-            {question.explanation}
-          </p>
-          <p className="font-label text-label text-secondary mt-space-sm">
-            Jawaban yang tepat: {question.options[question.correct_index ?? 0]}
-          </p>
-          <details className="mt-space-md">
-            <summary className="font-label text-label text-primary">
-              Lihat sumber penjelasan
-            </summary>
-            {material.sources
-              .filter((s) => question.source_ids.includes(s.id))
-              .map((s) => (
-                <p
-                  key={s.id}
-                  className="font-body text-body text-text-secondary mt-space-sm"
-                >
-                  {s.label}: {s.text}
-                </p>
-              ))}
-          </details>
-        </section>
-      )}
-      <div className="flex flex-col w-full">
-        <div className="w-full max-w-[1360px] mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin py-space-xl flex flex-col gap-space-xl">
-          <section className="w-full flex flex-wrap items-center justify-between gap-space-md bg-surface p-space-md rounded-2xl shadow-sm">
-            <div className="flex flex-wrap items-center gap-space-sm sm:gap-space-md">
-              <button
-                className="inline-flex items-center gap-space-xs font-label text-label text-secondary hover:text-primary transition-colors"
-                onClick={onPause}
-              >
-                <span
-                  className="material-symbols-outlined text-[18px]"
-                  aria-hidden="true"
-                >
-                  arrow_back
+    <>
+      <div className="stitch-screen stitch-quiz revamp-screen px-4 py-6 md:px-8">
+        <div className="flex flex-col w-full">
+          <section className="w-full px-margin-mobile md:px-margin-tablet lg:px-margin py-space-sm bg-surface-container-low/70">
+            <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-space-sm">
+              <div className="flex items-center gap-space-sm">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-primary text-xs font-bold font-label tracking-wide">
+                  <span className="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                  {`Latihan Pemahaman • Soal ${attempt.question_ids.indexOf(question.id) + 1} dari ${attempt.questions.length}`}
                 </span>
-                <span>Ringkasan Materi Bab 4</span>
-              </button>
-              <span className="w-1.5 h-1.5 rounded-full bg-outline-variant hidden sm:inline-block"></span>
-              <span className="font-metadata text-metadata text-on-surface-variant font-semibold">
-                {material.title}
-              </span>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-fixed text-xs font-label font-bold">
-                <span className="w-2 h-2 rounded-full bg-success animate-pulse"></span>
-                <span>Sesi Latihan Mandiri • Bebas Tekanan Waktu</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-space-xs sm:gap-space-sm ml-auto">
-              <button
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-label text-xs transition-colors"
-                type="button"
-                disabled={busy}
-                onClick={() =>
-                  onSpeak(question.prompt + " " + question.options.join(". "))
-                }
-              >
-                <span
-                  className="material-symbols-outlined text-[16px] text-primary"
-                  aria-hidden="true"
-                >
-                  volume_up
-                </span>
-                <span className="hidden sm:inline">Bacakan Soal</span>
-              </button>
-              <div className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-surface-container text-text-secondary font-label text-xs">
-                <span
-                  className="material-symbols-outlined text-[16px] text-secondary"
-                  aria-hidden="true"
-                >
-                  hourglass_disabled
-                </span>
-                <span>Timer Nonaktif</span>
-              </div>
-            </div>
-          </section>
-
-          <section className="w-full bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-md">
-            <div className="flex flex-wrap items-center justify-between gap-space-xs">
-              <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-0.5 rounded-md bg-primary text-on-primary font-label text-xs uppercase tracking-wider">
-                    {`Langkah ${attempt.question_ids.indexOf(question.id) + 1}/${attempt.questions.length}`}
+                <span className="hidden sm:inline-flex items-center gap-1 text-xs font-label text-text-secondary bg-surface px-2.5 py-1 rounded-full shadow-sm">
+                  <span
+                    className="material-symbols-outlined text-[15px] text-secondary"
+                    aria-hidden="true"
+                  >
+                    self_improvement
                   </span>
-                  <span className="font-metadata text-metadata text-text-secondary">
-                    {
-                      material.concepts.find(
-                        (c) => c.id === question.concept_id,
-                      )?.title
-                    }
-                  </span>
-                </div>
-                <h1 className="font-section-title text-section-title text-primary mt-1">{`Soal ${attempt.question_ids.indexOf(question.id) + 1}: ${material.title}`}</h1>
+                  Ritme Santai: Tanpa Batas Waktu
+                </span>
               </div>
-              <div className="flex items-center gap-2 bg-surface-container px-3 py-1.5 rounded-full">
-                <span
-                  className="material-symbols-outlined text-secondary text-[18px]"
-                  aria-hidden="true"
+              <div className="flex items-center gap-space-xs">
+                <button
+                  className="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-surface hover:bg-surface-container text-xs font-label font-semibold text-primary shadow-sm transition-transform active:scale-95"
+                  title="Aksesibilitas Kontras & Font"
+                  type="button"
+                  onClick={() => setHints(!hints)}
+                  disabled={busy}
                 >
-                  psychology
-                </span>
-                <span className="font-metadata text-metadata font-bold text-primary">
-                  Latihan Pemahaman Konsep
-                </span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2 w-full pt-1">
-              <div className="h-2 rounded-full bg-primary relative overflow-hidden">
-                <div className="absolute inset-0 bg-secondary-fixed opacity-40"></div>
-              </div>
-              <div className="h-2 rounded-full bg-surface-container-highest"></div>
-            </div>
-          </section>
-
-          <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
-            <div className="lg:col-span-8 flex flex-col gap-space-lg">
-              <article className="bg-surface p-space-lg md:p-space-xl rounded-2xl shadow-sm flex flex-col gap-space-lg">
-                <div className="flex flex-wrap items-center justify-between gap-space-xs pb-1">
-                  <span className="font-label text-label tracking-wide uppercase text-secondary font-bold flex items-center gap-1.5">
-                    <span
-                      className="material-symbols-outlined text-[18px]"
-                      aria-hidden="true"
-                    >
-                      home_repair_service
-                    </span>
-                    Kasus Nyata 1 • Analogi Tangga Rumah
+                  <span
+                    className="material-symbols-outlined text-[16px] text-secondary"
+                    aria-hidden="true"
+                  >
+                    visibility
                   </span>
-                  <span className="text-xs font-metadata text-muted-gray bg-surface-container-low px-2.5 py-1 rounded-full">
-                    {
-                      material.concepts.find(
-                        (c) => c.id === question.concept_id,
-                      )?.title
-                    }
-                  </span>
-                </div>
-
-                <p className="font-reading text-reading text-on-surface leading-relaxed">
-                  {question.prompt}
-                </p>
-
-                <div className="bg-surface-container-low rounded-xl p-space-lg flex flex-col items-center justify-center relative overflow-hidden">
-                  <div className="w-full max-w-md flex flex-col items-center">
-                    <div className="relative w-full aspect-[16/10] max-h-56 flex items-center justify-center">
-                      {question.id === "pythagoras-1" ? (
-                        <svg
-                          className="w-full h-full drop-shadow-sm select-none"
-                          fill="none"
-                          viewBox="0 0 400 240"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <line
-                            stroke="#c2c8c4"
-                            strokeDasharray="4 4"
-                            strokeLinecap="round"
-                            strokeWidth="2"
-                            x1="40"
-                            x2="360"
-                            y1="200"
-                            y2="200"
-                          ></line>
-                          <line
-                            stroke="#c2c8c4"
-                            strokeDasharray="4 4"
-                            strokeLinecap="round"
-                            strokeWidth="2"
-                            x1="80"
-                            x2="80"
-                            y1="20"
-                            y2="210"
-                          ></line>
-
-                          <polygon
-                            fill="#c8e8ce"
-                            fillOpacity="0.45"
-                            points="80,50 80,200 280,200"
-                          ></polygon>
-
-                          <rect
-                            fill="#faf9f4"
-                            height="24"
-                            width="24"
-                            x="80"
-                            y="176"
-                          ></rect>
-                          <path
-                            d="M 80 176 L 104 176 L 104 200"
-                            fill="none"
-                            stroke="#112520"
-                            strokeWidth="2.5"
-                          ></path>
-                          <circle
-                            cx="92"
-                            cy="188"
-                            fill="#112520"
-                            r="2.5"
-                          ></circle>
-
-                          <line
-                            stroke="#112520"
-                            strokeLinecap="round"
-                            strokeWidth="4"
-                            x1="80"
-                            x2="80"
-                            y1="50"
-                            y2="200"
-                          ></line>
-
-                          <line
-                            stroke="#112520"
-                            strokeLinecap="round"
-                            strokeWidth="4"
-                            x1="80"
-                            x2="280"
-                            y1="200"
-                            y2="200"
-                          ></line>
-
-                          <line
-                            stroke="#496550"
-                            strokeDasharray="8 6"
-                            strokeLinecap="round"
-                            strokeWidth="5"
-                            x1="80"
-                            x2="280"
-                            y1="50"
-                            y2="200"
-                          ></line>
-
-                          <circle cx="80" cy="50" fill="#112520" r="6"></circle>
-                          <circle
-                            cx="80"
-                            cy="200"
-                            fill="#112520"
-                            r="6"
-                          ></circle>
-                          <circle
-                            cx="280"
-                            cy="200"
-                            fill="#112520"
-                            r="6"
-                          ></circle>
-
-                          <rect
-                            fill="#112520"
-                            height="26"
-                            rx="6"
-                            width="50"
-                            x="22"
-                            y="112"
-                          ></rect>
-                          <text
-                            fill="#ffffff"
-                            fontFamily="Plus Jakarta Sans"
-                            fontSize="12"
-                            fontWeight="700"
-                            textAnchor="middle"
-                            x="47"
-                            y="129"
-                          >
-                            b = 3 m
-                          </text>
-
-                          <rect
-                            fill="#112520"
-                            height="26"
-                            rx="6"
-                            width="52"
-                            x="156"
-                            y="208"
-                          ></rect>
-                          <text
-                            fill="#ffffff"
-                            fontFamily="Plus Jakarta Sans"
-                            fontSize="12"
-                            fontWeight="700"
-                            textAnchor="middle"
-                            x="182"
-                            y="225"
-                          >
-                            a = 4 m
-                          </text>
-
-                          <rect
-                            fill="#c8e8ce"
-                            height="30"
-                            rx="8"
-                            width="94"
-                            x="195"
-                            y="100"
-                          ></rect>
-                          <text
-                            fill="#052011"
-                            fontFamily="Plus Jakarta Sans"
-                            fontSize="13"
-                            fontWeight="800"
-                            textAnchor="middle"
-                            x="242"
-                            y="120"
-                          >
-                            Tangga: c = ?
-                          </text>
-                        </svg>
-                      ) : (
-                        <div className="p-space-lg rounded-2xl bg-surface-container-low text-center">
-                          <span
-                            aria-hidden="true"
-                            className="material-symbols-outlined text-[64px] text-secondary"
-                          >
-                            school
-                          </span>
-                          <p className="font-metadata text-metadata text-text-secondary mt-space-sm">
-                            {
-                              material.concepts.find(
-                                (c) => c.id === question.concept_id,
-                              )?.title
-                            }
-                          </p>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="mt-2 text-center flex items-center gap-1.5 text-xs text-text-secondary bg-surface px-3 py-1.5 rounded-full shadow-sm">
-                      <span
-                        className="material-symbols-outlined text-[16px] text-secondary"
-                        aria-hidden="true"
-                      >
-                        visibility
-                      </span>
-                      <span>
-                        Diagram: Segitiga siku-siku dengan alas{" "}
-                        <span className="font-bold text-on-surface">
-                          a = 4 m
-                        </span>
-                        , tinggi dinding{" "}
-                        <span className="font-bold text-on-surface">
-                          b = 3 m
-                        </span>
-                        , dan tangga miring{" "}
-                        <span className="font-bold text-on-surface">c</span>.
-                      </span>
-                    </div>
+                  <span className="hidden md:inline">Mode Nyaman Mata</span>
+                </button>
+                <div className="flex items-center gap-1 text-xs text-text-secondary pl-2">
+                  <span>Progres:</span>
+                  <div className="w-16 h-2 rounded-full bg-surface-container overflow-hidden">
+                    <div className="w-1/2 h-full bg-secondary rounded-full transition-all duration-300"></div>
                   </div>
+                  <span className="font-bold text-primary">50%</span>
+                </div>
+              </div>
+            </div>
+          </section>
 
-                  <div className="w-full mt-4 flex flex-col items-center">
-                    <button
-                      className="inline-flex items-center gap-1.5 text-xs font-label text-primary hover:text-secondary bg-surface hover:bg-surface-container py-1.5 px-3 rounded-full transition-colors"
-                      type="button"
-                      disabled={busy}
-                      onClick={() => setHints(!hints)}
-                      aria-expanded={hints}
-                    >
+          <section className="w-full px-margin-mobile md:px-margin-tablet lg:px-margin py-space-md lg:py-space-lg">
+            <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+              <main className="lg:col-span-7 flex flex-col gap-space-md">
+                <article className="bg-surface rounded-xl p-space-md md:p-space-lg shadow-sm relative overflow-hidden">
+                  <div className="absolute -right-12 -top-12 w-32 h-32 rounded-full bg-secondary-container/20 blur-2xl pointer-events-none"></div>
+
+                  <div className="flex items-center justify-between gap-space-xs mb-space-sm flex-wrap">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-peach/30 text-primary text-xs font-bold font-label">
                       <span
-                        className="material-symbols-outlined text-[16px] text-warning"
+                        className="material-symbols-outlined text-[15px] text-secondary"
                         aria-hidden="true"
                       >
                         lightbulb
                       </span>
-                      <span>Butuh petunjuk awal? Buka rumus bantu</span>
-                      <span
-                        className="material-symbols-outlined text-[16px]"
-                        aria-hidden="true"
-                      >
-                        expand_more
-                      </span>
-                    </button>
-                    <div
-                      className={
-                        hints
-                          ? "p-space-md rounded-xl bg-secondary-container/40 mt-space-sm"
-                          : "hidden"
-                      }
-                      id="hint-box"
-                    >
-                      <h3 className="font-label text-label text-primary">
-                        Petunjuk dari sumber materi
-                      </h3>
-                      {material.sources
-                        .filter((s) => question.source_ids.includes(s.id))
-                        .map((s) => (
-                          <p
-                            key={s.id}
-                            className="font-body text-body text-text-secondary mt-space-sm"
-                          >
-                            {s.text}
-                          </p>
-                        ))}
-                    </div>
+                      {material.title}
+                    </span>
+                    <span className="text-xs font-metadata text-text-secondary">{`${displayName}, ambil waktu yang kamu butuhkan.`}</span>
                   </div>
-                </div>
 
-                <fieldset className="flex flex-col gap-space-md mt-space-xs">
-                  <legend className="font-label text-label text-primary">
-                    Pilih satu jawaban
-                  </legend>
-                  {question.options.map((option, i) => (
-                    <label
-                      key={i}
-                      data-selected={
-                        (answered
-                          ? attempt.answers[question.id]?.selected_index
-                          : choice) === i
-                      }
-                      className="relative flex items-start gap-space-md p-space-md rounded-2xl cursor-pointer shadow-sm hover:shadow-md transition-all"
-                    >
-                      <input
-                        type="radio"
-                        aria-label={option}
-                        name={"answer-" + question.id}
-                        checked={
-                          (answered
-                            ? attempt.answers[question.id]?.selected_index
-                            : choice) === i
-                        }
-                        disabled={busy || answered}
-                        onChange={() => select(i)}
-                        className="sr-only"
-                      />
+                  <h1 className="text-card-title md:text-section-title font-page-title text-primary font-bold mb-space-md leading-snug">
+                    {question.prompt}
+                  </h1>
+
+                  <div className="w-full rounded-xl bg-surface-container-low p-space-md md:p-space-lg flex flex-col items-center justify-center relative mb-space-md">
+                    <span className="text-xs font-metadata text-text-secondary mb-2 flex items-center gap-1">
                       <span
+                        className="material-symbols-outlined text-[14px]"
                         aria-hidden="true"
-                        className="material-symbols-outlined text-[24px] text-secondary"
                       >
-                        {(answered
-                          ? attempt.answers[question.id]?.selected_index
-                          : choice) === i
-                          ? "radio_button_checked"
-                          : "radio_button_unchecked"}
+                        architecture
                       </span>
-                      <span className="font-reading text-reading text-primary">
-                        {option}
-                      </span>
-                    </label>
-                  ))}
-                </fieldset>
-              </article>
+                      Diagram Geometri: Segitiga Siku-Siku ABC
+                    </span>
 
-              <div className="bg-surface-container-lowest p-space-md rounded-xl flex items-center justify-between text-xs font-metadata text-on-surface-variant">
-                <div className="flex items-center gap-2">
-                  <span
-                    className="material-symbols-outlined text-success text-[18px]"
-                    aria-hidden="true"
+                    <div className="w-full max-w-sm aspect-[4/3] flex items-center justify-center"></div>
+                    <p className="text-xs font-metadata text-text-secondary text-center mt-1">
+                      Garis putus-putus menunjukkan sisi yang persis{" "}
+                      <strong className="text-primary">
+                        berhadapan langsung
+                      </strong>{" "}
+                      dengan sudut 90°.
+                    </p>
+                  </div>
+
+                  <fieldset
+                    aria-label="Pilihan Jawaban Soal Hipotenusa"
+                    className="flex flex-col gap-space-sm"
+                    id="mcq-options"
                   >
-                    cloud_done
-                  </span>
-                  <span>
-                    Jawaban tersimpan otomatis di perangkatmu (Draft aman)
-                  </span>
-                </div>
-                <button
-                  className="text-primary hover:text-secondary underline font-semibold"
-                  type="button"
-                  disabled={busy || answered}
-                  onClick={() => onChoice(null)}
-                >
-                  Batal Pilih / Reset Opsi
-                </button>
-              </div>
-            </div>
+                    <legend className="font-semibold text-primary mb-4">
+                      Pilih salah satu jawaban
+                    </legend>
+                    {question.options.map((option, i) => (
+                      <label
+                        key={i}
+                        data-selected={choice === i}
+                        className="flex items-center gap-4 p-4 rounded-xl border border-divider cursor-pointer"
+                      >
+                        <input
+                          type="radio"
+                          name="jawaban"
+                          aria-label={option}
+                          checked={choice === i}
+                          disabled={busy || answered}
+                          onChange={() => select(i)}
+                        />
+                        <span>
+                          {String.fromCharCode(65 + i)}. {option}
+                        </span>
+                      </label>
+                    ))}
+                  </fieldset>
+                </article>
+              </main>
 
-            <aside className="lg:col-span-4 flex flex-col gap-space-lg">
-              <div className="bg-surface p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-md relative overflow-hidden">
-                <div className="flex items-center gap-space-sm pb-1">
-                  <div className="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-primary">
-                    <span
-                      className="material-symbols-outlined text-[20px]"
-                      aria-hidden="true"
-                    >
-                      cruelty_free
+              <aside className="lg:col-span-5 flex flex-col gap-space-md">
+                <div className="bg-surface rounded-xl p-space-md md:p-space-lg shadow-sm flex flex-col items-center text-center relative overflow-hidden">
+                  <div className="w-full flex items-center justify-between mb-space-sm">
+                    <span className="inline-flex items-center gap-1 text-xs font-label text-secondary font-bold bg-secondary-container px-2.5 py-1 rounded-full">
+                      <span
+                        className="material-symbols-outlined text-[15px]"
+                        aria-hidden="true"
+                      >
+                        favorite
+                      </span>{" "}
+                      Teman Belajarmu
+                    </span>
+                    <span className="text-xs font-metadata text-text-secondary">
+                      Mimo si Bunglon
                     </span>
                   </div>
-                  <div>
-                    <h2 className="font-label text-label text-primary font-bold">
-                      Mimo si Teman Belajar
-                    </h2>
-                    <span className="font-metadata text-metadata text-text-secondary text-xs">
-                      {material.subject}
-                    </span>
-                  </div>
-                </div>
 
-                <div className="w-full flex justify-center py-2">
-                  <div className="relative w-44 h-44 rounded-2xl bg-surface-container-low flex items-center justify-center overflow-hidden p-2">
+                  <div className="relative w-36 h-36 md:w-44 md:h-44 my-space-xs flex items-center justify-center overflow-hidden rounded-2xl bg-secondary-container/20 p-2">
                     <Image
-                      className="w-full h-full object-contain"
-                      data-alt="An adorable, friendly green chameleon mascot named Mimo with soft pastel colors, sitting cheerfully on a neat stack of colorful storybooks. Clean hand-drawn picture-book editorial zine illustration style, warm cream background, high contrast lines, inspiring confidence and calm studying vibe."
-                      src="/design/mimo.png"
+                      alt="Mimo si bunglon ramah menyemangati belajar"
+                      className="w-full h-full object-contain relative z-10 transition-transform duration-300 hover:scale-105 rounded-xl"
+                      src="/design/mimo-5.png"
                       width={1024}
                       height={1024}
-                      alt="Mimo, teman belajarmu"
-                    />
+                    ></Image>
                   </div>
-                </div>
 
-                <div className="relative bg-secondary-container/50 p-space-md rounded-2xl">
-                  <div className="absolute -top-2 left-10 w-4 h-4 bg-secondary-container/50 rotate-45 transform"></div>
-                  <p className="font-mimo-voice text-mimo-voice text-on-surface text-sm leading-snug">{`Santai aja, ${displayName}. Latihan ini membantu memilih langkah berikutnya, tanpa penalti saat mencoba lagi.`}</p>
-                </div>
-                <div className="flex items-center gap-2 pt-1">
-                  <span className="px-2.5 py-1 rounded-full bg-surface-container text-primary font-metadata text-xs font-semibold flex items-center gap-1">
-                    <span
-                      className="material-symbols-outlined text-[14px] text-success"
-                      aria-hidden="true"
-                    >
-                      sentiment_very_satisfied
-                    </span>
-                    Bebas Cemas
-                  </span>
-                  <span className="px-2.5 py-1 rounded-full bg-surface-container text-primary font-metadata text-xs font-semibold flex items-center gap-1">
-                    <span
-                      className="material-symbols-outlined text-[14px] text-secondary"
-                      aria-hidden="true"
-                    >
-                      health_and_safety
-                    </span>
-                    Tanpa Skor Merah
-                  </span>
-                </div>
-              </div>
-
-              <div className="bg-surface p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-md">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-card-title text-card-title text-primary flex items-center gap-2">
-                    <span
-                      className="material-symbols-outlined text-secondary text-[20px]"
-                      aria-hidden="true"
-                    >
-                      construction
-                    </span>
-                    Alat Bantu Belajar
-                  </h3>
-                  <span className="text-xs font-metadata text-muted-gray">
-                    Opsional
-                  </span>
-                </div>
-
-                <div className="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-2">
-                  <div className="flex items-center justify-between text-xs font-label text-primary">
-                    <span className="font-bold flex items-center gap-1">
-                      <span
-                        className="material-symbols-outlined text-[16px]"
-                        aria-hidden="true"
-                      >
-                        edit_note
+                  <div className="w-full bg-surface-container-low rounded-xl p-space-md text-left mt-space-xs relative">
+                    <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-surface-container-low rotate-45"></div>
+                    <p className="font-mimo-voice text-sm md:text-base text-primary leading-relaxed relative z-10">
+                      &quot;Santai aja Manda, pilih jawaban yang menurutmu
+                      paling masuk akal. Latihan ini cuma buat ngecek pemahaman,{" "}
+                      <span className="text-secondary font-extrabold">
+                        bukan ujian bertarget nilai!
                       </span>
-                      Papan Coret-Coretan
-                    </span>
-                    <button
-                      className="text-text-secondary hover:text-primary text-xs"
-                      type="button"
-                      disabled={busy}
-                      onClick={() => scratchChange("")}
-                    >
-                      Bersihkan
-                    </button>
-                  </div>
-                  <textarea
-                    className="w-full bg-surface p-2.5 rounded-lg text-xs font-metadata text-on-surface placeholder:text-muted-gray resize-none focus:outline-none"
-                    placeholder="Ketik hitungan cepatmu di sini... misal: 4^2 = 16, 3^2 = 9..."
-                    rows={3}
-                    value={scratch}
-                    onChange={(e) => scratchChange(e.target.value)}
-                    maxLength={3000}
-                    aria-label="Catatan hitungan latihan"
-                  ></textarea>
-                </div>
-
-                <div className="flex flex-col gap-2 pt-1">
-                  <div className="font-label text-xs uppercase tracking-wider text-text-secondary font-bold">
-                    Kamus Kilat Bab 4
-                  </div>
-                  <div className="p-2.5 rounded-xl bg-surface-container-low flex flex-col gap-1">
-                    <div className="font-label text-xs font-bold text-primary flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                      Hipotenusa:
-                    </div>
-                    <p className="font-metadata text-metadata text-xs text-on-surface-variant leading-relaxed">
-                      {
-                        material.concepts.find(
-                          (c) => c.id === question.concept_id,
-                        )?.paragraphs[0]
-                      }
+                      &quot;
                     </p>
                   </div>
                 </div>
 
-                <div className="pt-2">
-                  <button
-                    className="w-full py-2.5 px-space-md rounded-xl bg-surface hover:bg-surface-container text-primary font-label text-label flex items-center justify-center gap-2 shadow-sm transition-colors"
-                    type="button"
-                    disabled={busy}
-                    onClick={onPause}
-                  >
-                    <span
-                      className="material-symbols-outlined text-[18px]"
-                      aria-hidden="true"
-                    >
-                      pause_circle
-                    </span>
-                    <span>Jeda Latihan &amp; Simpan Status</span>
-                  </button>
+                <div className="bg-surface rounded-xl p-space-md shadow-sm">
+                  <details className="group" open={true}>
+                    <summary className="flex items-center justify-between cursor-pointer list-none select-none">
+                      <div className="flex items-center gap-space-xs">
+                        <div className="w-8 h-8 rounded-lg bg-butter/60 text-primary flex items-center justify-center">
+                          <span
+                            className="material-symbols-outlined text-[18px]"
+                            aria-hidden="true"
+                          >
+                            psychology_alt
+                          </span>
+                        </div>
+                        <div>
+                          <h3 className="font-label text-sm text-primary font-bold">
+                            Bantuan Sensorik Visual
+                          </h3>
+                          <p className="font-metadata text-xs text-text-secondary">
+                            Trik mata dari Mimo
+                          </p>
+                        </div>
+                      </div>
+                      <span
+                        className="material-symbols-outlined text-[20px] text-text-secondary transition-transform group-open:rotate-180"
+                        aria-hidden="true"
+                      >
+                        expand_more
+                      </span>
+                    </summary>
+                    <div className="mt-space-sm pt-space-sm border-t border-divider/60 text-xs md:text-sm font-reading text-on-surface-variant leading-relaxed">
+                      <div className="p-space-sm rounded-lg bg-surface-container-low flex items-start gap-2">
+                        <span
+                          className="material-symbols-outlined text-[18px] text-secondary flex-shrink-0 mt-0.5"
+                          aria-hidden="true"
+                        >
+                          tips_and_updates
+                        </span>
+                        <p>
+                          <strong>Tips dari Mimo:</strong> Ingat trik sudut
+                          siku-siku! Sisi terpanjang (hipotenusa) selalu berada{" "}
+                          <em>di depan matanya langsung</em>, tidak pernah
+                          menyentuh langsung sudut 90°-nya.
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2 mt-space-sm">
+                        <div className="p-2 rounded-lg bg-surface-container text-xs">
+                          <span className="font-bold text-primary block">
+                            Sisi Penyiku:
+                          </span>
+                          <span className="text-text-secondary">
+                            AB &amp; BC (Membentuk huruf L)
+                          </span>
+                        </div>
+                        <div className="p-2 rounded-lg bg-secondary-container/50 text-xs">
+                          <span className="font-bold text-primary block">
+                            {material.title}
+                          </span>
+                          <span className="text-secondary font-semibold">
+                            AC (Sisi miring seberangnya)
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </details>
                 </div>
-              </div>
 
-              <div className="p-space-md rounded-2xl bg-butter/40 flex items-start gap-space-sm">
-                <span
-                  className="material-symbols-outlined text-warning text-[20px] flex-shrink-0 mt-0.5"
-                  aria-hidden="true"
-                >
-                  school
-                </span>
-                <p className="font-metadata text-metadata text-xs text-on-surface leading-relaxed">
-                  {
-                    "Jawabanmu disimpan setelah dikirim. Mimo menggunakan hasil latihan untuk membantu memilih langkah berikutnya."
-                  }
-                </p>
-              </div>
-            </aside>
-          </div>
-
-          <section className="w-full bg-surface p-space-md sm:p-space-lg rounded-2xl shadow-sm flex flex-col sm:flex-row items-center justify-between gap-space-md">
-            <div className="flex items-center gap-space-sm text-text-secondary text-xs sm:text-sm font-metadata">
-              <span
-                className="material-symbols-outlined text-secondary text-[20px]"
-                aria-hidden="true"
-              >
-                check_circle
-              </span>
-              <span>
-                Opsi{" "}
-                <strong className="text-primary font-bold">A (5 meter)</strong>{" "}
-                dipilih • Siap diperiksa
-              </span>
+                <div className="bg-surface-container-low rounded-xl p-space-md flex items-center gap-space-sm">
+                  <span
+                    className="material-symbols-outlined text-[24px] text-secondary flex-shrink-0"
+                    aria-hidden="true"
+                  >
+                    nature_people
+                  </span>
+                  <p className="font-metadata text-xs text-text-secondary leading-normal">
+                    Merasa lelah? Tarik napas sejenak. Kamu bisa menyimpan
+                    progres kapan saja tanpa kehilangan jejak belajar.
+                  </p>
+                </div>
+              </aside>
             </div>
-            <div className="flex items-center gap-space-sm w-full sm:w-auto justify-end">
-              <button
-                className="px-space-md py-3 rounded-xl bg-surface hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-label text-label transition-colors"
-                type="button"
-                disabled={busy}
-                onClick={onPause}
-              >
-                {"Lewati latihan dulu"}
-              </button>
-              <button
-                className="px-space-xl py-3 rounded-xl bg-primary hover:bg-primary-hover text-on-primary font-label text-label font-bold flex items-center gap-2 shadow-sm transition-all transform active:scale-95"
-                type="button"
-                disabled={busy || (!answered && choice === null)}
-                onClick={() => (answered ? onNext() : onAnswer())}
-              >
-                {answered
-                  ? "Pertanyaan berikutnya"
-                  : "Kirim Jawaban & Lihat Penjelasan"}
-              </button>
+          </section>
+
+          <section className="sticky bottom-20 z-30 w-full px-margin-mobile md:px-margin-tablet lg:px-margin py-3 bg-surface/95 backdrop-blur-md shadow-md">
+            <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-space-sm">
+              <div className="flex items-center gap-space-sm w-full sm:w-auto justify-between sm:justify-start">
+                <div className="flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-full bg-secondary"></span>
+                  <span className="font-label text-sm text-primary font-bold">{`Soal ${attempt.question_ids.indexOf(question.id) + 1} dari ${attempt.questions.length}`}</span>
+                </div>
+                <span className="font-metadata text-xs text-text-secondary hidden md:inline">
+                  {choice === null
+                    ? "Belum memilih jawaban"
+                    : `Pilihan ${String.fromCharCode(65 + choice)} dipilih`}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-space-sm w-full sm:w-auto justify-end">
+                <button
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-space-md py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-primary font-label text-xs md:text-sm font-semibold transition-colors active:scale-95"
+                  type="button"
+                  onClick={() => setHints(!hints)}
+                  disabled={busy}
+                >
+                  <span
+                    className="material-symbols-outlined text-[18px]"
+                    aria-hidden="true"
+                  >
+                    help_outline
+                  </span>
+                  <span>Tanya Penjelasan</span>
+                </button>
+                <button
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-space-lg py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-on-primary font-label text-xs md:text-sm font-bold shadow-sm transition-transform active:scale-95"
+                  type="button"
+                  onClick={onAnswer}
+                  disabled={busy}
+                >
+                  <span>Kirim Jawaban &amp; Lihat Hasil</span>
+                  <span
+                    className="material-symbols-outlined text-[18px]"
+                    aria-hidden="true"
+                  >
+                    arrow_forward
+                  </span>
+                </button>
+              </div>
             </div>
           </section>
         </div>
+        <section className="max-w-6xl mx-auto p-6 bg-surface rounded-2xl space-y-4">
+          {hints && (
+            <p>
+              Periksa kembali bacaan dan sumber konsep sebelum memilih. Tidak
+              ada batas waktu.
+            </p>
+          )}
+          <button onClick={() => onSpeak(question.prompt)}>Bacakan soal</button>
+          <label className="block">
+            Coretan latihan
+            <textarea
+              value={scratch}
+              maxLength={3000}
+              onChange={(e) => scratchChange(e.target.value)}
+            />
+          </label>
+          {answered && (
+            <div role="status">
+              <h2>
+                {attempt.answers[question.id]?.correct
+                  ? "Pemahamanmu sudah tepat."
+                  : "Belum tepat, kita pahami bareng."}
+              </h2>
+              <p>{question.explanation}</p>
+              <p>
+                Jawaban yang tepat:{" "}
+                {question.options[question.correct_index ?? 0]}
+              </p>
+              {material.sources
+                .filter((s) => question.source_ids.includes(s.id))
+                .map((s) => (
+                  <p key={s.id}>
+                    {s.label}: {s.text}
+                  </p>
+                ))}
+            </div>
+          )}
+          <div className="flex gap-3 flex-wrap">
+            {!answered ? (
+              <button
+                disabled={busy || choice === null}
+                onClick={onAnswer}
+                className="min-h-[44px] px-5 rounded-xl bg-primary text-surface"
+              >
+                Kirim Jawaban & Lihat Penjelasan
+              </button>
+            ) : (
+              <button
+                disabled={busy}
+                onClick={onNext}
+                className="min-h-[44px] px-5 rounded-xl bg-primary text-surface"
+              >
+                Pertanyaan berikutnya
+              </button>
+            )}
+            <button disabled={busy} onClick={onPause}>
+              Kembali membaca
+            </button>
+          </div>
+        </section>
       </div>
-    </div>
+    </>
   );
 }

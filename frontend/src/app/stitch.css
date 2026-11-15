@@ -495,3 +495,44 @@
     padding: 16px;
   }
 }
+
+.revamp-shell:has(.stitch-reader, .stitch-quiz, .stitch-results)
+  > .revamp-sidebar {
+  display: none;
+}
+.revamp-shell:has(.stitch-reader, .stitch-quiz, .stitch-results)
+  > .revamp-workspace {
+  padding-left: 0;
+}
+.revamp-shell:has(.stitch-reader, .stitch-quiz, .stitch-results)
+  .revamp-topbar {
+  display: none;
+}
+.revamp-shell .stitch-screen :where(button, a, input, select, textarea) {
+  font-family: inherit;
+}
+.revamp-onboarding button[aria-checked="true"],
+.revamp-onboarding button[aria-pressed="true"],
+.stitch-settings button[aria-pressed="true"] {
+  box-shadow: inset 0 0 0 2px #273b35;
+  background-color: #c8e8ce;
+}
+.revamp-onboarding button[aria-checked="false"],
+.revamp-onboarding button[aria-pressed="false"] {
+  box-shadow: none;
+  background-color: #fff;
+}
+.revamp-shell :is(button, a, input, select, textarea):focus-visible {
+  outline: 2px solid #3b4c9b;
+  outline-offset: 2px;
+}
+.revamp-shell .stitch-screen :where(button) {
+  min-height: 44px;
+}
+.stitch-reader .reference-reading {
+  max-width: var(--reader-width, 68ch);
+}
+.stitch-reader .reference-reading p {
+  font-size: inherit !important;
+  line-height: inherit !important;
+}
