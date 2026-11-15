@@ -117,3 +117,12 @@ tidak disalin ke konfigurasi frontend. Opsi Gemini menggunakan kuota API.
 - Target aksesibilitas adalah WCAG 2.2 AA. Audit visual, pembaca layar, dan
   pengujian pengguna masih diperlukan sebelum menyatakan kepatuhan.
 - Deployment belum dilakukan pada tahap implementasi ini.
+
+
+## revamp november 2026
+
+Seluruh kelompok screen 01?24 sudah dipindahkan ke struktur ekspor revamp
+baru. Detail pemetaan dan batas kemampuan ada di [REVAMP.md](REVAMP.md).
+Upload yang berhasil sekarang langsung membuka detail job tanpa memulai AI;
+proses harus dimulai secara eksplisit. Skor, jawaban, progres dan jadwal
+mengikuti respons server. Audit visual masih terhalang browser host.

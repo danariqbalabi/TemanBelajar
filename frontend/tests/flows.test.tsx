@@ -153,7 +153,11 @@ describe("alur belajar", () => {
         onPlanner={() => {}}
       />,
     );
-    expect(await screen.findByText("1 dari 2 Soal Tepat (50%)")).toBeTruthy();
+    expect(
+      await screen.findByRole("heading", {
+        name: /1 dari 2 soal terjawab tepat/,
+      }),
+    ).toBeTruthy();
     expect(
       screen.getByText("Cahaya, bukan air, menjadi sumber energi."),
     ).toBeTruthy();
@@ -295,7 +299,9 @@ describe("alur belajar", () => {
         onPlanner={() => {}}
       />,
     );
-    await userEvent.click(screen.getByText("Coba latihan"));
+    await userEvent.click(
+      screen.getByRole("button", { name: "Latihan pemahaman" }),
+    );
     expect(await screen.findByText("Apa peran cahaya?")).toBeTruthy();
     expect(screen.queryByText("Apa bahan fotosintesis?")).toBeNull();
     await userEvent.click(screen.getByLabelText("Energi"));
@@ -364,7 +370,7 @@ describe("planner yang dapat ditinjau", () => {
     );
     await userEvent.click(screen.getByText("Buat usulan perubahan"));
     expect(
-      await screen.findByRole("button", { name: "Pakai Rencana Ini" }),
+      await screen.findByRole("button", { name: "Pakai Rencana Baru Ini" }),
     ).toBeTruthy();
     expect(request.mock.calls[0][0]).toBe("/plans/plan/proposals");
     expect(
@@ -385,12 +391,10 @@ it("menyimpan sumber terlebih dahulu tanpa memulai AI diam-diam", async () => {
     />,
   );
   await userEvent.click(
-    screen.getByRole("button", { name: "+ Tambah materi" }),
+    screen.getByRole("button", { name: "+ Unggah Materi Baru" }),
   );
-  await userEvent.type(screen.getByLabelText("Judul"), "Catatan IPA");
-  await userEvent.click(
-    screen.getByRole("button", { name: "Tempel Teks Mandiri" }),
-  );
+  await userEvent.type(screen.getByLabelText("Judul materi"), "Catatan IPA");
+  await userEvent.click(screen.getByRole("tab", { name: /Tempel Teks/ }));
   await userEvent.type(
     screen.getByLabelText("Teks materi"),
     "Cahaya menyediakan energi untuk fotosintesis pada daun.",
@@ -403,8 +407,10 @@ it("menyimpan sumber terlebih dahulu tanpa memulai AI diam-diam", async () => {
     error: null,
     material_id: null,
   });
-  await userEvent.click(screen.getByText("Simpan sumber materi"));
-  expect(await screen.findByText("Susun bersama Mimo")).toBeTruthy();
+  await userEvent.click(screen.getByRole("button", { name: "Siapkan materi" }));
+  expect(
+    await screen.findByRole("button", { name: "Mulai pemrosesan" }),
+  ).toBeTruthy();
   expect(
     request.mock.calls.some((c) => String(c[0]).endsWith("/process")),
   ).toBe(false);
@@ -431,7 +437,7 @@ it("menghubungkan katalog, ringkasan, dan mode belajar tanpa membuka format yang
   );
   await userEvent.click(screen.getByRole("button", { name: "Buka Ringkasan" }));
   await userEvent.click(
-    screen.getByRole("button", { name: "Pilih Cara Belajar" }),
+    screen.getAllByRole("button", { name: "Pilih Cara Belajar" })[0],
   );
   const alternatives = screen.getAllByRole("button", {
     name: "Pilih Mode Ini",
@@ -456,17 +462,21 @@ it("onboarding menampilkan pratinjau sebelum menyimpan profil", async () => {
     screen.getByRole("button", { name: "Lanjut ke langkah berikutnya" }),
   );
   const math = screen.getByRole("checkbox", { name: /Matematika/ });
-  expect((math as HTMLInputElement).checked).toBe(false);
+  expect(math.getAttribute("aria-checked")).toBe("false");
   await userEvent.click(math);
-  expect((math as HTMLInputElement).checked).toBe(true);
+  expect(math.getAttribute("aria-checked")).toBe("true");
 
   await userEvent.click(
     screen.getByRole("button", { name: "Lanjut ke langkah berikutnya" }),
   );
-  expect(screen.getByText("Halo, Manda! Rencana awalmu siap.")).toBeTruthy();
+  expect(
+    screen.getByRole("heading", {
+      name: /Hore Manda! Ruang belajarmu sudah siap/,
+    }),
+  ).toBeTruthy();
   expect(save).not.toHaveBeenCalled();
   await userEvent.click(
-    screen.getByRole("button", { name: "Mulai Belajar Sekarang" }),
+    screen.getByRole("button", { name: /Masuk ke Beranda Utama/ }),
   );
   expect(save).toHaveBeenCalledWith(
     expect.objectContaining({
@@ -491,9 +501,7 @@ it("menyimpan preferensi eksplisit dan mempertahankan profil saat tab diganti", 
   );
   await userEvent.click(screen.getByRole("button", { name: "Nunito Ramah" }));
   expect(save).not.toHaveBeenCalled();
-  await userEvent.click(
-    screen.getByRole("checkbox", { name: "Penggaris Baca" }),
-  );
+  await userEvent.click(screen.getByRole("switch", { name: "Penggaris Baca" }));
   await userEvent.click(screen.getByRole("button", { name: "Profil" }));
   const name = screen.getByLabelText("Nama panggilan");
   await userEvent.clear(name);
