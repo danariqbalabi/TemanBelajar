@@ -64,11 +64,16 @@ Pemeriksaan aplikasi juga memastikan field milik server tidak ikut dikirim
 saat profil diedit. Total 11 tes frontend, typecheck, lint, format, dan build
 produksi sudah lolos. Sebanyak 24 tes backend juga tetap lolos.
 
-Pada pemeriksaan 15 november 2026, smoke test layanan nyata belum dapat
-berjalan karena koneksi/DNS Supabase gagal. Push GitHub juga sempat gagal
-karena jaringan. Pemeriksaan visual belum terlaksana karena browser host dan
-runtime computer-use tidak tersedia. Hasil build dan tes komponen tidak
-menggantikan audit browser serta pengujian layanan nyata ini.
+Pemeriksaan ulang 15 november 2026 berhasil menjalankan modul API frontend
+melawan backend lokal, Supabase, dan Gemini nyata. Alur yang lolos mencakup
+SDK auth, profil, katalog, sesi, posisi/catatan, latihan dan retry, progres,
+rekomendasi, usulan/terima perubahan planner, serta unggahan teks sampai
+hasil Gemini tersimpan dan dibaca kembali. Akun tes dan data terkait sudah
+dihapus sesudah pemeriksaan. Commit frontend sudah dipush ke GitHub.
+
+Pemeriksaan visual belum terlaksana karena browser host dan runtime
+computer-use tidak tersedia. Hasil build, tes komponen, dan smoke test API
+tidak menggantikan audit interaksi browser serta pembaca layar.
 
 Untuk smoke test modul API frontend melawan layanan nyata, jalankan backend
 lokal, lalu dari folder `backend`:
