@@ -1,0 +1,442 @@
+﻿@font-face {
+  font-family: "Material Symbols Outlined";
+  font-style: normal;
+  font-weight: 100 700;
+  src: url("/design/symbols.woff2") format("woff2");
+  font-display: block;
+}
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+}
+.stitch-shell {
+  background: #faf9f4;
+  color: #112520;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 16px;
+  line-height: 26px;
+  min-height: 100vh;
+}
+.stitch-shell :where(img, svg) {
+  display: block;
+  vertical-align: middle;
+  max-width: 100%;
+}
+.stitch-shell
+  :where(.stitch-dashboard, .stitch-landing, .stitch-screen)
+  :where(p, h1, h2, h3, h4, figure, section) {
+  margin: 0;
+}
+.stitch-dashboard :where(section) {
+  border: 0;
+}
+.stitch-shell .stitch-dashboard :where(button, a),
+.stitch-shell .stitch-landing :where(button, a) {
+  border: 0;
+  padding: 0;
+  text-decoration: none;
+}
+.stitch-shell
+  :where(.stitch-dashboard, .stitch-landing, .stitch-screen)
+  :where(h1, h2, h3, h4) {
+  font-weight: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  letter-spacing: normal;
+}
+.stitch-shell :where(p) {
+  color: inherit;
+}
+.stitch-shell .stitch-switch {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  display: inline-flex;
+  gap: 0;
+}
+.stitch-main {
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 64px 24px 24px !important;
+}
+.stitch-footer {
+  margin: 0;
+  padding: 16px 24px;
+  background: #f5f4ef;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #505c55;
+}
+.stitch-footer span {
+  font-size: 13px;
+}
+.stitch-logo {
+  width: 208px;
+  height: 60px;
+  object-fit: contain;
+}
+.stitch-reason {
+  border: 0;
+  padding: 28px;
+  border-radius: 20px;
+  max-width: 520px;
+  background: #fff;
+  color: #112520;
+  box-shadow: 0 20px 80px #11252033;
+}
+.stitch-reason::backdrop {
+  background: #11252066;
+  backdrop-filter: blur(4px);
+}
+.stitch-reason h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.stitch-reason p {
+  margin-bottom: 16px;
+}
+.stitch-reason button {
+  background: #112520;
+  color: white;
+  padding: 12px 20px;
+  border: 0;
+  border-radius: 12px;
+}
+.stitch-shell nav {
+  margin: 0;
+}
+.stitch-shell nav button {
+  border: 0;
+  background: transparent;
+  border-radius: 12px;
+}
+.stitch-shell nav button[aria-current="page"] {
+  background: #c8e8ce;
+}
+.stitch-shell .stitch-dashboard .font-section-title {
+  font-weight: 700;
+}
+.stitch-landing main {
+  padding: 80px 0 0;
+  margin: 0;
+  max-width: none;
+}
+.stitch-landing header {
+  padding: 0;
+  height: auto;
+  display: block;
+  background: #ffffffdd;
+}
+.stitch-landing section {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+.stitch-landing :where(p, h1, h2, h3, h4, section) {
+  margin: 0;
+}
+.stitch-landing :where(a, button) {
+  text-decoration: none;
+  border: 0;
+  padding: 0;
+}
+.stitch-landing nav {
+  display: flex;
+  margin: 0;
+}
+.stitch-landing footer {
+  display: block;
+  margin: 0;
+}
+.stitch-landing .stitch-demo-button {
+  position: fixed;
+  bottom: 20px;
+  right: 24px;
+  z-index: 50;
+  background: #112520;
+  color: white;
+  padding: 12px 22px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px #11252020;
+}
+.stitch-landing-error {
+  position: fixed;
+  bottom: 80px;
+  right: 24px;
+  max-width: 360px;
+  z-index: 50;
+  background: #fae7e5;
+  padding: 18px;
+  border-radius: 14px;
+}
+.account-logo {
+  width: 240px;
+  height: 70px;
+  object-fit: contain;
+}
+.welcome .brand {
+  padding-left: 0;
+}
+.mimo-svg {
+  object-fit: contain;
+  border-radius: 16px;
+}
+.stitch-account :where(label) {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  gap: 8px;
+}
+.stitch-account :where(form) {
+  margin: 0;
+}
+.stitch-account :where(input, select) {
+  margin: 0;
+  max-width: 100%;
+}
+.stitch-account main {
+  min-height: 100vh;
+}
+.stitch-onboarding label {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  display: block;
+  gap: 0;
+}
+.stitch-onboarding button[aria-pressed="false"] {
+  background: #f5f4ef !important;
+  color: #505c55 !important;
+  box-shadow: none !important;
+}
+.stitch-onboarding button[aria-pressed="true"] {
+  background: #c8e8ce !important;
+  color: #112520 !important;
+}
+.stitch-onboarding .font-btn[aria-pressed="false"] .material-symbols-outlined {
+  display: none;
+}
+.stitch-onboarding button[role="switch"][aria-checked="false"] {
+  background: #e3e3de !important;
+}
+.stitch-onboarding button[role="switch"][aria-checked="false"] > span {
+  transform: translateX(0) !important;
+}
+.stitch-onboarding button[role="switch"][aria-checked="true"] > span {
+  transform: translateX(24px) !important;
+}
+.stitch-onboarding :where(form) {
+  margin: 0;
+}
+.stitch-onboarding :where(input, select) {
+  max-width: 100%;
+}
+.stitch-landing:not(.stitch-onboarding) button[aria-pressed="true"] {
+  background: #ffffff !important;
+  color: #112520 !important;
+}
+.stitch-landing:not(.stitch-onboarding) button[aria-pressed="false"] {
+  background: transparent !important;
+  color: #505c55 !important;
+}
+.preview-ruler p:hover,
+.preview-ruler p:focus {
+  background: #c8e8ce;
+}
+.stitch-screen :where(section, article, figure) {
+  margin: 0;
+  border: 0;
+}
+.stitch-shell .stitch-screen :where(a, button) {
+  text-decoration: none;
+  border: 0;
+  padding: 0;
+}
+.stitch-screen label.sr-only {
+  padding: 0;
+  margin: 0;
+}
+.stitch-screen section:empty {
+  display: none;
+}
+.stitch-reader .reference-reading p {
+  font-size: inherit !important;
+  line-height: inherit !important;
+  letter-spacing: inherit !important;
+  font-family: inherit !important;
+}
+.stitch-reader .reference-ruler p:hover,
+.stitch-reader .reference-ruler p:focus {
+  background: #d1e8df;
+  box-shadow: 0 2px 0 #91af87;
+}
+.stitch-reader :where(label) {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  gap: 8px;
+}
+.stitch-shell:has(.stitch-reader[data-zen="true"]) > aside,
+.stitch-shell:has(.stitch-reader[data-zen="true"]) .stitch-workspace > header {
+  display: none;
+}
+.stitch-shell:has(.stitch-reader[data-zen="true"]) .stitch-workspace {
+  padding-left: 0 !important;
+}
+.stitch-shell:has(.stitch-reader[data-zen="true"]) .stitch-main {
+  padding-top: 24px !important;
+}
+.stitch-quiz label {
+  margin: 0;
+  gap: 16px;
+  background: white;
+}
+.stitch-quiz label[data-selected="true"] {
+  background: #c8e8ce66;
+}
+.stitch-quiz label:focus-within {
+  outline: 3px solid #3b4c9b;
+  outline-offset: 3px;
+}
+.stitch-settings :where(label) {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  align-items: stretch;
+  justify-content: initial;
+  gap: 8px;
+}
+.stitch-settings label:has(input[type="checkbox"]),
+.stitch-settings label:has(input[type="radio"]) {
+  align-items: center;
+}
+.stitch-settings input[type="range"] {
+  max-width: 100%;
+}
+.stitch-settings button[aria-pressed="true"] {
+  box-shadow: inset 0 0 0 2px #45654b;
+}
+.stitch-settings section {
+  scroll-margin-top: 90px;
+}
+.high-contrast
+  .stitch-shell
+  :is(.text-text-secondary, .text-secondary, .text-on-surface-variant) {
+  color: #101a16 !important;
+}
+[hidden] {
+  display: none !important;
+}
+@tailwind utilities;
+@media (max-width: 1023px) {
+  .stitch-shell > aside {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+  .stitch-shell > aside > div:last-child {
+    display: none;
+  }
+  .stitch-shell > aside nav {
+    flex-direction: row;
+    overflow: auto;
+    padding-bottom: 8px;
+  }
+  .stitch-shell > aside nav button {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .stitch-shell > aside > div > div:nth-child(2) {
+    display: none;
+  }
+  .stitch-shell .stitch-workspace {
+    padding-left: 0;
+  }
+  .stitch-shell .stitch-workspace > header {
+    position: sticky;
+    left: 0;
+    height: 64px;
+    top: 0;
+  }
+  .stitch-main {
+    padding: 0 20px 24px !important;
+  }
+  .stitch-shell > aside > div > div:first-child {
+    height: 64px;
+  }
+  .stitch-footer {
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 639px) {
+  .stitch-main {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  .stitch-shell > aside nav button {
+    padding: 8px 12px;
+  }
+  .stitch-shell .stitch-workspace > header {
+    padding: 8px 16px;
+  }
+  .stitch-shell header kbd {
+    display: none;
+  }
+  .stitch-landing h1 {
+    font-size: 36px;
+    line-height: 42px;
+  }
+  .stitch-landing .stitch-demo-button {
+    bottom: 12px;
+    right: 12px;
+  }
+  .stitch-footer span {
+    display: none;
+  }
+}
+
+@media print {
+  .stitch-shell > aside,
+  .stitch-workspace > header,
+  .stitch-footer,
+  .stitch-screen button,
+  .stitch-screen nav {
+    display: none !important;
+  }
+  .stitch-shell .stitch-workspace {
+    padding-left: 0 !important;
+  }
+  .stitch-shell .stitch-main {
+    padding: 0 !important;
+  }
+  .stitch-screen {
+    color: black;
+    background: white;
+  }
+  .stitch-screen section {
+    break-inside: avoid;
+  }
+}
