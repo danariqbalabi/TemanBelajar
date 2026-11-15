@@ -1,3 +1,4 @@
+from datetime import date
 from typing import Annotated, Literal
 from uuid import UUID
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
@@ -22,6 +23,12 @@ class Preferences(BaseModel):
     reading_ruler: bool = False
     timer_enabled: bool = False
     mode: Literal["standard", "reading", "focus", "explore", "transcript"] = "standard"
+    font_family: Literal["jakarta", "nunito", "system"] = "jakarta"
+    letter_spacing: float = Field(default=0, ge=0, le=0.2)
+    reading_width: int = Field(default=68, ge=40, le=80)
+    speech_rate: float = Field(default=1, ge=0.5, le=2)
+    show_mimo: bool = True
+    captions: bool = True
 
 
 class ProfileInput(BaseModel):
@@ -31,6 +38,31 @@ class ProfileInput(BaseModel):
     daily_minutes: int = Field(default=15, ge=5, le=240)
     goal: str = Field(default="", max_length=500)
     preferences: Preferences = Field(default_factory=Preferences)
+    subjects: list[str] = Field(default_factory=list, max_length=20)
+    available_days: list[int] = Field(
+        default_factory=lambda: [0, 1, 2, 3, 4], max_length=7
+    )
+    exam_date: date | None = None
+    onboarding_step: int = Field(default=0, ge=0, le=4)
+
+    @field_validator("available_days")
+    @classmethod
+    def valid_days(cls, value: list[int]) -> list[int]:
+        if len(value) != len(set(value)) or any(day < 0 or day > 6 for day in value):
+            raise ValueError("hari harus unik, senin 0 sampai minggu 6")
+        return value
+
+    @field_validator("subjects")
+    @classmethod
+    def valid_subjects(cls, value: list[str]) -> list[str]:
+        result = [item.strip() for item in value]
+        if any(not item or len(item) > 80 for item in result) or len(
+            set(result)
+        ) != len(result):
+            raise ValueError(
+                "mata pelajaran harus unik dan sepanjang 1 sampai 80 karakter"
+            )
+        return result
 
     @field_validator("display_name")
     @classmethod
@@ -55,15 +87,37 @@ class Identity(BaseModel):
     token: str
 
 
-async def request_supabase(method: str, path: str, token: str, **kwargs) -> httpx.Response:
+class ProfileResponse(ProfileInput):
+    id: UUID
+
+
+def response_json(response: httpx.Response):
+    try:
+        return response.json()
+    except ValueError as exc:
+        raise HTTPException(502, "respons layanan data belum valid") from exc
+
+
+async def request_supabase(
+    method: str, path: str, token: str, **kwargs
+) -> httpx.Response:
     config = settings()
     if not config.supabase_url or not config.supabase_anon_key:
         raise HTTPException(503, "layanan akun belum dikonfigurasi")
     headers = {"apikey": config.supabase_anon_key, "Authorization": f"Bearer {token}"}
+    if kwargs.pop("server", False):
+        headers["apikey"] = token
+        if token.startswith("sb_secret_"):
+            headers.pop("Authorization")
     headers.update(kwargs.pop("headers", {}))
     try:
         async with httpx.AsyncClient(timeout=15) as client:
-            response = await client.request(method, config.supabase_url.rstrip("/") + path, headers=headers, **kwargs)
+            response = await client.request(
+                method,
+                config.supabase_url.rstrip("/") + path,
+                headers=headers,
+                **kwargs,
+            )
     except httpx.RequestError as exc:
         raise HTTPException(503, "layanan akun sedang tidak tersedia") from exc
     if response.status_code in (401, 403):
@@ -73,7 +127,9 @@ async def request_supabase(method: str, path: str, token: str, **kwargs) -> http
     return response
 
 
-async def identity(credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer)]) -> Identity:
+async def identity(
+    credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer)],
+) -> Identity:
     if credentials is None:
         raise HTTPException(401, "masuk dulu untuk melanjutkan")
     response = await request_supabase("GET", "/auth/v1/user", credentials.credentials)
@@ -83,20 +139,35 @@ async def identity(credentials: Annotated[HTTPAuthorizationCredentials | None, D
         raise HTTPException(502, "respons layanan akun belum valid") from exc
 
 
-@router.get("")
+@router.get("", response_model=ProfileResponse)
 async def get_profile(user: Annotated[Identity, Depends(identity)]):
-    response = await request_supabase("GET", "/rest/v1/learner_profiles", user.token,
-                                      params={"id": f"eq.{user.id}", "select": "*"})
-    rows = response.json()
+    response = await request_supabase(
+        "GET",
+        "/rest/v1/learner_profiles",
+        user.token,
+        params={"id": f"eq.{user.id}", "select": "*"},
+    )
+    rows = response_json(response)
+    if not isinstance(rows, list):
+        raise HTTPException(502, "respons layanan data belum valid")
     if not rows:
         raise HTTPException(404, "profil belum dibuat")
     return rows[0]
 
 
-@router.put("")
-async def save_profile(profile: ProfileInput, user: Annotated[Identity, Depends(identity)]):
-    response = await request_supabase("POST", "/rest/v1/learner_profiles", user.token,
+@router.put("", response_model=ProfileResponse)
+async def save_profile(
+    profile: ProfileInput, user: Annotated[Identity, Depends(identity)]
+):
+    response = await request_supabase(
+        "POST",
+        "/rest/v1/learner_profiles",
+        user.token,
         params={"on_conflict": "id"},
         headers={"Prefer": "resolution=merge-duplicates,return=representation"},
-        json={"id": str(user.id), **profile.model_dump()})
-    return response.json()[0]
+        json={"id": str(user.id), **profile.model_dump(mode="json")},
+    )
+    rows = response_json(response)
+    if not isinstance(rows, list) or not rows:
+        raise HTTPException(502, "respons penyimpanan profil belum valid")
+    return rows[0]

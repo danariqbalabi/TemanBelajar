@@ -4,7 +4,9 @@
 
 TemanBelajar adalah web app pembelajaran inklusif dan adaptif yang dirancang untuk siswa SMP dan SMA. Siswa bisa membawa materi sendiri, memilih cara belajar yang sesuai dengan kebutuhannya, lalu mendapat saran dan rencana belajar berdasarkan hasil latihan. Mimo, bunglon 2D, menemani siswa saat mulai belajar dan meninjau langkah berikutnya.
 
-**Status proyek:** dokumentasi desain dan persiapan implementasi MVP.
+**status proyek:** backend mvp tersedia di branch `feat/backend-temanbelajar`, dengan migrasi supabase, pemrosesan gemini, dan model bkt terlatih. frontend serta integrasi antarmuka menjadi tahap berikutnya.
+
+lihat [panduan backend](backend/README.md), [kontrak api](backend/API.md), dan [evaluasi model](backend/models/README.md) untuk menjalankan serta menguji layanan.
 
 ## Masalah yang ingin diselesaikan
 
@@ -41,4 +43,4 @@ Siswa dapat memilih beberapa dukungan sekaligus dan mengubahnya saat belajar. Pr
 ## Dokumentasi dan alat
 
 - [DESIGN.md](./DESIGN.md) memuat design tokens, aturan penggunaan Mimo, pola aksesibilitas, inventaris 24 layar, dan alur interaksi.
-- Google Stitch digunakan untuk eksplorasi desain dan prototipe antarmuka. OpenAI Codex digunakan untuk membantu penyusunan dan peninjauan dokumentasi.
+- Google Stitch digunakan untuk eksplorasi desain dan prototipe antarmuka. OpenAI Codex digunakan untuk membantu dokumentasi, implementasi backend, pengujian, serta pipeline training model. dataset ASSISTments, pustaka, dan batas evaluasi dicantumkan dalam dokumentasi backend dan model.
