@@ -1,19 +1,420 @@
-'use client';
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import {Planner} from './planner';
-type Concept={id:string;title:string;paragraphs:string[];source_ids:string[];transcript?:string};
-type Material={id:string;title:string;subject:string;concepts:Concept[];sources:{id:string;label:string;text:string}[]};
-const api=process.env.NEXT_PUBLIC_API_URL||'http://localhost:8000';
-const nav=['Beranda','Rencana Belajar','Materi Saya','Mulai Belajar','Progres','Pengaturan'];
-export default function Home(){
- const [page,setPage]=useState('Beranda'),[materials,setMaterials]=useState<Material[]>([]),[active,setActive]=useState<Material|null>(null),[step,setStep]=useState(0),[error,setError]=useState(''),[size,setSize]=useState(18),[calm,setCalm]=useState(true),[ruler,setRuler]=useState(false),[name,setName]=useState('Manda'),[note,setNote]=useState(''),[mode,setMode]=useState('reading');
- useEffect(()=>{const hydration=requestAnimationFrame(()=>{const saved=localStorage.getItem('temanbelajar-preferences');if(saved){try{const p=JSON.parse(saved);setName(p.name||'Manda');setSize(p.size||18);setCalm(p.calm??true)}catch{}}}); fetch(api+'/v1/demo').then(r=>{if(!r.ok)throw Error('Backend belum dapat dijangkau.');return r.json()}).then(d=>{setMaterials(d.materials||d.items||[])}).catch(e=>setError(e.message));return ()=>cancelAnimationFrame(hydration);},[]);
- function save(){localStorage.setItem('temanbelajar-preferences',JSON.stringify({name,size,calm}));setNote('Preferensi tersimpan di perangkat ini.');}
- function start(m=materials[0]){if(!m)return;setActive(m);setStep(0);setPage('Mulai Belajar')}
- const concept=active?.concepts?.[step];
- return <div className={calm?'app calm':'app'}><a className="skip" href="#main">Lewati ke konten</a><aside className="sidebar"><Link className="brand" href="/">? <span>TemanBelajar<small>SMP & SMA</small></span></Link><div className="calm-label">? <span>Mode Tenang<small>{calm?'Aktif bebas cemas':'Ritme pilihanmu'}</small></span><i/></div><nav aria-label="Navigasi utama">{nav.map((n,i)=><button key={n} aria-current={page===n?'page':undefined} onClick={()=>{setPage(n);setNote('')}}><span>{['¦','?','?','?','?','?'][i]}</span>{n}</button>)}</nav><div className="sidebar-bottom"><div className="badge">? Dirancang ramah aksesibilitas</div><div className="person"><b>M</b><span>{name}<small>SMP · Kelas 8</small></span></div></div></aside><div className="workspace"><header><button onClick={()=>setPage('Pengaturan')}>? Pintasan Aksesibilitas <kbd>Alt+A</kbd></button><span className="friendly">? Lingkungan Belajar Ramah</span><a href="/welcome" className="avatar" aria-label="Atur profil awal">M</a></header><main id="main"><div className="ribbon">? Mode Tenang: {calm?'Aktif':'Nonaktif'} • Ritme Santai 15 Menit</div>{error&&<div role="alert" className="notice">{error} Jalankan backend untuk memuat materi contoh. <button onClick={()=>location.reload()}>Coba lagi</button></div>}
-{page==='Beranda'?<><div className="intro"><div><h1>Pagi, {name}! Siap belajar<br/>bareng Mimo hari ini?</h1><p>Senin cerah • Ritme belajarmu dirancang seringan mungkin<br/>tanpa target yang menumpuk.</p></div><div className="mimo-message"><span className="mimo">?</span><div><small>Mimo • Teman Belajarmu</small><p>“Hari ini kita punya 1 misi seru yang ringan tentang fotosintesis. Nikmati aja langkah demi langkahnya ya!”</p></div></div></div><div className="columns"><div><section className="hero"><span className="pill dark">? REKOMENDASI BELAJAR HARI INI</span><div><span className="pill">? ~10 Menit • Membaca Santai</span></div><small>IPA BIOLOGI • SMP KELAS 8</small><h2>Langkah terbaikmu hari ini: Memahami Peran Cahaya & Klorofil</h2><div className="reason"><b>? Kenapa Mimo menyarankan langkah ini?</b><p>Mulai dari materi contoh singkat tentang cara tumbuhan menggunakan cahaya. Kamu bisa memilih format dan berhenti kapan saja.</p></div><div className="actions"><button className="primary" disabled={!materials.length} onClick={()=>start()}>Mulai Sekarang (10 Menit) ?</button><button onClick={()=>setNote('Ini saran awal dari materi contoh. Rekomendasi personal akan memakai hasil latihanmu setelah sesi tersambung.')}>? Lihat Detail Alasan</button><button onClick={()=>{setMode('transcript');start()}}>? Coba Format Audio</button></div><button className="text-button" onClick={()=>setPage('Materi Saya')}>Lewati dulu (tanpa penalti) ?</button>{note&&<p role="status">{note}</p>}</section><section><div className="section-title"><h2>? Jadwal Belajar Hari Ini</h2><button onClick={()=>setPage('Rencana Belajar')}>Atur waktu</button></div><p className="muted">Rencana contoh • Total durasi fleksibel hanya 15 menit</p><div className="schedule"><span className="book">?</span><div><span className="pill">10 menit • Prioritas hari ini</span><h3>Membaca Santai: Fotosintesis & Menangkap Cahaya</h3><p>Dilengkapi sumber bacaan dan panduan Mimo.</p></div><button className="primary" onClick={()=>start()} disabled={!materials.length}>Mulai ?</button></div><div className="schedule secondary"><span>?</span><div><small>5 menit • Latihan santai</small><h3>Penguatan konsep</h3><p>Pertanyaan tanpa timer, belajar sesuai ritmemu.</p></div></div><p className="footnote">? Jadwal ini saran lembut. Kamu bebas menyesuaikan ritme kapan saja.</p></section><h2>Materi Aktif Lainnya</h2><div className="material-grid">{materials.map(m=><button className="material-card" key={m.id} onClick={()=>start(m)}><small>{m.subject} • Materi contoh</small><h3>{m.title}</h3><span>Buka materi ?</span></button>)}</div></div><div className="right"><section><h3>? Target Minggumu</h3><div className="target"><div className="ring">15<small>menit</small></div><div><b>Satu langkah kecil</b><p>Mulai satu sesi ringan. Progresmu akan terbentuk dari kegiatan yang kamu jalani.</p></div></div><div className="stats"><div><small>Waktu Fokus</small><b>15 Menit</b></div><div><small>Status Beban</small><b>Sangat Ringan</b></div></div></section><section><h3>? Unggah Materi Ujian</h3><p>Ingin Mimo bantu merangkum catatanmu?</p><div className="upload"><span>?</span><p>PDF atau teks materi</p><small>Maksimal PDF 10 MB</small><button onClick={()=>setPage('Materi Saya')}>+ Tambah Materi Baru</button></div></section><section><h3>? Pintasan Aksesibilitas</h3><label>Penggaris Baca <input type="checkbox" checked={ruler} onChange={e=>setRuler(e.target.checked)}/></label><label>Redam distraksi <input type="checkbox" checked={calm} onChange={e=>setCalm(e.target.checked)}/></label><label>Ukuran baca <select value={size} onChange={e=>setSize(+e.target.value)}>{[16,18,20,24].map(n=><option key={n}>{n}</option>)}</select></label></section><div className="gentle">? Istirahat juga bagian dari belajar. Mimo siap saat kamu siap.</div></div></div><div className="zero"><span>?</span><div><b>Prinsip Nol Rasa Bersalah (Zero-Guilt Learning)</b><p>Hari ini capek atau ada ulangan mendadak? Kamu bebas mengatur kembali ritme belajar. Istirahat juga bagian dari belajar.</p></div></div></>:<><h1>{page}</h1>{page==='Rencana Belajar'?<Planner/>:page==='Pengaturan'?<section className="settings"><h2>Belajar dengan caramu</h2><label>Nama panggilan<input value={name} onChange={e=>setName(e.target.value)}/></label><label>Ukuran teks<select value={size} onChange={e=>setSize(+e.target.value)}>{[16,18,20,24].map(n=><option key={n}>{n}</option>)}</select></label><label>Mode tenang<input type="checkbox" checked={calm} onChange={e=>setCalm(e.target.checked)}/></label><button className="primary" onClick={save}>Simpan preferensi</button><p role="status">{note}</p></section>:page==='Mulai Belajar'&&active?<section className="reader"><div className="section-title"><span>{active.subject} • {step+1}/{active.concepts.length} konsep</span><select aria-label="Format belajar" value={mode} onChange={e=>setMode(e.target.value)}><option value="reading">Membaca santai</option><option value="focus">Fokus</option><option value="transcript">Transkrip / baca nyaring</option></select></div><h2>{concept?.title}</h2><div className={ruler?'reading ruler':'reading'} style={{fontSize:size}}>{mode==='transcript'&&concept?.transcript?<p>{concept.transcript}</p>:concept?.paragraphs.map((p,i)=><p key={i}>{p}</p>)}</div>{mode==='transcript'&&<button onClick={()=>{speechSynthesis.cancel();const speech=new SpeechSynthesisUtterance(concept?.transcript||concept?.paragraphs.join(' ')||'');speech.lang='id-ID';speechSynthesis.speak(speech)}}>? Bacakan teks</button>}<details><summary>Lihat sumber bacaan</summary>{active.sources.filter(s=>concept?.source_ids.includes(s.id)).map(s=><div key={s.id}><b>{s.label}</b><p>{s.text}</p></div>)}</details><div className="actions"><button disabled={step===0} onClick={()=>setStep(step-1)}>? Sebelumnya</button><button className="primary" onClick={()=>step<active.concepts.length-1?setStep(step+1):setNote('Bacaan selesai. Kamu boleh mengulang atau memilih materi lain.')}>{step<active.concepts.length-1?'Konsep selanjutnya ?':'Selesai membaca ?'}</button></div><p role="status">{note}</p></section>:page==='Materi Saya'||page==='Mulai Belajar'?<><p>Pilih materi contoh untuk mulai belajar.</p><div className="material-grid">{materials.map(m=><button className="material-card" key={m.id} onClick={()=>start(m)}><small>{m.subject}</small><h2>{m.title}</h2><span>Mulai belajar ?</span></button>)}</div></>:<section><h2>{page==='Progres'?'Setiap langkah punya arti':'Ruang untuk ritme belajarmu'}</h2><p>{page==='Progres'?'Progres personal akan muncul setelah sesi dan latihan terhubung ke akunmu.':'Penyimpanan jadwal personal sedang disiapkan pada tahap integrasi.'}</p><button onClick={()=>start()} disabled={!materials.length}>Buka materi contoh ?</button></section>}</>}
-<footer>? TemanBelajar — Pembelajaran Adaptif SMP & SMA<span>Tenang, sesuai ritmemu.</span></footer></main></div></div>
+"use client";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { Session } from "@supabase/supabase-js";
+import { api, ApiError, auth, mutation } from "@/lib/api";
+import {
+  defaultProfile,
+  type Material,
+  type Profile,
+  type LearningSession,
+  type Mode,
+  type Recommendation,
+  type Plan,
+} from "@/lib/types";
+import { Account, Onboarding, Settings } from "./profile";
+import { Materials } from "./materials";
+import { Reader } from "./reader";
+import { Planner } from "./planner";
+import { ProgressView } from "./progress";
+import { Dashboard } from "./dashboard";
+const navigation = [
+  "Beranda",
+  "Rencana Belajar",
+  "Materi Saya",
+  "Mulai Belajar",
+  "Progres",
+  "Pengaturan",
+];
+export type Run = (action: () => Promise<void>) => Promise<void>;
+export default function Home() {
+  const [account, setAccount] = useState<Session | null>(null),
+    [ready, setReady] = useState(false),
+    [profile, setProfile] = useState<Profile>(defaultProfile),
+    [onboarding, setOnboarding] = useState(false),
+    [materials, setMaterials] = useState<Material[]>([]),
+    [sessions, setSessions] = useState<LearningSession[]>([]),
+    [plans, setPlans] = useState<Plan[]>([]),
+    [page, setPage] = useState("Beranda"),
+    [active, setActive] = useState<LearningSession | null>(null),
+    [error, setError] = useState(""),
+    [busy, setBusy] = useState(false),
+    [notice, setNotice] = useState(""),
+    [recommendation, setRecommendation] = useState<Recommendation | null>(null),
+    [landing, setLanding] = useState(true);
+  const retry = useRef<null | (() => Promise<void>)>(null);
+  const running = useRef(false);
+  const run = useCallback(async (action: () => Promise<void>) => {
+    if (running.current) return;
+    running.current = true;
+    setBusy(true);
+    setError("");
+    retry.current = action;
+    try {
+      await action();
+      retry.current = null;
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Permintaan belum berhasil.");
+    } finally {
+      running.current = false;
+      setBusy(false);
+    }
+  }, []);
+  const refresh = useCallback(async () => {
+    const [m, s, p] = await Promise.all([
+      api<{ items: Material[] }>("/materials"),
+      api<{ items: LearningSession[] }>("/sessions"),
+      api<{ items: Plan[] }>("/plans"),
+    ]);
+    setMaterials(m.items);
+    setSessions(s.items);
+    setPlans(p.items);
+    if (m.items[0])
+      setRecommendation(
+        await api<Recommendation>(
+          `/recommendations?material_id=${encodeURIComponent(m.items[0].id)}&available_minutes=15`,
+        ),
+      );
+  }, []);
+  useEffect(() => {
+    if (!auth) {
+      queueMicrotask(() => setReady(true));
+      return;
+    }
+    auth.auth.getSession().then(({ data }) => {
+      setAccount(data.session);
+      setReady(true);
+    });
+    const { data } = auth.auth.onAuthStateChange((_event, s) => {
+      setAccount(s);
+      setReady(true);
+    });
+    return () => data.subscription.unsubscribe();
+  }, []);
+  const userId = account?.user.id;
+  useEffect(() => {
+    if (!userId) return;
+    let alive = true;
+    Promise.all([
+      api<Profile>("/profile")
+        .then((p) => {
+          if (alive) {
+            setProfile(p);
+            setOnboarding(p.onboarding_step < 4);
+          }
+        })
+        .catch((e) => {
+          if (e instanceof ApiError && e.status === 404) {
+            if (alive) setOnboarding(true);
+          } else throw e;
+        }),
+      Promise.resolve().then(refresh),
+    ]).catch((e) => {
+      if (alive) setError(e.message);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [userId, refresh]);
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.altKey && e.key.toLowerCase() === "a") {
+        e.preventDefault();
+        setPage("Pengaturan");
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
+  async function start(material: Material, mode?: Mode, conceptId?: string) {
+    const existing = sessions.find(
+      (s) => s.material_id === material.id && s.status !== "completed",
+    );
+    const chosenMode = mode || existing?.mode || profile.preferences.mode;
+    const create = mutation<LearningSession>("/sessions", {
+      material_id: material.id,
+      mode: chosenMode,
+    });
+    let recovered = existing;
+    let change: (() => Promise<LearningSession>) | undefined;
+    await run(async () => {
+      let s = recovered || (await create());
+      recovered = s;
+      if (conceptId || s.mode !== chosenMode) {
+        change ||= mutation<LearningSession>(
+          `/sessions/${s.id}`,
+          {
+            expected_version: s.version,
+            concept_id: conceptId || s.concept_id,
+            paragraph: conceptId ? 0 : s.paragraph,
+            mode: chosenMode,
+            status: "active",
+            completed_concepts: s.completed_concepts,
+            draft: s.draft,
+          },
+          "PUT",
+        );
+        s = await change();
+        recovered = s;
+      }
+      setActive(s);
+      setPage("Mulai Belajar");
+      await refresh();
+    });
+  }
+  async function saveProfile(p: Profile) {
+    const clean = Object.fromEntries(
+      Object.keys(defaultProfile).map((key) => [key, p[key as keyof Profile]]),
+    ) as Profile;
+    await api("/profile", clean, "PUT");
+    setProfile(clean);
+    setOnboarding(false);
+    setNotice("Preferensi tersimpan. Ritmemu bisa diubah kapan saja.");
+  }
+  if (!ready)
+    return (
+      <main className="welcome">
+        <p role="status">Menyiapkan ruang belajarmu...</p>
+      </main>
+    );
+  if (!account)
+    return (
+      <Account
+        landing={landing}
+        onContinue={() => setLanding(false)}
+        run={run}
+        busy={busy}
+        error={error}
+      />
+    );
+  if (onboarding)
+    return (
+      <Onboarding
+        initial={profile}
+        onSave={(p) => run(() => saveProfile(p))}
+        busy={busy}
+        error={error}
+      />
+    );
+  const selected = materials.find((m) => m.id === active?.material_id),
+    prefs = profile.preferences;
+  return (
+    <div
+      className={`app ${prefs.reduced_motion ? "calm" : ""} ${prefs.high_contrast ? "high-contrast" : ""}`}
+      style={
+        {
+          "--reader-size": `${prefs.font_size}px`,
+          "--reader-line": prefs.line_height,
+          "--reader-width": `${prefs.reading_width}ch`,
+          "--reader-spacing": `${prefs.letter_spacing}em`,
+        } as React.CSSProperties
+      }
+    >
+      <a className="skip" href="#main">
+        Lewati ke konten
+      </a>
+      <aside className="sidebar">
+        <button className="brand" onClick={() => setPage("Beranda")}>
+          <span className="brand-mark">tb</span>
+          <span>
+            TemanBelajar<small>SMP &amp; SMA</small>
+          </span>
+        </button>
+        <div className="calm-label">
+          <span className="leaf-icon" />
+          <span>
+            Mode Tenang<small>Ruang belajar bebas cemas</small>
+          </span>
+          <i />
+        </div>
+        <nav aria-label="Navigasi utama">
+          {navigation.map((n, i) => (
+            <button
+              key={n}
+              aria-current={page === n ? "page" : undefined}
+              onClick={() => {
+                setPage(n);
+                setNotice("");
+              }}
+            >
+              <span aria-hidden="true">
+                {["⌂", "▦", "▤", "▷", "↗", "☷"][i]}
+              </span>
+              {n}
+            </button>
+          ))}
+        </nav>
+        <div className="sidebar-bottom">
+          <div className="badge">Ramah aksesibilitas</div>
+          <div className="person">
+            <b>{profile.display_name[0]}</b>
+            <span>
+              {profile.display_name}
+              <small>
+                {account.user.is_anonymous
+                  ? "Sesi demo pribadi"
+                  : "Akun pelajar"}
+              </small>
+            </span>
+          </div>
+        </div>
+      </aside>
+      <div className="workspace">
+        <header>
+          <button onClick={() => setPage("Pengaturan")}>
+            Pintasan Aksesibilitas <kbd>Alt+A</kbd>
+          </button>
+          <span className="friendly">● Lingkungan Belajar Ramah</span>
+          <button
+            className="avatar"
+            aria-label="Buka pengaturan akun"
+            onClick={() => setPage("Pengaturan")}
+          >
+            {profile.display_name[0]}
+          </button>
+        </header>
+        <main id="main">
+          <div className="ribbon">
+            Mode Tenang • Ritme Santai {profile.daily_minutes} Menit
+          </div>
+          {error && (
+            <div className="notice" role="alert">
+              <p>{error}</p>
+              <p>
+                Input tetap tersedia. Jika versi berubah, muat data terbaru lalu
+                tinjau kembali.
+              </p>
+              <div className="actions">
+                <button
+                  disabled={busy}
+                  onClick={() => retry.current && run(retry.current)}
+                >
+                  Coba lagi
+                </button>
+                <button
+                  disabled={busy}
+                  onClick={() =>
+                    run(async () => {
+                      await refresh();
+                      if (active)
+                        setActive(
+                          await api<LearningSession>(`/sessions/${active.id}`),
+                        );
+                      setNotice(
+                        "Data terbaru dimuat. Tinjau kembali sebelum menyimpan.",
+                      );
+                    })
+                  }
+                >
+                  Muat data terbaru
+                </button>
+              </div>
+            </div>
+          )}
+          {notice && (
+            <p className="success" role="status">
+              {notice}
+            </p>
+          )}
+          {busy && (
+            <p role="status" className="working">
+              Menyimpan langkahmu...
+            </p>
+          )}
+          {page === "Beranda" ? (
+            <Dashboard
+              profile={profile}
+              materials={materials}
+              sessions={sessions}
+              plans={plans}
+              recommendation={recommendation}
+              start={start}
+              navigate={setPage}
+            />
+          ) : page === "Materi Saya" ? (
+            <Materials
+              materials={materials}
+              run={run}
+              busy={busy}
+              refresh={refresh}
+              start={start}
+            />
+          ) : page === "Rencana Belajar" ? (
+            <Planner
+              plans={plans}
+              materials={materials}
+              profile={profile}
+              run={run}
+              busy={busy}
+              refresh={refresh}
+              start={start}
+            />
+          ) : page === "Progres" ? (
+            <ProgressView
+              materials={materials}
+              sessions={sessions}
+              run={run}
+              start={start}
+            />
+          ) : page === "Pengaturan" ? (
+            <Settings
+              profile={profile}
+              onSave={(p) => run(() => saveProfile(p))}
+              busy={busy}
+              account={account}
+              signOut={() =>
+                run(async () => {
+                  await auth!.auth.signOut();
+                  setProfile(defaultProfile);
+                  setMaterials([]);
+                  setSessions([]);
+                  setPlans([]);
+                  setActive(null);
+                  setLanding(true);
+                })
+              }
+            />
+          ) : selected && active ? (
+            <Reader
+              key={active.id}
+              material={selected}
+              session={active}
+              preferences={prefs}
+              run={run}
+              busy={busy}
+              onUpdate={(s) => {
+                setActive(s);
+                setSessions((items) =>
+                  items.map((x) => (x.id === s.id ? s : x)),
+                );
+              }}
+              refresh={refresh}
+              onPlanner={() => setPage("Rencana Belajar")}
+            />
+          ) : (
+            <section>
+              <h1>Mulai dengan satu langkah kecil</h1>
+              <p>Pilih materi dan format yang nyaman.</p>
+              <div className="material-grid">
+                {materials.map((m) => (
+                  <button
+                    className="material-card"
+                    key={m.id}
+                    onClick={() => start(m)}
+                  >
+                    <small>{m.subject}</small>
+                    <h2>{m.title}</h2>
+                    <span>Mulai belajar →</span>
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
+          <footer>
+            TemanBelajar — Pembelajaran Adaptif SMP &amp; SMA
+            <span>Tenang, sesuai ritmemu.</span>
+          </footer>
+        </main>
+      </div>
+    </div>
+  );
 }
-
