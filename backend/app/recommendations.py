@@ -2,8 +2,9 @@ from typing import Annotated
 
 from fastapi import APIRouter, Query
 
-from app.learning import get_material, modes_for
 from app.bkt import estimate
+from app.learning import get_material, modes_for
+from app.responses import ProgressResponse, RecommendationResponse
 from app.store import StoreDep
 
 router = APIRouter(prefix="/v1", tags=["rekomendasi"])
@@ -53,34 +54,72 @@ def recommend(data: dict, material_id: str, available_minutes: int) -> dict:
             continue
         duration = 5 if action == "PRACTICE" else concept.estimated_minutes
         if duration > available_minutes:
-            return {"action": "RESCHEDULE", "concept_id": concept.id, "material_id": material_id,
-                    "estimated_minutes": duration,
-                    "reason": f"Aktivitas ini diperkirakan {duration} menit, sementara waktu tersedia {available_minutes} menit.",
-                    "alternatives": [], "requires_plan_review": True}
-        return {"action": action, "material_id": material_id, "concept_id": concept.id,
-                "title": concept.title, "estimated_minutes": duration, "reason": reason, "estimate": mastery,
-                "alternatives": [{"action": "SWITCH", "mode": mode,
-                                  "reason": "Format ini tersedia untuk konsep yang sama."}
-                                 for mode in modes_for(concept)], "requires_plan_review": False}
-    return {"action": "RESCHEDULE" if available_minutes < 5 else "PRACTICE", "material_id": material_id, "concept_id": material.concepts[-1].id,
-            "estimated_minutes": 5, "reason": "Kamu telah menuntaskan bacaan dan latihan yang tersedia. Kamu bisa mengulang latihan atau memilih materi lain.",
-            "alternatives": [], "requires_plan_review": available_minutes < 5}
+            return {
+                "action": "RESCHEDULE",
+                "concept_id": concept.id,
+                "material_id": material_id,
+                "estimated_minutes": duration,
+                "reason": f"Aktivitas ini diperkirakan {duration} menit, sementara waktu tersedia {available_minutes} menit.",
+                "alternatives": [],
+                "requires_plan_review": True,
+            }
+        return {
+            "action": action,
+            "material_id": material_id,
+            "concept_id": concept.id,
+            "title": concept.title,
+            "estimated_minutes": duration,
+            "reason": reason,
+            "estimate": mastery,
+            "alternatives": [
+                {
+                    "action": "SWITCH",
+                    "mode": mode,
+                    "reason": "Format ini tersedia untuk konsep yang sama.",
+                }
+                for mode in modes_for(concept)
+            ],
+            "requires_plan_review": False,
+        }
+    return {
+        "action": "RESCHEDULE" if available_minutes < 5 else "PRACTICE",
+        "material_id": material_id,
+        "concept_id": material.concepts[-1].id,
+        "estimated_minutes": 5,
+        "reason": "Kamu telah menuntaskan bacaan dan latihan yang tersedia. Kamu bisa mengulang latihan atau memilih materi lain.",
+        "alternatives": [],
+        "requires_plan_review": available_minutes < 5,
+    }
 
 
-@router.get("/recommendations")
-async def recommendations(material_id: str, store: StoreDep,
-                          available_minutes: Annotated[int, Query(ge=0, le=240)] = 15):
+@router.get("/recommendations", response_model=RecommendationResponse)
+async def recommendations(
+    material_id: str,
+    store: StoreDep,
+    available_minutes: Annotated[int, Query(ge=0, le=240)] = 15,
+):
     snapshot = await store.load()
     return recommend(snapshot.data, material_id, available_minutes)
 
 
-@router.get("/progress")
+@router.get("/progress", response_model=ProgressResponse)
 async def progress(material_id: str, store: StoreDep):
     snapshot = await store.load()
     material = get_material(snapshot.data, material_id)
     evidence = observations(snapshot.data, material_id)
-    return {"material_id": material_id, "is_demo": material.is_demo,
-            "concepts": [{"id": concept.id, "title": concept.title,
-                          "observed": {"correct": sum(evidence[concept.id]), "total": len(evidence[concept.id])},
-                          **estimate(concept.skill_id, evidence[concept.id])}
-                         for concept in material.concepts]}
+    return {
+        "material_id": material_id,
+        "is_demo": material.is_demo,
+        "concepts": [
+            {
+                "id": concept.id,
+                "title": concept.title,
+                "observed": {
+                    "correct": sum(evidence[concept.id]),
+                    "total": len(evidence[concept.id]),
+                },
+                **estimate(concept.skill_id, evidence[concept.id]),
+            }
+            for concept in material.concepts
+        ],
+    }

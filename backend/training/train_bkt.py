@@ -4,6 +4,7 @@ Raw rows and learner identifiers stay in ignored data/raw. Only aggregate
 metrics and fitted parameters are exported. Test rows never enter fitting or
 selection. The single retained skill matches the reviewed Pythagoras fixture.
 """
+
 import argparse
 import csv
 import hashlib
@@ -37,7 +38,11 @@ def load_sequences(path: Path):
         for row in csv.DictReader(stream):
             if row["skill_name"] != SKILL_NAME:
                 continue
-            if row["original"] != "1" or row["correct"] not in {"0", "1"} or row["answer_type"] == "open_response":
+            if (
+                row["original"] != "1"
+                or row["correct"] not in {"0", "1"}
+                or row["answer_type"] == "open_response"
+            ):
                 excluded["non_original_or_invalid"] += 1
                 continue
             key = (row["user_id"], row["order_id"])
@@ -53,11 +58,17 @@ def load_sequences(path: Path):
         if len(sequence) < 2:
             excluded["single_event_students"] += 1
             continue
-        bucket = int(hashlib.sha256(f"{SEED}:{learner}".encode()).hexdigest()[:8], 16) % 100
+        bucket = (
+            int(hashlib.sha256(f"{SEED}:{learner}".encode()).hexdigest()[:8], 16) % 100
+        )
         name = "train" if bucket < 70 else "validation" if bucket < 85 else "test"
         splits[name].append(sequence)
         ids[name].add(learner)
-    assert not (ids["train"] & ids["test"] or ids["train"] & ids["validation"] or ids["validation"] & ids["test"])
+    assert not (
+        ids["train"] & ids["test"]
+        or ids["train"] & ids["validation"]
+        or ids["validation"] & ids["test"]
+    )
     if any(len(sequences) < 10 for sequences in splits.values()):
         raise ValueError("data siswa pada salah satu split belum cukup")
     return splits, dict(excluded)
@@ -66,7 +77,7 @@ def load_sequences(path: Path):
 def padded(sequences):
     values = np.full((len(sequences), max(map(len, sequences))), -1, dtype=np.int8)
     for index, sequence in enumerate(sequences):
-        values[index, :len(sequence)] = sequence
+        values[index, : len(sequence)] = sequence
     return values
 
 
@@ -81,15 +92,20 @@ def predictions(parameters, values):
         probability = mastery * (1 - slip) + (1 - mastery) * guess
         observed.extend(column[active].tolist())
         predicted.extend(probability[active].tolist())
-        posterior = np.where(correct, mastery * (1 - slip) / probability,
-                             mastery * slip / (1 - probability))
+        posterior = np.where(
+            correct,
+            mastery * (1 - slip) / probability,
+            mastery * slip / (1 - probability),
+        )
         mastery = np.where(active, posterior + (1 - posterior) * learn, mastery)
     return np.asarray(observed), np.asarray(predicted)
 
 
 def log_loss(observed, predicted):
     predicted = np.clip(predicted, 1e-9, 1 - 1e-9)
-    return float(-np.mean(observed * np.log(predicted) + (1 - observed) * np.log(1 - predicted)))
+    return float(
+        -np.mean(observed * np.log(predicted) + (1 - observed) * np.log(1 - predicted))
+    )
 
 
 def metrics(observed, predicted):
@@ -99,9 +115,17 @@ def metrics(observed, predicted):
     auc = None
     if n_positive and n_negative:
         ranks = rankdata(predicted)
-        auc = float((ranks[positive].sum() - n_positive * (n_positive + 1) / 2) / (n_positive * n_negative))
-    return {"log_loss": log_loss(observed, predicted), "rmse": float(np.sqrt(np.mean((observed - predicted) ** 2))),
-            "brier": float(np.mean((observed - predicted) ** 2)), "auc": auc, "responses": len(observed)}
+        auc = float(
+            (ranks[positive].sum() - n_positive * (n_positive + 1) / 2)
+            / (n_positive * n_negative)
+        )
+    return {
+        "log_loss": log_loss(observed, predicted),
+        "rmse": float(np.sqrt(np.mean((observed - predicted) ** 2))),
+        "brier": float(np.mean((observed - predicted) ** 2)),
+        "auc": auc,
+        "responses": len(observed),
+    }
 
 
 def train(path: Path, output: Path):
@@ -112,35 +136,61 @@ def train(path: Path, output: Path):
     bounds = [(0.001, 0.999), (0.0001, 0.5), (0.001, 0.45), (0.001, 0.45)]
     for run in range(5):
         initial = [rng.uniform(low, high) for low, high in bounds]
-        result = minimize(lambda p: log_loss(*predictions(p, matrices["train"])), initial,
-                          method="L-BFGS-B", bounds=bounds, options={"maxiter": 300})
+        result = minimize(
+            lambda p: log_loss(*predictions(p, matrices["train"])),
+            initial,
+            method="L-BFGS-B",
+            bounds=bounds,
+            options={"maxiter": 300},
+        )
         if result.success and np.isfinite(result.fun):
             validation = log_loss(*predictions(result.x, matrices["validation"]))
             candidates.append((validation, result.x))
-        print(f"inisialisasi {run + 1}/5 selesai; konvergen={result.success}", flush=True)
+        print(
+            f"inisialisasi {run + 1}/5 selesai; konvergen={result.success}", flush=True
+        )
     if not candidates:
         raise RuntimeError("optimasi belum konvergen")
     _, parameters = min(candidates, key=lambda item: item[0])
-    params = Parameters(**dict(zip(["initial", "learn", "guess", "slip"], parameters))).model_dump()
+    params = Parameters(
+        **dict(zip(["initial", "learn", "guess", "slip"], parameters))
+    ).model_dump()
     train_answers = np.concatenate([np.asarray(s) for s in splits["train"]])
     baseline = float(train_answers.mean())
     report = {}
     for name, matrix in matrices.items():
         observed, predicted = predictions(parameters, matrix)
-        report[name] = {"students": len(splits[name]), "model": metrics(observed, predicted),
-                        "baseline": metrics(observed, np.full(len(observed), baseline))}
-    model = {"version": "bkt-assistments-pythagoras-v1", "seed": SEED,
-             "source_url": SOURCE_URL, "source_sha256": SOURCE_HASH,
-             "algorithm": "4 parameter BKT, maximum likelihood, no forgetting",
-             "split": "student-disjoint sha256(seed:user_id), 70/15/15 buckets",
-             "selection": "five converged starts, lowest validation log loss; untouched test students",
-             "excluded": excluded, "skills": {SKILL_ID: {
-                 "dataset_skill": SKILL_NAME, "parameters": params, "evaluation": report}},
-             "limitations": ["evaluasi prediksi jawaban pada dataset publik, belum validasi siswa Indonesia",
-                             "pemetaan kurikulum terbatas pada contoh teorema Pythagoras yang ditinjau",
-                             "skor penguasaan merupakan estimasi model dan perlu kalibrasi pengguna nyata"]}
+        report[name] = {
+            "students": len(splits[name]),
+            "model": metrics(observed, predicted),
+            "baseline": metrics(observed, np.full(len(observed), baseline)),
+        }
+    model = {
+        "version": "bkt-assistments-pythagoras-v1",
+        "seed": SEED,
+        "source_url": SOURCE_URL,
+        "source_sha256": SOURCE_HASH,
+        "algorithm": "4 parameter BKT, maximum likelihood, no forgetting",
+        "split": "student-disjoint sha256(seed:user_id), 70/15/15 buckets",
+        "selection": "five converged starts, lowest validation log loss; untouched test students",
+        "excluded": excluded,
+        "skills": {
+            SKILL_ID: {
+                "dataset_skill": SKILL_NAME,
+                "parameters": params,
+                "evaluation": report,
+            }
+        },
+        "limitations": [
+            "evaluasi prediksi jawaban pada dataset publik, belum validasi siswa Indonesia",
+            "pemetaan kurikulum terbatas pada contoh teorema Pythagoras yang ditinjau",
+            "skor penguasaan merupakan estimasi model dan perlu kalibrasi pengguna nyata",
+        ],
+    }
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(model, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    output.write_text(
+        json.dumps(model, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
     print(json.dumps(report, indent=2), flush=True)
 
 

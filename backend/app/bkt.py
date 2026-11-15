@@ -1,4 +1,5 @@
 """Four-parameter Bayesian Knowledge Tracing, with no forgetting transition."""
+
 import json
 from functools import lru_cache
 from pathlib import Path
@@ -37,7 +38,7 @@ def artifact() -> dict:
         for skill in result["skills"].values():
             Parameters.model_validate(skill["parameters"])
         return result
-    except (ValueError, KeyError, TypeError):
+    except (OSError, ValueError, KeyError, TypeError, AttributeError):
         return {"skills": {}}
 
 
@@ -45,7 +46,11 @@ def estimate(skill_id: str | None, answers: list[bool]) -> dict:
     model = artifact()
     skill = model["skills"].get(skill_id)
     if skill is None or len(answers) < 3:
-        return {"mastery": None, "mastery_status": "belum cukup data", "model_version": None}
+        return {
+            "mastery": None,
+            "mastery_status": "belum cukup data",
+            "model_version": None,
+        }
     parameters = Parameters.model_validate(skill["parameters"])
     mastery = parameters.initial
     for answer in answers:
@@ -55,5 +60,9 @@ def estimate(skill_id: str | None, answers: list[bool]) -> dict:
         status = "perlu diulang"
     elif mastery >= 0.85:
         status = "siap lanjut"
-    return {"mastery": round(mastery, 4), "mastery_status": status,
-            "model_version": model["version"], "scope": "estimasi eksperimental untuk skill yang dipetakan"}
+    return {
+        "mastery": round(mastery, 4),
+        "mastery_status": status,
+        "model_version": model["version"],
+        "scope": "estimasi eksperimental untuk skill yang dipetakan",
+    }

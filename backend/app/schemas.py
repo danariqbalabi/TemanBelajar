@@ -3,7 +3,6 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-
 Mode = Literal["standard", "reading", "focus", "explore", "transcript"]
 
 
@@ -44,7 +43,9 @@ class Question(Input):
 
     @model_validator(mode="after")
     def validate_answer(self):
-        if self.correct_index >= len(self.options) or len(set(self.options)) != len(self.options):
+        if self.correct_index >= len(self.options) or len(set(self.options)) != len(
+            self.options
+        ):
             raise ValueError("pilihan jawaban harus unik dan kunci harus tersedia")
         return self
 
@@ -69,12 +70,20 @@ class Material(Input):
             raise ValueError("id soal harus unik")
         seen = set()
         for concept in self.concepts:
-            if not set(concept.source_ids) <= sources or not set(concept.prerequisites) <= seen:
+            if (
+                not set(concept.source_ids) <= sources
+                or not set(concept.prerequisites) <= seen
+            ):
                 raise ValueError("sumber atau urutan prasyarat konsep tidak valid")
             seen.add(concept.id)
         for question in self.questions:
-            if question.concept_id not in concepts or not set(question.source_ids) <= sources:
+            if (
+                question.concept_id not in concepts
+                or not set(question.source_ids) <= sources
+            ):
                 raise ValueError("rujukan soal tidak valid")
+        if {q.concept_id for q in self.questions} != concepts:
+            raise ValueError("setiap konsep perlu memiliki latihan")
         return self
 
 

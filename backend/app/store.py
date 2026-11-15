@@ -3,45 +3,94 @@
 Each mutation loads one snapshot and commits once. A competing writer receives
 409 and must reload. Receipts are committed with results to make retries safe.
 """
+
 import hashlib
 import json
 from copy import deepcopy
 from typing import Annotated
 
 from fastapi import Depends, HTTPException
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationError, field_validator
 
-from app.profiles import Identity, identity, request_supabase
+from app.config import settings
+from app.profiles import Identity, identity, request_supabase, response_json
 
 
 class Snapshot(BaseModel):
     revision: int = 0
-    data: dict = Field(default_factory=lambda: {
-        "materials": {}, "sessions": {}, "attempts": {}, "plans": {},
-        "proposals": {}, "receipts": {}, "jobs": {},
-    })
+    data: dict = Field(
+        default_factory=lambda: {
+            "materials": {},
+            "sessions": {},
+            "attempts": {},
+            "plans": {},
+            "proposals": {},
+            "receipts": {},
+            "jobs": {},
+        }
+    )
+
+    @field_validator("data")
+    @classmethod
+    def normalize_collections(cls, value):
+        for name in [
+            "materials",
+            "sessions",
+            "attempts",
+            "plans",
+            "proposals",
+            "receipts",
+            "jobs",
+        ]:
+            value.setdefault(name, {})
+            if not isinstance(value[name], dict):
+                raise ValueError("koleksi aktivitas belum valid")
+        return value
 
 
 class Store:
     def __init__(self, user: Identity):
         self.user = user
 
+    def service_token(self) -> str:
+        token = settings().supabase_service_role_key
+        if not token:
+            raise HTTPException(503, "akses penyimpanan backend belum dikonfigurasi")
+        return token
+
     async def load(self) -> Snapshot:
         response = await request_supabase(
-            "GET", "/rest/v1/learning_states", self.user.token,
+            "GET",
+            "/rest/v1/learning_states",
+            self.service_token(),
+            server=True,
             params={"user_id": f"eq.{self.user.id}", "select": "revision,data"},
         )
-        rows = response.json()
-        return Snapshot.model_validate(rows[0]) if rows else Snapshot()
+        rows = response_json(response)
+        if not isinstance(rows, list):
+            raise HTTPException(502, "respons aktivitas belum valid")
+        try:
+            return Snapshot.model_validate(rows[0]) if rows else Snapshot()
+        except ValidationError as exc:
+            raise HTTPException(502, "data aktivitas belum dapat dibaca") from exc
 
     async def save(self, snapshot: Snapshot) -> int:
         response = await request_supabase(
-            "POST", "/rest/v1/rpc/save_learning_state", self.user.token,
-            json={"expected_revision": snapshot.revision, "new_data": snapshot.data},
+            "POST",
+            "/rest/v1/rpc/save_learning_state",
+            self.service_token(),
+            server=True,
+            json={
+                "learner": str(self.user.id),
+                "expected_revision": snapshot.revision,
+                "new_data": snapshot.data,
+            },
         )
-        revision = response.json()
+        revision = response_json(response)
         if revision is None:
             raise HTTPException(409, "data sudah berubah, muat ulang sebelum menyimpan")
+        if type(revision) is not int or revision != snapshot.revision + 1:
+            raise HTTPException(502, "respons versi penyimpanan belum valid")
         return revision
 
 
@@ -66,9 +115,17 @@ def replay(snapshot: Snapshot, key: str, operation: str, payload: dict):
     return receipt["result"]
 
 
-async def commit(store: Store, snapshot: Snapshot, key: str, operation: str, payload: dict, result: dict):
+async def commit(
+    store: Store,
+    snapshot: Snapshot,
+    key: str,
+    operation: str,
+    payload: dict,
+    result: dict,
+):
     snapshot.data["receipts"][key] = {
-        "fingerprint": fingerprint(operation, payload), "result": deepcopy(result),
+        "fingerprint": fingerprint(operation, payload),
+        "result": deepcopy(result),
     }
     await store.save(snapshot)
     return result

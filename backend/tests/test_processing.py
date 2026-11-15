@@ -2,13 +2,16 @@ from uuid import uuid4
 
 from fastapi import HTTPException
 
-from app.demo import FOTOSINTESIS
 from app import material_processing
+from app.demo import FOTOSINTESIS
 
 
 def upload(client):
-    body = {"request_id": str(uuid4()), "title": "Materi contoh",
-            "text": "Cahaya memberikan energi bagi tumbuhan untuk melakukan fotosintesis."}
+    body = {
+        "request_id": str(uuid4()),
+        "title": "Materi contoh",
+        "text": "Cahaya memberikan energi bagi tumbuhan untuk melakukan fotosintesis.",
+    }
     response = client.post("/v1/materials/text", json=body)
     assert response.status_code == 202
     assert client.post("/v1/materials/text", json=body).json() == response.json()
@@ -40,9 +43,15 @@ def test_failed_job_keeps_source_and_can_retry(client, monkeypatch):
 
 
 def test_invalid_pdf_and_excessive_text_are_rejected(client):
-    response = client.post("/v1/materials/pdf", data={"request_id": str(uuid4()), "title": "pdf"},
-                           files={"file": ("fake.pdf", b"not a pdf", "application/pdf")})
+    response = client.post(
+        "/v1/materials/pdf",
+        data={"request_id": str(uuid4()), "title": "pdf"},
+        files={"file": ("fake.pdf", b"not a pdf", "application/pdf")},
+    )
     assert response.status_code == 422
     assert client.get("/v1/jobs").json()["items"] == []
-    response = client.post("/v1/materials/text", json={"request_id": str(uuid4()), "title": "materi", "text": "x" * 100001})
+    response = client.post(
+        "/v1/materials/text",
+        json={"request_id": str(uuid4()), "title": "materi", "text": "x" * 100001},
+    )
     assert response.status_code == 422
