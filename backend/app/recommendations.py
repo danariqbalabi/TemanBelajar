@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Query
 
 from app.learning import get_material, modes_for
+from app.bkt import estimate
 from app.store import StoreDep
 
 router = APIRouter(prefix="/v1", tags=["rekomendasi"])
@@ -12,12 +13,14 @@ def observations(data: dict, material_id: str) -> dict:
     material = get_material(data, material_id)
     questions = {q.id: q for q in material.questions}
     results = {c.id: [] for c in material.concepts}
-    attempts = sorted(data["attempts"].values(), key=lambda a: a["created_at"])
-    for attempt in attempts:
+    events = []
+    for attempt in data["attempts"].values():
         if attempt["material_id"] != material_id:
             continue
         for qid, answer in attempt["answers"].items():
-            results[questions[qid].concept_id].append(answer["correct"])
+            events.append((answer["answered_at"], qid, answer["correct"]))
+    for _, qid, correct in sorted(events):
+        results[questions[qid].concept_id].append(correct)
     return results
 
 
@@ -31,9 +34,13 @@ def recommend(data: dict, material_id: str, available_minutes: int) -> dict:
     for concept in material.concepts:
         answers = evidence[concept.id]
         recent = answers[-3:]
+        mastery = estimate(concept.skill_id, answers)
         if recent and not all(recent):
             action = "REVIEW"
             reason = f"{recent.count(False)} dari {len(recent)} jawaban terakhir pada konsep ini belum tepat."
+        elif mastery["mastery"] is not None and mastery["mastery"] < 0.5:
+            action = "REVIEW"
+            reason = "Estimasi penguasaan dari riwayat latihan masih rendah. Kamu bisa meninjau contoh lagi."
         elif concept.id in completed and not answers:
             action = "PRACTICE"
             reason = "Kamu sudah menyelesaikan bacaan ini. Latihan dapat membantu mengecek pemahaman."
@@ -51,7 +58,7 @@ def recommend(data: dict, material_id: str, available_minutes: int) -> dict:
                     "reason": f"Aktivitas ini diperkirakan {duration} menit, sementara waktu tersedia {available_minutes} menit.",
                     "alternatives": [], "requires_plan_review": True}
         return {"action": action, "material_id": material_id, "concept_id": concept.id,
-                "title": concept.title, "estimated_minutes": duration, "reason": reason,
+                "title": concept.title, "estimated_minutes": duration, "reason": reason, "estimate": mastery,
                 "alternatives": [{"action": "SWITCH", "mode": mode,
                                   "reason": "Format ini tersedia untuk konsep yang sama."}
                                  for mode in modes_for(concept)], "requires_plan_review": False}
@@ -75,5 +82,5 @@ async def progress(material_id: str, store: StoreDep):
     return {"material_id": material_id, "is_demo": material.is_demo,
             "concepts": [{"id": concept.id, "title": concept.title,
                           "observed": {"correct": sum(evidence[concept.id]), "total": len(evidence[concept.id])},
-                          "mastery": None, "mastery_status": "belum cukup data"}
+                          **estimate(concept.skill_id, evidence[concept.id])}
                          for concept in material.concepts]}

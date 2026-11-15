@@ -37,4 +37,25 @@ FOTOSINTESIS = Material.model_validate({
     ],
 })
 
-DEMO_MATERIALS = {FOTOSINTESIS.id: FOTOSINTESIS}
+PYTHAGORAS = Material.model_validate({
+    "id": "demo-pythagoras", "title": "Teorema Pythagoras", "subject": "Matematika", "is_demo": True,
+    "sources": [{"id": "rumus", "label": "Materi contoh · segitiga siku-siku", "text":
+        "Pada segitiga siku-siku, a dan b adalah sisi yang membentuk sudut siku-siku. Sisi c berhadapan dengan sudut siku-siku dan disebut hipotenusa. Berlaku a² + b² = c². Jika a = 3 dan b = 4, c² = 9 + 16 = 25 sehingga c = 5. Jika c = 13 dan a = 5, b² = 169 - 25 = 144 sehingga b = 12. Jika a = 6 dan b = 8, c = 10."}],
+    "concepts": [{"id": "teorema-pythagoras", "title": "Menghitung sisi segitiga siku-siku",
+        "source_ids": ["rumus"], "estimated_minutes": 10, "skill_id": "math.pythagorean-theorem",
+        "paragraphs": ["Tentukan dulu hipotenusa, yaitu sisi di depan sudut siku-siku.",
+                       "Gunakan a² + b² = c². Untuk a = 3 dan b = 4, hipotenusanya adalah 5.",
+                       "Jika mencari sisi siku-siku, kurangi kuadrat hipotenusa dengan kuadrat sisi lain, lalu ambil akar positifnya."],
+        "diagram_description": "Segitiga siku-siku memiliki dua sisi tegak lurus dengan panjang 3 dan 4 satuan. Sisi yang menghubungkan ujung keduanya adalah hipotenusa sepanjang 5 satuan.",
+        "transcript": "Jumlah kuadrat kedua sisi siku-siku sama dengan kuadrat hipotenusa. Tiga kuadrat ditambah empat kuadrat sama dengan dua puluh lima. Akar positif dua puluh lima adalah lima."}],
+    "questions": [
+        {"id": "pythagoras-1", "concept_id": "teorema-pythagoras", "prompt": "Sisi siku-siku panjangnya 3 dan 4. Berapa panjang hipotenusa?",
+         "options": ["5", "7", "25"], "correct_index": 0, "explanation": "c = √(3² + 4²) = √25 = 5.", "source_ids": ["rumus"]},
+        {"id": "pythagoras-2", "concept_id": "teorema-pythagoras", "prompt": "Hipotenusa 13 dan salah satu sisi siku-siku 5. Berapa sisi siku-siku lainnya?",
+         "options": ["8", "12", "18"], "correct_index": 1, "explanation": "b = √(13² - 5²) = √144 = 12.", "source_ids": ["rumus"]},
+        {"id": "pythagoras-3", "concept_id": "teorema-pythagoras", "prompt": "Sisi siku-siku panjangnya 6 dan 8. Berapa panjang hipotenusa?",
+         "options": ["14", "100", "10"], "correct_index": 2, "explanation": "c = √(6² + 8²) = √100 = 10.", "source_ids": ["rumus"]},
+    ],
+})
+
+DEMO_MATERIALS = {m.id: m for m in [FOTOSINTESIS, PYTHAGORAS]}
