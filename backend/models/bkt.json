@@ -1,0 +1,81 @@
+{
+  "version": "bkt-assistments-pythagoras-v1",
+  "seed": 20261115,
+  "source_url": "https://raw.githubusercontent.com/CAHLR/pyBKT-examples/fc592907f41dfa0e71742ed1d24f1f6df08e1ad1/data/as.csv",
+  "source_sha256": "f22e3fb7872c1784ce93b0f9ebabbe0cbcac4f896fd8b4a11667b9715d77dbdc",
+  "algorithm": "4 parameter BKT, maximum likelihood, no forgetting",
+  "split": "student-disjoint sha256(seed:user_id), 70/15/15 buckets",
+  "selection": "five converged starts, lowest validation log loss; untouched test students",
+  "excluded": {
+    "single_event_students": 14
+  },
+  "skills": {
+    "math.pythagorean-theorem": {
+      "dataset_skill": "Pythagorean Theorem",
+      "parameters": {
+        "initial": 0.6611761602147523,
+        "learn": 0.01839291947856216,
+        "guess": 0.40877376369333507,
+        "slip": 0.28745360740076364
+      },
+      "evaluation": {
+        "train": {
+          "students": 196,
+          "model": {
+            "log_loss": 0.6437823927245804,
+            "rmse": 0.4752391023507253,
+            "brier": 0.22585220440312315,
+            "auc": 0.602225305736426,
+            "responses": 4845
+          },
+          "baseline": {
+            "log_loss": 0.6619966056917539,
+            "rmse": 0.4843419488613924,
+            "brier": 0.23458712342685167,
+            "auc": 0.5,
+            "responses": 4845
+          }
+        },
+        "validation": {
+          "students": 34,
+          "model": {
+            "log_loss": 0.6506379433634026,
+            "rmse": 0.4787247680306804,
+            "brier": 0.22917740352602878,
+            "auc": 0.5632497956797452,
+            "responses": 850
+          },
+          "baseline": {
+            "log_loss": 0.6569403617370132,
+            "rmse": 0.4817798651986867,
+            "brier": 0.23211183851086473,
+            "auc": 0.5,
+            "responses": 850
+          }
+        },
+        "test": {
+          "students": 39,
+          "model": {
+            "log_loss": 0.6394086387456941,
+            "rmse": 0.4729807171098986,
+            "brier": 0.2237107587577939,
+            "auc": 0.5740516055973469,
+            "responses": 902
+          },
+          "baseline": {
+            "log_loss": 0.6496159072585533,
+            "rmse": 0.47804408878719795,
+            "brier": 0.2285261508243824,
+            "auc": 0.5,
+            "responses": 902
+          }
+        }
+      }
+    }
+  },
+  "limitations": [
+    "evaluasi prediksi jawaban pada dataset publik, belum validasi siswa Indonesia",
+    "pemetaan kurikulum terbatas pada contoh teorema Pythagoras yang ditinjau",
+    "skor penguasaan merupakan estimasi model dan perlu kalibrasi pengguna nyata"
+  ]
+}
