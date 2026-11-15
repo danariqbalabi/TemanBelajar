@@ -9,6 +9,7 @@ from app.material_processing import router as processing_router
 from app.planner import router as planner_router
 from app.profiles import router as profiles_router
 from app.recommendations import router as recommendations_router
+from app.rescheduling import router as rescheduling_router
 
 app = FastAPI(title="TemanBelajar API", version="0.1.0")
 app.add_middleware(
@@ -20,6 +21,7 @@ app.add_middleware(
 app.include_router(profiles_router)
 app.include_router(learning_router)
 app.include_router(planner_router)
+app.include_router(rescheduling_router)
 app.include_router(recommendations_router)
 app.include_router(processing_router)
 

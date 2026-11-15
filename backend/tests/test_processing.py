@@ -55,3 +55,41 @@ def test_invalid_pdf_and_excessive_text_are_rejected(client):
         json={"request_id": str(uuid4()), "title": "materi", "text": "x" * 100001},
     )
     assert response.status_code == 422
+
+
+def test_text_pdf_keeps_page_references(client):
+    from io import BytesIO
+
+    from pypdf import PdfWriter
+    from pypdf.generic import DecodedStreamObject, DictionaryObject, NameObject
+
+    writer = PdfWriter()
+    font = DictionaryObject(
+        {
+            NameObject("/Type"): NameObject("/Font"),
+            NameObject("/Subtype"): NameObject("/Type1"),
+            NameObject("/BaseFont"): NameObject("/Helvetica"),
+        }
+    )
+    for text in [
+        "Cahaya memberi energi pada proses fotosintesis tumbuhan.",
+        "Klorofil membantu tumbuhan menyerap energi cahaya.",
+    ]:
+        page = writer.add_blank_page(400, 400)
+        page[NameObject("/Resources")] = DictionaryObject(
+            {NameObject("/Font"): DictionaryObject({NameObject("/F1"): font})}
+        )
+        stream = DecodedStreamObject()
+        stream.set_data(f"BT /F1 12 Tf 30 300 Td ({text}) Tj ET".encode())
+        page[NameObject("/Contents")] = writer._add_object(stream)
+    output = BytesIO()
+    writer.write(output)
+    response = client.post(
+        "/v1/materials/pdf",
+        data={"request_id": str(uuid4()), "title": "Fotosintesis"},
+        files={"file": ("fotosintesis.pdf", output.getvalue(), "application/pdf")},
+    )
+    assert response.status_code == 202, response.text
+    sources = client.get(f"/v1/jobs/{response.json()['id']}/source").json()["sources"]
+    assert [source["id"] for source in sources] == ["page-1", "page-2"]
+    assert sources[1]["text"].startswith("Klorofil")

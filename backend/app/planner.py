@@ -25,6 +25,9 @@ class Activity(Input):
     status: Literal["pending", "active", "completed", "skipped"] = "pending"
     locked: bool = False
     prerequisites: list[str] = Field(default_factory=list, max_length=100)
+    material_id: str | None = None
+    concept_id: str | None = None
+    kind: Literal["read", "review", "practice", "custom"] = "custom"
 
 
 class PlanCreate(Mutation):
@@ -54,6 +57,11 @@ class ActivityStatus(PlanAction):
 
 class Restore(PlanAction):
     target_version: int = Field(ge=1)
+
+
+class Recompute(PlanAction):
+    material_id: str
+    start_at: AwareDatetime
 
 
 class ScheduleInput(Input):
@@ -138,6 +146,12 @@ def validate_schedule(activities: list[dict], timezone: str, daily_minutes: int)
 
 
 def preserve_protected(current: list[dict], proposed: list[dict]):
+    current = [
+        Activity.model_validate(item).model_dump(mode="json") for item in current
+    ]
+    proposed = [
+        Activity.model_validate(item).model_dump(mode="json") for item in proposed
+    ]
     updates = {a["id"]: a for a in proposed}
     for activity in current:
         if activity["locked"] or activity["status"] in PROTECTED:
@@ -191,6 +205,9 @@ async def suggest(body: ScheduleInput, store: StoreDep):
             start_at=cursor,
             duration_minutes=concept.estimated_minutes,
             prerequisites=[scheduled[p] for p in concept.prerequisites],
+            material_id=material.id,
+            concept_id=concept.id,
+            kind="read",
         )
         activities.append(activity.model_dump(mode="json"))
         scheduled[concept.id] = activity_id
@@ -202,6 +219,17 @@ async def suggest(body: ScheduleInput, store: StoreDep):
         "reason": "Usulan mengikuti urutan prasyarat dan waktu yang kamu sediakan.",
         "requires_confirmation": True,
     }
+
+
+def validate_links(data: dict, activities: list[dict]):
+    for activity in activities:
+        if activity.get("material_id") is None:
+            if activity.get("concept_id") is not None:
+                raise HTTPException(422, "konsep perlu ditautkan ke materi")
+            continue
+        material = get_material(data, activity["material_id"])
+        if activity.get("concept_id") not in {c.id for c in material.concepts}:
+            raise HTTPException(422, "konsep aktivitas tidak ditemukan")
 
 
 @router.post("", status_code=201, response_model=PlanResponse)
@@ -217,6 +245,7 @@ async def create_plan(body: PlanCreate, store: StoreDep):
             422, "rencana baru dimulai dengan kegiatan belum dikerjakan"
         )
     validate_schedule(activities, body.timezone, body.daily_minutes)
+    validate_links(snapshot.data, activities)
     plan = {
         "id": str(uuid4()),
         "timezone": body.timezone,
@@ -260,6 +289,7 @@ async def create_proposal(plan_id: str, body: ProposalCreate, store: StoreDep):
     require_revision(plan["version"], body.expected_version)
     activities = payload["activities"]
     preserve_protected(plan["activities"], activities)
+    validate_links(snapshot.data, activities)
     validate_schedule(activities, plan["timezone"], plan["daily_minutes"])
     proposal = {
         "id": str(uuid4()),

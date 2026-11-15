@@ -105,6 +105,27 @@ def check_planner(client):
             json={"request_id": rid(), "expected_version": 2, "target_version": 1},
         )
     )
+    recomputed = require(
+        client.post(
+            url + "/recompute",
+            json={
+                "request_id": rid(),
+                "expected_version": 3,
+                "material_id": "demo-fotosintesis",
+                "start_at": "2026-11-17T09:00:00+07:00",
+            },
+        ),
+        201,
+    )
+    require(
+        client.post(
+            url + f"/proposals/{recomputed['id']}/accept",
+            json={
+                "request_id": rid(),
+                "expected_version": 3,
+            },
+        )
+    )
     return plan
 
 
@@ -123,7 +144,7 @@ def check_gemini(client):
     print("unggah, gemini, sumber, dan materi tersimpan: lolos", flush=True)
 
 
-def run(with_gemini=False):
+def run(with_gemini=False, with_anonymous=False):
     config = settings()
     if not config.supabase_service_role_key:
         raise RuntimeError("isi SUPABASE_SERVICE_ROLE_KEY terlebih dulu")
@@ -182,6 +203,25 @@ def run(with_gemini=False):
             )
             assert direct.status_code in (401, 403)
             print("isolasi dua akun dan proteksi akses langsung: lolos", flush=True)
+            if with_anonymous:
+                anonymous = require(
+                    auth.post(
+                        "/auth/v1/signup",
+                        headers={"apikey": config.supabase_anon_key},
+                        json={},
+                    )
+                )
+                created.append(anonymous["user"]["id"])
+                client.headers["Authorization"] = "Bearer " + anonymous["access_token"]
+                require(client.put("/v1/profile", json={"display_name": "Manda"}))
+                require(
+                    client.post(
+                        "/v1/sessions",
+                        json={"request_id": rid(), "material_id": "demo-fotosintesis"},
+                    ),
+                    201,
+                )
+                print("demo anonim dengan sesi privat: lolos", flush=True)
         finally:
             for user_id in created:
                 response = auth.delete(
@@ -196,9 +236,10 @@ def run(with_gemini=False):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--gemini", action="store_true")
+    parser.add_argument("--anonymous", action="store_true")
     args = parser.parse_args()
     try:
-        run(args.gemini)
+        run(args.gemini, args.anonymous)
     except (RuntimeError, httpx.RequestError) as exc:
         print(
             str(exc) if isinstance(exc, RuntimeError) else "koneksi layanan gagal",
