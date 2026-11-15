@@ -5,6 +5,7 @@ Each mutation loads one snapshot and commits once. A competing writer receives
 """
 import hashlib
 import json
+from copy import deepcopy
 from typing import Annotated
 
 from fastapi import Depends, HTTPException
@@ -67,7 +68,7 @@ def replay(snapshot: Snapshot, key: str, operation: str, payload: dict):
 
 async def commit(store: Store, snapshot: Snapshot, key: str, operation: str, payload: dict, result: dict):
     snapshot.data["receipts"][key] = {
-        "fingerprint": fingerprint(operation, payload), "result": result,
+        "fingerprint": fingerprint(operation, payload), "result": deepcopy(result),
     }
     await store.save(snapshot)
     return result
