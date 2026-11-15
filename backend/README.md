@@ -122,3 +122,17 @@ akun. Migrasi harus diterapkan sebelum backend versi ini dipakai.
 Pengujian live terbaru mencakup konflik revisi profil serta upload sampai
 Gemini menghasilkan materi. Kuota global diuji di PostgreSQL; pembatasan
 pembuatan akun anonim di provider masih perlu dikonfigurasi sebelum publik.
+
+
+## penyimpanan aktivitas
+
+Migrasi 007 memindahkan isi snapshot ke `learning_records`, satu record per
+item koleksi, dan `learning_revisions` untuk serialisasi transaksi per akun.
+RPC menyimpan perubahan record saja; view `learning_states` mempertahankan
+kontrak pembacaan backend. Tabel `learning_states_backup` menyimpan salinan
+sebelum migrasi dan bukan sumber data aktif. Jangan menggunakannya sebagai
+rollback setelah ada aktivitas baru tanpa rekonsiliasi data.
+
+Pembacaan masih menggabungkan snapshot penuh dan konflik masih di tingkat
+akun. Pagination dan pembacaan per koleksi merupakan pekerjaan lanjutan;
+perubahan ini belum menyelesaikan batas pertumbuhan riwayat/receipts.

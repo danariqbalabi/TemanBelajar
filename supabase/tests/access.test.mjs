@@ -22,8 +22,15 @@ test('migrasi, akses antar akun, dan konflik versi berjalan di postgres', async 
     await db.query('insert into auth.users values ($1), ($2)', [first, second]);
     const directory = new URL('../migrations/', import.meta.url);
     for (const filename of (await readdir(directory)).filter(name => name.endsWith('.sql')).sort()) {
+      if(filename==='202611160007_learning_records.sql') {
+        await db.query('insert into auth.users values ($1)', ['00000000-0000-4000-8000-000000000003']);
+        await db.query('insert into public.learning_states(user_id,revision,data) values ($1,7,$2)', ['00000000-0000-4000-8000-000000000003',JSON.stringify({sessions:{a:{draft:'catatan lama'}},jobs:{},ai_usage:{'2026-11-16':2}})]);
+      }
       await db.exec(await readFile(new URL(filename, directory), 'utf8'));
     }
+    const migrated = await db.query('select revision,data from public.learning_states where user_id=$1',['00000000-0000-4000-8000-000000000003']);
+    assert.equal(Number(migrated.rows[0].revision),7);
+    assert.deepEqual(migrated.rows[0].data,{sessions:{a:{draft:'catatan lama'}},jobs:{},ai_usage:{'2026-11-16':2}});
     await db.exec('set role anon');
     await assert.rejects(db.query('select * from public.learner_profiles'), /permission denied/);
     await assert.rejects(db.query("select public.save_learning_state(null, 0, '{}'::jsonb)"), /permission denied/);

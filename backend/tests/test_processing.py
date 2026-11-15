@@ -178,3 +178,20 @@ def test_timed_out_generation_releases_lease(client, monkeypatch):
     assert client.post(url + "/process").status_code == 504
     assert client.get(url).json()["status"] == "failed"
     assert client.get(url + "/source").status_code == 200
+
+
+def test_global_quota_denial_keeps_job_queued(client, store, monkeypatch):
+    job = upload(client)
+
+    async def deny():
+        raise HTTPException(429, "kuota global habis")
+
+    async def unexpected(job):
+        raise AssertionError("provider tidak boleh dipanggil")
+
+    monkeypatch.setattr(store, "reserve_ai_attempt", deny)
+    monkeypatch.setattr(material_processing, "generate_material", unexpected)
+    url = f"/v1/jobs/{job['id']}"
+    assert client.post(url + "/process").status_code == 429
+    assert client.get(url).json()["status"] == "queued"
+    assert store.snapshot.data.get("ai_usage", {}) == {}
