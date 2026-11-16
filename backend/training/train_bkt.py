@@ -9,6 +9,8 @@ import argparse
 import csv
 import hashlib
 import json
+import os
+import tempfile
 import urllib.request
 from collections import defaultdict
 from pathlib import Path
@@ -143,9 +145,10 @@ def train(path: Path, output: Path):
             bounds=bounds,
             options={"maxiter": 300},
         )
-        if result.success and np.isfinite(result.fun):
+        if result.success and np.isfinite(result.fun) and np.isfinite(result.x).all():
             validation = log_loss(*predictions(result.x, matrices["validation"]))
-            candidates.append((validation, result.x))
+            if np.isfinite(validation):
+                candidates.append((validation, result.x))
         print(
             f"inisialisasi {run + 1}/5 selesai; konvergen={result.success}", flush=True
         )
@@ -188,9 +191,21 @@ def train(path: Path, output: Path):
         ],
     }
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(
-        json.dumps(model, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
-    )
+    # Never leave a truncated runtime model if writing/training is interrupted.
+    serialized = json.dumps(model, indent=2, ensure_ascii=False, allow_nan=False) + "\n"
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", dir=output.parent, delete=False
+        ) as stream:
+            temporary = Path(stream.name)
+            stream.write(serialized)
+            stream.flush()
+            os.fsync(stream.fileno())
+        temporary.replace(output)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
     print(json.dumps(report, indent=2), flush=True)
 
 

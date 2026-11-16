@@ -6,6 +6,8 @@ from pathlib import Path
 
 from pydantic import BaseModel, ConfigDict, Field
 
+MODEL_PATH = Path(__file__).resolve().parents[1] / "models" / "bkt.json"
+
 
 class Parameters(BaseModel):
     model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
@@ -30,11 +32,10 @@ def update(mastery: float, correct: bool, parameters: Parameters) -> float:
 
 @lru_cache
 def artifact() -> dict:
-    path = Path(__file__).resolve().parents[1] / "models" / "bkt.json"
-    if not path.exists():
-        return {"skills": {}}
     try:
-        result = json.loads(path.read_text(encoding="utf-8"))
+        result = json.loads(MODEL_PATH.read_text(encoding="utf-8"))
+        if not isinstance(result["version"], str) or not result["version"].strip():
+            raise ValueError("versi model perlu diisi")
         for skill in result["skills"].values():
             Parameters.model_validate(skill["parameters"])
         return result
