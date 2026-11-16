@@ -44,7 +44,10 @@ try {
   )();
   assert.equal(session.paragraph, 1);
   assert.equal(session.draft, "catatan smoke test");
+  assert.equal(await api(`/sessions/${session.id}/attempts/active`), null);
   let attempt = await mutation("/attempts", { session_id: session.id })();
+  assert.equal((await api(`/sessions/${session.id}/attempts/active`)).id, attempt.id);
+  assert.equal((await mutation("/attempts", { session_id: session.id })()).id, attempt.id);
   for (const question of attempt.questions) {
     const answer = mutation(`/attempts/${attempt.id}/answers`, {
       expected_version: attempt.version,
@@ -55,6 +58,7 @@ try {
     assert.deepEqual(await answer(), attempt);
   }
   assert.equal(attempt.status, "completed");
+  assert.equal(await api(`/sessions/${session.id}/attempts/active`), null);
   await api(`/progress?material_id=${material.id}`);
   await api(`/recommendations?material_id=${material.id}&available_minutes=15`);
   const start = new Date();
