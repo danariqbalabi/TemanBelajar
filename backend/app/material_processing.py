@@ -105,6 +105,7 @@ async def upload_text(body: TextUpload, store: StoreDep):
             text=body.text[i : i + 20000],
         )
         for i in range(0, len(body.text), 20000)
+        if body.text[i : i + 20000].strip()
     ]
     return await create_job(
         store,
@@ -122,6 +123,10 @@ async def upload_pdf(
     request_id: Annotated[UUID, Form()],
     title: Annotated[str, Form(min_length=1, max_length=200)],
 ):
+    title = title.strip()
+    if not title:
+        await file.close()
+        raise HTTPException(422, "judul materi perlu diisi")
     try:
         content = await file.read(MAX_BYTES + 1)
     finally:

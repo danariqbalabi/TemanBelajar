@@ -1,9 +1,11 @@
-from typing import Literal
+from typing import Annotated, Literal
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 Mode = Literal["standard", "reading", "focus", "explore", "transcript"]
+Paragraph = Annotated[str, Field(min_length=1, max_length=10000)]
+Option = Annotated[str, Field(min_length=1, max_length=2000)]
 
 
 class Input(BaseModel):
@@ -23,7 +25,7 @@ class Source(Input):
 class Concept(Input):
     id: str = Field(min_length=1, max_length=80)
     title: str = Field(min_length=1, max_length=160)
-    paragraphs: list[str] = Field(min_length=1, max_length=20)
+    paragraphs: list[Paragraph] = Field(min_length=1, max_length=20)
     source_ids: list[str] = Field(min_length=1)
     prerequisites: list[str] = Field(default_factory=list)
     estimated_minutes: int = Field(ge=1, le=60)
@@ -36,7 +38,7 @@ class Question(Input):
     id: str = Field(min_length=1, max_length=80)
     concept_id: str
     prompt: str = Field(min_length=1, max_length=2000)
-    options: list[str] = Field(min_length=2, max_length=6)
+    options: list[Option] = Field(min_length=2, max_length=6)
     correct_index: int = Field(ge=0)
     explanation: str = Field(min_length=1, max_length=3000)
     source_ids: list[str] = Field(min_length=1)

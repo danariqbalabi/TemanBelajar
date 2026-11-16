@@ -106,10 +106,19 @@ class DecisionResponse(BaseModel):
 
 
 def validate_schedule(activities: list[dict], timezone: str, daily_minutes: int):
+    if len(activities) > 100:
+        raise HTTPException(422, "rencana maksimal memuat 100 aktivitas")
     parsed = [Activity.model_validate(a) for a in activities]
     by_id = {a.id: a for a in parsed}
     if len(by_id) != len(parsed):
         raise HTTPException(422, "id aktivitas harus unik")
+    # Skipped activities can be resumed, so their references must remain valid.
+    for item in parsed:
+        if len(set(item.prerequisites)) != len(item.prerequisites) or any(
+            dependency not in by_id or dependency == item.id
+            for dependency in item.prerequisites
+        ):
+            raise HTTPException(422, "prasyarat aktivitas tidak tersedia")
     totals = {}
     end_previous = None
     zone = ZoneInfo(timezone)
@@ -363,7 +372,8 @@ async def activity_status(
     if activity["status"] == "completed" and body.status != "completed":
         raise HTTPException(409, "kegiatan selesai tetap tercatat")
     if body.status in PROTECTED and any(
-        by_id[p]["status"] != "completed" for p in activity["prerequisites"]
+        p not in by_id or by_id[p]["status"] != "completed"
+        for p in activity["prerequisites"]
     ):
         raise HTTPException(422, "selesaikan kegiatan prasyarat terlebih dulu")
     activity["status"] = body.status
