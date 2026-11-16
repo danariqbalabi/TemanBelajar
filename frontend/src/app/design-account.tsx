@@ -38,577 +38,445 @@ export function AccountDesign({
     });
   }
   return (
-    <div className="stitch-shell stitch-landing stitch-account">
-      <a
-        className="sr-only focus:not-sr-only focus:fixed focus:top-space-sm focus:left-space-sm focus:z-50 focus:px-space-md focus:py-space-sm focus:bg-surface focus:text-primary focus:outline-none focus:ring-2 focus:ring-focus rounded-xl shadow-[0_4px_16px_rgba(39,59,53,0.08)] font-label text-label"
-        href="#main-content"
-      >
-        Lewati ke konten utama
-      </a>
-      <header className="fixed top-0 left-0 right-0 z-40 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
-        <div className="h-20 max-w-[1280px] mx-auto px-gutter flex items-center justify-between gap-space-md">
-          <div className="flex items-center gap-space-sm">
-            <a
-              href="#"
-              data-path="beranda"
-              className="flex items-center"
-              onClick={(e) => {
-                e.preventDefault();
-                onBack();
-              }}
-            >
-              <Image
-                src="/design/logo-revamp.png"
-                alt="TemanBelajar Logo"
-                className="h-10 w-auto object-contain"
-                width={1024}
-                height={1024}
-              ></Image>
-            </a>
-          </div>
-          <nav
-            className="hidden lg:flex items-center gap-space-lg"
-            data-active-classes="bg-secondary-container text-primary font-bold rounded-full px-space-md py-space-xs"
-          >
-            <a
-              className="font-label text-label text-on-surface-variant hover:text-on-surface transition-colors py-space-xs"
-              data-path="cara-kerja"
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                onBack();
-              }}
-            >
-              Cara Kerja
-            </a>
-            <a
-              className="font-label text-label text-on-surface-variant hover:text-on-surface transition-colors py-space-xs"
-              data-path="fitur-belajar"
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                onBack();
-              }}
-            >
-              Fitur Belajar
-            </a>
-            <a
-              className="font-label text-label text-on-surface-variant hover:text-on-surface transition-colors py-space-xs"
-              data-path="aksesibilitas"
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                onBack();
-              }}
-            >
-              Aksesibilitas
-            </a>
-            <a
-              className="font-label text-label text-on-surface-variant hover:text-on-surface transition-colors py-space-xs"
-              data-path="untuk-sekolah"
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                onBack();
-              }}
-            >
-              Untuk Sekolah
-            </a>
-          </nav>
-          <div className="flex items-center gap-2">
-            <a
-              href="#"
-              data-path="bantuan"
-              className="px-3 py-1.5 rounded-full bg-surface-container hover:bg-surface text-xs font-semibold text-text-secondary hover:text-primary transition-colors"
-              onClick={(e) => {
-                e.preventDefault();
-                onBack();
-              }}
-            >
-              Butuh Bantuan?
-            </a>
-          </div>
-        </div>
-      </header>
-      <main className="w-full pt-20 bg-background" id="main-content">
-        <div className="flex flex-col w-full relative overflow-hidden py-6 sm:py-10">
-          <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-secondary-container/40 blur-3xl pointer-events-none"></div>
-          <div className="absolute top-1/2 -right-24 w-80 h-80 rounded-full bg-butter/30 blur-3xl pointer-events-none"></div>
-          <div className="max-w-[720px] w-full mx-auto px-4 sm:px-6 relative z-10 flex flex-col items-center">
-            <div className="w-full flex items-center justify-between mb-8 sm:mb-10">
-              <a
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface/80 hover:bg-surface text-text-secondary hover:text-primary transition-all duration-200 text-sm font-semibold shadow-sm group"
-                data-path="beranda"
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onBack();
-                }}
-              >
-                <span
-                  className="material-symbols-outlined text-[18px] transition-transform group-hover:-translate-x-1"
-                  aria-hidden="true"
-                >
-                  arrow_back
-                </span>
-                Kembali ke Halaman Utama
-              </a>
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-gray bg-surface-container/60 px-3 py-1.5 rounded-full">
-                <span className="w-2 h-2 rounded-full bg-success animate-pulse"></span>
-                Ruang Tenang Aktif
-              </div>
-            </div>
-
-            <div className="w-full bg-surface rounded-3xl shadow-[0_12px_40px_rgba(27,48,41,0.06)] p-6 sm:p-10 relative mt-8 flex flex-col items-center">
-              <div className="absolute -top-20 left-1/2 -translate-x-1/2 flex flex-col items-center z-20 pointer-events-none">
-                <div className="relative flex flex-col items-center">
-                  <div className="mb-1.5 px-3.5 py-1.5 bg-white text-primary text-xs font-bold rounded-full shadow-[0_4px_16px_rgba(39,59,53,0.08)] border border-secondary-container/60 flex items-center gap-1.5 animate-bounce">
-                    <span
-                      className="material-symbols-outlined text-[16px] text-primary"
-                      aria-hidden="true"
-                    >
-                      waving_hand
+    <>
+      <div className="final-design final-screen-2 bg-canvas font-body text-body text-on-surface min-h-screen flex items-center justify-center stitch-shell stitch-landing stitch-account">
+        <main className="w-full max-w-[1200px] mx-auto px-margin bg-canvas flex items-center justify-center">
+          <div className="flex flex-col w-full py-8 md:py-12">
+            <header className="w-full flex items-center justify-between mb-8 px-2 md:px-0">
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 bg-secondary-fixed rounded-2xl flex items-center justify-center p-2.5 shadow-sm ring-1 ring-primary/10">
+                  <svg
+                    className="w-full h-full text-primary"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="3.2"
+                    viewBox="0 0 48 48"
+                  >
+                    <path d="M6 14C6 14 14 11 24 14C34 11 42 14 42 14V37C42 37 34 34 24 37C14 34 6 37 6 37V14Z"></path>
+                    <path d="M24 14V37"></path>
+                    <path d="M12 23L36 17"></path>
+                    <circle
+                      cx="37"
+                      cy="16"
+                      fill="#FFE7A3"
+                      r="3"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                    ></circle>
+                  </svg>
+                </div>
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-2">
+                    <span className="font-display text-[1.5rem] font-extrabold tracking-tight text-primary leading-none">
+                      TemanBelajar
                     </span>
-                    <span>Hai! Aku Mimo. Yuk kenalan dulu!</span>
+                    <span className="px-2 py-0.5 rounded-full bg-butter font-display text-[0.7rem] font-extrabold text-primary tracking-wide uppercase">
+                      Zine Edition
+                    </span>
                   </div>
-                  <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-secondary-fixed/40 p-1.5 shadow-md border-2 border-white backdrop-blur-sm">
-                    <div className="w-full h-full rounded-full overflow-hidden bg-white flex items-center justify-center">
-                      <Image
-                        src="/design/mimo-welcome.png"
-                        alt="Mimo Maskot TemanBelajar"
-                        className="w-24 h-24 object-contain mx-auto drop-shadow-sm"
-                        width={1024}
-                        height={1024}
-                      ></Image>
-                    </div>
-                    <div className="absolute bottom-0 right-1 w-7 h-7 rounded-full bg-secondary-container flex items-center justify-center text-primary text-xs shadow-sm border border-white">
-                      ✨
-                    </div>
-                  </div>
+                  <span className="font-reading text-metadata text-on-surface-variant flex items-center gap-1.5 mt-0.5">
+                    Belajar seru dengan caramu sendiri
+                    <span className="inline-block w-2 h-2 rounded-full bg-peach"></span>
+                  </span>
                 </div>
               </div>
-
-              <div className="pt-10 pb-4 text-center max-w-md flex flex-col items-center">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-xs font-bold tracking-wide uppercase mb-3">
-                  Ruang Masuk Pelajar
-                </span>
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-primary tracking-tight font-display mb-2">
-                  Hai Manda! Senang ketemu kamu 🦎
-                </h1>
-                <p className="text-text-secondary text-sm sm:text-base leading-relaxed">
-                  Pilih cara masukmu untuk mulai menyusun ruang belajar yang
-                  nyaman dan bebas distraksi.
-                </p>
+              <div className="flex items-center gap-2.5">
+                <a
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-butter-tint hover:bg-butter text-primary text-metadata font-label border border-warning/20 shadow-sm transition-all"
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    demo();
+                  }}
+                  aria-disabled={busy}
+                >
+                  <span
+                    className="material-symbols-outlined text-[1.125rem] text-warning"
+                    aria-hidden="true"
+                  >
+                    bolt
+                  </span>
+                  <span>Jelajahi Demo</span>
+                </a>
+                <button
+                  aria-label="Bantuan Aksesibilitas"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high hover:bg-secondary-fixed text-primary text-metadata font-label transition-colors"
+                  type="button"
+                  onClick={() =>
+                    document.getElementById("email-input")?.focus()
+                  }
+                >
+                  <span
+                    className="material-symbols-outlined text-[1.15rem]"
+                    aria-hidden="true"
+                  >
+                    accessibility_new
+                  </span>
+                  <span className="hidden sm:inline text-[0.8125rem]">
+                    Aksesibilitas
+                  </span>
+                </button>
               </div>
+            </header>
 
-              <div className="w-full grid grid-cols-1 gap-5 mt-6 mb-8">
-                <div className="relative rounded-2xl bg-secondary-container/40 p-5 sm:p-6 transition-all duration-300 hover:shadow-md hover:bg-secondary-container/60 group">
-                  <div className="absolute -top-3 right-6 bg-primary text-on-primary text-[11px] font-bold tracking-wider uppercase px-3 py-1 rounded-full shadow-sm">
-                    Paling Cepat
-                  </div>
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="flex items-start gap-4">
-                      <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center text-primary shrink-0 p-1">
-                        <div className="w-11 h-11 rounded-xl bg-primary-fixed flex items-center justify-center text-primary font-bold text-lg">
-                          M
-                        </div>
+            <main className="w-full bg-surface rounded-[1.75rem] shadow-[0_3px_0_rgba(39,59,53,0.09)] overflow-hidden">
+              <div className="relative w-full">
+                <div className="absolute -top-3 left-12 z-20 bg-butter/90 border border-warning/30 px-5 py-1 rounded-sm shadow-sm transform -rotate-2 select-none pointer-events-none">
+                  <span className="text-[0.7rem] font-display font-extrabold text-primary tracking-widest uppercase flex items-center gap-1.5">
+                    <span>📎</span> EDISI BELAJAR MANDIRI
+                  </span>
+                </div>
+                <div className="absolute -top-3 right-16 z-20 bg-peach/90 border border-peach px-4 py-1 rounded-sm shadow-sm transform rotate-2 select-none pointer-events-none hidden md:block">
+                  <span className="text-[0.7rem] font-display font-extrabold text-primary tracking-widest uppercase">
+                    ✨ SMP &amp; SMA
+                  </span>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[660px]">
+                <section className="lg:col-span-5 bg-mint-tint p-6 sm:p-8 md:p-10 flex flex-col justify-between relative border-b lg:border-b-0 lg:border-r border-secondary-container">
+                  <div className="flex flex-col">
+                    <div className="flex items-center justify-between gap-2 mb-3.5">
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-fixed text-primary font-label text-metadata shadow-sm">
+                        <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                        <span>🌱 Sahabat Belajar SMP &amp; SMA</span>
                       </div>
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <h3 className="font-bold text-primary text-base sm:text-lg">
-                            Masuk Akun Demo Manda
-                          </h3>
-                          <span className="text-xs bg-white text-secondary font-semibold px-2 py-0.5 rounded-full">
-                            SMP Kelas 8
-                          </span>
+                      <span className="font-display font-extrabold text-[0.75rem] text-primary/70 tracking-wider uppercase bg-surface/80 px-2.5 py-0.5 rounded-full">
+                        HALO TEMAN BARU! 🦎✨
+                      </span>
+                    </div>
+                    <h1 className="font-display text-[2rem] md:text-[2.35rem] text-primary leading-[1.18] font-extrabold mb-3 tracking-tight">
+                      Hai! Aku Mimo.
+                      <br />
+                      <span className="relative inline-block">
+                        Yuk, kenalan dulu!
+                        <span className="absolute left-0 bottom-1 w-full h-2.5 bg-butter/60 -z-10 rounded-sm transform -rotate-1"></span>
+                      </span>
+                    </h1>
+                    <p className="font-reading text-reading text-on-surface-variant mb-5 leading-relaxed">
+                      Di sini kamu bebas belajar dengan caramu sendiri. Nggak
+                      ada tes medis rumit, nggak ada timer yang bikin panik, dan
+                      tanpa penilaian yang bikin cemas.
+                    </p>
+                    <div className="relative w-full my-2 py-4 flex flex-col items-center justify-center">
+                      <div className="absolute inset-2 bg-secondary-fixed/40 rounded-[2.5rem] transform rotate-1 -z-0 border border-secondary-container"></div>
+                      <div className="absolute -top-1 left-2 z-20 bg-surface px-3 py-1 rounded-full shadow-sm border border-secondary-container flex items-center gap-1.5 animate-bounce">
+                        <span className="text-xs">🎧</span>
+                        <span className="font-label text-[0.75rem] font-bold text-primary">
+                          Bebas Pilih Cara
+                        </span>
+                      </div>
+                      <div className="absolute -bottom-2 right-2 z-20 bg-surface px-3 py-1 rounded-full shadow-sm border border-secondary-container flex items-center gap-1.5">
+                        <span className="text-xs">⚡</span>
+                        <span className="font-label text-[0.75rem] font-bold text-primary">
+                          100% Tanpa Tekanan
+                        </span>
+                      </div>
+                      <Image
+                        alt=""
+                        className="relative z-10 w-48 sm:w-56 h-auto object-contain select-none transform hover: transition-transform duration-300 object-contain"
+                        src="/design/mimo-final.png"
+                        width={1408}
+                        height={1120}
+                      ></Image>
+                    </div>
+                    <div className="mt-4 bg-lavender-tint/90 border border-lavender/50 rounded-2xl p-4 relative shadow-sm">
+                      <div className="flex items-start gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-surface flex items-center justify-center shrink-0 border border-lavender shadow-xs text-lg">
+                          💬
                         </div>
-                        <p className="text-xs sm:text-sm text-text-secondary leading-normal">
-                          Profil siap pakai, catatan tersusun, dan target
-                          belajar mingguan sudah disiapkan.
+                        <p className="font-mimo-voice text-[1.05rem] text-primary leading-snug">
+                          “Mau mulai materi sekolahmu, atau intip simulasi seru
+                          dulu? Santai aja, aku temani tiap langkahmu!”
                         </p>
                       </div>
                     </div>
-
-                    <button
-                      className="h-12 w-full sm:w-auto px-6 rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-bold text-sm tracking-wide transition-all duration-200 flex items-center justify-center gap-2 shadow-sm shrink-0"
-                      type="button"
-                      disabled={busy}
-                      onClick={demo}
-                    >
-                      <span>Mulai Bersama Manda</span>
-                      <span
-                        className="material-symbols-outlined text-[18px]"
-                        aria-hidden="true"
-                      >
-                        arrow_forward
-                      </span>
-                    </button>
                   </div>
-                  <div className="mt-4 pt-3 flex items-center gap-3 text-xs text-secondary font-medium">
-                    <span className="flex items-center gap-1">
-                      <span
-                        className="material-symbols-outlined text-[16px] text-success"
-                        aria-hidden="true"
-                      >
-                        check_circle
-                      </span>
-                      Sekali klik langsung belajar
-                    </span>
-                    <span className="w-1 h-1 rounded-full bg-outline-variant"></span>
-                    <span className="flex items-center gap-1">
-                      <span
-                        className="material-symbols-outlined text-[16px] text-success"
-                        aria-hidden="true"
-                      >
-                        timer
-                      </span>
-                      Tanpa ketik kata sandi
-                    </span>
+                  <div className="mt-6 pt-5 border-t border-secondary-container/80">
+                    <ul className="flex flex-col gap-2.5">
+                      <li className="flex items-center gap-3 p-2.5 rounded-xl bg-surface/75 border border-secondary-container shadow-xs text-metadata text-primary font-reading">
+                        <span className="w-6 h-6 rounded-full bg-secondary-fixed text-primary flex items-center justify-center shrink-0 font-bold">
+                          <span
+                            className="material-symbols-outlined text-[1rem]"
+                            aria-hidden="true"
+                          >
+                            check
+                          </span>
+                        </span>
+                        <span>
+                          <strong className="font-bold">100% Gratis</strong>{" "}
+                          untuk seluruh pelajar SMP &amp; SMA se-Indonesia
+                        </span>
+                      </li>
+                      <li className="flex items-center gap-3 p-2.5 rounded-xl bg-surface/75 border border-secondary-container shadow-xs text-metadata text-primary font-reading">
+                        <span className="w-6 h-6 rounded-full bg-secondary-fixed text-primary flex items-center justify-center shrink-0 font-bold">
+                          <span
+                            className="material-symbols-outlined text-[1rem]"
+                            aria-hidden="true"
+                          >
+                            check
+                          </span>
+                        </span>
+                        <span>
+                          <strong className="font-bold">
+                            Tanpa kata sandi
+                          </strong>{" "}
+                          (Magic link instan dikirim ke email kamu)
+                        </span>
+                      </li>
+                      <li className="flex items-center gap-3 p-2.5 rounded-xl bg-surface/75 border border-secondary-container shadow-xs text-metadata text-primary font-reading">
+                        <span className="w-6 h-6 rounded-full bg-secondary-fixed text-primary flex items-center justify-center shrink-0 font-bold">
+                          <span
+                            className="material-symbols-outlined text-[1rem]"
+                            aria-hidden="true"
+                          >
+                            check
+                          </span>
+                        </span>
+                        <span>
+                          Langsung pakai{" "}
+                          <strong className="font-bold">
+                            tanpa syarat tes medis
+                          </strong>{" "}
+                          atau surat diagnosis
+                        </span>
+                      </li>
+                    </ul>
                   </div>
-                </div>
-
-                <div className="rounded-2xl bg-surface-container-low p-5 sm:p-6 transition-all duration-300">
-                  <div className="flex items-start gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center text-text-secondary shadow-sm shrink-0">
-                      <span
-                        className="material-symbols-outlined text-[20px]"
-                        aria-hidden="true"
+                </section>
+                <section className="lg:col-span-7 bg-surface p-6 sm:p-8 md:p-12 flex flex-col justify-between">
+                  <div className="max-w-xl mx-auto w-full">
+                    <div className="flex items-center justify-between mb-7">
+                      <nav
+                        aria-label="Mode Masuk"
+                        className="flex items-center gap-1.5 bg-canvas p-1.5 rounded-full border border-divider shadow-xs"
                       >
-                        alternate_email
+                        <button
+                          aria-current="page"
+                          className="px-4 py-2 rounded-full bg-secondary-fixed text-primary font-label text-metadata font-bold shadow-xs transition-all flex items-center gap-2"
+                          type="button"
+                          onClick={() =>
+                            document.getElementById("email-input")?.focus()
+                          }
+                        >
+                          <span
+                            className="material-symbols-outlined text-[1.125rem]"
+                            aria-hidden="true"
+                          >
+                            mail
+                          </span>
+                          <span>Masuk / Buat Akun</span>
+                        </button>
+                        <a
+                          className="px-4 py-2 rounded-full text-on-surface-variant hover:text-primary font-label text-metadata font-semibold transition-colors flex items-center gap-1.5"
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            demo();
+                          }}
+                          aria-disabled={busy}
+                        >
+                          <span
+                            className="material-symbols-outlined text-[1.125rem] text-warning"
+                            aria-hidden="true"
+                          >
+                            bolt
+                          </span>
+                          <span>Coba Demo Kilat</span>
+                        </a>
+                      </nav>
+                      <span className="hidden sm:inline-flex items-center gap-1 text-[0.75rem] font-bold text-success bg-secondary-container/50 px-2.5 py-1 rounded-full">
+                        <span className="w-1.5 h-1.5 rounded-full bg-success"></span>{" "}
+                        Bebas Kuota Lambat
                       </span>
                     </div>
-                    <div>
-                      <h3 className="font-bold text-on-surface text-base">
-                        Masuk dengan Email
-                      </h3>
-                      <p className="text-xs sm:text-sm text-text-secondary">
-                        Tanpa kata sandi rumit. Kami mengirimkan tautan masuk
-                        instan ke kontakmu.
+                    <div className="mb-6">
+                      <h2 className="font-display text-[1.65rem] md:text-[1.85rem] text-primary font-extrabold tracking-tight">
+                        Mulai langkah belajarmu
+                      </h2>
+                      <p className="font-reading text-reading text-on-surface-variant mt-1.5 leading-relaxed">
+                        Masukkan email sekolah atau pribadi kamu. Kami kirimkan
+                        tautan masuk instan tanpa perlu repot menghafal kata
+                        sandi.
                       </p>
                     </div>
-                  </div>
-                  <form
-                    className="flex flex-col sm:flex-row gap-2.5"
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      sendLink();
-                    }}
-                  >
-                    <div className="relative flex-grow">
-                      <span
-                        className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-gray text-[18px]"
-                        aria-hidden="true"
+                    <form
+                      className="space-y-4"
+                      id="magic-auth-form"
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        sendLink();
+                      }}
+                    >
+                      <div className="flex flex-col gap-2">
+                        <div className="flex justify-between items-baseline">
+                          <label
+                            className="font-label text-label text-primary font-bold flex items-center gap-1.5"
+                            htmlFor="email-input"
+                          >
+                            <span>Alamat Email Siswa atau Orang Tua</span>
+                            <span className="text-error">*</span>
+                          </label>
+                          <span className="text-[0.75rem] text-on-surface-variant font-reading bg-canvas px-2 py-0.5 rounded">
+                            Wajib diisi
+                          </span>
+                        </div>
+                        <div className="relative">
+                          <input
+                            aria-describedby="email-hint email-error"
+                            autoComplete="email"
+                            className="w-full min-h-[50px] pl-4 pr-11 py-3 rounded-xl bg-canvas/60 text-primary font-reading text-body placeholder:text-outline outline-none ring-1 ring-control-border focus:ring-2 focus:ring-primary focus:bg-surface focus:ring-offset-2 transition-all"
+                            id="email-input"
+                            name="email"
+                            placeholder="contoh: fajar@belajar.id atau emailmu@gmail.com"
+                            required={true}
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            disabled={busy}
+                          />
+                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">
+                            <span
+                              className="material-symbols-outlined text-[1.25rem]"
+                              aria-hidden="true"
+                            >
+                              alternate_email
+                            </span>
+                          </span>
+                        </div>
+                        <div
+                          className="flex items-center gap-2 mt-1 px-2.5 py-1.5 rounded-lg bg-surface-container-low/70 text-metadata text-on-surface-variant font-reading"
+                          id="email-hint"
+                        >
+                          <span
+                            className="material-symbols-outlined text-[1rem] text-success"
+                            aria-hidden="true"
+                          >
+                            verified_user
+                          </span>
+                          <span>
+                            Tautan masuk ajaib (magic link) langsung dikirimkan
+                            ke inbox kamu.
+                          </span>
+                        </div>
+                        <div
+                          className="text-error text-sm"
+                          id="email-error"
+                          role="alert"
+                          hidden={!error}
+                        >
+                          {error}
+                        </div>
+                      </div>
+                      <button
+                        className="w-full min-h-[50px] px-6 py-3.5 rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-base font-bold tracking-wide flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm hover:shadow focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                        id="submit-btn"
+                        type="submit"
+                        disabled={busy}
                       >
-                        mail
+                        <span>Kirim Tautan Masuk Ajaib</span>
+                        <span
+                          className="material-symbols-outlined text-[1.2rem]"
+                          aria-hidden="true"
+                        >
+                          arrow_forward
+                        </span>
+                      </button>
+                      {message && (
+                        <p
+                          role="status"
+                          className="p-4 rounded-xl bg-mint-tint text-success"
+                        >
+                          {message}
+                        </p>
+                      )}
+                    </form>
+                    <div className="relative my-6 flex items-center justify-center">
+                      <div className="w-full h-px bg-divider"></div>
+                      <span className="absolute px-4 bg-surface font-reading text-metadata text-on-surface-variant">
+                        atau masuk lebih cepat dengan
                       </span>
-                      <input
-                        className="w-full h-11 pl-10 pr-4 rounded-xl bg-surface text-on-surface text-sm placeholder:text-muted-gray focus:outline-none focus:ring-2 focus:ring-focus shadow-xs"
-                        placeholder="nama@sekolah.id atau email pribadimu"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required={true}
-                        aria-label="Alamat email"
-                      />
                     </div>
                     <button
-                      className="h-11 px-5 rounded-xl bg-surface-container-highest hover:bg-surface-variant active:bg-surface-container text-primary font-bold text-sm transition-all duration-200 flex items-center justify-center gap-1.5 shrink-0"
-                      type="submit"
-                      disabled={busy}
+                      className="w-full min-h-[48px] px-4 py-2.5 rounded-xl bg-surface hover:bg-canvas text-primary font-label text-label ring-1 ring-control-border flex items-center justify-center gap-3 transition-colors cursor-pointer focus:ring-2 focus:ring-primary focus:ring-offset-2 shadow-xs"
+                      type="button"
+                      disabled={true}
+                      title="Connexion Google belum dikonfigurasi. Gunakan email atau demo."
                     >
-                      <span>Kirim Tautan</span>
-                      <span
-                        className="material-symbols-outlined text-[16px]"
-                        aria-hidden="true"
-                      >
-                        send
-                      </span>
+                      Masuk dengan Google (belum tersedia)
                     </button>
-                  </form>
-                </div>
+                    <div
+                      className="mt-7 p-5 bg-butter-tint/80 border-2 border-primary/20 rounded-2xl relative shadow-sm"
+                      id="mode-demo"
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-butter text-warning font-display font-extrabold text-[0.75rem] tracking-wider uppercase border border-warning/20">
+                          ⚡ PENASARAN CARA KERJANYA?
+                        </span>
+                        <span className="text-[0.75rem] text-primary font-bold font-label bg-surface px-2.5 py-0.5 rounded-full border border-divider">
+                          Tanpa Registrasi
+                        </span>
+                      </div>
+                      <p className="font-reading text-metadata text-primary mb-3.5 leading-relaxed">
+                        Mau langsung intip 5 mode belajar adaptif dan simulasi
+                        fotosintesis interaktif berbasis kartu visual tanpa
+                        perlu mendaftar?
+                      </p>
+                      <a
+                        className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-surface hover:bg-butter text-primary font-label text-label font-bold ring-1 ring-control-border hover:ring-primary transition-all group shadow-xs"
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          demo();
+                        }}
+                        aria-disabled={busy}
+                      >
+                        <span>Coba Demo Materi Fotosintesis</span>
+                        <span
+                          className="material-symbols-outlined text-[1.2rem] text-warning group-hover:translate-x-1 transition-transform"
+                          aria-hidden="true"
+                        >
+                          bolt
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                  <div className="mt-8 pt-5 border-t border-divider max-w-xl mx-auto w-full">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-[0.8125rem] text-on-surface-variant font-reading">
+                      <div className="flex items-center gap-1.5">
+                        <span
+                          className="material-symbols-outlined text-[1rem] text-success"
+                          aria-hidden="true"
+                        >
+                          lock
+                        </span>
+                        <span>Data belajar disimpan di akunmu.</span>
+                      </div>
+                      <a
+                        className="text-primary font-semibold underline hover:text-secondary-fixed-variant transition-colors flex items-center gap-1"
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          onBack();
+                        }}
+                      >
+                        <span>Kembali ke halaman awal</span>
+                        <span
+                          className="material-symbols-outlined text-[0.875rem]"
+                          aria-hidden="true"
+                        >
+                          accessibility
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                </section>
               </div>
-
-              <div className="w-full flex flex-wrap items-center justify-center gap-y-2 gap-x-6 pb-6 text-xs text-muted-gray">
-                <span className="flex items-center gap-1.5">
-                  <span
-                    className="material-symbols-outlined text-[16px] text-primary"
-                    aria-hidden="true"
-                  >
-                    spa
-                  </span>{" "}
-                  Mode Tenang Sensorik
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <span
-                    className="material-symbols-outlined text-[16px] text-primary"
-                    aria-hidden="true"
-                  >
-                    visibility
-                  </span>{" "}
-                  Teks Ramah Disleksia
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <span
-                    className="material-symbols-outlined text-[16px] text-primary"
-                    aria-hidden="true"
-                  >
-                    do_not_disturb_on
-                  </span>{" "}
-                  Bebas Notifikasi Mengejutkan
-                </span>
-              </div>
-
-              <div className="w-full bg-surface-container rounded-2xl p-3.5 sm:p-4 flex items-center justify-center gap-3 text-center sm:text-left">
-                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-primary shrink-0 shadow-xs">
-                  <span
-                    className="material-symbols-outlined text-[18px] text-success"
-                    aria-hidden="true"
-                  >
-                    lock
-                  </span>
-                </div>
-                <p className="text-xs text-text-secondary leading-snug">
-                  <strong className="font-bold text-primary">
-                    Privasi terjaga:
-                  </strong>{" "}
-                  Data belajarmu tersimpan aman di perangkat dan tidak pernah
-                  dibagikan kepada pihak lain.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-6 text-center text-xs text-muted-gray space-y-1">
-              <p>
-                Mengalami kendala saat masuk? Hubungi wali kelas atau guru
-                pendampingmu.
-              </p>
-              <p className="font-medium">
-                TemanBelajar hadir mendampingi ritme belajarmu tanpa buru-buru.
-              </p>
-            </div>
+            </main>
           </div>
-        </div>
-        {message && (
-          <p role="status" className="max-w-xl mx-auto p-4 text-primary">
-            {message}
-          </p>
-        )}
-        {error && (
-          <p role="alert" className="max-w-xl mx-auto p-4 text-error">
-            {error}
-          </p>
-        )}
-      </main>
-      <footer className="w-full bg-surface-container-low mt-space-section">
-        <div className="max-w-[1280px] mx-auto px-gutter py-space-xxl">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter mb-space-xl">
-            <div className="md:col-span-5 flex flex-col gap-space-md">
-              <div className="flex items-center gap-space-sm">
-                <Image
-                  src="/design/logo-revamp.png"
-                  alt="TemanBelajar Logo"
-                  className="h-9 w-auto object-contain"
-                  width={1024}
-                  height={1024}
-                ></Image>
-              </div>
-              <p className="font-body text-body text-text-secondary max-w-md">
-                Platform belajar adaptif berbasis pendekatan editorial zine yang
-                tenang, bebas tekanan, dan ramah neurodiversitas untuk pelajar
-                SMP &amp; SMA se-Indonesia.
-              </p>
-              <div className="flex items-center gap-space-xs bg-surface-container rounded-xl p-space-sm w-fit">
-                <span
-                  className="material-symbols-outlined text-success text-[20px]"
-                  aria-hidden="true"
-                >
-                  verified_user
-                </span>
-                <span className="font-metadata text-metadata text-text-secondary">
-                  Komitmen Aksesibilitas WCAG 2.1 AA
-                </span>
-              </div>
-            </div>
-            <div className="md:col-span-2 md:col-start-7 flex flex-col gap-space-sm">
-              <span className="font-label text-label text-primary uppercase tracking-wider">
-                Eksplorasi
-              </span>
-              <a
-                className="font-metadata text-metadata text-text-secondary hover:text-primary transition-colors"
-                data-path="cara-kerja"
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onBack();
-                }}
-              >
-                Cara Kerja
-              </a>
-              <a
-                className="font-metadata text-metadata text-text-secondary hover:text-primary transition-colors"
-                data-path="fitur-belajar"
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onBack();
-                }}
-              >
-                Fitur Belajar
-              </a>
-              <a
-                className="font-metadata text-metadata text-text-secondary hover:text-primary transition-colors"
-                data-path="kurikulum-merdeka"
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onBack();
-                }}
-              >
-                Kurikulum Merdeka
-              </a>
-              <a
-                className="font-metadata text-metadata text-text-secondary hover:text-primary transition-colors"
-                data-path="mimo-copilot"
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onBack();
-                }}
-              >
-                Mengenal Mimo
-              </a>
-            </div>
-            <div className="md:col-span-2 flex flex-col gap-space-sm">
-              <span className="font-label text-label text-primary uppercase tracking-wider">
-                Kemitraan
-              </span>
-              <a
-                className="font-metadata text-metadata text-text-secondary hover:text-primary transition-colors"
-                data-path="untuk-sekolah"
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onBack();
-                }}
-              >
-                Untuk Sekolah
-              </a>
-              <a
-                className="font-metadata text-metadata text-text-secondary hover:text-primary transition-colors"
-                data-path="pendidik"
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onBack();
-                }}
-              >
-                Ruang Pendidik
-              </a>
-              <a
-                className="font-metadata text-metadata text-text-secondary hover:text-primary transition-colors"
-                data-path="dinas-pendidikan"
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onBack();
-                }}
-              >
-                Dinas Pendidikan
-              </a>
-              <a
-                className="font-metadata text-metadata text-text-secondary hover:text-primary transition-colors"
-                data-path="riset"
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onBack();
-                }}
-              >
-                Riset Efektivitas
-              </a>
-            </div>
-            <div className="md:col-span-2 flex flex-col gap-space-sm">
-              <span className="font-label text-label text-primary uppercase tracking-wider">
-                Dukungan
-              </span>
-              <a
-                className="font-metadata text-metadata text-text-secondary hover:text-primary transition-colors"
-                data-path="aksesibilitas"
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onBack();
-                }}
-              >
-                Pusat Aksesibilitas
-              </a>
-              <a
-                className="font-metadata text-metadata text-text-secondary hover:text-primary transition-colors"
-                data-path="panduan-orang-tua"
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onBack();
-                }}
-              >
-                Panduan Orang Tua
-              </a>
-              <a
-                className="font-metadata text-metadata text-text-secondary hover:text-primary transition-colors"
-                data-path="bantuan"
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onBack();
-                }}
-              >
-                Bantuan &amp; Kontak
-              </a>
-              <a
-                className="font-metadata text-metadata text-text-secondary hover:text-primary transition-colors"
-                data-path="privasi"
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onBack();
-                }}
-              >
-                Privasi Pelajar
-              </a>
-            </div>
-          </div>
-          <div className="pt-space-lg flex flex-col sm:flex-row items-center justify-between gap-space-md font-metadata text-metadata text-muted-gray">
-            <span>
-              © 2025 TemanBelajar Nusantara. Dirancang dengan kehangatan untuk
-              ruang belajar mandiri.
-            </span>
-            <div className="flex items-center gap-space-md">
-              <a
-                className="hover:text-primary transition-colors"
-                data-path="syarat-ketentuan"
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onBack();
-                }}
-              >
-                Syarat &amp; Ketentuan
-              </a>
-              <a
-                className="hover:text-primary transition-colors"
-                data-path="kebijakan-privasi"
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onBack();
-                }}
-              >
-                Kebijakan Privasi
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </div>
+        </main>
+      </div>
+    </>
   );
 }

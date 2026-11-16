@@ -6,26 +6,26 @@ module.exports = {
         "error-container": "#ffdad6",
         "control-border": "#68756C",
         "on-secondary": "#ffffff",
-        "surface-container-highest": "#e3e3de",
+        "surface-container-highest": "#d9e6dc",
         "mimo-belly": "#C8D8AD",
         "error-surface": "#FAE7E5",
         "divider": "#E5E8E1",
         "mimo-outline": "#435A49",
-        "on-background": "#1b1c19",
+        "on-background": "#131e18",
         "on-secondary-fixed": "#052011",
         "contrast-ink": "#101A16",
-        "surface-dim": "#dbdad5",
+        "surface-dim": "#d0ddd4",
         "primary": "#273B35",
         "primary-container": "#273b35",
         "primary-fixed": "#d1e8df",
-        "on-tertiary-container": "#8f9eda",
+        "on-tertiary-container": "#8a9bf0",
         "mimo-blush": "#E8A69A",
         "primary-hover": "#1B3029",
         "on-secondary-fixed-variant": "#314d3a",
         "secondary-fixed-dim": "#afceb5",
-        "on-tertiary-fixed-variant": "#34447a",
-        "surface-container": "#efeee9",
-        "inverse-surface": "#30312e",
+        "on-tertiary-fixed-variant": "#2f408f",
+        "surface-container": "#e4f1e8",
+        "inverse-surface": "#28332d",
         "secondary-container": "#c8e8ce",
         "on-error-container": "#93000a",
         "primary-fixed-dim": "#b5cbc3",
@@ -34,21 +34,21 @@ module.exports = {
         "success": "#28583E",
         "on-surface-variant": "#424846",
         "primary-pressed": "#13251F",
-        "background": "#F8F7F2",
+        "background": "#f0fdf3",
         "surface": "#FFFFFF",
         "outline": "#727875",
-        "on-tertiary-fixed": "#03164c",
-        "tertiary-container": "#243469",
+        "on-tertiary-fixed": "#001257",
+        "tertiary-container": "#1d2f7e",
         "on-primary-fixed": "#0b1f1a",
         "text-secondary": "#505C55",
         "surface-container-lowest": "#ffffff",
         "on-primary": "#ffffff",
-        "surface-variant": "#e3e3de",
-        "tertiary": "#0b1d53",
+        "surface-variant": "#d9e6dc",
+        "tertiary": "#001766",
         "focus": "#3B4C9B",
         "peach": "#FFCA9D",
-        "surface-bright": "#faf9f4",
-        "on-surface": "#1b1c19",
+        "surface-bright": "#f0fdf3",
+        "on-surface": "#131e18",
         "mimo-body": "#91AF87",
         "on-secondary-container": "#4d6954",
         "secondary-fixed": "#caead0",
@@ -56,26 +56,35 @@ module.exports = {
         "on-tertiary": "#ffffff",
         "inverse-primary": "#b5cbc3",
         "muted-gray": "#737B75",
-        "surface-container-low": "#f5f4ef",
-        "surface-container-high": "#e9e8e3",
+        "surface-container-low": "#eaf7ed",
+        "surface-container-high": "#deebe2",
         "outline-variant": "#c2c8c4",
         "warning": "#61450E",
         "butter": "#FFE7A3",
         "surface-tint": "#4e635c",
         "on-error": "#ffffff",
-        "tertiary-fixed-dim": "#b6c4ff",
+        "tertiary-fixed-dim": "#b9c3ff",
         "error": "#892E32",
-        "inverse-on-surface": "#f2f1ec",
-        "tertiary-fixed": "#dce1ff",
+        "inverse-on-surface": "#e7f4eb",
+        "tertiary-fixed": "#dde1ff",
         "canvas": "#F8F7F2",
         "mint": "#C8E8CE",
-        "lavender": "#A8B7F5"
+        "lavender": "#A8B7F5",
+        "lavender-tint": "#F0EDFC",
+        "mint-tint": "#EAF6EB",
+        "butter-tint": "#FFF5D6",
+        "peach-tint": "#FFF0E6"
       },
       "borderRadius": {
         "DEFAULT": "0.25rem",
         "lg": "0.5rem",
         "xl": "0.75rem",
-        "full": "9999px"
+        "full": "9999px",
+        "2xl": "1rem",
+        "3xl": "1.5rem",
+        "control": "12px",
+        "card": "18px",
+        "feature": "28px"
       },
       "spacing": {
         "space-md": "1rem",
@@ -100,8 +109,7 @@ module.exports = {
           "Plus Jakarta Sans"
         ],
         "display": [
-          "Nunito",
-          "sans-serif"
+          "Nunito"
         ],
         "body": [
           "Plus Jakarta Sans"
@@ -126,86 +134,101 @@ module.exports = {
         ],
         "page-title": [
           "Plus Jakarta Sans"
+        ],
+        "nunito": [
+          "Nunito",
+          "sans-serif"
+        ],
+        "ui": [
+          "Plus Jakarta Sans",
+          "system-ui",
+          "sans-serif"
         ]
       },
       "fontSize": {
         "section-title": [
-          "22px",
+          "1.375rem",
           {
-            "lineHeight": "30px",
+            "lineHeight": "1.35",
             "fontWeight": "700"
           }
         ],
         "card-title": [
-          "18px",
+          "1.125rem",
           {
-            "lineHeight": "25px",
+            "lineHeight": "1.4",
             "fontWeight": "700"
           }
         ],
         "display": [
-          "56px",
+          "3.5rem",
           {
-            "lineHeight": "60px",
+            "lineHeight": "1.08",
             "fontWeight": "800"
           }
         ],
         "body": [
-          "16px",
+          "1rem",
           {
-            "lineHeight": "26px",
+            "lineHeight": "1.6",
             "fontWeight": "400"
           }
         ],
         "display-mobile": [
-          "36px",
+          "2.25rem",
           {
-            "lineHeight": "42px",
+            "lineHeight": "1.15",
             "fontWeight": "800"
           }
         ],
         "reading": [
-          "18px",
+          "1.125rem",
           {
-            "lineHeight": "31px",
+            "lineHeight": "1.7",
             "fontWeight": "400"
           }
         ],
         "metadata": [
-          "14px",
+          "0.875rem",
           {
-            "lineHeight": "21px",
+            "lineHeight": "1.5",
             "fontWeight": "400"
           }
         ],
         "label": [
-          "14px",
+          "0.875rem",
           {
-            "lineHeight": "21px",
+            "lineHeight": "1.5",
             "fontWeight": "600"
           }
         ],
         "page-title-mobile": [
-          "26px",
+          "1.625rem",
           {
-            "lineHeight": "34px",
+            "lineHeight": "1.3",
             "fontWeight": "700"
           }
         ],
         "mimo-voice": [
-          "18px",
+          "1.125rem",
           {
-            "lineHeight": "26px",
+            "lineHeight": "1.45",
             "fontWeight": "700"
           }
         ],
         "page-title": [
-          "32px",
+          "2rem",
           {
-            "lineHeight": "40px",
+            "lineHeight": "1.25",
             "fontWeight": "700"
           }
         ]
+      },
+      "boxShadow": {
+        "zine": "3px 4px 0px #273B35",
+        "zine-sm": "2px 2px 0px #273B35",
+        "zine-hover": "5px 6px 0px #273B35",
+        "card": "0 8px 24px -4px rgba(39, 59, 53, 0.08)"
       }
     }
   },

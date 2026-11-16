@@ -1,0 +1,696 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="web_standard" name="shell-type">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-low": "#eaf7ed",
+            "tertiary-fixed-dim": "#b9c3ff",
+            "surface-dim": "#d0ddd4",
+            "lavender": "#A8B7F5",
+            "secondary": "#496550",
+            "butter": "#FFE7A3",
+            "control-border": "#68756C",
+            "on-surface-variant": "#424846",
+            "contrast-ink": "#101A16",
+            "error-container": "#ffdad6",
+            "surface-bright": "#f0fdf3",
+            "secondary-fixed": "#caead0",
+            "tertiary": "#001766",
+            "surface-variant": "#d9e6dc",
+            "inverse-surface": "#28332d",
+            "outline": "#727875",
+            "on-error-container": "#93000a",
+            "on-tertiary-fixed-variant": "#2f408f",
+            "on-primary-fixed-variant": "#374b44",
+            "inverse-primary": "#b5cbc3",
+            "on-primary": "#ffffff",
+            "on-secondary-fixed": "#052011",
+            "on-surface": "#131e18",
+            "peach-tint": "#FFF0E6",
+            "error-surface": "#FAE7E5",
+            "on-primary-fixed": "#0b1f1a",
+            "background": "#f0fdf3",
+            "on-secondary": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "lavender-tint": "#F0EDFC",
+            "canvas": "#F8F7F2",
+            "secondary-container": "#c8e8ce",
+            "butter-tint": "#FFF5D6",
+            "primary-container": "#273b35",
+            "primary-fixed": "#d1e8df",
+            "warning": "#61450E",
+            "surface-tint": "#4e635c",
+            "tertiary-fixed": "#dde1ff",
+            "on-tertiary": "#ffffff",
+            "on-secondary-container": "#4d6954",
+            "surface-container": "#e4f1e8",
+            "outline-variant": "#c2c8c4",
+            "on-tertiary-fixed": "#001257",
+            "surface-container-highest": "#d9e6dc",
+            "divider": "#E5E8E1",
+            "on-primary-container": "#8fa59d",
+            "on-tertiary-container": "#8a9bf0",
+            "primary-hover": "#1B3029",
+            "primary-pressed": "#13251F",
+            "primary-fixed-dim": "#b5cbc3",
+            "peach": "#FFCA9D",
+            "on-error": "#ffffff",
+            "on-background": "#131e18",
+            "surface-container-high": "#deebe2",
+            "mint-tint": "#EAF6EB",
+            "secondary-fixed-dim": "#afceb5",
+            "inverse-on-surface": "#e7f4eb",
+            "tertiary-container": "#1d2f7e",
+            "surface": "#FFFFFF",
+            "on-secondary-fixed-variant": "#314d3a",
+            "success": "#28583E",
+            "error": "#892E32",
+            "primary": "#112520"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "margin": "2rem",
+            "margin-tablet": "1.5rem",
+            "margin-mobile": "1rem"
+          },
+          fontFamily: {
+            "card-title": ["Plus Jakarta Sans"],
+            "label": ["Plus Jakarta Sans"],
+            "section-title": ["Plus Jakarta Sans"],
+            "body": ["Plus Jakarta Sans"],
+            "page-title": ["Plus Jakarta Sans"],
+            "display": ["Nunito"],
+            "reading": ["Plus Jakarta Sans"],
+            "mimo-voice": ["Nunito"],
+            "page-title-mobile": ["Plus Jakarta Sans"],
+            "metadata": ["Plus Jakarta Sans"],
+            "display-mobile": ["Nunito"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-canvas font-body text-on-surface antialiased min-h-screen flex flex-col justify-between">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface/95 backdrop-blur-md border-b border-divider">
+<div class="h-20 max-w-[1200px] mx-auto px-margin flex items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-lg">
+<a class="flex items-center gap-space-sm" data-path="beranda" href="#">
+<img alt="Logo TemanBelajar" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrC9WRFa0OUQ_-pgcRatJM4G8Z2t3PUshKHDwWT2rr2YD7AaeVspslzqgNxHufC8CljRMd-Gj63vCZP_rw1QKIJWO4VQ5Pczr7EiHIcss88wFWVkcQHWRLrtuTbp8NaTx2RHC9RhKEB-inLD6k2JJ4MGYYfY2tYGKmSPyCZRBoAxUYiHxROKOVoHt1jplTYiRqZphBEXBxLLDG5BtgBmofqfpXVteVPdUWYxxKCX03E">
+<span class="font-display font-black text-card-title text-primary tracking-tight hidden sm:inline">TemanBelajar</span>
+</a>
+<div class="hidden md:flex items-center gap-space-xs pl-space-xs pr-space-sm py-1 bg-mint-tint rounded-full border border-secondary/20">
+<span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+<span class="text-[12px] font-label font-bold text-success">Sesi Aktif</span>
+<span class="text-[12px] font-metadata text-on-surface-variant">• IPA: Sistem Pernapasan</span>
+</div>
+<nav class="hidden xl:flex items-center gap-space-xs" data-active-classes="bg-secondary-container text-on-secondary-fixed font-bold">
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="beranda" href="#">Beranda</a>
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="rencana-belajar" href="#">Rencana Belajar</a>
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="materi-saya" href="#">Materi Saya</a>
+<a class="px-space-md py-space-sm rounded-lg bg-secondary-container text-on-secondary-fixed font-label text-label" data-path="mulai-belajar" href="#">Mulai Belajar</a>
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="progres" href="#">Progres</a>
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="pengaturan" href="#">Pengaturan</a>
+</nav>
+</div>
+<div class="flex items-center gap-space-sm">
+<button aria-label="Mode Aksesibilitas dan Kontras" class="flex items-center gap-space-xs px-space-md py-space-xs rounded-full border border-divider bg-surface hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors text-label font-label" type="button">
+<span class="material-symbols-outlined text-[18px]">accessibility_new</span>
+<span class="hidden md:inline text-metadata font-metadata">Aksesibilitas</span>
+</button>
+<button aria-label="Status Sesi Tenang" class="relative p-space-xs rounded-full hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-secondary-fixed ring-2 ring-surface"></span>
+</button>
+<div class="h-6 w-[1px] bg-divider mx-space-xs hidden sm:block"></div>
+<div class="flex items-center gap-space-sm pl-space-xs">
+<div class="text-right hidden sm:block leading-tight">
+<p class="font-label text-label text-primary font-bold">Cece Manda</p>
+<p class="text-metadata font-metadata text-outline text-[12px]">SMP Kelas 8</p>
+</div>
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="font-label font-bold text-on-primary text-[13px]">CM</span></div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="w-full pt-20 bg-canvas flex-1"><div class="flex flex-col w-full">
+<!-- Session Top Navigation Control Bar -->
+<section class="w-full bg-surface shadow-sm">
+<div class="max-w-[1200px] mx-auto px-margin py-space-sm flex flex-col md:flex-row items-center justify-between gap-space-md">
+<!-- Left: Navigation Back & Mode Tag -->
+<div class="flex items-center gap-space-sm w-full md:w-auto justify-between md:justify-start">
+<a class="inline-flex items-center gap-space-xs text-primary font-label text-label hover:bg-surface-container px-space-sm py-space-xs rounded-xl transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+<span>Ganti Cara Belajar</span>
+</a>
+<div class="flex items-center gap-space-xs px-space-sm py-1 bg-mint-tint rounded-full">
+<span class="material-symbols-outlined text-[16px] text-success">menu_book</span>
+<span class="text-metadata font-label font-bold text-success text-[12px]">Mode: Teman Baca</span>
+</div>
+</div>
+<!-- Center: Progress Indicator -->
+<div class="flex flex-col items-center w-full md:w-80 gap-1.5">
+<div class="flex items-center justify-between w-full text-metadata font-metadata text-[13px] text-on-surface-variant">
+<span class="font-bold text-primary">Paragraf 2 dari 6</span>
+<span class="text-outline">Estimasi sisa 8 mnt</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-secondary rounded-full transition-all duration-300 w-1/3"></div>
+</div>
+</div>
+<!-- Right: Action Buttons -->
+<div class="flex items-center gap-space-xs w-full md:w-auto justify-end">
+<button class="inline-flex items-center gap-1.5 px-space-md py-space-xs rounded-xl text-primary font-label text-label hover:bg-surface-container transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">pause_circle</span>
+<span class="hidden sm:inline">Jeda Belajar</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-space-md py-space-xs rounded-xl bg-primary text-on-primary font-label text-label hover:bg-primary-hover active:bg-primary-pressed transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+<span>Tandai Selesai</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Reading Customizer Floating / Sticky Bar -->
+<section class="sticky top-20 z-40 w-full bg-surface/95 backdrop-blur-md shadow-sm">
+<div class="max-w-[1200px] mx-auto px-margin py-space-sm flex items-center justify-between gap-space-md overflow-x-auto">
+<div class="flex items-center gap-space-sm min-w-max">
+<!-- Reading Ruler Toggle -->
+<button class="inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-secondary-container text-primary font-label text-label transition-colors" id="ruler-toggle-btn" onclick="toggleRuler()" type="button">
+<span class="material-symbols-outlined text-[18px]">straighten</span>
+<span>Penggaris Baca: <strong id="ruler-status-text">Aktif</strong></span>
+</button>
+<!-- Font Switcher -->
+<div class="flex items-center bg-surface-container p-0.5 rounded-full text-label font-label text-[13px]">
+<button class="px-space-md py-1 rounded-full bg-surface text-primary font-bold shadow-sm transition-all" id="font-btn-jakarta" onclick="setFontFamily('jakarta')">Jakarta Sans</button>
+<button class="px-space-md py-1 rounded-full text-on-surface-variant hover:text-primary transition-all" id="font-btn-dyslexic" onclick="setFontFamily('dyslexic')">OpenDyslexic</button>
+<button class="px-space-md py-1 rounded-full text-on-surface-variant hover:text-primary transition-all" id="font-btn-system" onclick="setFontFamily('system')">Sistem</button>
+</div>
+<!-- Font Size Controls -->
+<div class="flex items-center bg-surface-container rounded-full p-0.5">
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-primary hover:bg-surface transition-colors font-bold text-[14px]" onclick="adjustFontSize(-2)" title="Kecilkan Teks">A-</button>
+<span class="px-space-xs text-metadata font-label text-primary font-bold text-[13px]" id="font-size-label">18px Standar</span>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-primary hover:bg-surface transition-colors font-bold text-[16px]" onclick="adjustFontSize(2)" title="Besarkan Teks">A+</button>
+</div>
+<!-- Line Spacing -->
+<div class="flex items-center bg-surface-container p-0.5 rounded-full text-label font-label text-[13px]">
+<button class="px-space-md py-1 rounded-full bg-surface text-primary font-bold shadow-sm transition-all" id="spacing-btn-1" onclick="setLineSpacing('1.7')">1.7x Santai</button>
+<button class="px-space-md py-1 rounded-full text-on-surface-variant hover:text-primary transition-all" id="spacing-btn-2" onclick="setLineSpacing('2.0')">2.0x Longgar</button>
+</div>
+<!-- Syllable Chunker Toggle -->
+<button class="inline-flex items-center gap-1.5 px-space-md py-1.5 rounded-full bg-butter-tint text-primary font-label text-label hover:bg-butter transition-colors" id="syllable-btn" onclick="toggleSyllables()" type="button">
+<span class="material-symbols-outlined text-[18px]">spellcheck</span>
+<span>Pemenggal Kata: <strong id="syllable-state">Aktif</strong></span>
+</button>
+</div>
+<!-- TTS Speech Engine -->
+<div class="flex items-center gap-space-xs min-w-max pl-space-md">
+<button class="inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-lavender-tint hover:bg-lavender text-primary font-label text-label transition-colors" id="tts-play-btn" onclick="toggleTTS()" type="button">
+<span class="material-symbols-outlined text-[18px]" id="tts-icon">play_circle</span>
+<span id="tts-text">Bacakan Teks (0.9x)</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Main Body Grid: 8-col Reading Pane + 4-col Companion Sidebar -->
+<main class="w-full max-w-[1200px] mx-auto px-margin py-space-xl">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
+<!-- LEFT: Reading Pane (Span 8 Cols, centered column style ~700px reading width) -->
+<article class="lg:col-span-8 flex flex-col gap-space-lg max-w-[740px] mx-auto w-full">
+<!-- Breadcrumb / Topic Metadata -->
+<div class="flex flex-wrap items-center gap-space-xs text-metadata font-metadata text-[13px] text-on-surface-variant">
+<span class="font-bold text-secondary">Bab 4 Sistem Ekskresi Manusia</span>
+<span>›</span>
+<span>Bagian 1: Struktur &amp; Fungsi Ginjal</span>
+<span>›</span>
+<span class="bg-surface-container px-2 py-0.5 rounded-md text-[11px] text-primary font-semibold">Tingkat SMP Kelas 8</span>
+</div>
+<!-- Chapter Title -->
+<header class="flex flex-col gap-space-xs">
+<h1 class="font-page-title text-page-title text-primary tracking-tight">
+            Struktur Ginjal dan Bagaimana Tubuh Kita Menyaring Darah
+          </h1>
+<p class="font-reading text-metadata text-on-surface-variant">
+            Waktu baca terpandu: 10 menit • Disesuaikan untuk kenyamanan visual &amp; pemahaman bertahap.
+          </p>
+</header>
+<!-- Reading Content Container with Dynamic Font & Spacing Classes -->
+<div class="flex flex-col gap-space-lg text-primary text-[18px] leading-[1.7] transition-all" id="reading-content-area">
+<!-- Paragraph 1 (Inactive Context) -->
+<div class="p-space-md rounded-2xl bg-surface/60 transition-colors">
+<p>
+              Setiap hari tubuh kita bekerja tanpa henti mengolah makanan dan minuman menjadi energi. Dari sisa-sisa metabolisme tersebut, tercipta zat yang sudah tidak dibutuhkan lagi oleh sel tubuh kita. Di sinilah sepasang organ istimewa seukuran kepalan tangan bernama <strong class="text-primary font-bold">ginjal</strong> mulai mengambil peran utamanya sebagai pahlawan pembersih darah alami.
+            </p>
+</div>
+<!-- Paragraph 2 (ACTIVE FOCUS WITH READING RULER HIGHLIGHT) -->
+<div class="p-space-lg rounded-2xl bg-mint-tint shadow-sm relative transition-all duration-300" id="reading-ruler-block">
+<!-- Focus Indicator Pill -->
+<div class="flex items-center justify-between mb-space-sm">
+<span class="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded-md bg-secondary-container text-success font-label text-[12px] font-bold">
+<span class="material-symbols-outlined text-[14px]">visibility</span>
+                Fokus Baris Saat Ini
+              </span>
+<span class="text-metadata font-metadata text-[12px] text-on-surface-variant">Gunakan ↑ ↓ untuk geser mistar</span>
+</div>
+<p class="text-primary font-medium">
+              Bagian penyaring terkecil di dalam ginjal disebut
+              <span class="inline-block relative">
+<button aria-expanded="false" class="font-bold underline decoration-2 decoration-secondary text-primary cursor-pointer hover:bg-secondary-container/50 px-1 rounded transition-colors" onclick="toggleGlossary('nefron-pop')" type="button">
+<span class="chunk-syllable">nef-ron</span><span class="raw-syllable hidden">nefron</span>
+</button>
+<!-- Mini Inline Popover Card -->
+<span class="hidden absolute bottom-full left-0 mb-2 w-72 p- space-md bg-surface text-on-surface rounded-2xl shadow-xl z-30 p-space-md text-[14px] leading-snug" id="nefron-pop">
+<span class="flex items-center justify-between mb-1">
+<strong class="font-label text-success font-bold">💡 Nefron</strong>
+<span class="text-[11px] bg-mint-tint px-1.5 py-0.5 rounded text-success">Unit Fungsional</span>
+</span>
+<span class="font-reading text-on-surface-variant text-[13px] block">
+                    Pabrik penyaring mikro di ginjal. Ada sekitar 1 juta nefron di tiap ginjal kita untuk membersihkan darah setiap detik!
+                  </span>
+</span>
+</span>.
+              Darah yang kotor masuk melalui arteri ginjal lalu menuju anyaman pembuluh darah kapiler yang sangat rapat bernama
+              <span class="inline-block relative">
+<button aria-expanded="false" class="font-bold underline decoration-2 decoration-secondary text-primary cursor-pointer hover:bg-secondary-container/50 px-1 rounded transition-colors" onclick="toggleGlossary('glomerulus-pop')" type="button">
+<span class="chunk-syllable">glo-me-ru-lus</span><span class="raw-syllable hidden">glomerulus</span>
+</button>
+<!-- Mini Inline Popover Card -->
+<span class="hidden absolute bottom-full left-0 mb-2 w-72 p-space-md bg-surface text-on-surface rounded-2xl shadow-xl z-30 text-[14px] leading-snug" id="glomerulus-pop">
+<span class="flex items-center justify-between mb-1">
+<strong class="font-label text-success font-bold">💡 Glomerulus</strong>
+<span class="text-[11px] bg-mint-tint px-1.5 py-0.5 rounded text-success">Ayakan Darah</span>
+</span>
+<span class="font-reading text-on-surface-variant text-[13px] block">
+                    Untaian pembuluh kapiler seperti saringan teh halus yang bertugas menyaring sel darah dan protein agar tidak terbuang.
+                  </span>
+</span>
+</span>.
+              Tahap awal penyaringan ini menghasilkan cairan yang kita sebut <strong class="text-primary font-bold">urine primer</strong>.
+            </p>
+</div>
+<!-- Highlight Key Fact Box (Panggilan Intisari Cepat) -->
+<div class="p-space-lg rounded-3xl bg-butter-tint flex items-start gap-space-md shadow-sm">
+<div class="w-10 h-10 rounded-2xl bg-butter flex items-center justify-center shrink-0 text-primary">
+<span class="material-symbols-outlined text-[24px]">lightbulb</span>
+</div>
+<div class="flex flex-col gap-1">
+<h2 class="font-label text-card-title font-bold text-primary">Intisari Cepat: Kerja Ajaib Ginjal</h2>
+<p class="font-reading text-metadata text-primary leading-relaxed">
+                Ginjal kita menyaring sekitar <strong>180 liter darah tiap hari</strong> (setara hampir 10 galon air!), tetapi <strong>99% cairannya diserap kembali</strong> oleh tubuh sehingga kita hanya membuang sekitar 1–1,5 liter air seni. Sungguh organ yang sangat hemat dan cermat!
+              </p>
+</div>
+</div>
+<!-- Paragraph 3: Reabsorpsi -->
+<div class="p-space-md rounded-2xl bg-surface/60 transition-colors">
+<h2 class="font-card-title text-card-title text-primary mb-2">2. Tahap Penyerapan Kembali (<span class="chunk-syllable">Re-ab-sorp-si</span><span class="raw-syllable hidden">Reabsorpsi</span>)</h2>
+<p>
+              Setelah cairan disaring di tahap awal, apakah semuanya langsung dibuang keluar? Tentu saja tidak! Tubuh kita sangat bijak. Cairan urine primer masih menyimpan glukosa murni, asam amino, dan ion-ion garam yang masih berharga bagi otot dan otak kita. Di tubulus ginjal, zat-zat bergizi ini diserap kembali ke peredaran darah, menyisakan cairan yang dinamai urine sekunder.
+            </p>
+</div>
+<!-- Paragraph 4: Augmentasi -->
+<div class="p-space-md rounded-2xl bg-surface/60 transition-colors">
+<h2 class="font-card-title text-card-title text-primary mb-2">3. Tahap Pengeluaran Zat Sisa (<span class="chunk-syllable">Aug-men-ta-si</span><span class="raw-syllable hidden">Augmentasi</span>)</h2>
+<p>
+              Pada tahap akhir ini, tubuh menambahkan zat-zat sisa berlebih seperti racun sisa obat, urea, dan zat pewarna empedu ke dalam cairan urine sekunder. Hasil akhir proses inilah yang menjadi urine sesungguhnya yang siap dialirkan ke kantung kemih lalu dikeluarkan saat kita buang air kecil.
+            </p>
+</div>
+<!-- Quick Micro-Quiz Interaction -->
+<div class="p-space-lg rounded-3xl bg-lavender-tint flex flex-col gap-space-md shadow-sm">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[22px] text-tertiary">quiz</span>
+<span class="font-label text-label font-bold text-primary">Cek Pemahaman Kilat: 1 Pertanyaan Santai</span>
+</div>
+<p class="font-reading text-card-title text-primary font-semibold">
+              Di bagian manakah proses penyaringan pertama (filtrasi) berlangsung?
+            </p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm pt-space-xs">
+<button class="w-full text-left p-space-md bg-surface rounded-2xl hover:bg-surface-container font-label text-label text-primary transition-all flex items-center justify-between group" onclick="checkAnswer(this, true)">
+<span>A. Glomerulus &amp; Kapsula Bowman</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary text-[18px]">radio_button_unchecked</span>
+</button>
+<button class="w-full text-left p-space-md bg-surface rounded-2xl hover:bg-surface-container font-label text-label text-primary transition-all flex items-center justify-between group" onclick="checkAnswer(this, false)">
+<span>B. Kantung Kemih</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary text-[18px]">radio_button_unchecked</span>
+</button>
+</div>
+<div class="hidden p-space-sm rounded-xl font-label text-label" id="quiz-feedback"></div>
+</div>
+</div>
+<!-- Bottom Session Navigation Actions -->
+<div class="pt-space-md flex flex-col sm:flex-row items-center justify-between gap-space-md">
+<button class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-space-lg py-space-md rounded-2xl bg-surface hover:bg-surface-container text-primary font-label text-label transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+<span>Paragraf Sebelumnya</span>
+</button>
+<div class="flex items-center gap-space-sm w-full sm:w-auto">
+<button class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-space-xl py-space-md rounded-2xl bg-primary text-on-primary hover:bg-primary-hover font-label text-label transition-colors shadow-sm" type="button">
+<span>Lanjut ke Paragraf 3</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+<!-- RIGHT: Reading Utility & Mimo Assistant Sidebar (Span 4 Cols) -->
+<aside class="lg:col-span-4 flex flex-col gap-space-lg sticky top-36">
+<!-- Mimo Mascot Companion Card -->
+<div class="p-space-lg rounded-3xl bg-secondary-container shadow-sm flex flex-col gap-space-md relative overflow-hidden">
+<!-- Mascot Illustration & Badge -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2 bg-surface/80 px-3 py-1 rounded-full">
+<span class="w-2.5 h-2.5 rounded-full bg-success"></span>
+<span class="text-[12px] font-label font-bold text-primary">Mimo Menemanimu</span>
+</div>
+<span class="text-metadata font-metadata text-[12px] text-on-secondary-container font-medium">Teman Belajar Adaptif</span>
+</div>
+<!-- Mimo Character without artificial borders/box-shadows -->
+<div class="flex items-center justify-center py-space-xs">
+<img alt="Mimo si bunglon hijau bertutup kepala biru yang ramah dan siap mendampingi belajar" class="w-36 h-auto object-contain select-none" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5stbF7swhoDDFxpOXdb0HIMlW-KWecObHAXiAOuryLM4vMbqvdC2TrNd-BSeddgoFXM5A5C3qZraR7nqwXTOasRm8RavY23smunWABeJhQewnw1EarlXTOOYLs__i7ySgeCICWTTVjPgL2jBK8Yb5Ewa6fIPOzN_G3juuhIFKKhVBF0wWOiHcphMFs5Zt1Cb7q8FNaYYxbjy5cVcBGOBGBUqP8thuScaDvIxeQcLflpNvajAuLDLN">
+</div>
+<!-- Mimo Voice Dialogue Bubble -->
+<div class="p-space-md rounded-2xl bg-surface text-primary shadow-sm relative">
+<!-- Triangle indicator for speech bubble -->
+<div class="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-b-8 border-b-surface"></div>
+<p class="font-mimo-voice text-mimo-voice text-[15px] leading-relaxed text-primary">
+              “Keren, kamu udah baca sampai proses filtrasi! Tarik napas dulu kalau matamu mulai lelah ya. Ingat, tombol penggaris baca bisa kamu geser kapan saja dengan panah keyboard.”
+            </p>
+</div>
+<div class="flex items-center justify-between text-metadata font-label text-[12px] text-primary pt-1">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">sentiment_satisfied</span>
+              Kenyamanan Membaca: 98%
+            </span>
+<button class="underline hover:text-success font-bold transition-colors" onclick="mimoCheer()" type="button">Tanya Mimo</button>
+</div>
+</div>
+<!-- Active Vocabulary / Mini Glossary Panel -->
+<div class="p-space-lg rounded-3xl bg-surface shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[22px]">book_2</span>
+<h2 class="font-card-title text-card-title text-primary">Glosarium Sesi Ini</h2>
+</div>
+<span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">3 Istilah</span>
+</div>
+<div class="flex flex-col gap-space-sm">
+<!-- Item 1 -->
+<div class="p-space-sm rounded-xl bg-mint-tint flex flex-col gap-0.5">
+<div class="flex items-center justify-between">
+<span class="font-label text-label font-bold text-primary">Nefron</span>
+<span class="text-[11px] font-metadata text-secondary font-semibold">Mikroanatomi</span>
+</div>
+<p class="font-reading text-metadata text-on-surface-variant text-[13px]">
+                Unit fungsional penyaring terkecil di ginjal tempat darah disaring menjadi urine.
+              </p>
+</div>
+<!-- Item 2 -->
+<div class="p-space-sm rounded-xl bg-surface-container-low flex flex-col gap-0.5">
+<div class="flex items-center justify-between">
+<span class="font-label text-label font-bold text-primary">Glomerulus</span>
+<span class="text-[11px] font-metadata text-secondary font-semibold">Vaskular</span>
+</div>
+<p class="font-reading text-metadata text-on-surface-variant text-[13px]">
+                Anyaman kapiler darah berpori halus yang berfungsi menyaring cairan plasma.
+              </p>
+</div>
+<!-- Item 3 -->
+<div class="p-space-sm rounded-xl bg-butter-tint/60 flex flex-col gap-0.5">
+<div class="flex items-center justify-between">
+<span class="font-label text-label font-bold text-primary">Urine Primer</span>
+<span class="text-[11px] font-metadata text-secondary font-semibold">Filtrat</span>
+</div>
+<p class="font-reading text-metadata text-on-surface-variant text-[13px]">
+                Cairan hasil saringan tahap 1 yang masih mengandung glukosa dan asam amino.
+              </p>
+</div>
+</div>
+</div>
+<!-- Verified Learning Source Card -->
+<div class="p-space-md rounded-2xl bg-canvas shadow-sm flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-[22px] shrink-0 mt-0.5">verified</span>
+<div class="flex flex-col gap-0.5 text-metadata font-metadata text-[12px] leading-relaxed text-on-surface-variant">
+<span class="font-bold text-primary">Rujukan Terverifikasi Kurikulum Merdeka</span>
+<p>Buku Siswa IPA SMP Kelas VIII, Kemendikbudristek RI, Bab 4 Sistem Ekskresi, Halaman 82–84.</p>
+</div>
+</div>
+</aside>
+</div>
+</main>
+</div>
+<script>
+  let rulerActive = true;
+  let currentFontSize = 18;
+  let syllablesActive = true;
+  let isPlayingTTS = false;
+
+  function toggleRuler() {
+    rulerActive = !rulerActive;
+    const rulerBlock = document.getElementById('reading-ruler-block');
+    const statusText = document.getElementById('ruler-status-text');
+    const toggleBtn = document.getElementById('ruler-toggle-btn');
+
+    if (rulerActive) {
+      rulerBlock.className = 'p-space-lg rounded-2xl bg-mint-tint shadow-sm relative transition-all duration-300';
+      statusText.textContent = 'Aktif';
+      toggleBtn.className = 'inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-secondary-container text-primary font-label text-label transition-colors';
+    } else {
+      rulerBlock.className = 'p-space-lg rounded-2xl bg-surface/60 relative transition-all duration-300';
+      statusText.textContent = 'Nonaktif';
+      toggleBtn.className = 'inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-surface-container text-on-surface-variant font-label text-label transition-colors';
+    }
+  }
+
+  function adjustFontSize(delta) {
+    currentFontSize = Math.max(14, Math.min(26, currentFontSize + delta));
+    const content = document.getElementById('reading-content-area');
+    content.style.fontSize = currentFontSize + 'px';
+    document.getElementById('font-size-label').textContent = currentFontSize + 'px ' + (currentFontSize === 18 ? 'Standar' : (currentFontSize > 18 ? 'Besar' : 'Kecil'));
+  }
+
+  function setFontFamily(type) {
+    const content = document.getElementById('reading-content-area');
+    const btnJakarta = document.getElementById('font-btn-jakarta');
+    const btnDyslexic = document.getElementById('font-btn-dyslexic');
+    const btnSystem = document.getElementById('font-btn-system');
+
+    // Reset styles
+    [btnJakarta, btnDyslexic, btnSystem].forEach(b => {
+      b.className = 'px-space-md py-1 rounded-full text-on-surface-variant hover:text-primary transition-all';
+    });
+
+    if (type === 'jakarta') {
+      content.style.fontFamily = "'Plus Jakarta Sans', sans-serif";
+      btnJakarta.className = 'px-space-md py-1 rounded-full bg-surface text-primary font-bold shadow-sm transition-all';
+    } else if (type === 'dyslexic') {
+      content.style.fontFamily = "'Comic Sans MS', 'OpenDyslexic', sans-serif";
+      btnDyslexic.className = 'px-space-md py-1 rounded-full bg-surface text-primary font-bold shadow-sm transition-all';
+    } else {
+      content.style.fontFamily = 'system-ui, -apple-system, sans-serif';
+      btnSystem.className = 'px-space-md py-1 rounded-full bg-surface text-primary font-bold shadow-sm transition-all';
+    }
+  }
+
+  function setLineSpacing(val) {
+    const content = document.getElementById('reading-content-area');
+    content.style.lineHeight = val;
+    const btn1 = document.getElementById('spacing-btn-1');
+    const btn2 = document.getElementById('spacing-btn-2');
+
+    if (val === '1.7') {
+      btn1.className = 'px-space-md py-1 rounded-full bg-surface text-primary font-bold shadow-sm transition-all';
+      btn2.className = 'px-space-md py-1 rounded-full text-on-surface-variant hover:text-primary transition-all';
+    } else {
+      btn2.className = 'px-space-md py-1 rounded-full bg-surface text-primary font-bold shadow-sm transition-all';
+      btn1.className = 'px-space-md py-1 rounded-full text-on-surface-variant hover:text-primary transition-all';
+    }
+  }
+
+  function toggleSyllables() {
+    syllablesActive = !syllablesActive;
+    const chunks = document.querySelectorAll('.chunk-syllable');
+    const raws = document.querySelectorAll('.raw-syllable');
+    const label = document.getElementById('syllable-state');
+    const btn = document.getElementById('syllable-btn');
+
+    chunks.forEach(el => el.classList.toggle('hidden', !syllablesActive));
+    raws.forEach(el => el.classList.toggle('hidden', syllablesActive));
+
+    label.textContent = syllablesActive ? 'Aktif' : 'Mati';
+    if (syllablesActive) {
+      btn.className = 'inline-flex items-center gap-1.5 px-space-md py-1.5 rounded-full bg-butter-tint text-primary font-label text-label hover:bg-butter transition-colors';
+    } else {
+      btn.className = 'inline-flex items-center gap-1.5 px-space-md py-1.5 rounded-full bg-surface-container text-on-surface-variant font-label text-label transition-colors';
+    }
+  }
+
+  function toggleGlossary(id) {
+    const pop = document.getElementById(id);
+    if (!pop) return;
+    const isHidden = pop.classList.contains('hidden');
+    // Hide all pops first
+    document.querySelectorAll('[id$="-pop"]').forEach(p => p.classList.add('hidden'));
+    if (isHidden) {
+      pop.classList.remove('hidden');
+    }
+  }
+
+  function toggleTTS() {
+    isPlayingTTS = !isPlayingTTS;
+    const icon = document.getElementById('tts-icon');
+    const text = document.getElementById('tts-text');
+    const btn = document.getElementById('tts-play-btn');
+
+    if (isPlayingTTS) {
+      icon.textContent = 'pause_circle';
+      text.textContent = 'Sedang Membaca (Jeda)';
+      btn.className = 'inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-secondary text-on-secondary font-label text-label transition-colors';
+    } else {
+      icon.textContent = 'play_circle';
+      text.textContent = 'Bacakan Teks (0.9x)';
+      btn.className = 'inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-lavender-tint hover:bg-lavender text-primary font-label text-label transition-colors';
+    }
+  }
+
+  function checkAnswer(buttonEl, isCorrect) {
+    const feedback = document.getElementById('quiz-feedback');
+    feedback.classList.remove('hidden');
+    if (isCorrect) {
+      feedback.className = 'p-space-sm rounded-xl font-label text-label bg-mint-tint text-success flex items-center gap-2';
+      feedback.innerHTML = '<span class="material-symbols-outlined text-[18px]">check_circle</span> Tepat sekali! Glomerulus bekerja mirip saringan santan super halus!';
+      buttonEl.classList.add('bg-secondary-container');
+    } else {
+      feedback.className = 'p-space-sm rounded-xl font-label text-label bg-error-surface text-error flex items-center gap-2';
+      feedback.innerHTML = '<span class="material-symbols-outlined text-[18px]">help</span> Belum tepat, yuk ingat kembali: Kantung kemih hanya menampung urine siap buang.';
+    }
+  }
+
+  function mimoCheer() {
+    alert('Mimo: "Hebat! Fokus belajarmu hari ini sangat konsisten. Lanjutkan satu babak lagi ya!"');
+  }
+
+  // Keyboard navigation for reading ruler
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      const ruler = document.getElementById('reading-ruler-block');
+      if (ruler) {
+        ruler.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  });
+</script></main>
+<!-- Interactive Radio & Highlight Sync -->
+<script>
+    const modesConfig = {
+      'mode-1': {
+        title: 'Teman Baca',
+        icon: 'menu_book',
+        bgClass: 'bg-mint-tint',
+        borderClass: 'border-primary'
+      },
+      'mode-2': {
+        title: 'Selangkah demi Selangkah',
+        icon: 'splitscreen',
+        bgClass: 'bg-butter-tint/70',
+        borderClass: 'border-primary'
+      },
+      'mode-3': {
+        title: 'Dengarkan & Jelajahi',
+        icon: 'headphones',
+        bgClass: 'bg-lavender-tint',
+        borderClass: 'border-primary'
+      },
+      'mode-4': {
+        title: 'Teks & Visual',
+        icon: 'palette',
+        bgClass: 'bg-peach-tint',
+        borderClass: 'border-primary'
+      },
+      'mode-5': {
+        title: 'Belajar Biasa',
+        icon: 'import_contacts',
+        bgClass: 'bg-surface-container-low',
+        borderClass: 'border-primary'
+      }
+    };
+
+    function selectMode(cardId) {
+      document.querySelectorAll('input[name="learning-mode"]').forEach(r => r.checked = false);
+      const targetRadio = document.getElementById(cardId);
+      if (targetRadio) targetRadio.checked = true;
+
+      // Reset all cards styling
+      ['mode-1', 'mode-2', 'mode-3', 'mode-4'].forEach(id => {
+        const el = document.getElementById('mode-card-' + id.split('-')[1]);
+        if (el) {
+          el.className = 'mode-card cursor-pointer rounded-2xl p-5 border-2 border-divider hover:border-outline bg-surface shadow-sm transition-all hover:translate-y-[-2px] flex flex-col justify-between group';
+        }
+      });
+      const card5 = document.getElementById('mode-card-5');
+      if (card5) {
+        card5.className = 'mode-card cursor-pointer rounded-2xl p-5 border-2 border-divider hover:border-outline bg-surface shadow-sm transition-all hover:translate-y-[-2px] flex flex-col md:flex-row md:items-center justify-between gap-4 md:col-span-2 group';
+      }
+
+      // Highlight selected
+      const num = cardId.split('-')[1];
+      const activeCard = document.getElementById('mode-card-' + num);
+      const config = modesConfig[cardId];
+      if (activeCard && config) {
+        if (num === '5') {
+          activeCard.className = 'mode-card cursor-pointer rounded-2xl p-5 border-2 ' + config.borderClass + ' ' + config.bgClass + ' shadow-sm transition-all hover:translate-y-[-2px] flex flex-col md:flex-row md:items-center justify-between gap-4 md:col-span-2 group';
+        } else {
+          activeCard.className = 'mode-card cursor-pointer rounded-2xl p-5 border-2 ' + config.borderClass + ' ' + config.bgClass + ' shadow-sm transition-all hover:translate-y-[-2px] flex flex-col justify-between group';
+        }
+        document.getElementById('selected-mode-label').textContent = config.title;
+        document.getElementById('selected-mode-icon').textContent = config.icon;
+      }
+    }
+  </script>
+<!-- Clean Footer -->
+<footer class="w-full bg-surface border-t border-divider py-space-md">
+<div class="max-w-[1200px] mx-auto px-margin flex flex-col md:flex-row items-center justify-between gap-2 text-metadata font-metadata text-[13px] text-on-surface-variant">
+<div>© 2024 TemanBelajar • Pendamping belajar adaptif &amp; inklusif</div>
+<div class="flex items-center gap-4">
+<a class="hover:text-primary transition-colors" href="#">Pusat Bantuan</a>
+<span>•</span>
+<a class="hover:text-primary transition-colors" href="#">Panduan Aksesibilitas</a>
+<span>•</span>
+<a class="hover:text-primary transition-colors" href="#">Privasi</a>
+</div>
+</div>
+</footer>
+
+
+</body></html>

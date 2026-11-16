@@ -1,0 +1,636 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="web_standard" name="shell-type">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "divider": "#E5E8E1",
+            "on-tertiary-fixed-variant": "#2f408f",
+            "tertiary-fixed-dim": "#b9c3ff",
+            "on-surface": "#131e18",
+            "success": "#28583E",
+            "on-secondary-fixed": "#052011",
+            "secondary-fixed-dim": "#afceb5",
+            "on-surface-variant": "#424846",
+            "secondary-container": "#c8e8ce",
+            "warning": "#61450E",
+            "on-secondary": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "on-primary-container": "#8fa59d",
+            "secondary-fixed": "#caead0",
+            "primary-container": "#273b35",
+            "on-primary-fixed": "#0b1f1a",
+            "lavender-tint": "#F0EDFC",
+            "canvas": "#F8F7F2",
+            "surface-container-high": "#deebe2",
+            "inverse-surface": "#28332d",
+            "mint-tint": "#EAF6EB",
+            "on-error-container": "#93000a",
+            "surface": "#FFFFFF",
+            "on-primary-fixed-variant": "#374b44",
+            "on-background": "#131e18",
+            "butter": "#FFE7A3",
+            "surface-container-lowest": "#ffffff",
+            "on-secondary-container": "#4d6954",
+            "error-container": "#ffdad6",
+            "on-tertiary-container": "#8a9bf0",
+            "lavender": "#A8B7F5",
+            "on-secondary-fixed-variant": "#314d3a",
+            "surface-container-low": "#eaf7ed",
+            "primary-fixed": "#d1e8df",
+            "surface-variant": "#d9e6dc",
+            "primary": "#112520",
+            "surface-dim": "#d0ddd4",
+            "surface-container-highest": "#d9e6dc",
+            "control-border": "#68756C",
+            "on-error": "#ffffff",
+            "error": "#892E32",
+            "butter-tint": "#FFF5D6",
+            "tertiary-fixed": "#dde1ff",
+            "surface-bright": "#f0fdf3",
+            "background": "#f0fdf3",
+            "primary-hover": "#1B3029",
+            "surface-tint": "#4e635c",
+            "secondary": "#496550",
+            "on-tertiary-fixed": "#001257",
+            "primary-pressed": "#13251F",
+            "contrast-ink": "#101A16",
+            "inverse-on-surface": "#e7f4eb",
+            "outline": "#727875",
+            "tertiary-container": "#1d2f7e",
+            "peach-tint": "#FFF0E6",
+            "error-surface": "#FAE7E5",
+            "surface-container": "#e4f1e8",
+            "inverse-primary": "#b5cbc3",
+            "on-primary": "#ffffff",
+            "primary-fixed-dim": "#b5cbc3",
+            "tertiary": "#001766",
+            "outline-variant": "#c2c8c4",
+            "peach": "#FFCA9D"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "margin": "2rem",
+            "gutter-mobile": "0.75rem",
+            "space-xl": "2rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "gutter-tablet": "1rem",
+            "space-xs": "0.25rem",
+            "margin-tablet": "1.5rem",
+            "margin-mobile": "1rem"
+          },
+          fontFamily: {
+            "mimo-voice": ["Nunito"],
+            "section-title": ["Plus Jakarta Sans"],
+            "reading": ["Plus Jakarta Sans"],
+            "metadata": ["Plus Jakarta Sans"],
+            "card-title": ["Plus Jakarta Sans"],
+            "body": ["Plus Jakarta Sans"],
+            "page-title": ["Plus Jakarta Sans"],
+            "display-mobile": ["Nunito"],
+            "display": ["Nunito"],
+            "label": ["Plus Jakarta Sans"],
+            "page-title-mobile": ["Plus Jakarta Sans"]
+          },
+          fontSize: {
+            "mimo-voice": ["1.125rem", { "lineHeight": "1.45", "fontWeight": "700" }],
+            "section-title": ["1.375rem", { "lineHeight": "1.35", "fontWeight": "700" }],
+            "reading": ["1.125rem", { "lineHeight": "1.7", "fontWeight": "400" }],
+            "metadata": ["0.875rem", { "lineHeight": "1.5", "fontWeight": "400" }],
+            "card-title": ["1.125rem", { "lineHeight": "1.4", "fontWeight": "700" }],
+            "body": ["1rem", { "lineHeight": "1.6", "fontWeight": "400" }],
+            "page-title": ["2rem", { "lineHeight": "1.25", "fontWeight": "700" }],
+            "display-mobile": ["2.25rem", { "lineHeight": "1.15", "fontWeight": "800" }],
+            "display": ["3.5rem", { "lineHeight": "1.08", "fontWeight": "800" }],
+            "label": ["0.875rem", { "lineHeight": "1.5", "fontWeight": "600" }],
+            "page-title-mobile": ["1.625rem", { "lineHeight": "1.3", "fontWeight": "700" }]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-canvas font-body text-on-surface antialiased min-h-screen flex flex-col justify-between">
+<!-- Top Navigation Bar & Sub-Header -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface/95 backdrop-blur-md border-b border-divider">
+<div class="h-20 max-w-[1200px] mx-auto px-margin flex items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-lg">
+<a class="flex items-center gap-space-sm" data-path="beranda" href="#">
+<img alt="Logo TemanBelajar" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrC9WRFa0OUQ_-pgcRatJM4G8Z2t3PUshKHDwWT2rr2YD7AaeVspslzqgNxHufC8CljRMd-Gj63vCZP_rw1QKIJWO4VQ5Pczr7EiHIcss88wFWVkcQHWRLrtuTbp8NaTx2RHC9RhKEB-inLD6k2JJ4MGYYfY2tYGKmSPyCZRBoAxUYiHxROKOVoHt1jplTYiRqZphBEXBxLLDG5BtgBmofqfpXVteVPdUWYxxKCX03E">
+<span class="font-display font-black text-card-title text-primary tracking-tight hidden sm:inline">TemanBelajar</span>
+</a>
+<div class="hidden md:flex items-center gap-space-xs pl-space-xs pr-space-sm py-1 bg-mint-tint rounded-full border border-secondary/20">
+<span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+<span class="text-[12px] font-label font-bold text-success">Sesi Aktif</span>
+<span class="text-[12px] font-metadata text-on-surface-variant">• IPA: Sistem Ekskresi</span>
+</div>
+<nav class="hidden xl:flex items-center gap-space-xs" data-active-classes="bg-secondary-container text-on-secondary-fixed font-bold">
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="beranda" href="#">Beranda</a>
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="rencana-belajar" href="#">Rencana Belajar</a>
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="materi-saya" href="#">Materi Saya</a>
+<a class="px-space-md py-space-sm rounded-lg bg-secondary-container text-on-secondary-fixed font-label text-label font-bold" data-path="mulai-belajar" href="#">Mulai Belajar</a>
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="progres" href="#">Progres</a>
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="pengaturan" href="#">Pengaturan</a>
+</nav>
+</div>
+<div class="flex items-center gap-space-sm">
+<button aria-label="Mode Aksesibilitas dan Kontras" class="flex items-center gap-space-xs px-space-md py-space-xs rounded-full border border-divider bg-surface hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors text-label font-label" type="button">
+<span class="material-symbols-outlined text-[18px]">accessibility_new</span>
+<span class="hidden md:inline text-metadata font-metadata">Aksesibilitas</span>
+</button>
+<button aria-label="Status Sesi Tenang" class="relative p-space-xs rounded-full hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-secondary-fixed ring-2 ring-surface"></span>
+</button>
+<div class="h-6 w-[1px] bg-divider mx-space-xs hidden sm:block"></div>
+<div class="flex items-center gap-space-sm pl-space-xs">
+<div class="text-right hidden sm:block leading-tight">
+<p class="font-label text-label text-primary font-bold">Cece Manda</p>
+<p class="text-metadata font-metadata text-outline text-[12px]">SMP Kelas 8</p>
+</div>
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[18px]">person</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Sub-header Sesi Belajar / Hasil Adaptif -->
+<div class="bg-surface-container-low/60 border-t border-divider py-2">
+<div class="max-w-[1200px] mx-auto px-margin flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<span class="w-2.5 h-2.5 rounded-full bg-success"></span>
+<span class="font-label text-label text-primary font-bold">Hasil Latihan:</span>
+<span class="font-metadata text-metadata text-on-surface-variant">IPA SMP Kelas 8 Bab 4 (Sistem Ekskresi)</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="px-space-md py-1.5 rounded-lg border border-divider bg-surface hover:bg-surface-container text-primary font-label text-label transition-colors" type="button">
+Kembali ke Materi
+</button>
+<button class="px-space-md py-1.5 rounded-lg bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label transition-colors" type="button">
+Simpan Hasil
+</button>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="w-full pt-[8.25rem] bg-canvas flex-1"><div class="flex flex-col w-full">
+<div class="max-w-[1200px] w-full mx-auto px-margin-mobile sm:px-margin-tablet lg:px-margin py-space-lg space-y-space-xl">
+<!-- Header Title & Accessibility Tools -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+<div class="space-y-space-xs">
+<div class="flex items-center gap-2 text-metadata font-metadata text-on-surface-variant">
+<span>Beranda</span>
+<span class="text-outline-variant">•</span>
+<span>Rencana Belajar</span>
+<span class="text-outline-variant">•</span>
+<span class="font-semibold text-primary">Hari Ini (Senin, 18 November 2024)</span>
+</div>
+<div class="flex items-center gap-space-sm pt-1">
+<h1 class="font-page-title text-page-title text-primary tracking-tight">Rencana Belajar Harian</h1>
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed text-[12px] font-label font-bold">Alur G • Adaptif</span>
+</div>
+<p class="font-body text-body text-on-surface-variant max-w-2xl">
+          Waktu belajar ramah pikiran — atur sesuai energimu tanpa rasa cemas dan tetap selaras dengan kurikulum sekolah.
+        </p>
+</div>
+<!-- Action Tools -->
+<div class="flex flex-wrap items-center gap-space-xs sm:gap-space-sm">
+<div class="flex items-center bg-surface rounded-xl p-1 shadow-sm">
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-primary font-bold hover:bg-surface-container transition-colors text-xs" id="btn-dec-font" title="Perkecil Ukuran Font">
+            A-
+          </button>
+<span class="w-[1px] h-4 bg-surface-container-high mx-1"></span>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-primary font-bold hover:bg-surface-container transition-colors text-sm" id="btn-inc-font" title="Perbesar Ukuran Font">
+            A+
+          </button>
+</div>
+<button class="flex items-center gap-1.5 px-space-md py-2 bg-surface text-primary font-label text-label rounded-xl hover:bg-surface-container shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+<span>Atur Waktu</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-md py-2 bg-surface text-primary font-label text-label rounded-xl hover:bg-surface-container shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[18px]">print</span>
+<span class="hidden sm:inline">Cetak / Ekspor</span>
+</button>
+</div>
+</div>
+<!-- Banner Usulan Adaptif (Adaptive Reschedule Banner - Alur G) -->
+<div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-mint-tint via-surface-container-low to-butter-tint p-space-md sm:p-space-lg shadow-sm">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-lg relative z-10">
+<div class="flex items-start gap-space-md max-w-3xl">
+<div class="w-11 h-11 shrink-0 rounded-2xl bg-butter flex items-center justify-center text-primary shadow-sm mt-0.5">
+<span class="material-symbols-outlined text-[24px]">auto_fix_high</span>
+</div>
+<div class="space-y-1">
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-card-title text-card-title text-primary font-bold">Ada Usulan Penyesuaian Jadwal dari Hasil Latihan Terakhir!</span>
+<span class="px-2 py-0.5 rounded-full bg-butter text-warning font-label text-[11px] font-bold">Rekomendasi Cerdas</span>
+</div>
+<p class="font-body text-body text-on-surface-variant">
+              Karena kamu baru saja menyelesaikan latihan Sistem Ekskresi dan butuh review santai <strong class="text-primary font-semibold">4 menit untuk reabsorpsi tubulus</strong>, sistem mengusulkan sedikit penyesuaian agar kamu tetap selesai sebelum jam 17.00 tanpa kelelahan.
+            </p>
+</div>
+</div>
+<div class="flex flex-wrap items-center gap-space-sm shrink-0 self-start lg:self-center">
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label font-bold shadow-md transition-all" data-path="tinjau-jadwal" data-screen="SCREEN_21">
+<span>Tinjau Usulan Jadwal</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+<button class="px-4 py-2.5 rounded-xl bg-surface/90 hover:bg-surface text-on-surface-variant font-label text-label transition-colors">
+            Nanti Saja (Pertahankan)
+          </button>
+</div>
+</div>
+</div>
+<!-- Ringkasan Kapasitas Waktu Belajar Hari Ini (4 Cards Pastel) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Card 1: Total Waktu -->
+<div class="p-space-md rounded-2xl bg-mint-tint flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="text-label font-label text-success font-semibold">Total Waktu Terjadwal</span>
+<span class="material-symbols-outlined text-success text-[20px]">timelapse</span>
+</div>
+<div class="pt-3 pb-1">
+<div class="text-[2rem] font-display font-black text-primary leading-tight">35 <span class="text-base font-label font-normal text-on-surface-variant">Menit</span></div>
+<p class="text-metadata font-metadata text-success text-xs mt-0.5">Sesuai komitmen santai 40m/hari</p>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 mt-2 overflow-hidden">
+<div class="bg-success h-full rounded-full" style="width: 87.5%;"></div>
+</div>
+</div>
+<!-- Card 2: Sesi Selesai -->
+<div class="p-space-md rounded-2xl bg-lavender-tint flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="text-label font-label text-tertiary-container font-semibold">Sesi Selesai Hari Ini</span>
+<span class="material-symbols-outlined text-tertiary-container text-[20px]">task_alt</span>
+</div>
+<div class="pt-3 pb-1">
+<div class="text-[2rem] font-display font-black text-primary leading-tight">1 <span class="text-base font-label font-normal text-on-surface-variant">dari 3 Sesi</span></div>
+<p class="text-metadata font-metadata text-tertiary-container text-xs mt-0.5">15 Menit terlaksana dengan lancar</p>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 mt-2 overflow-hidden">
+<div class="bg-tertiary-container h-full rounded-full" style="width: 33.3%;"></div>
+</div>
+</div>
+<!-- Card 3: Sisa Waktu Luang -->
+<div class="p-space-md rounded-2xl bg-butter-tint flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="text-label font-label text-warning font-semibold">Sisa Waktu Luang Bebas</span>
+<span class="material-symbols-outlined text-warning text-[20px]">hourglass_bottom</span>
+</div>
+<div class="pt-3 pb-1">
+<div class="text-[2rem] font-display font-black text-primary leading-tight">20 <span class="text-base font-label font-normal text-on-surface-variant">Menit</span></div>
+<p class="text-metadata font-metadata text-warning text-xs mt-0.5">Ruang santai sebelum kegiatan sore</p>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 mt-2 overflow-hidden">
+<div class="bg-warning h-full rounded-full" style="width: 50%;"></div>
+</div>
+</div>
+<!-- Card 4: Target Belajar -->
+<div class="p-space-md rounded-2xl bg-peach-tint flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="text-label font-label text-on-surface-variant font-semibold">Fokus Utama Hari Ini</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">target</span>
+</div>
+<div class="pt-3 pb-1">
+<p class="font-card-title text-card-title text-primary font-bold line-clamp-1">IPA SMP Bab 4</p>
+<p class="text-metadata font-metadata text-on-surface-variant text-xs mt-0.5">Sistem Ekskresi &amp; Nefron Ginjal</p>
+</div>
+<div class="flex items-center gap-1.5 pt-2 text-xs font-semibold text-primary">
+<span class="w-2 h-2 rounded-full bg-peach"></span>
+<span>Taraf pemahaman: 78%</span>
+</div>
+</div>
+</div>
+<!-- Main Content Grid: 8 Cols Daily Timeline & 4 Cols Companion Sidebar -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- Primary Column: 8 Cols Timeline -->
+<section class="lg:col-span-8 flex flex-col space-y-space-md">
+<!-- Day Navigation Tabs -->
+<div class="flex items-center justify-between overflow-x-auto pb-1 no-scrollbar gap-2">
+<div class="flex items-center gap-2">
+<button class="px-3.5 py-1.5 rounded-full bg-surface text-on-surface-variant hover:bg-surface-container text-label font-label text-xs sm:text-sm whitespace-nowrap transition-colors">
+              Kemarin (Minggu)
+            </button>
+<button class="px-4 py-1.5 rounded-full bg-secondary-container text-on-secondary-fixed text-label font-label font-bold text-xs sm:text-sm whitespace-nowrap shadow-sm">
+              Hari Ini (Senin, 18 Nov)
+            </button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface text-on-surface-variant hover:bg-surface-container text-label font-label text-xs sm:text-sm whitespace-nowrap transition-colors">
+              Besok (Selasa, 19 Nov)
+            </button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface text-on-surface-variant hover:bg-surface-container text-label font-label text-xs sm:text-sm whitespace-nowrap transition-colors">
+              Rabu (20 Nov)
+            </button>
+</div>
+<button class="flex items-center gap-1 text-primary hover:underline font-label text-xs font-semibold shrink-0 pl-2">
+<span class="material-symbols-outlined text-[16px]">calendar_view_week</span>
+<span>Kalender Pekan Ini</span>
+</button>
+</div>
+<!-- Activity Timeline Cards Stack -->
+<div class="space-y-space-md pt-2">
+<!-- Item 1: Selesai -->
+<article class="p-space-md sm:p-space-lg rounded-2xl bg-surface shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex flex-col sm:flex-row gap-space-md items-start sm:items-center justify-between">
+<div class="flex items-start gap-space-md">
+<div class="flex flex-col items-center shrink-0 w-16 text-center">
+<span class="font-label text-xs font-bold text-success">09.00</span>
+<span class="text-[11px] text-outline">09.15 WIB</span>
+<div class="w-7 h-7 rounded-full bg-mint-tint flex items-center justify-center text-success mt-1.5">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex flex-wrap items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full bg-mint-tint text-success font-label text-[11px] font-bold">Selesai • 15 Menit</span>
+<span class="text-metadata text-xs font-metadata text-outline">IPA Bab 4: Ginjal</span>
+</div>
+<h2 class="font-card-title text-card-title text-primary font-bold">
+                  Ulang Konsep Filtrasi Glomerulus (Teman Baca)
+                </h2>
+<p class="font-body text-xs sm:text-sm text-on-surface-variant">
+                  Memahami proses penyaringan darah awal di badan Malpighi. Dicatat dengan analogi saringan teh.
+                </p>
+<div class="flex items-center gap-1.5 text-xs font-label text-success font-medium pt-1">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+<span>Tuntas dengan pemahaman bagus!</span>
+</div>
+</div>
+</div>
+<div class="sm:self-center shrink-0 w-full sm:w-auto pt-2 sm:pt-0">
+<button class="w-full sm:w-auto px-4 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-primary font-label text-xs font-bold transition-colors">
+                Lihat Ringkasan Hasil
+              </button>
+</div>
+</article>
+<!-- Item 2: Baru Selesai / Terverifikasi -->
+<article class="p-space-md sm:p-space-lg rounded-2xl bg-surface shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex flex-col sm:flex-row gap-space-md items-start sm:items-center justify-between">
+<div class="flex items-start gap-space-md">
+<div class="flex flex-col items-center shrink-0 w-16 text-center">
+<span class="font-label text-xs font-bold text-tertiary-container">09.15</span>
+<span class="text-[11px] text-outline">09.25 WIB</span>
+<div class="w-7 h-7 rounded-full bg-lavender-tint flex items-center justify-center text-tertiary-container mt-1.5">
+<span class="material-symbols-outlined text-[16px]">quiz</span>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex flex-wrap items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full bg-lavender-tint text-tertiary-container font-label text-[11px] font-bold">Baru Selesai • Skor 4/5</span>
+<span class="text-metadata text-xs font-metadata text-outline">Latihan Mandiri</span>
+</div>
+<h2 class="font-card-title text-card-title text-primary font-bold">
+                  Latihan Adaptif 5 Soal Sistem Ekskresi
+                </h2>
+<p class="font-body text-xs sm:text-sm text-on-surface-variant">
+                  Evaluasi diagnostik pemahaman tahapan ekskresi. 4 soal dijawab benar dengan percaya diri.
+                </p>
+<div class="flex items-center gap-1.5 text-xs font-label text-warning font-medium pt-1">
+<span class="material-symbols-outlined text-[14px]">info</span>
+<span>Ada 1 soal (reabsorpsi) yang diusulkan untuk diulas ulang sebentar.</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row items-center gap-2 shrink-0 w-full sm:w-auto pt-2 sm:pt-0">
+<button class="w-full sm:w-auto px-4 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-primary font-label text-xs font-bold transition-colors">
+                Ulasan Jawaban
+              </button>
+</div>
+</article>
+<!-- Item 3: Prioritas Hari Ini • Belum Mulai (Alur G Focus) -->
+<article class="p-space-md sm:p-space-lg rounded-2xl bg-butter-tint/40 shadow-md relative overflow-hidden flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-space-md">
+<div class="flex items-start gap-space-md">
+<div class="flex flex-col items-center shrink-0 w-16 text-center">
+<span class="font-label text-xs font-bold text-primary">09.25</span>
+<span class="text-[11px] text-outline">09.35 WIB</span>
+<div class="w-7 h-7 rounded-full bg-butter flex items-center justify-center text-primary mt-1.5 animate-pulse">
+<span class="material-symbols-outlined text-[16px]">grade</span>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex flex-wrap items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full bg-butter text-warning font-label text-[11px] font-bold">Prioritas Adaptif Hari Ini</span>
+<span class="text-metadata text-xs font-metadata text-outline">Durasi Ringan: 4 - 10 Menit</span>
+</div>
+<h2 class="font-card-title text-card-title text-primary font-bold">
+                    Ulangi Segmen Reabsorpsi Tubulus (Audio &amp; Diagram)
+                  </h2>
+<p class="font-body text-xs sm:text-sm text-on-surface-variant">
+                    Disarankan langsung dari sistem hasil latihan nomor 4. Cukup dengarkan penjelasan singkat 3 menit dan amati jalur penyerapan glukosa pada tubulus proksimal.
+                  </p>
+</div>
+</div>
+<!-- Quick Time Change -->
+<div class="flex items-center gap-1 shrink-0 self-end sm:self-start">
+<button class="p-1.5 rounded-lg bg-surface hover:bg-surface-container text-on-surface-variant text-xs flex items-center gap-1 transition-colors" title="Ubah Waktu">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span>Ubah</span>
+</button>
+<button class="p-1.5 rounded-lg bg-surface hover:bg-surface-container text-on-surface-variant text-xs flex items-center gap-1 transition-colors" title="Pindahkan ke Besok">
+<span class="material-symbols-outlined text-[16px]">forward_to_inbox</span>
+<span>Tunda Besok</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row items-center justify-between gap-space-md pt-2 border-t border-butter/60">
+<div class="flex items-center gap-2 text-xs font-metadata text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-success">psychology</span>
+<span>Membantu persiapan kuis agar tidak tertumpuk di akhir pekan</span>
+</div>
+<button class="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label font-bold shadow-sm transition-all">
+<span>Mulai Aktivitas Sekarang</span>
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+</button>
+</div>
+</article>
+<!-- Item 4: Mendatang (Sore Hari) -->
+<article class="p-space-md sm:p-space-lg rounded-2xl bg-surface shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex flex-col sm:flex-row gap-space-md items-start sm:items-center justify-between opacity-90">
+<div class="flex items-start gap-space-md">
+<div class="flex flex-col items-center shrink-0 w-16 text-center">
+<span class="font-label text-xs font-bold text-on-surface-variant">15.30</span>
+<span class="text-[11px] text-outline">15.45 WIB</span>
+<div class="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center text-outline mt-1.5">
+<span class="material-symbols-outlined text-[16px]">alarm</span>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex flex-wrap items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label text-[11px] font-bold">Mendatang • 10 Menit</span>
+<span class="text-metadata text-xs font-metadata text-outline">IPA Bab 4: Konsep Akhir</span>
+</div>
+<h2 class="font-card-title text-card-title text-primary font-bold">
+                  Kuis Analogi Santai Sistem Ekskresi (Cek Pemahaman)
+                </h2>
+<p class="font-body text-xs sm:text-sm text-on-surface-variant">
+                  Tiga tebakan mini interaktif untuk mengunci seluruh proses dari filtrasi, reabsorpsi, hingga augmentasi.
+                </p>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0 w-full sm:w-auto pt-2 sm:pt-0">
+<button class="w-full sm:w-auto px-4 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-primary font-label text-xs font-bold transition-colors">
+                Atur Pengingat
+              </button>
+</div>
+</article>
+</div>
+<!-- Add Custom Activity Button -->
+<button class="w-full py-3.5 px-space-md rounded-2xl bg-surface hover:bg-surface-container-low text-primary font-label text-label font-bold flex items-center justify-center gap-2 shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+<span>+ Tambah Aktivitas Belajar Sendiri atau Sesi Istirahat</span>
+</button>
+</section>
+<!-- Sidebar Column: 4 Cols Companion & Flow Settings -->
+<aside class="lg:col-span-4 flex flex-col space-y-space-md">
+<!-- Mimo Mascot Companion Card -->
+<div class="p-space-lg rounded-2xl bg-mint-tint relative overflow-hidden shadow-sm">
+<div class="flex items-start gap-space-md">
+<div class="w-20 h-20 shrink-0 relative">
+<img class="w-full h-full object-contain filter drop-shadow-none" data-alt="Mimo the chameleon mascot, mint green character with a friendly wink and an energetic blue headband, smiling warmly in a gentle paper zine aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRSbe-Ss7wl_m-4kReaA03--2EQCRs8m8Y7-8s2saPOqzoBM8JxSnMbRZDcNOou1ET6mEvl7-Sfhqc9b4nAP5BWU345vW8ZrUu0K5OFCxTPJponI3X12efekF0OfxLdCVyHxzNpKRubHmnjGLcHEpBHoeuh34_vwtIouiza30JLCCos9dwep1QPpYnYUrLbhaBCI1tK3KVs1kJP4f7pvWL1oLQDZt52YXIfMUkXoA">
+</div>
+<div class="space-y-1">
+<div class="flex items-center gap-1.5">
+<span class="font-display font-black text-sm text-primary">Mimo</span>
+<span class="w-1.5 h-1.5 rounded-full bg-success"></span>
+<span class="text-[11px] font-metadata text-success font-semibold">Siap Menemani</span>
+</div>
+<p class="font-mimo-voice text-mimo-voice text-primary text-sm leading-snug">
+                “Keren, Rian! Dari 35 menit target hari ini, kamu sudah selesaikan 15 menit dengan santai. Istirahat sejenak dulu sambil minum air putih sebelum lanjut ya!”
+              </p>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm border-t border-success/15 flex items-center justify-between">
+<button class="w-full py-2 px-3 rounded-xl bg-surface text-primary font-label text-xs font-bold hover:bg-surface-container shadow-sm transition-colors flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">smart_toy</span>
+<span>Minta Mimo Tata Ulang Jadwal</span>
+</button>
+</div>
+</div>
+<!-- Mode Keseimbangan & Anti-Burnout Card -->
+<div class="p-space-lg rounded-2xl bg-surface shadow-sm space-y-space-md">
+<div class="flex items-center justify-between">
+<h3 class="font-card-title text-card-title text-primary font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">spa</span>
+<span>Anti-Burnout &amp; Ritme</span>
+</h3>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed text-[11px] font-label font-bold">Aktif</span>
+</div>
+<div class="space-y-space-sm">
+<!-- Toggle 1 -->
+<label class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<div class="pr-2">
+<p class="font-label text-xs font-bold text-primary">Lindungi Waktu Istirahat</p>
+<p class="text-[11px] text-on-surface-variant">Jeda 10 menit otomatis tiap sesi</p>
+</div>
+<div class="relative inline-flex items-center">
+<input checked="" class="sr-only peer" type="checkbox">
+<div class="w-10 h-5 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-success"></div>
+</div>
+</label>
+<!-- Toggle 2 -->
+<label class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<div class="pr-2">
+<p class="font-label text-xs font-bold text-primary">Batas Maksimal 25 Menit</p>
+<p class="text-[11px] text-on-surface-variant">Cegah kelelahan kognitif mendadak</p>
+</div>
+<div class="relative inline-flex items-center">
+<input checked="" class="sr-only peer" type="checkbox">
+<div class="w-10 h-5 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-success"></div>
+</div>
+</label>
+</div>
+<button class="w-full py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-primary font-label text-xs font-bold transition-colors">
+            Pengaturan Ritme Belajar Lengkap
+          </button>
+</div>
+<!-- Reflection / Student Notes Card -->
+<div class="p-space-lg rounded-2xl bg-lavender-tint shadow-sm space-y-space-sm">
+<div class="flex items-center justify-between">
+<h3 class="font-card-title text-card-title text-primary font-bold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-tertiary-container text-[18px]">edit_note</span>
+<span>Catatan Refleksi Hari Ini</span>
+</h3>
+<span class="text-[11px] font-metadata text-outline">Tersimpan</span>
+</div>
+<div class="p-3 bg-surface rounded-xl shadow-xs">
+<p class="font-body text-xs text-on-surface leading-relaxed italic">
+              “Hari ini konsep penyaringan teh bikin gampang ingat filtrasi! Tinggal pastikan kembali istilah glukosa diserap lagi di tubulus.”
+            </p>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="text-[11px] text-on-surface-variant font-metadata">Ditulis pukul 09.26 WIB</span>
+<button class="text-xs text-primary font-bold hover:underline">
+              Ubah Catatan
+            </button>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</div>
+<script>
+  // Simple micro-interaction for accessibility font size switcher
+  const btnDec = document.getElementById('btn-dec-font');
+  const btnInc = document.getElementById('btn-inc-font');
+  let currentScale = 100;
+
+  if (btnDec && btnInc) {
+    btnDec.addEventListener('click', () => {
+      if (currentScale > 85) {
+        currentScale -= 5;
+        document.documentElement.style.fontSize = `${currentScale}%`;
+      }
+    });
+
+    btnInc.addEventListener('click', () => {
+      if (currentScale < 125) {
+        currentScale += 5;
+        document.documentElement.style.fontSize = `${currentScale}%`;
+      }
+    });
+  }
+</script></main>
+<!-- Clean Footer -->
+<footer class="w-full bg-surface border-t border-divider py-space-md">
+<div class="max-w-[1200px] mx-auto px-margin flex flex-col md:flex-row items-center justify-between gap-2 text-metadata font-metadata text-[13px] text-on-surface-variant">
+<div>© 2024 TemanBelajar • Pendamping belajar adaptif &amp; inklusif</div>
+<div class="flex items-center gap-4">
+<a class="hover:text-primary transition-colors" href="#">Pusat Bantuan</a>
+<span>•</span>
+<a class="hover:text-primary transition-colors" href="#">Panduan Aksesibilitas</a>
+<span>•</span>
+<a class="hover:text-primary transition-colors" href="#">Privasi</a>
+</div>
+</div>
+</footer>
+
+
+</body></html>
