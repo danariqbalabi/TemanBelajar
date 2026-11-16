@@ -1,6 +1,7 @@
 ﻿"use client";
-import { useRef, useState, type CSSProperties } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
+import { readingStyle } from "./reading-style";
 import type { Material, LearningSession, Preferences } from "@/lib/types";
 export function ReaderDesign({
   material,
@@ -48,17 +49,8 @@ export function ReaderDesign({
 
   const pauseDialog = useRef<HTMLDialogElement>(null),
     sourcesDialog = useRef<HTMLDialogElement>(null);
-  const readingStyle: CSSProperties = {
-    fontSize: preferences.font_size,
-    lineHeight: preferences.line_height,
-    letterSpacing: `${preferences.letter_spacing}em`,
-    fontFamily:
-      preferences.font_family === "nunito"
-        ? "Nunito"
-        : preferences.font_family === "system"
-          ? "system-ui"
-          : "Plus Jakarta Sans",
-  };
+  const textStyle = readingStyle(preferences);
+
   function next() {
     if (
       session.mode === "focus" &&
@@ -110,10 +102,10 @@ export function ReaderDesign({
     <>
       <div className="stitch-reader" data-zen={zen}>
         {session.mode === "reading" || session.mode === "standard" ? (
-          <div className="final-design final-screen-13 w-full pt-20 bg-canvas flex-1 final-reader">
+          <div className="final-design final-screen-13 w-full bg-canvas flex-1 final-reader screen-page">
             <div className="flex flex-col w-full">
               <section className="w-full bg-surface shadow-sm">
-                <div className="max-w-[1200px] mx-auto px-margin py-space-sm flex flex-col md:flex-row items-center justify-between gap-space-md">
+                <div className="max-w-[1200px] mx-auto px-margin py-space-sm flex flex-col md:flex-row items-center justify-between gap-space-md ui-container">
                   <div className="flex items-center gap-space-sm w-full md:w-auto justify-between md:justify-start">
                     <a
                       className="inline-flex items-center gap-space-xs text-primary font-label text-label hover:bg-surface-container px-space-sm py-space-xs rounded-xl transition-colors"
@@ -129,7 +121,7 @@ export function ReaderDesign({
                       >
                         arrow_back
                       </span>
-                      <span>Ganti Cara Belajar</span>
+                      <span>Kembali ke Materi Saya</span>
                     </a>
                     <div className="flex items-center gap-space-xs px-space-sm py-1 bg-mint-tint rounded-full">
                       <span
@@ -139,7 +131,10 @@ export function ReaderDesign({
                         menu_book
                       </span>
                       <span className="text-metadata font-label font-bold text-success text-[12px]">
-                        Mode: Teman Baca
+                        Mode:{" "}
+                        {session.mode === "standard"
+                          ? "Belajar standar"
+                          : "Teman Baca"}
                       </span>
                     </div>
                   </div>
@@ -149,10 +144,17 @@ export function ReaderDesign({
                       <span className="font-bold text-primary">
                         {`Paragraf ${session.paragraph + 1} dari ${concept.paragraphs.length}`}
                       </span>
-                      <span className="text-outline">Estimasi sisa 8 mnt</span>
+                      <span className="text-outline">
+                        Estimasi konsep {concept.estimated_minutes} menit
+                      </span>
                     </div>
                     <div className="w-full h-2 rounded-full bg-surface-container overflow-hidden">
-                      <div className="h-full bg-secondary rounded-full transition-all duration-300 w-1/3"></div>
+                      <div
+                        className="h-full bg-secondary rounded-full transition-all duration-300"
+                        style={{
+                          width: `${((session.paragraph + 1) / concept.paragraphs.length) * 100}%`,
+                        }}
+                      ></div>
                     </div>
                   </div>
 
@@ -189,8 +191,8 @@ export function ReaderDesign({
                 </div>
               </section>
 
-              <section className="sticky top-20 z-40 w-full bg-surface/95 backdrop-blur-md shadow-sm">
-                <div className="max-w-[1200px] mx-auto px-margin py-space-sm flex items-center justify-between gap-space-md overflow-x-auto">
+              <section className="reader-toolbar sticky top-20 z-40 w-full bg-surface/95 backdrop-blur-md shadow-sm">
+                <div className="max-w-[1200px] mx-auto px-margin py-space-sm flex items-center justify-between gap-space-md overflow-x-auto ui-container">
                   <div className="flex items-center gap-space-sm min-w-max">
                     <button
                       className="inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-secondary-container text-primary font-label text-label transition-colors"
@@ -224,12 +226,15 @@ export function ReaderDesign({
                       </button>
                       <button
                         className="px-space-md py-1 rounded-full text-on-surface-variant hover:text-primary transition-all"
-                        id="font-btn-dyslexic"
+                        id="font-btn-nunito"
                         type="button"
-                        disabled={true}
-                        title="Kontrol ini belum tersedia untuk materi ini."
+                        aria-pressed={preferences.font_family === "nunito"}
+                        onClick={() =>
+                          onPreferences?.({ font_family: "nunito" })
+                        }
+                        disabled={busy}
                       >
-                        OpenDyslexic
+                        Nunito
                       </button>
                       <button
                         className="px-space-md py-1 rounded-full text-on-surface-variant hover:text-primary transition-all"
@@ -263,7 +268,7 @@ export function ReaderDesign({
                         className="px-space-xs text-metadata font-label text-primary font-bold text-[13px]"
                         id="font-size-label"
                       >
-                        18px Standar
+                        {preferences.font_size}px
                       </span>
                       <button
                         className="w-8 h-8 rounded-full flex items-center justify-center text-primary hover:bg-surface transition-colors font-bold text-[16px]"
@@ -284,6 +289,7 @@ export function ReaderDesign({
                       <button
                         className="px-space-md py-1 rounded-full bg-surface text-primary font-bold shadow-sm transition-all"
                         id="spacing-btn-1"
+                        aria-pressed={preferences.line_height === 1.7}
                         type="button"
                         onClick={() => onPreferences?.({ line_height: 1.7 })}
                         disabled={busy}
@@ -293,6 +299,7 @@ export function ReaderDesign({
                       <button
                         className="px-space-md py-1 rounded-full text-on-surface-variant hover:text-primary transition-all"
                         id="spacing-btn-2"
+                        aria-pressed={preferences.line_height === 2}
                         type="button"
                         onClick={() => onPreferences?.({ line_height: 2 })}
                         disabled={busy}
@@ -300,25 +307,6 @@ export function ReaderDesign({
                         2.0x Longgar
                       </button>
                     </div>
-
-                    <button
-                      className="inline-flex items-center gap-1.5 px-space-md py-1.5 rounded-full bg-butter-tint text-primary font-label text-label hover:bg-butter transition-colors"
-                      id="syllable-btn"
-                      type="button"
-                      disabled={true}
-                      title="Kontrol ini belum tersedia untuk materi ini."
-                    >
-                      <span
-                        className="material-symbols-outlined text-[18px]"
-                        aria-hidden="true"
-                      >
-                        spellcheck
-                      </span>
-                      <span>
-                        Pemenggal Kata:{" "}
-                        <strong id="syllable-state">Aktif</strong>
-                      </span>
-                    </button>
                   </div>
 
                   <div className="flex items-center gap-space-xs min-w-max pl-space-md">
@@ -335,17 +323,19 @@ export function ReaderDesign({
                 </div>
               </section>
 
-              <main className="w-full max-w-[1200px] mx-auto px-margin py-space-xl">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
+              <div className="w-full max-w-[1200px] mx-auto px-margin py-space-xl ui-container">
+                <div className="reader-content-grid grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
                   <article className="lg:col-span-8 flex flex-col gap-space-lg max-w-[740px] mx-auto w-full">
                     <p className="text-sm text-text-secondary">
                       {material.title} · Konsep {index + 1}/
                       {material.concepts.length}
                     </p>
-                    <h1 className="text-3xl font-bold">{concept.title}</h1>
+                    <h1 className="text-3xl font-bold ui-page-title">
+                      {concept.title}
+                    </h1>
                     <div
                       className="reference-reading space-y-6"
-                      style={readingStyle}
+                      style={textStyle}
                     >
                       {concept.paragraphs.map((p, j) => (
                         <p
@@ -379,7 +369,7 @@ export function ReaderDesign({
                     </div>
                   </article>
 
-                  <aside className="lg:col-span-4 flex flex-col gap-space-lg sticky top-36">
+                  <aside className="reader-sidebar lg:col-span-4 flex flex-col gap-space-lg sticky top-36">
                     <div
                       hidden={zen || !preferences.show_mimo}
                       className="bg-mint-tint border border-divider rounded-2xl p-6"
@@ -391,7 +381,7 @@ export function ReaderDesign({
                         height={1120}
                         className="w-40 h-auto object-contain mx-auto"
                       />
-                      <h2 className="font-display font-bold text-lg mt-3">
+                      <h2 className="font-display font-bold text-lg mt-3 ui-section-title">
                         Mimo Menemanimu
                       </h2>
                       <p className="mt-3">
@@ -488,15 +478,15 @@ export function ReaderDesign({
                     </div>
                   </aside>
                 </div>
-              </main>
+              </div>
             </div>
           </div>
         ) : null}
         {session.mode === "focus" ? (
-          <div className="final-design final-screen-14 w-full pt-20 bg-canvas flex-1 final-reader">
+          <div className="final-design final-screen-14 w-full bg-canvas flex-1 final-reader screen-page">
             <div className="flex flex-col w-full">
-              <section className="sticky top-20 z-40 bg-surface/95 backdrop-blur-sm border-b border-divider px-margin py-3">
-                <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+              <section className="reader-toolbar sticky top-20 z-40 bg-surface/95 backdrop-blur-sm border-b border-divider px-margin py-3">
+                <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 ui-container">
                   <div className="flex items-center gap-space-sm flex-wrap">
                     <a
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-primary hover:bg-surface-container transition-colors font-label text-label group"
@@ -584,8 +574,8 @@ export function ReaderDesign({
                 </div>
               </section>
 
-              <main className="w-full max-w-[1200px] mx-auto px-margin py-8 md:py-12">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              <div className="w-full max-w-[1200px] mx-auto px-margin py-8 md:py-12 ui-container">
+                <div className="reader-content-grid grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                   <div className="lg:col-span-8 flex flex-col items-center">
                     <article className="w-full max-w-[720px] bg-surface rounded-3xl p-6 sm:p-10 border border-divider shadow-[0_3px_0_rgba(39,59,53,0.06)] flex flex-col gap-6">
                       <p className="text-sm text-text-secondary">
@@ -595,12 +585,12 @@ export function ReaderDesign({
                           ? `${Math.floor(elapsed / 60)} menit belajar`
                           : "Tanpa batas waktu"}
                       </p>
-                      <h1 className="text-3xl font-bold my-5">
+                      <h1 className="text-3xl font-bold my-5 ui-page-title">
                         {concept.title}
                       </h1>
                       <div
                         className="bg-mint-tint p-6 rounded-2xl reference-reading"
-                        style={readingStyle}
+                        style={textStyle}
                       >
                         <p>
                           {concept.paragraphs[session.paragraph] ||
@@ -640,7 +630,7 @@ export function ReaderDesign({
                         height={1120}
                         className="w-40 h-auto object-contain mx-auto"
                       />
-                      <h2 className="font-display font-bold text-lg mt-3">
+                      <h2 className="font-display font-bold text-lg mt-3 ui-section-title">
                         Mimo Menemanimu
                       </h2>
                       <p className="mt-3">
@@ -737,15 +727,15 @@ export function ReaderDesign({
                     </div>
                   </aside>
                 </div>
-              </main>
+              </div>
             </div>
           </div>
         ) : null}
         {session.mode === "explore" ? (
-          <div className="final-design final-screen-15 w-full pt-20 bg-canvas flex-1 final-reader">
+          <div className="final-design final-screen-15 w-full bg-canvas flex-1 final-reader screen-page">
             <div className="flex flex-col w-full pb-16">
               <section className="w-full bg-surface-container-low/60 py-space-sm px-margin">
-                <div className="max-w-[1200px] mx-auto flex flex-wrap items-center justify-between gap-space-sm">
+                <div className="max-w-[1200px] mx-auto flex flex-wrap items-center justify-between gap-space-sm ui-container">
                   <div className="flex items-center gap-space-sm">
                     <a
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface hover:bg-surface-container text-primary font-label text-label transition-colors"
@@ -815,7 +805,7 @@ export function ReaderDesign({
                 </div>
               </section>
 
-              <main className="w-full max-w-[1200px] mx-auto px-margin pt-space-md grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+              <div className="reader-content-grid w-full max-w-[1200px] mx-auto px-margin pt-space-md grid grid-cols-1 lg:grid-cols-12 gap-space-lg ui-container">
                 <div className="lg:col-span-8 flex flex-col gap-space-lg min-w-0">
                   <section
                     aria-label="Pemutar Audio Materi"
@@ -836,7 +826,7 @@ export function ReaderDesign({
                           <span className="text-xs font-label uppercase tracking-wider text-secondary font-bold">
                             Narasi Santai Bersama Mimo
                           </span>
-                          <h1 className="font-section-title text-section-title text-primary tracking-tight">
+                          <h1 className="font-section-title text-section-title text-primary tracking-tight ui-page-title">
                             Pabrik Penyaring Ajaib di Tubuh Kita
                           </h1>
                           <p className="font-metadata text-metadata text-on-surface-variant mt-0.5">
@@ -984,7 +974,10 @@ export function ReaderDesign({
                     aria-labelledby="diagram-title"
                     className="rounded-3xl bg-surface p-space-md sm:p-space-lg shadow-sm flex flex-col gap-space-md"
                   >
-                    <h2 id="diagram-title" className="font-bold text-xl">
+                    <h2
+                      id="diagram-title"
+                      className="font-bold text-xl ui-section-title"
+                    >
                       {concept.title}
                     </h2>
                     <p className="text-sm mt-3">
@@ -994,7 +987,7 @@ export function ReaderDesign({
                     <div className="bg-lavender-tint rounded-2xl p-6 my-5">
                       <p
                         className="whitespace-pre-wrap reference-reading"
-                        style={readingStyle}
+                        style={textStyle}
                       >
                         {concept.diagram_description ||
                           concept.paragraphs.join("\n\n")}
@@ -1023,7 +1016,7 @@ export function ReaderDesign({
                           subtitles
                         </span>
                         <h2
-                          className="font-section-title text-section-title text-primary"
+                          className="font-section-title text-section-title text-primary ui-section-title"
                           id="transcript-title"
                         >
                           Transkrip Narasi Sinkron
@@ -1037,7 +1030,7 @@ export function ReaderDesign({
                       className="flex flex-col gap-space-sm text-reading font-reading"
                       id="transcript-flow"
                     >
-                      <div style={readingStyle} className="whitespace-pre-wrap">
+                      <div style={textStyle} className="whitespace-pre-wrap">
                         {concept.transcript || concept.paragraphs.join("\n\n")}
                       </div>
                     </div>
@@ -1056,7 +1049,7 @@ export function ReaderDesign({
                       height={1120}
                       className="w-40 h-auto object-contain mx-auto"
                     />
-                    <h2 className="font-display font-bold text-lg mt-3">
+                    <h2 className="font-display font-bold text-lg mt-3 ui-section-title">
                       Mimo Menemanimu
                     </h2>
                     <p className="mt-3">
@@ -1152,9 +1145,9 @@ export function ReaderDesign({
                     )}
                   </div>
                 </aside>
-              </main>
+              </div>
 
-              <section className="w-full max-w-[1200px] mx-auto px-margin pt-space-xl">
+              <section className="w-full max-w-[1200px] mx-auto px-margin pt-space-xl ui-container">
                 <div className="w-full rounded-2xl bg-surface p-space-md shadow-sm flex flex-col sm:flex-row items-center justify-between gap-space-md">
                   <button
                     className="w-full sm:w-auto px-5 py-3 rounded-xl bg-canvas hover:bg-surface-container text-primary font-label text-label transition-colors flex items-center justify-center gap-2"
@@ -1192,10 +1185,10 @@ export function ReaderDesign({
           </div>
         ) : null}
         {session.mode === "transcript" ? (
-          <div className="final-design final-screen-16 w-full pt-20 bg-canvas flex-1 final-reader">
+          <div className="final-design final-screen-16 w-full bg-canvas flex-1 final-reader screen-page">
             <div className="flex flex-col w-full">
               <section className="w-full bg-surface-container-low px-margin py-space-sm">
-                <div className="max-w-[1200px] mx-auto flex flex-wrap items-center justify-between gap-space-md">
+                <div className="max-w-[1200px] mx-auto flex flex-wrap items-center justify-between gap-space-md ui-container">
                   <div className="flex items-center flex-wrap gap-space-sm">
                     <a
                       className="inline-flex items-center gap-space-xs text-primary font-label text-label hover:text-primary-hover transition-colors px-space-xs py-1 rounded-lg"
@@ -1273,9 +1266,9 @@ export function ReaderDesign({
                 </div>
               </section>
 
-              <div className="w-full max-w-[1200px] mx-auto px-margin py-space-lg">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
-                  <main className="lg:col-span-8 flex flex-col gap-space-lg">
+              <div className="w-full max-w-[1200px] mx-auto px-margin py-space-lg ui-container">
+                <div className="reader-content-grid grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+                  <div className="lg:col-span-8 flex flex-col gap-space-lg">
                     <section className="bg-surface rounded-2xl p-space-md shadow-sm flex flex-wrap items-center justify-between gap-space-md">
                       <div className="flex items-center flex-wrap gap-space-md">
                         <label className="inline-flex items-center gap-space-xs cursor-pointer select-none">
@@ -1352,7 +1345,9 @@ export function ReaderDesign({
                     </section>
 
                     <article className="bg-surface rounded-3xl p-space-lg shadow-sm flex flex-col gap-space-md">
-                      <h1 className="text-2xl font-bold">{concept.title}</h1>
+                      <h1 className="text-2xl font-bold ui-page-title">
+                        {concept.title}
+                      </h1>
                       <p className="text-sm text-text-secondary">
                         Kartu konsep dari sumber materi
                       </p>
@@ -1363,17 +1358,17 @@ export function ReaderDesign({
                             className="bg-peach-tint p-5 rounded-2xl"
                           >
                             <span className="font-bold">{j + 1}</span>
-                            <p style={readingStyle}>{p}</p>
+                            <p style={textStyle}>{p}</p>
                           </section>
                         ))}
                       </div>
                     </article>
 
                     <section className="flex flex-col gap-space-md">
-                      <h2 className="font-bold text-xl">
+                      <h2 className="font-bold text-xl ui-section-title">
                         Intisari Konsep Penting
                       </h2>
-                      <p className="whitespace-pre-wrap" style={readingStyle}>
+                      <p className="whitespace-pre-wrap" style={textStyle}>
                         {concept.diagram_description || concept.paragraphs[0]}
                       </p>
                     </section>
@@ -1383,15 +1378,17 @@ export function ReaderDesign({
                       id="independent-transcript-container"
                       hidden={!preferences.captions}
                     >
-                      <h2 className="font-bold text-xl">Transkrip Mandiri</h2>
+                      <h2 className="font-bold text-xl ui-section-title">
+                        Transkrip Mandiri
+                      </h2>
                       <p
                         className="whitespace-pre-wrap reference-reading"
-                        style={readingStyle}
+                        style={textStyle}
                       >
                         {concept.transcript || concept.paragraphs.join("\n\n")}
                       </p>
                     </section>
-                  </main>
+                  </div>
 
                   <aside className="lg:col-span-4 flex flex-col gap-space-lg">
                     <div
@@ -1405,7 +1402,7 @@ export function ReaderDesign({
                         height={1120}
                         className="w-40 h-auto object-contain mx-auto"
                       />
-                      <h2 className="font-display font-bold text-lg mt-3">
+                      <h2 className="font-display font-bold text-lg mt-3 ui-section-title">
                         Mimo Menemanimu
                       </h2>
                       <p className="mt-3">
@@ -1505,7 +1502,7 @@ export function ReaderDesign({
               </div>
 
               <nav className="w-full bg-surface py-space-md border-t border-divider mt-space-lg">
-                <div className="max-w-[1200px] mx-auto px-margin flex flex-col sm:flex-row items-center justify-between gap-space-md">
+                <div className="max-w-[1200px] mx-auto px-margin flex flex-col sm:flex-row items-center justify-between gap-space-md ui-container">
                   <a
                     className="inline-flex items-center gap-space-xs text-on-surface-variant hover:text-primary font-label text-label font-bold transition-colors"
                     href="#"
@@ -1558,8 +1555,12 @@ export function ReaderDesign({
           </div>
         ) : null}
       </div>
-      <dialog ref={pauseDialog} className="stitch-reason">
-        <h2>Ambil jeda sebentar</h2>
+      <dialog
+        ref={pauseDialog}
+        className="stitch-reason"
+        aria-label="Ambil jeda sebentar"
+      >
+        <h2 className="ui-section-title">Ambil jeda sebentar</h2>
         <p>Posisi dan catatan yang berhasil disimpan bisa dilanjutkan nanti.</p>
         <button
           onClick={() => {
@@ -1572,11 +1573,15 @@ export function ReaderDesign({
           Lanjutkan belajar
         </button>
       </dialog>
-      <dialog ref={sourcesDialog} className="stitch-reason">
-        <h2>Sumber materi</h2>
+      <dialog
+        ref={sourcesDialog}
+        className="stitch-reason"
+        aria-label="Sumber materi"
+      >
+        <h2 className="ui-section-title">Sumber materi</h2>
         {sources.map((s) => (
           <article key={s.id}>
-            <h3>{s.label}</h3>
+            <h3 className="ui-card-title">{s.label}</h3>
             <p className="whitespace-pre-wrap">{s.text}</p>
           </article>
         ))}

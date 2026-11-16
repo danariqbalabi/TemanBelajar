@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Modal } from "./modal";
 import type { Job, Material } from "@/lib/types";
 export function JobDesign({
   job,
@@ -32,9 +33,9 @@ export function JobDesign({
     )[job.status] || job.status;
   return (
     <>
-      <div className="final-design final-screen-10 w-full pt-20 bg-canvas flex-1">
+      <div className="final-design final-screen-10 w-full bg-canvas flex-1 screen-page">
         <div className="flex flex-col w-full">
-          <div className="max-w-[1200px] w-full mx-auto px-margin py-space-md sm:py-space-lg flex flex-col gap-space-lg">
+          <div className="max-w-[1200px] w-full mx-auto px-margin py-space-md sm:py-space-lg flex flex-col gap-space-lg ui-container">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-xs">
               <div className="flex items-center gap-space-xs text-metadata font-metadata text-on-surface-variant flex-wrap">
                 <a
@@ -128,7 +129,7 @@ export function JobDesign({
                         Format Adaptif SMP
                       </span>
                     </div>
-                    <h1 className="font-display text-page-title sm:text-display-mobile text-primary tracking-tight mt-0.5">
+                    <h1 className="font-display text-page-title sm:text-display-mobile text-primary tracking-tight mt-0.5 ui-page-title">
                       {statusLabel}
                     </h1>
                     <p className="font-reading text-reading text-on-surface-variant leading-relaxed">
@@ -202,7 +203,7 @@ export function JobDesign({
                         </span>
                       </div>
                       <div>
-                        <h2 className="font-section-title text-section-title text-primary leading-tight">
+                        <h2 className="font-section-title text-section-title text-primary leading-tight ui-section-title">
                           Alur Adaptasi Belajar
                         </h2>
                         <p className="text-metadata font-metadata text-on-surface-variant text-[12px]">
@@ -233,7 +234,9 @@ export function JobDesign({
                               1
                             </span>
                             <div>
-                              <h3 className="font-bold">Membaca materi</h3>
+                              <h3 className="font-bold ui-card-title">
+                                Membaca materi
+                              </h3>
                               <p className="text-sm">
                                 {job.status === "ready"
                                   ? "Selesai"
@@ -307,7 +310,9 @@ export function JobDesign({
                               2
                             </span>
                             <div>
-                              <h3 className="font-bold">Mengenali konsep</h3>
+                              <h3 className="font-bold ui-card-title">
+                                Mengenali konsep
+                              </h3>
                               <p className="text-sm">
                                 {job.status === "ready"
                                   ? "Selesai"
@@ -395,7 +400,7 @@ export function JobDesign({
                             3
                           </span>
                           <div>
-                            <h3 className="font-bold">
+                            <h3 className="font-bold ui-card-title">
                               Menyiapkan aktivitas belajar
                             </h3>
                             <p className="text-sm">
@@ -449,7 +454,7 @@ export function JobDesign({
               <div className="lg:col-span-4 flex flex-col gap-space-lg">
                 <div className="bg-surface rounded-2xl p-space-md sm:p-space-lg shadow-sm border border-divider flex flex-col gap-space-md">
                   <div className="flex items-center justify-between">
-                    <h2 className="font-card-title text-card-title text-primary">
+                    <h2 className="font-card-title text-card-title text-primary ui-section-title">
                       Detail Dokumen
                     </h2>
                     <p className="font-bold mt-4">{job.title}</p>
@@ -578,7 +583,7 @@ export function JobDesign({
 
                   <div className="pt-space-sm flex flex-col gap-space-sm">
                     <button
-                      className="w-full py-3 px-space-md rounded-xl bg-surface-container-high text-outline cursor-not-allowed font-label text-label flex items-center justify-center gap-2 transition-all shadow-none border border-outline-variant/30"
+                      className="w-full py-3 px-space-md rounded-xl bg-primary text-on-primary disabled:cursor-not-allowed font-label text-label flex items-center justify-center gap-2 transition-all shadow-sm border border-outline-variant/30"
                       disabled={busy || job.status === "processing"}
                       id="btn-preview"
                       type="button"
@@ -657,7 +662,7 @@ export function JobDesign({
                       >
                         auto_stories
                       </span>
-                      <h3 className="font-card-title text-card-title text-primary">
+                      <h3 className="font-card-title text-card-title text-primary ui-card-title">
                         Sambil Menunggu?
                       </h3>
                     </div>
@@ -709,16 +714,14 @@ export function JobDesign({
         </div>
       </div>
       {source && (
-        <dialog open className="stitch-reason">
-          <h2>Teks sumber asli</h2>
+        <Modal title="Teks sumber asli" onClose={onCloseSource}>
           {source.map((s) => (
             <article key={s.id}>
-              <h3>{s.label}</h3>
+              <h3 className="ui-card-title">{s.label}</h3>
               <p className="whitespace-pre-wrap">{s.text}</p>
             </article>
           ))}
-          <button onClick={onCloseSource}>Tutup sumber</button>
-        </dialog>
+        </Modal>
       )}
     </>
   );

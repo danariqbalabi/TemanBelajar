@@ -25,9 +25,9 @@ export function ModePicker({
         : true;
   return (
     <>
-      <div className="final-design final-screen-12 w-full pt-20 bg-canvas flex-1">
+      <div className="final-design final-screen-12 w-full bg-canvas flex-1 screen-page">
         <div className="flex flex-col w-full pb-32">
-          <div className="max-w-[1200px] w-full mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin pt-space-lg space-y-space-lg">
+          <div className="max-w-[1200px] w-full mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin pt-space-lg space-y-space-lg ui-container">
             <header className="flex flex-wrap items-center justify-between gap-space-sm">
               <div className="flex items-center gap-space-xs text-metadata font-metadata text-on-surface-variant">
                 <a
@@ -65,7 +65,7 @@ export function ModePicker({
             </header>
 
             <section className="space-y-1">
-              <h1 className="font-display font-black text-2xl md:text-3xl text-primary tracking-tight">
+              <h1 className="font-display font-black text-2xl md:text-3xl text-primary tracking-tight ui-page-title">
                 Mau belajar dengan cara apa hari ini?
               </h1>
               <p className="text-on-surface-variant font-body text-base">
@@ -132,7 +132,7 @@ export function ModePicker({
                       </div>
                       <div className="h-2 w-5/6 rounded bg-surface-container-high"></div>
                     </div>
-                    <h3 className="font-display font-extrabold text-lg text-contrast-ink">
+                    <h3 className="font-display font-extrabold text-lg text-contrast-ink ui-card-title">
                       Teman Baca
                     </h3>
                     <p className="text-on-surface-variant text-[13px] leading-snug mt-1">
@@ -209,7 +209,7 @@ export function ModePicker({
                         <div className="bg-secondary h-full w-1/3"></div>
                       </div>
                     </div>
-                    <h3 className="font-display font-extrabold text-lg text-contrast-ink">
+                    <h3 className="font-display font-extrabold text-lg text-contrast-ink ui-card-title">
                       Selangkah demi Selangkah
                     </h3>
                     <p className="text-on-surface-variant text-[13px] leading-snug mt-1">
@@ -250,12 +250,12 @@ export function ModePicker({
                         >
                           headphones
                         </span>
-                        Audio Naratif
+                        Diagram & deskripsi
                       </span>
                       <input
                         className="w-4 h-4 accent-primary cursor-pointer"
                         id="mode-3"
-                        aria-label="Dengarkan dan Jelajahi"
+                        aria-label="Jelajah visual"
                         name="learning-mode"
                         type="radio"
                         value="audio-eksplorasi"
@@ -291,12 +291,12 @@ export function ModePicker({
                         <span className="w-1 h-2 bg-tertiary/50 rounded-full"></span>
                       </div>
                     </div>
-                    <h3 className="font-display font-extrabold text-lg text-contrast-ink">
-                      Dengarkan &amp; Jelajahi
+                    <h3 className="font-display font-extrabold text-lg text-contrast-ink ui-card-title">
+                      Jelajah visual
                     </h3>
                     <p className="text-on-surface-variant text-[13px] leading-snug mt-1">
-                      Suara narasi hangat layaknya ngobrol, cocok dinikmati
-                      sambil rebahan rileks.
+                      Jelajahi deskripsi diagram materi secara bertahap, dengan
+                      pilihan baca nyaring dari peramban.
                     </p>
                   </div>
 
@@ -332,12 +332,12 @@ export function ModePicker({
                         >
                           palette
                         </span>
-                        Visual Card
+                        Transkrip & audio
                       </span>
                       <input
                         className="w-4 h-4 accent-primary cursor-pointer"
                         id="mode-4"
-                        aria-label="Teks dan Visual"
+                        aria-label="Transkrip & audio"
                         name="learning-mode"
                         type="radio"
                         value="visual-caption"
@@ -374,12 +374,12 @@ export function ModePicker({
                         </div>
                       </div>
                     </div>
-                    <h3 className="font-display font-extrabold text-lg text-contrast-ink">
-                      Teks &amp; Visual
+                    <h3 className="font-display font-extrabold text-lg text-contrast-ink ui-card-title">
+                      Transkrip &amp; Audio
                     </h3>
                     <p className="text-on-surface-variant text-[13px] leading-snug mt-1">
-                      Diagram pastel yang bersih dengan label jelas dan kartu
-                      rangkuman poin penting.
+                      Baca transkrip materi dan dengarkan narasi melalui suara
+                      peramban dengan kecepatan yang dapat disesuaikan.
                     </p>
                   </div>
 
@@ -417,7 +417,7 @@ export function ModePicker({
                     </div>
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-display font-extrabold text-base md:text-lg text-contrast-ink">
+                        <h3 className="font-display font-extrabold text-base md:text-lg text-contrast-ink ui-card-title">
                           Belajar Biasa
                         </h3>
                         <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold">
@@ -527,9 +527,9 @@ export function ModePicker({
           </div>
         </div>
 
-        <div className="fixed bottom-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur-md border-t border-divider py-3 px-margin-mobile md:px-margin-tablet lg:px-margin shadow-lg">
+        <div className="screen-action-bar sticky bottom-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur-md border-t border-divider py-3 px-margin-mobile md:px-margin-tablet lg:px-margin shadow-lg">
           {canSaveDefault && (
-            <label className="max-w-6xl mx-auto flex items-center gap-2 mb-3 text-sm">
+            <label className="max-w-6xl mx-auto flex items-center gap-2 mb-3 text-sm ui-container">
               <input
                 type="checkbox"
                 checked={remember}
@@ -538,7 +538,7 @@ export function ModePicker({
               Jadikan pilihan utama
             </label>
           )}
-          <div className="max-w-[1200px] mx-auto flex items-center justify-between gap-4">
+          <div className="max-w-[1200px] mx-auto flex items-center justify-between gap-4 ui-container">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-full bg-secondary-container text-primary flex items-center justify-center shrink-0">
                 <span
@@ -562,8 +562,8 @@ export function ModePicker({
                       {
                         reading: "Teman Baca",
                         focus: "Selangkah demi Selangkah",
-                        explore: "Dengarkan dan Jelajahi",
-                        transcript: "Teks dan Visual",
+                        explore: "Jelajah visual",
+                        transcript: "Transkrip & audio",
                         standard: "Belajar Biasa",
                       }[selected]
                     }

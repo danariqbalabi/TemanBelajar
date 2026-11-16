@@ -1,6 +1,8 @@
-﻿"use client";
+"use client";
+import { Brand } from "./brand";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { readingStyle } from "./reading-style";
 import { defaultProfile, type Profile, type Preferences } from "@/lib/types";
 export function OnboardingDesign({
   initial,
@@ -45,20 +47,28 @@ export function OnboardingDesign({
     setValue({ ...value, preferences: { ...value.preferences, ...p } });
   }
   function toggleNeed(key: string) {
-    setNeeds(
-      needs.includes(key) ? needs.filter((n) => n !== key) : [...needs, key],
-    );
-    if (key === "membaca")
-      pref({
-        reading_ruler: !value.preferences.reading_ruler,
-        mode: "reading",
-      });
-    if (key === "fokus") pref({ reduced_motion: true, mode: "focus" });
-    if (key === "audio") pref({ mode: "explore" });
-    if (key === "kartu") pref({ mode: "transcript" });
-    if (key === "deskripsi") pref({ mode: "explore" });
-    if (key === "biasa") pref({ mode: "standard" });
+    const selected = needs.includes(key)
+      ? needs.filter((need) => need !== key)
+      : key === "biasa"
+        ? ["biasa"]
+        : [...needs.filter((need) => need !== "biasa"), key];
+    setNeeds(selected);
+    const modes = {
+      membaca: "reading",
+      fokus: "focus",
+      audio: "transcript",
+      kartu: "standard",
+      deskripsi: "explore",
+      biasa: "standard",
+    } as const;
+    const preferred = selected.at(-1) as keyof typeof modes | undefined;
+    pref({
+      reading_ruler: selected.includes("membaca"),
+      mode: preferred ? modes[preferred] : "standard",
+      ...(selected.includes("fokus") ? { reduced_motion: true } : {}),
+    });
   }
+
   function toggleSubject(s: string) {
     setValue({
       ...value,
@@ -90,19 +100,30 @@ export function OnboardingDesign({
   }
   return (
     <>
-      <div className="stitch-shell final-design" aria-busy={busy}>
-        <header className="fixed top-0 inset-x-0 z-50 bg-surface border-b border-divider h-20 px-6 flex items-center justify-between">
-          <Image
-            src="/design/logo-final.png"
-            alt="TemanBelajar"
-            width={1024}
-            height={280}
-            className="h-10 w-auto object-contain"
-          />
-          <button type="button" onClick={onBack}>
-            Kembali ke beranda
-          </button>
-          <span>Langkah {step + 1}/4</span>
+      <div
+        className="stitch-shell final-design onboarding-shell"
+        aria-busy={busy}
+      >
+        <header className="standalone-header">
+          <div className="standalone-header-inner">
+            <a
+              className="standalone-brand"
+              href="#"
+              onClick={(event) => {
+                event.preventDefault();
+                onBack?.();
+              }}
+              aria-label="Kembali ke beranda"
+            >
+              <Brand />
+            </a>
+            <div className="standalone-header-actions">
+              <button type="button" onClick={onBack}>
+                Kembali ke beranda
+              </button>
+              <span>Langkah {step + 1}/4</span>
+            </div>
+          </div>
         </header>
         {(error || issue) && (
           <p className="pt-24 px-6 text-error" role="alert">
@@ -110,9 +131,9 @@ export function OnboardingDesign({
           </p>
         )}
         {step === 0 && (
-          <div className="final-design final-screen-3 w-full pt-20 bg-canvas min-h-screen final-onboarding">
+          <div className="final-design final-screen-3 w-full bg-canvas min-h-screen final-onboarding screen-page">
             <div className="flex flex-col w-full">
-              <div className="w-full max-w-6xl mx-auto px-gutter-mobile sm:px-gutter-tablet md:px-gutter py-space-md sm:py-space-xl">
+              <div className="w-full max-w-6xl mx-auto px-gutter-mobile sm:px-gutter-tablet md:px-gutter py-space-md sm:py-space-xl ui-container">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-space-md mb-space-lg">
                   <div className="flex items-center gap-space-sm">
                     <a
@@ -205,7 +226,7 @@ export function OnboardingDesign({
                         </span>
                         Personalisasi Ruang Belajar
                       </div>
-                      <h1 className="font-display text-[1.85rem] sm:text-display-mobile lg:text-[2.65rem] text-primary leading-tight font-extrabold tracking-tight">
+                      <h1 className="font-display text-[1.85rem] sm:text-display-mobile lg:text-[2.65rem] text-primary leading-tight font-extrabold tracking-tight ui-page-title">
                         Biar belajarnya makin nyaman, kamu butuh bantuan apa?
                       </h1>
                       <p className="font-reading text-reading text-on-surface-variant max-w-2xl mt-1">
@@ -364,7 +385,7 @@ export function OnboardingDesign({
                             </span>
                           </div>
                         </div>
-                        <h2 className="font-card-title text-card-title text-primary group-hover:text-primary-hover mb-1.5 font-bold">
+                        <h2 className="font-card-title text-card-title text-primary group-hover:text-primary-hover mb-1.5 font-bold ui-section-title">
                           Aku butuh bantuan membaca
                         </h2>
                         <p className="font-body text-label text-on-surface-variant leading-relaxed">
@@ -455,7 +476,7 @@ export function OnboardingDesign({
                             </span>
                           </div>
                         </div>
-                        <h2 className="font-card-title text-card-title text-primary group-hover:text-primary-hover mb-1.5 font-bold">
+                        <h2 className="font-card-title text-card-title text-primary group-hover:text-primary-hover mb-1.5 font-bold ui-section-title">
                           Aku gampang kehilangan fokus
                         </h2>
                         <p className="font-body text-label text-on-surface-variant leading-relaxed">
@@ -535,7 +556,7 @@ export function OnboardingDesign({
                             </span>
                           </div>
                         </div>
-                        <h2 className="font-card-title text-card-title text-primary group-hover:text-primary-hover mb-1.5 font-bold">
+                        <h2 className="font-card-title text-card-title text-primary group-hover:text-primary-hover mb-1.5 font-bold ui-section-title">
                           Aku lebih nyaman mendengarkan
                         </h2>
                         <p className="font-body text-label text-on-surface-variant leading-relaxed">
@@ -612,7 +633,7 @@ export function OnboardingDesign({
                             </span>
                           </div>
                         </div>
-                        <h2 className="font-card-title text-card-title text-primary group-hover:text-primary-hover mb-1.5 font-bold">
+                        <h2 className="font-card-title text-card-title text-primary group-hover:text-primary-hover mb-1.5 font-bold ui-section-title">
                           Aku butuh deskripsi gambar
                         </h2>
                         <p className="font-body text-label text-on-surface-variant leading-relaxed">
@@ -688,7 +709,7 @@ export function OnboardingDesign({
                             </span>
                           </div>
                         </div>
-                        <h2 className="font-card-title text-card-title text-primary group-hover:text-primary-hover mb-1.5 font-bold">
+                        <h2 className="font-card-title text-card-title text-primary group-hover:text-primary-hover mb-1.5 font-bold ui-section-title">
                           Aku lebih nyaman dengan teks dan visual
                         </h2>
                         <p className="font-body text-label text-on-surface-variant leading-relaxed">
@@ -775,7 +796,7 @@ export function OnboardingDesign({
                             </span>
                           </div>
                         </div>
-                        <h2 className="font-card-title text-card-title text-primary group-hover:text-primary-hover mb-1.5 font-bold">
+                        <h2 className="font-card-title text-card-title text-primary group-hover:text-primary-hover mb-1.5 font-bold ui-section-title">
                           Aku mau belajar seperti biasa
                         </h2>
                         <p className="font-body text-label text-on-surface-variant leading-relaxed">
@@ -864,7 +885,7 @@ export function OnboardingDesign({
                   </div>
                 </div>
 
-                <div className="sticky bottom-4 z-40 bg-surface/95 backdrop-blur-md rounded-2xl border border-divider p-space-md shadow-[0_4px_20px_rgba(39,59,53,0.1)] flex flex-col sm:flex-row items-center justify-between gap-space-md">
+                <div className="screen-action-bar sticky bottom-4 z-40 bg-surface/95 backdrop-blur-md rounded-2xl border border-divider p-space-md shadow-[0_4px_20px_rgba(39,59,53,0.1)] flex flex-col sm:flex-row items-center justify-between gap-space-md">
                   <div className="flex items-center gap-2 self-start sm:self-center">
                     <span
                       className="material-symbols-outlined text-secondary text-[20px]"
@@ -880,7 +901,7 @@ export function OnboardingDesign({
                         className="font-bold text-primary"
                         id="selected-count"
                       >
-                        2
+                        {needs.length}
                       </strong>{" "}
                       bantuan belajar dipilih
                     </span>
@@ -921,9 +942,9 @@ export function OnboardingDesign({
           </div>
         )}
         {step === 1 && (
-          <div className="final-design final-screen-4 w-full pt-20 bg-canvas flex-1 final-onboarding">
+          <div className="final-design final-screen-4 w-full bg-canvas flex-1 final-onboarding screen-page">
             <div className="flex flex-col w-full">
-              <div className="max-w-[1200px] w-full mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin py-space-lg flex flex-col gap-space-xl">
+              <div className="max-w-[1200px] w-full mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin py-space-lg flex flex-col gap-space-xl ui-container">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-space-md pb-space-md border-b border-divider">
                   <div className="flex items-center gap-space-md">
                     <a
@@ -1007,7 +1028,7 @@ export function OnboardingDesign({
                     <div className="inline-flex items-center gap-space-xs font-label text-label font-bold tracking-wide uppercase text-secondary">
                       <span>⚙️ PREFERENSI &amp; KENYAMANAN SENSORIK</span>
                     </div>
-                    <h1 className="font-display text-[2rem] md:text-[2.5rem] leading-[1.15] font-extrabold text-primary">
+                    <h1 className="font-display text-[2rem] md:text-[2.5rem] leading-[1.15] font-extrabold text-primary ui-page-title">
                       Atur cara belajarmu yang paling pas
                     </h1>
                     <p className="font-body text-body text-on-surface-variant max-w-2xl mt-1">
@@ -1053,7 +1074,7 @@ export function OnboardingDesign({
                             </span>
                           </span>
                           <div>
-                            <h2 className="font-card-title text-card-title text-primary">
+                            <h2 className="font-card-title text-card-title text-primary ui-section-title">
                               Tampilan &amp; Format Teks
                             </h2>
                             <p className="font-metadata text-[12px] text-on-surface-variant">
@@ -1324,7 +1345,7 @@ export function OnboardingDesign({
                             </span>
                           </span>
                           <div>
-                            <h2 className="font-card-title text-card-title text-primary">
+                            <h2 className="font-card-title text-card-title text-primary ui-section-title">
                               Alat Bantu Baca &amp; Fokus Sensorik
                             </h2>
                             <p className="font-metadata text-[12px] text-on-surface-variant">
@@ -1479,7 +1500,7 @@ export function OnboardingDesign({
                             </span>
                           </span>
                           <div>
-                            <h2 className="font-card-title text-card-title text-primary">
+                            <h2 className="font-card-title text-card-title text-primary ui-section-title">
                               Tema Kontras &amp; Tampilan Layar
                             </h2>
                             <p className="font-metadata text-[12px] text-on-surface-variant">
@@ -1625,7 +1646,7 @@ export function OnboardingDesign({
                               Biologi Pelajar SMP & SMA
                             </span>
                           </div>
-                          <h3 className="font-card-title text-card-title text-primary font-bold">
+                          <h3 className="font-card-title text-card-title text-primary font-bold ui-card-title">
                             Bab 3: Fotosintesis &amp; Energi Daun
                           </h3>
                         </div>
@@ -1668,11 +1689,8 @@ export function OnboardingDesign({
                         <p
                           className="preview-text relative z-10 text-contrast-ink leading-[1.7] transition-all duration-200"
                           id="para1"
-                          style={{
-                            fontSize: "18px",
-                            letterSpacing: "0.08em",
-                            lineHeight: "1.7",
-                          }}
+                          data-reading-preview
+                          style={readingStyle(value.preferences)}
                         >
                           <span className="syllable-wrap">
                             Fo-to-sin-te-sis
@@ -1685,11 +1703,8 @@ export function OnboardingDesign({
                         <p
                           className="preview-text relative z-10 text-contrast-ink leading-[1.7] transition-all duration-200"
                           id="para2"
-                          style={{
-                            fontSize: "18px",
-                            letterSpacing: "0.08em",
-                            lineHeight: "1.7",
-                          }}
+                          data-reading-preview
+                          style={readingStyle(value.preferences)}
                         >
                           Di da-lam sel daun ter-da-pat pa-brik ke-cil ber-na-ma{" "}
                           <span className="bg-mint-tint px-1.5 py-0.5 rounded border-b-2 border-secondary font-semibold text-primary">
@@ -1758,7 +1773,7 @@ export function OnboardingDesign({
                             </span>
                           </div>
                           <span className="font-semibold text-primary">
-                            Target aksesibilitas Target WCAG 2.2 AA
+                            Target WCAG 2.2 AA
                           </span>
                           <span className="text-divider">·</span>
                           <span
@@ -1862,10 +1877,10 @@ export function OnboardingDesign({
           </div>
         )}
         {step === 2 && (
-          <div className="final-design final-screen-5 w-full pt-20 bg-canvas min-h-screen final-onboarding">
+          <div className="final-design final-screen-5 w-full bg-canvas min-h-screen final-onboarding screen-page">
             <div className="flex flex-col w-full">
               <div className="w-full bg-canvas py-space-sm px-gutter">
-                <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-space-sm">
+                <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-space-sm ui-container">
                   <a
                     className="inline-flex items-center gap-space-xs text-primary font-label text-label hover:text-primary-hover focus:outline-none focus:ring-2 focus:ring-tertiary-container rounded-lg p-1 transition-colors"
                     href="#"
@@ -1950,7 +1965,7 @@ export function OnboardingDesign({
                 </div>
               </div>
 
-              <section className="w-full max-w-6xl mx-auto px-gutter pt-space-md pb-space-lg">
+              <section className="w-full max-w-6xl mx-auto px-gutter pt-space-md pb-space-lg ui-container">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-center">
                   <div className="lg:col-span-8 flex flex-col gap-space-xs">
                     <div className="inline-flex items-center gap-2 self-start px-3 py-1 rounded-full bg-peach-tint text-primary font-label text-label">
@@ -1964,7 +1979,7 @@ export function OnboardingDesign({
                         TARGET &amp; WAKTU BELAJAR SANTAY
                       </span>
                     </div>
-                    <h1 className="font-display text-display-mobile md:text-display text-primary tracking-tight">
+                    <h1 className="font-display text-display-mobile md:text-display text-primary tracking-tight ui-page-title">
                       Tentukan tujuan belajarmu, pelan-pelan asal konsisten!
                     </h1>
                     <p className="font-reading text-reading text-secondary max-w-2xl">
@@ -2010,7 +2025,7 @@ export function OnboardingDesign({
                 </div>
               </section>
 
-              <section className="w-full max-w-6xl mx-auto px-gutter pb-space-xl">
+              <section className="w-full max-w-6xl mx-auto px-gutter pb-space-xl ui-container">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
                   <div className="lg:col-span-7 flex flex-col gap-space-lg">
                     <div className="bg-surface rounded-2xl p-space-lg shadow-sm border border-secondary/20 flex flex-col gap-space-sm relative overflow-hidden">
@@ -2081,7 +2096,7 @@ export function OnboardingDesign({
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div>
                           <div className="flex items-center gap-2">
-                            <h2 className="font-section-title text-section-title text-primary flex items-center gap-2">
+                            <h2 className="font-section-title text-section-title text-primary flex items-center gap-2 ui-section-title">
                               <span
                                 className="material-symbols-outlined text-secondary"
                                 aria-hidden="true"
@@ -2363,7 +2378,7 @@ export function OnboardingDesign({
                     <div className="bg-surface rounded-2xl p-space-lg shadow-sm border border-secondary/20 flex flex-col gap-space-md">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h2 className="font-section-title text-section-title text-primary flex items-center gap-2">
+                          <h2 className="font-section-title text-section-title text-primary flex items-center gap-2 ui-section-title">
                             <span
                               className="material-symbols-outlined text-secondary"
                               aria-hidden="true"
@@ -2591,7 +2606,7 @@ export function OnboardingDesign({
                           >
                             timer
                           </span>
-                          <h2 className="font-section-title text-section-title text-primary">
+                          <h2 className="font-section-title text-section-title text-primary ui-section-title">
                             Waktu Belajar Harian
                           </h2>
                         </div>
@@ -2745,7 +2760,7 @@ export function OnboardingDesign({
 
                     <div className="bg-surface rounded-2xl p-space-lg shadow-sm border border-secondary/20 flex flex-col gap-space-sm">
                       <div className="flex items-center justify-between">
-                        <h2 className="font-section-title text-section-title text-primary flex items-center gap-2">
+                        <h2 className="font-section-title text-section-title text-primary flex items-center gap-2 ui-section-title">
                           <span
                             className="material-symbols-outlined text-secondary"
                             aria-hidden="true"
@@ -2875,17 +2890,19 @@ export function OnboardingDesign({
                             verified
                           </span>
                           <span className="font-label text-label text-xs font-bold">
-                            5 Hari Aktif Belajar
+                            {value.available_days.length} Hari Aktif Belajar
                           </span>
                         </div>
                         <span className="font-metadata text-metadata text-xs font-bold text-secondary">
-                          Total Target: 75 mnt / minggu
+                          Total Target:{" "}
+                          {value.available_days.length * value.daily_minutes}{" "}
+                          mnt / minggu
                         </span>
                       </div>
                     </div>
 
                     <div className="bg-surface rounded-2xl p-space-lg shadow-sm border border-secondary/20 flex flex-col gap-space-sm">
-                      <h2 className="font-section-title text-section-title text-primary flex items-center gap-2">
+                      <h2 className="font-section-title text-section-title text-primary flex items-center gap-2 ui-section-title">
                         <span
                           className="material-symbols-outlined text-secondary"
                           aria-hidden="true"
@@ -3030,8 +3047,8 @@ export function OnboardingDesign({
                 </div>
               </section>
 
-              <div className="sticky bottom-0 z-40 w-full bg-surface/95 backdrop-blur-md shadow-[0_-2px_12px_rgba(39,59,53,0.08)] py-space-md px-gutter">
-                <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-space-md">
+              <div className="screen-action-bar sticky bottom-0 z-40 w-full bg-surface/95 backdrop-blur-md shadow-[0_-2px_12px_rgba(39,59,53,0.08)] py-space-md px-gutter">
+                <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-space-md ui-container">
                   <div className="flex flex-col gap-1 text-center sm:text-left">
                     <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
                       <span className="inline-flex items-center gap-1.5 font-card-title text-card-title text-primary font-extrabold">
@@ -3103,14 +3120,14 @@ export function OnboardingDesign({
           </div>
         )}
         {step === 3 && (
-          <div className="final-design final-screen-6 w-full pt-20 bg-canvas min-h-screen final-onboarding">
-            <p className="max-w-6xl mx-auto px-6 py-4 bg-butter-tint">
+          <div className="final-design final-screen-6 w-full bg-canvas min-h-screen final-onboarding screen-page">
+            <p className="max-w-6xl mx-auto px-6 py-4 bg-butter-tint ui-container">
               Pratinjau untuk {value.display_name}: {value.subjects.join(", ")}{" "}
               · {value.daily_minutes} menit per hari. Jadwal di bawah adalah
               contoh, belum disimpan sebagai aktivitas.
             </p>
             <div className="flex flex-col w-full">
-              <section className="max-w-7xl mx-auto px-gutter w-full pt-space-lg pb-space-md">
+              <section className="max-w-7xl mx-auto px-gutter w-full pt-space-lg pb-space-md ui-container">
                 <nav aria-label="Progress Onboarding" className="w-full">
                   <ol className="flex items-center gap-space-xs sm:gap-space-sm flex-wrap">
                     <li className="flex items-center gap-space-xs text-secondary font-label text-label">
@@ -3186,7 +3203,7 @@ export function OnboardingDesign({
                 </nav>
               </section>
 
-              <section className="max-w-7xl mx-auto px-gutter w-full pb-space-lg">
+              <section className="max-w-7xl mx-auto px-gutter w-full pb-space-lg ui-container">
                 <div className="relative rounded-2xl bg-surface-container-low p-space-md sm:p-space-xl overflow-hidden shadow-sm">
                   <div className="absolute -right-6 -top-6 w-32 h-32 rounded-full bg-butter/30 pointer-events-none"></div>
                   <div className="absolute right-40 -bottom-8 w-24 h-24 rounded-full bg-secondary-container/40 pointer-events-none"></div>
@@ -3202,7 +3219,7 @@ export function OnboardingDesign({
                           100% Siap Dijalankan
                         </span>
                       </div>
-                      <h1 className="font-page-title text-page-title text-primary tracking-tight">
+                      <h1 className="font-page-title text-page-title text-primary tracking-tight ui-page-title">
                         Yeay! Rencana belajarmu udah siap.
                       </h1>
                       <p className="font-reading text-reading text-secondary max-w-2xl">
@@ -3255,7 +3272,7 @@ export function OnboardingDesign({
                 </div>
               </section>
 
-              <section className="max-w-7xl mx-auto px-gutter w-full pb-space-xl">
+              <section className="max-w-7xl mx-auto px-gutter w-full pb-space-xl ui-container">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
                   <div className="lg:col-span-8 flex flex-col gap-space-lg">
                     <div className="bg-surface rounded-2xl p-space-lg shadow-sm flex flex-col gap-space-md">
@@ -3269,7 +3286,7 @@ export function OnboardingDesign({
                               Hari Ini · Sesi Sore
                             </span>
                           </div>
-                          <h2 className="font-section-title text-section-title text-primary mt-1">
+                          <h2 className="font-section-title text-section-title text-primary mt-1 ui-section-title">
                             Jadwal Belajar Santai (16.00 – 16.15 WIB)
                           </h2>
                         </div>
@@ -3301,7 +3318,7 @@ export function OnboardingDesign({
                           </div>
                           <div className="flex-1 space-y-1">
                             <div className="flex flex-wrap items-center gap-2">
-                              <h3 className="font-card-title text-card-title text-primary">
+                              <h3 className="font-card-title text-card-title text-primary ui-card-title">
                                 1. Eksplorasi Konsep: Fotosintesis &amp; Energi
                                 Daun
                               </h3>
@@ -3356,7 +3373,7 @@ export function OnboardingDesign({
                           </div>
                           <div className="flex-1 space-y-1">
                             <div className="flex flex-wrap items-center gap-2">
-                              <h3 className="font-card-title text-card-title text-primary">
+                              <h3 className="font-card-title text-card-title text-primary ui-card-title">
                                 2. Cek Pemahaman Cepat
                               </h3>
                               <span className="px-2 py-0.5 rounded-full bg-surface-container-high text-secondary font-metadata text-[11px] font-bold">
@@ -3402,7 +3419,7 @@ export function OnboardingDesign({
                           </div>
                           <div className="flex-1 space-y-1">
                             <div className="flex flex-wrap items-center gap-2">
-                              <h3 className="font-card-title text-card-title text-primary">
+                              <h3 className="font-card-title text-card-title text-primary ui-card-title">
                                 3. Refleksi &amp; Catatan Visual Mimo
                               </h3>
                               <span className="px-2 py-0.5 rounded-full bg-surface-container-high text-secondary font-metadata text-[11px] font-bold">
@@ -3442,7 +3459,7 @@ export function OnboardingDesign({
                               Demo Siap Dicoba
                             </span>
                           </div>
-                          <h3 className="font-section-title text-section-title text-primary">
+                          <h3 className="font-section-title text-section-title text-primary ui-card-title">
                             Bab 3 Biologi SMP: “Fotosintesis &amp; Peran Cahaya
                             Matahari”
                           </h3>
@@ -3499,7 +3516,7 @@ export function OnboardingDesign({
                       </div>
                       <div className="flex-1 space-y-1">
                         <div className="flex items-center gap-2">
-                          <h3 className="font-card-title text-card-title text-primary">
+                          <h3 className="font-card-title text-card-title text-primary ui-card-title">
                             Capek Hari Ini? Geser ke Besok Tanpa Rasa Bersalah
                           </h3>
                           <span className="px-2 py-0.5 rounded-full bg-surface-container-high text-secondary font-metadata text-[10px] font-bold uppercase">
@@ -3529,7 +3546,7 @@ export function OnboardingDesign({
                           >
                             badge
                           </span>
-                          <h2 className="font-section-title text-section-title text-primary">
+                          <h2 className="font-section-title text-section-title text-primary ui-section-title">
                             Paspor Belajarmu
                           </h2>
                         </div>
@@ -3691,7 +3708,7 @@ export function OnboardingDesign({
                         <span className="w-8 h-8 rounded-full bg-surface text-primary flex items-center justify-center font-bold text-[14px]">
                           💡
                         </span>
-                        <h3 className="font-card-title text-card-title text-primary">
+                        <h3 className="font-card-title text-card-title text-primary ui-card-title">
                           Kenapa metode ini bikin tenang?
                         </h3>
                       </div>
@@ -3704,7 +3721,7 @@ export function OnboardingDesign({
                             spa
                           </span>
                           <div>
-                            <h4 className="font-label text-label font-bold text-primary">
+                            <h4 className="font-label text-label font-bold text-primary ui-label-title">
                               Bebas Stres Kognitif
                             </h4>
                             <p className="font-metadata text-metadata text-secondary">
@@ -3722,7 +3739,7 @@ export function OnboardingDesign({
                             analytics
                           </span>
                           <div>
-                            <h4 className="font-label text-label font-bold text-primary">
+                            <h4 className="font-label text-label font-bold text-primary ui-label-title">
                               Mesin Bukti Bayesian (BKT)
                             </h4>
                             <p className="font-metadata text-metadata text-secondary">
@@ -3740,7 +3757,7 @@ export function OnboardingDesign({
                             shield
                           </span>
                           <div>
-                            <h4 className="font-label text-label font-bold text-primary">
+                            <h4 className="font-label text-label font-bold text-primary ui-label-title">
                               Tanpa Label Medis atau Tekanan
                             </h4>
                             <p className="font-metadata text-metadata text-secondary">
@@ -3756,8 +3773,8 @@ export function OnboardingDesign({
                 </div>
               </section>
 
-              <section className="sticky bottom-0 left-0 right-0 w-full z-40 bg-surface/95 backdrop-blur-md shadow-[0_-4px_16px_rgba(39,59,53,0.06)] py-space-md">
-                <div className="max-w-7xl mx-auto px-gutter flex flex-col sm:flex-row items-center justify-between gap-space-md">
+              <section className="screen-action-bar sticky bottom-0 left-0 right-0 w-full z-40 bg-surface/95 backdrop-blur-md shadow-[0_-4px_16px_rgba(39,59,53,0.06)] py-space-md">
+                <div className="max-w-7xl mx-auto px-gutter flex flex-col sm:flex-row items-center justify-between gap-space-md ui-container">
                   <a
                     className="inline-flex items-center justify-center gap-2 px-space-md py-space-sm rounded-xl font-label text-label text-secondary bg-surface hover:bg-canvas transition-colors w-full sm:w-auto shadow-xs"
                     href="#"

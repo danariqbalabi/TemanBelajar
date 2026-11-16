@@ -29,9 +29,9 @@ export function RecommendationDesign({
   const [showReason, setShowReason] = useState(true);
   return (
     <>
-      <div className="final-design final-screen-19 w-full pt-[8.25rem] bg-canvas flex-1">
+      <div className="final-design final-screen-19 w-full bg-canvas flex-1 screen-page">
         <div className="flex flex-col w-full">
-          <div className="max-w-[1200px] w-full mx-auto px-margin-mobile sm:px-margin-tablet lg:px-margin py-space-lg flex flex-col gap-space-xl">
+          <div className="max-w-[1200px] w-full mx-auto px-margin-mobile sm:px-margin-tablet lg:px-margin py-space-lg flex flex-col gap-space-xl ui-container">
             <div className="flex flex-wrap items-center justify-between gap-space-md">
               <div className="flex items-center gap-space-sm flex-wrap">
                 <a
@@ -48,7 +48,7 @@ export function RecommendationDesign({
                   >
                     arrow_back
                   </span>
-                  <span>Kembali ke Hasil Latihan Bab 4</span>
+                  <span>Kembali ke materi</span>
                 </a>
                 <span className="text-outline text-metadata">•</span>
                 <a
@@ -59,7 +59,7 @@ export function RecommendationDesign({
                     onBack();
                   }}
                 >
-                  Ke Beranda Utama
+                  Kembali ke materi
                 </a>
               </div>
               <div className="flex items-center gap-space-sm">
@@ -74,28 +74,12 @@ export function RecommendationDesign({
                 </div>
                 <div className="flex items-center gap-1 bg-surface rounded-lg p-0.5 shadow-sm">
                   <button
-                    className="p-1.5 rounded text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors"
-                    id="fontDecBtn"
-                    title="Perkecil Ukuran Teks"
                     type="button"
                     onClick={onSettings}
+                    className="px-3 py-2 text-sm rounded-lg"
                   >
-                    <span className="font-label text-metadata font-bold px-1">
-                      A-
-                    </span>
+                    Atur tampilan
                   </button>
-                  <button
-                    className="p-1.5 rounded text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors"
-                    id="fontIncBtn"
-                    title="Perbesar Ukuran Teks"
-                    type="button"
-                    onClick={onSettings}
-                  >
-                    <span className="font-label text-metadata font-bold px-1">
-                      A+
-                    </span>
-                  </button>
-                  <div className="w-px h-4 bg-surface-variant mx-1"></div>
                   <button
                     className="flex items-center gap-1.5 px-2.5 py-1 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded font-label text-label transition-colors"
                     id="ttsBtn"
@@ -142,7 +126,7 @@ export function RecommendationDesign({
                       >
                         timer
                       </span>
-                      <span>{recommendation.reason}</span>
+                      <span>{recommendation.estimated_minutes} menit</span>
                     </span>
                     <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 text-success font-metadata text-metadata border border-secondary/20 shadow-sm">
                       <span
@@ -156,7 +140,7 @@ export function RecommendationDesign({
                   </div>
                   <div className="flex flex-col gap-2">
                     <p className="text-sm">{material.title}</p>
-                    <h1 className="font-display font-black text-page-title text-primary tracking-tight leading-tight">
+                    <h1 className="font-display font-black text-page-title text-primary tracking-tight leading-tight ui-page-title">
                       {recommendation.title || "Rekomendasi buat kamu"}
                     </h1>
                     <p className="font-reading text-reading text-primary-container leading-relaxed">
@@ -176,7 +160,7 @@ export function RecommendationDesign({
                           Materi
                         </div>
                         <div className="font-label text-[13px] text-primary truncate font-bold">
-                          IPA Kelas 8 Bab 4
+                          {material.subject}
                         </div>
                       </div>
                     </div>
@@ -189,10 +173,12 @@ export function RecommendationDesign({
                       </span>
                       <div className="leading-tight min-w-0">
                         <div className="text-[11px] font-metadata text-on-surface-variant">
-                          {recommendation.reason}
+                          Penguasaan konsep
                         </div>
                         <div className="font-label text-[13px] text-primary font-bold">
-                          {recommendation.reason}
+                          {recommendation.estimate?.mastery == null
+                            ? "Belum ada estimasi"
+                            : `${Math.round(recommendation.estimate.mastery * 100)}% (estimasi)`}
                         </div>
                       </div>
                     </div>
@@ -208,7 +194,7 @@ export function RecommendationDesign({
                           Durasi Ringkas
                         </div>
                         <div className="font-label text-[13px] text-primary font-bold">
-                          {recommendation.reason}
+                          {recommendation.estimated_minutes} menit
                         </div>
                       </div>
                     </div>
@@ -237,7 +223,7 @@ export function RecommendationDesign({
                       href="#"
                       onClick={(e) => {
                         e.preventDefault();
-                        onBack();
+                        setShowReason(!showReason);
                       }}
                     >
                       <span
@@ -256,7 +242,7 @@ export function RecommendationDesign({
                         onBack();
                       }}
                     >
-                      <span>Lewati Dulu (Ke Beranda)</span>
+                      <span>Lewati dulu (kembali ke materi)</span>
                     </a>
                   </div>
                 </div>
@@ -288,7 +274,7 @@ export function RecommendationDesign({
 
             <div className="flex flex-col gap-space-md">
               <div>
-                <h2 className="font-section-title text-section-title text-primary">
+                <h2 className="font-section-title text-section-title text-primary ui-section-title">
                   Coba Cara Belajar Lainnya
                 </h2>
                 <div className="grid md:grid-cols-3 gap-4 mt-5">
@@ -297,7 +283,9 @@ export function RecommendationDesign({
                       key={i}
                       className="bg-surface border border-divider rounded-2xl p-5"
                     >
-                      <h3 className="font-bold">{modeNames[alt.mode]}</h3>
+                      <h3 className="font-bold ui-card-title">
+                        {modeNames[alt.mode]}
+                      </h3>
                       <p className="my-3 text-sm">{alt.reason}</p>
                       <button
                         disabled={busy}
@@ -317,7 +305,7 @@ export function RecommendationDesign({
               id="penjelasan-ai"
             >
               <div>
-                <h2 className="font-section-title text-section-title text-primary">
+                <h2 className="font-section-title text-section-title text-primary ui-section-title">
                   Kenapa Rekomendasi Ini Muncul?
                 </h2>
                 <button
@@ -352,22 +340,18 @@ export function RecommendationDesign({
                     Pengaruh ke Rencana Belajarmu Hari Ini
                   </span>
                   <p className="font-reading text-reading text-primary">
-                    Rekomendasi ini diperkirakan{" "}
-                    <strong className="text-primary">
-                      {recommendation.reason}
-                    </strong>
-                    . Waktu luang belajarmu hari ini masih tersisa{" "}
-                    <strong className="text-primary">
-                      {recommendation.reason}
-                    </strong>
-                    , jadi jadwal harianmu tetap aman tanpa perlu begadang!
+                    Aktivitas ini diperkirakan{" "}
+                    {recommendation.estimated_minutes} menit.
+                    {recommendation.action === "RESCHEDULE"
+                      ? " Tinjau rencana belajar sebelum mengubah jadwalmu."
+                      : " Kamu dapat memilih waktu yang nyaman untuk memulainya."}
                   </p>
                   <a
                     className="font-label text-label text-primary hover:text-primary-hover inline-flex items-center gap-1 mt-1 justify-center sm:justify-start transition-colors"
                     href="#"
                     onClick={(e) => {
                       e.preventDefault();
-                      onBack();
+                      onPlanner();
                     }}
                   >
                     <span>Lihat Penyesuaian di Rencana Belajar</span>
@@ -397,7 +381,7 @@ export function RecommendationDesign({
                     </span>
                   </div>
                   <div>
-                    <h4 className="font-card-title text-card-title text-primary">
+                    <h4 className="font-card-title text-card-title text-primary ui-label-title">
                       Tanya Mimo
                     </h4>
                     <p className="font-metadata text-metadata text-on-surface-variant">
@@ -414,13 +398,13 @@ export function RecommendationDesign({
                   type="button"
                   onClick={() => setShowReason(!showReason)}
                 >
-                  Buka Obrolan TemanBelajar
+                  Lihat alasan rekomendasi
                 </button>
               </div>
             </div>
           </div>
         </div>
-        <div className="max-w-6xl mx-auto px-6 py-6 flex gap-4">
+        <div className="max-w-6xl mx-auto px-6 py-6 flex gap-4 ui-container">
           <button
             disabled={busy}
             onClick={onFollow}

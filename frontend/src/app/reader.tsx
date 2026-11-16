@@ -1,6 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
-import { api, mutation } from "@/lib/api";
+import { useEffect, useRef, useState } from "react";
+import { api, ApiError, mutation } from "@/lib/api";
+import { userMessage } from "@/lib/errors";
 import type {
   Attempt,
   LearningSession,
@@ -26,6 +27,7 @@ export function Reader({
   onBack = () => {},
   onPreferences,
   displayName = "Manda",
+  initialPractice = false,
 }: {
   material: Material;
   session: LearningSession;
@@ -39,6 +41,7 @@ export function Reader({
   onBack?: () => void;
   onPreferences?: (p: Partial<Preferences>) => void;
   displayName?: string;
+  initialPractice?: boolean;
 }) {
   const [draft, setDraft] = useState(session.draft),
     [attempt, setAttempt] = useState<Attempt | null>(null),
@@ -48,6 +51,9 @@ export function Reader({
     [speaking, setSpeaking] = useState(false),
     [elapsed, setElapsed] = useState(0),
     [showRecommendation, setShowRecommendation] = useState(false);
+  const initialAttempt = useRef(
+    mutation<Attempt>("/attempts", { session_id: session.id }),
+  );
   const concept =
       material.concepts.find((c) => c.id === session.concept_id) ||
       material.concepts[0],
@@ -55,11 +61,27 @@ export function Reader({
   useEffect(() => {
     let alive = true;
     const saved = attemptPointer(session.id);
-    if (saved)
-      api<Attempt>(`/attempts/${saved}`)
+    if (saved || initialPractice)
+      (saved
+        ? api<Attempt>(`/attempts/${saved}`).catch((error) => {
+            if (
+              initialPractice &&
+              error instanceof ApiError &&
+              error.status === 404
+            )
+              return initialAttempt.current();
+            throw error;
+          })
+        : initialAttempt.current()
+      )
         .then(async (result) => {
+          if (result.status === "completed" && initialPractice)
+            result = await initialAttempt.current();
           if (!alive) return;
-          setAttempt(result);
+          if (result.status !== "completed") {
+            setAttempt(result);
+            attemptPointer(session.id, result.id);
+          }
           if (result.status === "completed") {
             const suggestion = await api<Recommendation>(
               `/recommendations?material_id=${encodeURIComponent(material.id)}&available_minutes=15`,
@@ -67,23 +89,24 @@ export function Reader({
             if (alive) setRec(suggestion);
           }
         })
-        .catch(() => {
-          /* A missing pointer never blocks the source reading session. */
+        .catch((error) => {
+          if (alive && initialPractice) setFeedback(userMessage(error));
         });
     return () => {
       alive = false;
     };
-  }, [session.id, material.id]);
+  }, [session.id, material.id, initialPractice]);
   useEffect(() => {
     return () => {
       if ("speechSynthesis" in window) speechSynthesis.cancel();
     };
   }, [concept.id, session.mode]);
   useEffect(() => {
-    if (!preferences.timer_enabled) return;
+    if (!preferences.timer_enabled || session.status !== "active" || attempt)
+      return;
     const timer = setInterval(() => setElapsed((s) => s + 1), 1000);
     return () => clearInterval(timer);
-  }, [preferences.timer_enabled]);
+  }, [preferences.timer_enabled, session.status, attempt]);
   function update(patch: Partial<LearningSession>) {
     const save = mutation<LearningSession>(
       `/sessions/${session.id}`,
@@ -110,9 +133,15 @@ export function Reader({
     const create = mutation<Attempt>("/attempts", { session_id: session.id });
     run(async () => {
       const pointer = !forceNew && attemptPointer(session.id);
-      const result = pointer
-        ? await api<Attempt>(`/attempts/${pointer}`)
-        : await create();
+      let result: Attempt;
+      if (pointer) {
+        try {
+          result = await api<Attempt>(`/attempts/${pointer}`);
+        } catch (error) {
+          if (!(error instanceof ApiError) || error.status !== 404) throw error;
+          result = await create();
+        }
+      } else result = await create();
       setAttempt(result);
       attemptPointer(session.id, result.id);
       setChoice(null);

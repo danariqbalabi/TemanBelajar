@@ -12,17 +12,29 @@ import {
 const { request } = vi.hoisted(() => ({ request: vi.fn() }));
 vi.mock("../src/lib/api", () => ({
   api: request,
+  ApiError: class extends Error {
+    constructor(
+      public status: number,
+      message: string,
+    ) {
+      super(message);
+    }
+  },
   auth: null,
   mutation: (path: string, body: object, method = "POST") => {
     const payload = { ...body, request_id: crypto.randomUUID() };
     return () => request(path, payload, method);
   },
 }));
+import { RecommendationDesign } from "../src/app/design-recommendation";
+import { Catalog } from "../src/app/design-catalog";
+import { ApiError } from "../src/lib/api";
 import { Reader } from "../src/app/reader";
 import { Planner } from "../src/app/planner";
 import { Materials } from "../src/app/materials";
 import { ProgressView } from "../src/app/progress";
 import { SettingsDesign } from "../src/app/design-settings";
+import { SummaryDesign } from "../src/app/design-summary";
 import type { Session } from "@supabase/supabase-js";
 import { Onboarding } from "../src/app/profile";
 const material: Material = {
@@ -63,6 +75,26 @@ const session: LearningSession = {
 const run = async (action: () => Promise<void>) => {
   await action();
 };
+it("kedua tautan pemilihan mode membuka pilihan, bukan kembali ke katalog", async () => {
+  const onChoose = vi.fn();
+  const onBack = vi.fn();
+  render(
+    <SummaryDesign
+      material={material}
+      onChoose={onChoose}
+      onBack={onBack}
+      onPlan={vi.fn()}
+    />,
+  );
+  await userEvent.click(
+    screen.getByRole("link", { name: "Pilih Cara Belajar" }),
+  );
+  await userEvent.click(
+    screen.getByRole("link", { name: "Buka Mode Selector Lengkap" }),
+  );
+  expect(onChoose).toHaveBeenCalledTimes(2);
+  expect(onBack).not.toHaveBeenCalled();
+});
 const plan: Plan = {
   id: "plan",
   timezone: "Asia/Jakarta",
@@ -152,6 +184,13 @@ describe("alur belajar", () => {
         refresh={async () => {}}
         onPlanner={() => {}}
       />,
+    );
+    await waitFor(() => expect(request).toHaveBeenCalled());
+    expect(
+      screen.getByRole("button", { name: "Latihan pemahaman" }),
+    ).toBeTruthy();
+    await userEvent.click(
+      screen.getByRole("button", { name: "Latihan pemahaman" }),
     );
     expect(await screen.findByText(/1 dari 2 jawaban tepat/)).toBeTruthy();
     expect(
@@ -594,3 +633,211 @@ it.each(["reading", "standard", "focus", "explore", "transcript"] as const)(
     expect(screen.getByLabelText("Format belajar")).toBeTruthy();
   },
 );
+
+it("filter katalog, pencarian konsep, urutan judul, dan pintasan bekerja", async () => {
+  const other = {
+    ...material,
+    id: "other",
+    title: "Aljabar",
+    subject: "Matematika",
+    concepts: [
+      { ...material.concepts[0], id: "algebra", title: "Persamaan linear" },
+    ],
+  };
+  const setQuery = vi.fn();
+  const { rerender } = render(
+    <Catalog
+      materials={[material, other]}
+      sessions={[
+        { ...session, completed_concepts: ["c1"], status: "completed" },
+      ]}
+      jobs={[]}
+      query=""
+      setQuery={setQuery}
+      onUpload={vi.fn()}
+      onDetail={vi.fn()}
+      onSettings={vi.fn()}
+      jobsPanel={null}
+      uploadPanel={null}
+      errorsPanel={null}
+    />,
+  );
+  await userEvent.selectOptions(
+    screen.getByLabelText("Filter status belajar"),
+    "completed",
+  );
+  expect(screen.getByRole("heading", { name: "Fotosintesis" })).toBeTruthy();
+  expect(screen.queryByRole("heading", { name: "Aljabar" })).toBeNull();
+  await userEvent.selectOptions(
+    screen.getByLabelText("Filter status belajar"),
+    "all",
+  );
+  await userEvent.selectOptions(
+    screen.getByLabelText("Urutkan materi"),
+    "title",
+  );
+  expect(screen.getAllByRole("heading", { level: 2 })[0].textContent).toBe(
+    "Aljabar",
+  );
+  await userEvent.keyboard("{Control>}k{/Control}");
+  expect(document.activeElement).toBe(
+    screen.getByLabelText("Cari materi atau topik konsep"),
+  );
+  rerender(
+    <Catalog
+      materials={[material, other]}
+      sessions={[]}
+      jobs={[]}
+      query="linear"
+      setQuery={setQuery}
+      onUpload={vi.fn()}
+      onDetail={vi.fn()}
+      onSettings={vi.fn()}
+      jobsPanel={null}
+      uploadPanel={null}
+      errorsPanel={null}
+    />,
+  );
+  expect(screen.getByRole("heading", { name: "Aljabar" })).toBeTruthy();
+  expect(screen.queryByRole("heading", { name: "Fotosintesis" })).toBeNull();
+});
+
+it("rencana baru tidak mengambil rencana lama dan input kosong mendapat pesan", async () => {
+  render(
+    <Planner
+      plans={[plan]}
+      materials={[material]}
+      profile={defaultProfile}
+      run={run}
+      busy={false}
+      refresh={async () => {}}
+      start={vi.fn()}
+    />,
+  );
+  await userEvent.click(
+    screen.getByRole("button", { name: "Edit rencana manual" }),
+  );
+  await userEvent.selectOptions(screen.getByLabelText("Rencana aktif"), "");
+  expect(screen.queryByText("Kegiatan selesai")).toBeNull();
+  expect(screen.getByLabelText("Rencana aktif")).toHaveProperty("value", "");
+  await userEvent.click(
+    screen.getByRole("button", { name: "Susun usulan awal" }),
+  );
+  expect(screen.getByRole("status").textContent).toContain("tanggal dan waktu");
+  expect(request).not.toHaveBeenCalled();
+});
+
+it("latihan dengan referensi yang sudah hilang dapat dimulai kembali", async () => {
+  localStorage.setItem("temanbelajar-attempt:session", "missing");
+  request.mockImplementation(async (path: string) => {
+    if (path === "/attempts/missing") throw new ApiError(404, "tidak ada");
+    return {
+      id: "new",
+      session_id: "session",
+      material_id: "demo",
+      version: 1,
+      status: "active",
+      question_ids: ["q1"],
+      answers: {},
+      questions: [
+        {
+          id: "q1",
+          concept_id: "c1",
+          prompt: "Latihan baru",
+          options: ["A", "B"],
+          source_ids: ["source"],
+        },
+      ],
+    };
+  });
+  render(
+    <Reader
+      material={material}
+      session={session}
+      preferences={defaultProfile.preferences}
+      run={run}
+      busy={false}
+      onUpdate={vi.fn()}
+      refresh={async () => {}}
+      onPlanner={vi.fn()}
+    />,
+  );
+  await userEvent.click(
+    screen.getByRole("button", { name: "Latihan pemahaman" }),
+  );
+  expect(await screen.findByText("Latihan baru")).toBeTruthy();
+  expect(localStorage.getItem("temanbelajar-attempt:session")).toBe("new");
+});
+
+it("rekomendasi menuju jadwal dan tombol alasan tidak keluar dari screen", async () => {
+  const onBack = vi.fn(),
+    onPlanner = vi.fn();
+  render(
+    <RecommendationDesign
+      material={material}
+      recommendation={{
+        action: "RESCHEDULE",
+        material_id: "demo",
+        concept_id: "c1",
+        estimated_minutes: 20,
+        reason: "Waktu tersedia belum cukup",
+        title: "Peran cahaya",
+        alternatives: [],
+        estimate: null,
+      }}
+      busy={false}
+      displayName="Manda"
+      onFollow={vi.fn()}
+      onBack={onBack}
+      onOpen={vi.fn()}
+      onPlanner={onPlanner}
+      onSettings={vi.fn()}
+      onSpeak={vi.fn()}
+    />,
+  );
+  await userEvent.click(
+    screen.getByRole("link", { name: "Lihat Detail Alasannya" }),
+  );
+  expect(onBack).not.toHaveBeenCalled();
+  await userEvent.click(
+    screen.getByRole("link", { name: "Lihat Penyesuaian di Rencana Belajar" }),
+  );
+  expect(onPlanner).toHaveBeenCalledOnce();
+  expect(screen.queryByText("IPA Kelas 8 Bab 4")).toBeNull();
+});
+
+it("aksi rekomendasi latihan membuka soal langsung", async () => {
+  request.mockResolvedValue({
+    id: "direct",
+    session_id: "session",
+    material_id: "demo",
+    version: 1,
+    status: "active",
+    question_ids: ["q1"],
+    answers: {},
+    questions: [
+      {
+        id: "q1",
+        concept_id: "c1",
+        prompt: "Soal dari rekomendasi",
+        options: ["A", "B"],
+        source_ids: ["source"],
+      },
+    ],
+  });
+  render(
+    <Reader
+      initialPractice
+      material={material}
+      session={session}
+      preferences={defaultProfile.preferences}
+      run={run}
+      busy={false}
+      onUpdate={vi.fn()}
+      refresh={async () => {}}
+      onPlanner={vi.fn()}
+    />,
+  );
+  expect(await screen.findByText("Soal dari rekomendasi")).toBeTruthy();
+  expect(request.mock.calls[0][0]).toBe("/attempts");
+});

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { ProgressDesign } from "./design-progress";
+import { userMessage } from "@/lib/errors";
 import { api } from "@/lib/api";
 import type {
   LearningSession,
@@ -13,7 +14,6 @@ import type { Run } from "./page";
 export function ProgressView({
   materials,
   sessions,
-  run,
   start,
   onPlan,
   onSettings,
@@ -29,12 +29,18 @@ export function ProgressView({
   onBack: () => void;
   displayName: string;
   timezone: string;
-  start: (m: Material, mode?: Mode, conceptId?: string) => void;
+  start: (
+    m: Material,
+    mode?: Mode,
+    conceptId?: string,
+    practice?: boolean,
+  ) => void;
 }) {
   const [selected, setSelected] = useState(materials[0]?.id || ""),
     [progress, setProgress] = useState<Progress | null>(null),
     [rec, setRec] = useState<Recommendation | null>(null),
-    [error, setError] = useState("");
+    [error, setError] = useState(""),
+    [revision, setRevision] = useState(0);
   useEffect(() => {
     let alive = true;
     if (!selected) return;
@@ -52,12 +58,12 @@ export function ProgressView({
         }
       })
       .catch((e) => {
-        if (alive) setError(e.message);
+        if (alive) setError(userMessage(e));
       });
     return () => {
       alive = false;
     };
-  }, [selected]);
+  }, [selected, revision]);
   return (
     <ProgressDesign
       materials={materials}
@@ -78,14 +84,10 @@ export function ProgressView({
       onPlan={onPlan}
       onSettings={onSettings}
       onBack={onBack}
-      onRefresh={() =>
-        run(async () => {
-          const p = await api<Progress>(
-            `/progress?material_id=${encodeURIComponent(selected)}`,
-          );
-          setProgress(p);
-        })
-      }
+      onRefresh={() => {
+        setError("");
+        setRevision((value) => value + 1);
+      }}
     />
   );
 }

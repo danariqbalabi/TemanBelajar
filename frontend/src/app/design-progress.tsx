@@ -31,7 +31,12 @@ export function ProgressDesign({
   progress: Progress | null;
   rec: Recommendation | null;
   error: string;
-  start: (m: Material, mode?: Mode, conceptId?: string) => void;
+  start: (
+    m: Material,
+    mode?: Mode,
+    conceptId?: string,
+    practice?: boolean,
+  ) => void;
   onRefresh: () => void;
   onPlan: () => void;
   onSettings: () => void;
@@ -73,9 +78,9 @@ export function ProgressDesign({
   });
   return (
     <>
-      <div className="final-design final-screen-22 w-full pt-[8.25rem] bg-canvas flex-1">
+      <div className="final-design final-screen-22 w-full bg-canvas flex-1 screen-page">
         <div className="flex flex-col w-full">
-          <div className="max-w-[1200px] w-full mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin py-space-lg space-y-space-xl">
+          <div className="max-w-[1200px] w-full mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin py-space-lg space-y-space-xl ui-container">
             <section className="flex flex-col gap-space-md">
               <nav
                 aria-label="Jejak Navigasi"
@@ -108,7 +113,7 @@ export function ProgressDesign({
                     <span className="w-2 h-2 rounded-full bg-success"></span>
                     Pelacak Adaptif TemanBelajar
                   </div>
-                  <h1 className="font-page-title text-page-title text-primary tracking-tight">{`Progres Belajarmu, ${displayName}`}</h1>
+                  <h1 className="font-page-title text-page-title text-primary tracking-tight ui-page-title">{`Progres Belajarmu, ${displayName}`}</h1>
                   <p className="font-reading text-reading text-on-surface-variant">
                     Lihat seberapa jauh pemahamanmu berkembang, rayakan
                     pencapaian kecil, dan temukan topik yang asyik untuk diulang
@@ -116,29 +121,16 @@ export function ProgressDesign({
                   </p>
                 </div>
                 <div className="flex flex-wrap items-center gap-space-sm">
-                  <div className="inline-flex p-1 bg-surface rounded-xl shadow-sm">
-                    <button
-                      className="px-space-md py-2 rounded-lg bg-secondary-container text-primary font-label text-label font-bold shadow-sm transition-all min-h-[44px]"
-                      type="button"
-                      onClick={onRefresh}
-                    >
-                      Pekan Ini (11–17 Nov)
-                    </button>
-                    <button
-                      className="px-space-md py-2 rounded-lg text-on-surface-variant hover:text-primary font-label text-label transition-colors min-h-[44px]"
-                      type="button"
-                      onClick={onRefresh}
-                    >
-                      Bulan Ini
-                    </button>
-                    <button
-                      className="px-space-md py-2 rounded-lg text-on-surface-variant hover:text-primary font-label text-label transition-colors min-h-[44px]"
-                      type="button"
-                      onClick={onRefresh}
-                    >
-                      Sepanjang Waktu
-                    </button>
-                  </div>
+                  <span className="px-3 py-2 rounded-xl bg-mint-tint text-sm">
+                    Pemahaman: seluruh riwayat
+                  </span>
+                  <button
+                    type="button"
+                    onClick={onRefresh}
+                    className="px-3 py-2 rounded-xl bg-surface"
+                  >
+                    Perbarui progres
+                  </button>
 
                   <div className="flex items-center gap-space-xs">
                     <button
@@ -230,7 +222,10 @@ export function ProgressDesign({
               {[
                 [
                   "Sesi selesai",
-                  sessions.filter((s) => s.status === "completed").length,
+                  sessions.filter(
+                    (s) =>
+                      s.material_id === selected && s.status === "completed",
+                  ).length,
                 ],
                 ["Konsep dibaca", completed.size],
                 ["Jawaban tersimpan", total],
@@ -240,7 +235,9 @@ export function ProgressDesign({
                   key={label}
                   className="bg-surface rounded-2xl p-6 border border-divider"
                 >
-                  <h2 className="text-sm font-bold">{label}</h2>
+                  <h2 className="text-sm font-bold ui-section-title">
+                    {label}
+                  </h2>
                   <p className="text-3xl font-display font-bold my-3">
                     {count}
                   </p>
@@ -249,7 +246,7 @@ export function ProgressDesign({
             </section>
 
             <section className="bg-surface rounded-[24px] p-space-md md:p-space-lg lg:p-space-xl shadow-sm flex flex-col gap-space-lg">
-              <h2 className="font-section-title text-section-title text-primary tracking-tight">
+              <h2 className="font-section-title text-section-title text-primary tracking-tight ui-section-title">
                 Rincian Penguasaan Tiap Konsep
               </h2>
               <label className="block mt-4">
@@ -282,7 +279,9 @@ export function ProgressDesign({
                     key={c.id}
                     className="bg-canvas border border-divider rounded-2xl p-5 mt-4"
                   >
-                    <h3 className="font-bold text-lg">{c.title}</h3>
+                    <h3 className="font-bold text-lg ui-card-title">
+                      {c.title}
+                    </h3>
                     <p className="text-sm my-3">
                       {c.observed.correct}/{c.observed.total} jawaban tepat
                     </p>
@@ -317,7 +316,9 @@ export function ProgressDesign({
             </section>
 
             <section className="bg-surface rounded-[24px] p-space-md md:p-space-lg lg:p-space-xl shadow-sm flex flex-col gap-space-lg">
-              <h2 className="font-bold text-xl">Ritme Belajar</h2>
+              <h2 className="font-bold text-xl ui-section-title">
+                Ritme Belajar
+              </h2>
               <p className="text-sm my-3">
                 Jumlah sesi berdasarkan pembaruan terakhir dalam 7 hari terakhir
                 ({timezone}).
@@ -336,7 +337,7 @@ export function ProgressDesign({
             </section>
 
             <section className="flex flex-col gap-space-md pb-space-lg">
-              <h2 className="font-bold text-xl">
+              <h2 className="font-bold text-xl ui-section-title">
                 Rekomendasi Langkah Berikutnya
               </h2>
               <div className="bg-mint-tint rounded-2xl p-6">
@@ -348,7 +349,15 @@ export function ProgressDesign({
                   <button
                     className="mt-4 bg-primary text-white px-5 py-3 rounded-xl"
                     onClick={() =>
-                      material && start(material, undefined, rec.concept_id)
+                      rec.action === "RESCHEDULE"
+                        ? onPlan()
+                        : material &&
+                          start(
+                            material,
+                            undefined,
+                            rec.concept_id,
+                            rec.action === "PRACTICE",
+                          )
                     }
                   >
                     Ikuti saran belajar

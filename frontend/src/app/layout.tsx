@@ -11,6 +11,7 @@ import "@fontsource/nunito/400.css";
 import "./globals.css";
 import "./stitch.css";
 import "./design-final.css";
+import "./ui-consistency.css";
 export const metadata: Metadata = {
   title: "TemanBelajar — belajar sesuai ritmemu",
   description: "Teman belajar adaptif untuk SMP dan SMA.",

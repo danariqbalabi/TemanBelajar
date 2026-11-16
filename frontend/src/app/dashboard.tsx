@@ -24,7 +24,12 @@ export function Dashboard({
   sessions: LearningSession[];
   plans: Plan[];
   recommendation: Recommendation | null;
-  start: (m: Material, mode?: Mode, conceptId?: string) => void;
+  start: (
+    m: Material,
+    mode?: Mode,
+    conceptId?: string,
+    practice?: boolean,
+  ) => void;
   navigate: (p: string) => void;
   onPreferences?: (p: Partial<Preferences>) => void;
 }) {
@@ -60,12 +65,12 @@ export function Dashboard({
     ).size;
   return (
     <>
-      <div className="final-design final-screen-7 w-full pt-20 bg-canvas flex-1">
+      <div className="final-design final-screen-7 w-full bg-canvas flex-1 screen-page">
         <div className="flex flex-col w-full">
-          <div className="max-w-[1200px] w-full mx-auto px-margin-mobile md:px-margin-tablet xl:px-margin pb-space-xl flex flex-col gap-space-xl">
+          <div className="max-w-[1200px] w-full mx-auto px-margin-mobile md:px-margin-tablet xl:px-margin pb-space-xl flex flex-col gap-space-xl ui-container">
             <section
               aria-labelledby="beranda-greeting"
-              className="pt-space-lg flex flex-col md:flex-row md:items-end justify-between gap-space-md"
+              className="flex flex-col md:flex-row md:items-end justify-between gap-space-md"
             >
               <div className="flex flex-col gap-space-xs max-w-2xl">
                 <div className="flex items-center gap-space-sm flex-wrap">
@@ -84,7 +89,7 @@ export function Dashboard({
                   </span>
                 </div>
                 <h1
-                  className="font-display text-page-title-mobile md:text-page-title text-primary tracking-tight mt-1"
+                  className="font-display text-page-title-mobile md:text-page-title text-primary tracking-tight mt-1 ui-page-title"
                   id="beranda-greeting"
                 >{`Hai, ${profile.display_name}! Siap belajar santai bareng Mimo?`}</h1>
                 <p className="font-body text-body text-on-surface-variant leading-relaxed">
@@ -102,14 +107,15 @@ export function Dashboard({
                     visibility
                   </span>
                   <span className="font-label text-metadata">
-                    Focus Ruler: Aktif
+                    Penggaris baca:{" "}
+                    {profile.preferences.reading_ruler ? "Aktif" : "Nonaktif"}
                   </span>
                 </div>
                 <button
                   aria-label="Sesuaikan tampilan fokus"
                   className="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors"
                   type="button"
-                  onClick={() => navigate("Rencana Belajar")}
+                  onClick={() => navigate("Pengaturan")}
                 >
                   <span
                     className="material-symbols-outlined text-[20px]"
@@ -174,7 +180,7 @@ export function Dashboard({
                     <span className="px-2.5 py-0.5 rounded-full bg-butter-tint text-primary font-label text-[11px] font-semibold">{`${recommendation?.estimated_minutes || concept?.estimated_minutes || profile.daily_minutes} menit`}</span>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <h2 className="font-display text-section-title md:text-[1.85rem] text-primary font-extrabold leading-tight">
+                    <h2 className="font-display text-section-title md:text-[1.85rem] text-primary font-extrabold leading-tight ui-section-title">
                       {recommendation?.title ||
                         concept?.title ||
                         material?.title ||
@@ -188,7 +194,11 @@ export function Dashboard({
                         >
                           schedule
                         </span>{" "}
-                        Durasi ~10 mnt
+                        Durasi{" "}
+                        {recommendation?.estimated_minutes ||
+                          concept?.estimated_minutes ||
+                          profile.daily_minutes}{" "}
+                        menit
                       </span>
                       <span>•</span>
                       <span className="flex items-center gap-1">
@@ -224,10 +234,7 @@ export function Dashboard({
                     <div className="flex flex-col gap-0.5 text-primary">
                       <div className="flex items-center gap-2">
                         <span className="font-label text-metadata font-bold">
-                          Catatan BKT Engine Mimo
-                        </span>
-                        <span className="px-2 py-0.2 rounded bg-secondary-fixed text-primary font-label text-[10px] font-bold">
-                          88% Akurasi Kemarin
+                          Alasan rekomendasi Mimo
                         </span>
                       </div>
                       <p className="font-body text-label text-on-surface-variant leading-relaxed">
@@ -243,10 +250,22 @@ export function Dashboard({
                       href="#"
                       onClick={(e) => {
                         e.preventDefault();
-                        (() => navigate("Materi Saya"))();
+                        if (recommendation?.action === "RESCHEDULE")
+                          navigate("Rencana Belajar");
+                        else if (material)
+                          start(
+                            material,
+                            undefined,
+                            concept?.id,
+                            recommendation?.action === "PRACTICE",
+                          );
                       }}
                     >
-                      <span>{`${recommendation?.estimated_minutes || concept?.estimated_minutes || profile.daily_minutes} menit`}</span>
+                      <span>
+                        {recommendation?.action === "RESCHEDULE"
+                          ? "Atur jadwal"
+                          : `${recommendation?.action === "PRACTICE" ? "Mulai latihan" : "Mulai belajar"} · ${recommendation?.estimated_minutes || concept?.estimated_minutes || profile.daily_minutes} menit`}
+                      </span>
                       <span
                         className="material-symbols-outlined text-[18px]"
                         aria-hidden="true"
@@ -297,7 +316,7 @@ export function Dashboard({
                   <div className="mt-[-8px] relative z-20 px-4 py-2 rounded-full bg-surface border border-secondary/20 shadow-md text-primary font-mimo-voice text-metadata text-center flex items-center gap-1.5">
                     <span className="text-[14px]">🌿</span>
                     <span>
-                      &quot;Tenang aja, 10 menit ini cukup banget!&quot;
+                      &quot;Kita pelajari satu konsep sesuai ritmemu, ya.&quot;
                     </span>
                   </div>
                 </div>
@@ -314,7 +333,7 @@ export function Dashboard({
                     <div>
                       <p className="text-sm text-text-secondary">{date}</p>
                       <h2
-                        className="font-section-title text-section-title text-primary"
+                        className="font-section-title text-section-title text-primary ui-section-title"
                         id="schedule-heading"
                       >
                         Linimasa Belajar Hari Ini
@@ -342,7 +361,9 @@ export function Dashboard({
                             })}
                           </span>
                           <div className="flex-1">
-                            <h3 className="font-bold">{a.title}</h3>
+                            <h3 className="font-bold ui-card-title">
+                              {a.title}
+                            </h3>
                             <p className="text-sm">
                               {a.duration_minutes} menit ·{" "}
                               {a.status === "completed"
@@ -382,7 +403,7 @@ export function Dashboard({
                   className="flex flex-col gap-space-md"
                 >
                   <h2
-                    className="font-section-title text-section-title text-primary"
+                    className="font-section-title text-section-title text-primary ui-section-title"
                     id="ongoing-materials"
                   >
                     Materi yang Sedang Dipelajari
@@ -397,7 +418,9 @@ export function Dashboard({
                           {m.subject} ·{" "}
                           {m.is_demo ? "Materi contoh" : "Materi kamu"}
                         </p>
-                        <h3 className="font-bold text-xl my-3">{m.title}</h3>
+                        <h3 className="font-bold text-xl my-3 ui-card-title">
+                          {m.title}
+                        </h3>
                         <p>
                           {completed(m.id)} / {m.concepts.length} konsep dibaca
                         </p>
@@ -426,7 +449,7 @@ export function Dashboard({
                   </div>
                   <div className="flex flex-col gap-0.5 text-center sm:text-left flex-1">
                     <div className="flex items-center justify-center sm:justify-start gap-2">
-                      <h3 className="font-card-title text-card-title text-primary">
+                      <h3 className="font-card-title text-card-title text-primary ui-card-title">
                         Nggak ada streak patah di TemanBelajar
                       </h3>
                       <span className="px-2 py-0.5 rounded-full bg-surface text-primary font-label text-[10px] font-bold border border-divider hidden sm:inline-block">
@@ -455,7 +478,9 @@ export function Dashboard({
               >
                 <section className="bg-surface rounded-2xl p-6 border border-divider">
                   <div className="flex justify-between">
-                    <h2 className="font-bold text-lg">Preferensi Belajar</h2>
+                    <h2 className="font-bold text-lg ui-section-title">
+                      Preferensi Belajar
+                    </h2>
                     <button onClick={() => navigate("Pengaturan")}>Ubah</button>
                   </div>
                   <dl className="grid grid-cols-2 gap-4 mt-4">
@@ -470,7 +495,9 @@ export function Dashboard({
                   </dl>
                 </section>
                 <section className="bg-surface rounded-2xl p-6 border border-divider">
-                  <h2 className="font-bold text-lg">Agenda Terdekat</h2>
+                  <h2 className="font-bold text-lg ui-section-title">
+                    Agenda Terdekat
+                  </h2>
                   <p className="mt-3">
                     {profile.goal || "Belajar pelan-pelan sesuai ritmemu"}
                   </p>
@@ -487,7 +514,9 @@ export function Dashboard({
                   </button>
                 </section>
                 <section className="bg-surface rounded-2xl p-6 border border-divider">
-                  <h2 className="font-bold text-lg">Progres Belajar</h2>
+                  <h2 className="font-bold text-lg ui-section-title">
+                    Progres Belajar
+                  </h2>
                   <p className="mt-3">
                     {sessions.filter((s) => s.status === "completed").length}{" "}
                     sesi selesai
@@ -501,7 +530,9 @@ export function Dashboard({
                   </button>
                 </section>
                 <section className="bg-surface rounded-2xl p-6 border border-divider">
-                  <h2 className="font-bold text-lg">Eksplorasi Gaya Belajar</h2>
+                  <h2 className="font-bold text-lg ui-section-title">
+                    Eksplorasi Gaya Belajar
+                  </h2>
                   <div className="grid grid-cols-2 gap-2 mt-4">
                     {(
                       [
@@ -524,111 +555,14 @@ export function Dashboard({
               </aside>
             </div>
           </div>
-
-          <div
-            aria-labelledby="modal-evidence-title"
-            aria-modal="true"
-            className="hidden fixed inset-0 z-50 items-center justify-center p-space-md bg-contrast-ink/40"
-            id="evidence-modal"
-            role="dialog"
-          >
-            <div className="bg-surface rounded-[24px] max-w-lg w-full p-space-lg shadow-xl flex flex-col gap-space-md relative max-h-[921px] overflow-y-auto">
-              <div className="flex items-center justify-between pb-2 border-b border-divider">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-mint-tint flex items-center justify-center text-secondary">
-                    <span
-                      className="material-symbols-outlined text-[18px]"
-                      aria-hidden="true"
-                    >
-                      neurology
-                    </span>
-                  </div>
-                  <h3
-                    className="font-card-title text-card-title text-primary"
-                    id="modal-evidence-title"
-                  >
-                    Mengapa Mimo Memilihkan Materi Ini?
-                  </h3>
-                </div>
-                <button
-                  aria-label="Tutup Dialog Bukti"
-                  className="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center text-on-surface-variant transition-colors"
-                  type="button"
-                  onClick={() => navigate("Rencana Belajar")}
-                >
-                  <span
-                    className="material-symbols-outlined text-[20px]"
-                    aria-hidden="true"
-                  >
-                    close
-                  </span>
-                </button>
-              </div>
-              <div className="flex flex-col gap-space-sm text-primary">
-                <p className="font-body text-label text-on-surface-variant">
-                  TemanBelajar tidak memakai tebak-tebakan atau algoritma
-                  pemaksa. Kami menggunakan prinsip{" "}
-                  <strong>Bayesian Knowledge Tracing (BKT)</strong> untuk
-                  memahami penguasaan konsepmu secara jujur.
-                </p>
-
-                <div className="p-space-md rounded-xl bg-canvas flex flex-col gap-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-label text-label font-bold">
-                      1. Konsep Klorofil
-                    </span>
-                    <span className="px-2 py-0.5 rounded bg-secondary-fixed text-primary font-label text-[11px] font-bold">
-                      88% Paham
-                    </span>
-                  </div>
-                  <p className="font-metadata text-metadata text-on-surface-variant">
-                    Kamu menjawab 3 pertanyaan spektrum penyerapan cahaya
-                    kemarin dengan sangat lancar tanpa ragu-ragu.
-                  </p>
-                </div>
-                <div className="p-space-md rounded-xl bg-canvas flex flex-col gap-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-label text-label font-bold">
-                      2. Jalur Reaksi Terang
-                    </span>
-                    <span className="px-2 py-0.5 rounded bg-butter-tint text-primary font-label text-[11px] font-bold">
-                      54% Perlu Disegarkan
-                    </span>
-                  </div>
-                  <p className="font-metadata text-metadata text-on-surface-variant">
-                    Di pertanyaan transfer elektron, kamu membutuhkan waktu jeda
-                    sedikit lebih lama. 5 menit membaca santai hari ini akan
-                    menguncinya jadi pemahaman jangka panjang.
-                  </p>
-                </div>
-                <div className="p-space-md rounded-xl bg-mint-tint flex items-center gap-space-sm text-primary">
-                  <span
-                    className="material-symbols-outlined text-secondary text-[24px]"
-                    aria-hidden="true"
-                  >
-                    verified
-                  </span>
-                  <p className="font-metadata text-metadata text-primary">
-                    Sesi ini dirancang hanya <strong>10 menit</strong> agar
-                    beban memorimu tetap seimbang dan mata tidak lelah.
-                  </p>
-                </div>
-              </div>
-              <div className="flex justify-end pt-2">
-                <button
-                  className="px-space-lg py-2.5 rounded-xl bg-primary text-on-primary font-label text-label hover:bg-primary-hover transition-colors"
-                  type="button"
-                  onClick={() => navigate("Rencana Belajar")}
-                >
-                  Paham, Siap Belajar!
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
-      <dialog ref={reason} className="stitch-reason">
-        <h2>Kenapa ini disarankan?</h2>
+      <dialog
+        ref={reason}
+        className="stitch-reason"
+        aria-label="Kenapa ini disarankan?"
+      >
+        <h2 className="ui-section-title">Kenapa ini disarankan?</h2>
         <p>
           {recommendation?.reason ||
             "Mulai satu konsep pendek. Rekomendasi akan menyesuaikan hasil belajarmu."}

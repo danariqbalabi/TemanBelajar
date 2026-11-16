@@ -31,6 +31,7 @@ export function PlanDesign({
   editor,
   history,
   hasDraft,
+  message,
 }: {
   plans: Plan[];
   plan: Plan | undefined;
@@ -60,8 +61,16 @@ export function PlanDesign({
   editor: ReactNode;
   history: ReactNode;
   hasDraft: boolean;
+  message: string;
 }) {
   const [controls, setControls] = useState(!plan);
+  const [proposalHidden, setProposalHidden] = useState(false);
+  function openControls() {
+    setControls(true);
+    document
+      .getElementById("plan-controls")
+      ?.scrollIntoView?.({ block: "start" });
+  }
   const zone = plan?.timezone || profile.timezone;
   const [dayOffset, setDayOffset] = useState(0);
   const activities = (plan?.activities || []).toSorted((a, b) =>
@@ -77,27 +86,30 @@ export function PlanDesign({
 
   return (
     <>
-      <div className="final-design final-screen-20 w-full pt-[8.25rem] bg-canvas flex-1">
+      <div className="final-design final-screen-20 w-full bg-canvas flex-1 screen-page">
         <div className="flex flex-col w-full">
-          <div className="max-w-[1200px] w-full mx-auto px-margin-mobile sm:px-margin-tablet lg:px-margin py-space-lg space-y-space-xl">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+          <div className="max-w-[1200px] w-full mx-auto px-margin-mobile sm:px-margin-tablet lg:px-margin py-space-lg space-y-space-xl ui-container">
+            <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-space-md">
               <div className="space-y-space-xs">
-                <div className="flex items-center gap-2 text-metadata font-metadata text-on-surface-variant">
+                <div className="flex flex-wrap items-center gap-2 text-metadata font-metadata text-on-surface-variant">
                   <span>Beranda</span>
                   <span className="text-outline-variant">•</span>
                   <span>Rencana Belajar</span>
                   <span className="text-outline-variant">•</span>
-                  <span className="font-semibold text-primary">{`${activeDay.toLocaleDateString("id-ID", { timeZone: zone })} · ${visibleActivities.reduce((n, a) => n + a.duration_minutes, 0)} menit`}</span>
+                  <span className="font-semibold text-primary whitespace-nowrap">{`${activeDay.toLocaleDateString("id-ID", { timeZone: zone })} · ${visibleActivities.reduce((n, a) => n + a.duration_minutes, 0)} menit`}</span>
                 </div>
-                <div className="flex items-center gap-space-sm pt-1">
-                  <button onClick={onBack} className="text-sm mb-3">
-                    Kembali ke beranda
-                  </button>
-                  <h1 className="font-page-title text-page-title text-primary tracking-tight">
+                <button
+                  onClick={onBack}
+                  className="inline-flex text-sm py-2 hover:underline"
+                >
+                  Kembali ke beranda
+                </button>
+                <div className="flex flex-wrap items-center gap-space-sm pt-1">
+                  <h1 className="font-page-title text-page-title text-primary tracking-tight ui-page-title">
                     Rencana Belajar Harian
                   </h1>
                   <span className="px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed text-[12px] font-label font-bold">
-                    Alur G • Adaptif
+                    Jadwal adaptif
                   </span>
                 </div>
                 <p className="font-body text-body text-on-surface-variant max-w-2xl">
@@ -107,34 +119,13 @@ export function PlanDesign({
               </div>
 
               <div className="flex flex-wrap items-center gap-space-xs sm:gap-space-sm">
-                <div className="flex items-center bg-surface rounded-xl p-1 shadow-sm">
-                  <button
-                    className="w-8 h-8 rounded-lg flex items-center justify-center text-primary font-bold hover:bg-surface-container transition-colors text-xs"
-                    id="btn-dec-font"
-                    title="Perkecil Ukuran Font"
-                    type="button"
-                    onClick={() => setControls(true)}
-                  >
-                    A-
-                  </button>
-                  <span className="w-[1px] h-4 bg-surface-container-high mx-1"></span>
-                  <button
-                    className="w-8 h-8 rounded-lg flex items-center justify-center text-primary font-bold hover:bg-surface-container transition-colors text-sm"
-                    id="btn-inc-font"
-                    title="Perbesar Ukuran Font"
-                    type="button"
-                    onClick={() => setControls(true)}
-                  >
-                    A+
-                  </button>
-                </div>
                 <button
                   className="flex items-center gap-1.5 px-space-md py-2 bg-surface text-primary font-label text-label rounded-xl hover:bg-surface-container shadow-sm transition-colors"
                   type="button"
                   aria-label="Edit rencana manual"
                   onClick={() => {
                     onEdit();
-                    setControls(true);
+                    openControls();
                   }}
                 >
                   <span
@@ -161,107 +152,117 @@ export function PlanDesign({
               </div>
             </div>
 
-            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-mint-tint via-surface-container-low to-butter-tint p-space-md sm:p-space-lg shadow-sm">
-              <div
-                className="flex flex-col lg:flex-row lg:items-center justify-between gap-space-lg relative z-10"
-                hidden={!pending}
-              >
-                <div className="flex items-start gap-space-md max-w-3xl">
-                  <div className="w-11 h-11 shrink-0 rounded-2xl bg-butter flex items-center justify-center text-primary shadow-sm mt-0.5">
-                    <span
-                      className="material-symbols-outlined text-[24px]"
-                      aria-hidden="true"
-                    >
-                      auto_fix_high
-                    </span>
-                  </div>
-                  <div className="space-y-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-card-title text-card-title text-primary font-bold">
-                        Ada Usulan Penyesuaian Jadwal dari Hasil Latihan
-                        Terakhir!
-                      </span>
-                      <span className="px-2 py-0.5 rounded-full bg-butter text-warning font-label text-[11px] font-bold">
-                        Rekomendasi Cerdas
+            {pending && !proposalHidden && (
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-mint-tint via-surface-container-low to-butter-tint p-space-md sm:p-space-lg shadow-sm">
+                <div
+                  className="flex flex-col lg:flex-row lg:items-center justify-between gap-space-lg relative z-10"
+                  hidden={!pending}
+                >
+                  <div className="flex items-start gap-space-md max-w-3xl">
+                    <div className="w-11 h-11 shrink-0 rounded-2xl bg-butter flex items-center justify-center text-primary shadow-sm mt-0.5">
+                      <span
+                        className="material-symbols-outlined text-[24px]"
+                        aria-hidden="true"
+                      >
+                        auto_fix_high
                       </span>
                     </div>
-                    <p className="font-body text-body text-on-surface-variant">
-                      {pending?.reason ||
-                        "Belum ada usulan baru. Atur kegiatan sesuai kebutuhanmu."}
-                    </p>
+                    <div className="space-y-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-card-title text-card-title text-primary font-bold">
+                          Ada Usulan Penyesuaian Jadwal dari Hasil Latihan
+                          Terakhir!
+                        </span>
+                        <span className="px-2 py-0.5 rounded-full bg-butter text-warning font-label text-[11px] font-bold">
+                          Rekomendasi Cerdas
+                        </span>
+                      </div>
+                      <p className="font-body text-body text-on-surface-variant">
+                        {pending?.reason ||
+                          "Belum ada usulan baru. Atur kegiatan sesuai kebutuhanmu."}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-space-sm shrink-0 self-start lg:self-center">
+                    <button
+                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label font-bold shadow-md transition-all"
+                      data-path="tinjau-jadwal"
+                      data-screen="SCREEN_21"
+                      type="button"
+                      disabled={!pending || busy}
+                      onClick={() => pending && onReview(pending)}
+                    >
+                      <span>Tinjau Usulan Jadwal</span>
+                      <span
+                        className="material-symbols-outlined text-[18px]"
+                        aria-hidden="true"
+                      >
+                        arrow_forward
+                      </span>
+                    </button>
+                    <button
+                      className="px-4 py-2.5 rounded-xl bg-surface/90 hover:bg-surface text-on-surface-variant font-label text-label transition-colors"
+                      type="button"
+                      onClick={() => setProposalHidden(true)}
+                    >
+                      Tinjau nanti
+                    </button>
                   </div>
                 </div>
-                <div className="flex flex-wrap items-center gap-space-sm shrink-0 self-start lg:self-center">
-                  <button
-                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label font-bold shadow-md transition-all"
-                    data-path="tinjau-jadwal"
-                    data-screen="SCREEN_21"
-                    type="button"
-                    disabled={!pending || busy}
-                    onClick={() => pending && onReview(pending)}
-                  >
-                    <span>Tinjau Usulan Jadwal</span>
-                    <span
-                      className="material-symbols-outlined text-[18px]"
-                      aria-hidden="true"
-                    >
-                      arrow_forward
-                    </span>
-                  </button>
-                  <button
-                    className="px-4 py-2.5 rounded-xl bg-surface/90 hover:bg-surface text-on-surface-variant font-label text-label transition-colors"
-                    type="button"
-                    onClick={() => setControls(false)}
-                  >
-                    Nanti Saja (Pertahankan)
-                  </button>
-                </div>
               </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
-              {pending ? (
-                <div className="bg-butter-tint rounded-2xl p-5 border border-divider">
-                  <p>{pending.reason}</p>
-                  <button onClick={() => onReview(pending)} className="mt-3">
-                    Tinjau usulan jadwal
-                  </button>
-                </div>
-              ) : (
-                <p className="text-sm">
-                  Belum ada usulan penyesuaian. Kamu bebas mengatur waktu
-                  belajarmu sendiri.
-                </p>
-              )}
-            </div>
+            )}
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
               <section className="lg:col-span-8 flex flex-col space-y-space-md">
-                <div className="flex items-center justify-between overflow-x-auto pb-1 no-scrollbar gap-2">
-                  <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center justify-between gap-3 pb-1">
+                  <div className="flex flex-wrap items-center gap-2">
                     <button
-                      className="px-3.5 py-1.5 rounded-full bg-surface text-on-surface-variant hover:bg-surface-container text-label font-label text-xs sm:text-sm whitespace-nowrap transition-colors"
+                      className={
+                        "px-3.5 py-2 rounded-full text-sm font-label whitespace-nowrap transition-colors " +
+                        (dayOffset === -1
+                          ? "bg-secondary-container text-primary font-bold"
+                          : "bg-surface text-on-surface-variant hover:bg-surface-container")
+                      }
+                      aria-pressed={dayOffset === -1}
                       type="button"
                       onClick={() => setDayOffset(-1)}
                     >
                       Kemarin
                     </button>
                     <button
-                      className="px-4 py-1.5 rounded-full bg-secondary-container text-on-secondary-fixed text-label font-label font-bold text-xs sm:text-sm whitespace-nowrap shadow-sm"
+                      className={
+                        "px-3.5 py-2 rounded-full text-sm font-label whitespace-nowrap transition-colors " +
+                        (dayOffset === 0
+                          ? "bg-secondary-container text-primary font-bold"
+                          : "bg-surface text-on-surface-variant hover:bg-surface-container")
+                      }
+                      aria-pressed={dayOffset === 0}
                       type="button"
                       onClick={() => setDayOffset(0)}
                     >
                       Hari ini
                     </button>
                     <button
-                      className="px-3.5 py-1.5 rounded-full bg-surface text-on-surface-variant hover:bg-surface-container text-label font-label text-xs sm:text-sm whitespace-nowrap transition-colors"
+                      className={
+                        "px-3.5 py-2 rounded-full text-sm font-label whitespace-nowrap transition-colors " +
+                        (dayOffset === 1
+                          ? "bg-secondary-container text-primary font-bold"
+                          : "bg-surface text-on-surface-variant hover:bg-surface-container")
+                      }
+                      aria-pressed={dayOffset === 1}
                       type="button"
                       onClick={() => setDayOffset(1)}
                     >
                       Besok
                     </button>
                     <button
-                      className="px-3.5 py-1.5 rounded-full bg-surface text-on-surface-variant hover:bg-surface-container text-label font-label text-xs sm:text-sm whitespace-nowrap transition-colors"
+                      className={
+                        "px-3.5 py-2 rounded-full text-sm font-label whitespace-nowrap transition-colors " +
+                        (dayOffset === 2
+                          ? "bg-secondary-container text-primary font-bold"
+                          : "bg-surface text-on-surface-variant hover:bg-surface-container")
+                      }
+                      aria-pressed={dayOffset === 2}
                       type="button"
                       onClick={() => setDayOffset(2)}
                     >
@@ -271,7 +272,7 @@ export function PlanDesign({
                   <button
                     className="flex items-center gap-1 text-primary hover:underline font-label text-xs font-semibold shrink-0 pl-2"
                     type="button"
-                    onClick={() => setControls(true)}
+                    onClick={openControls}
                   >
                     <span
                       className="material-symbols-outlined text-[16px]"
@@ -279,7 +280,7 @@ export function PlanDesign({
                     >
                       calendar_view_week
                     </span>
-                    <span>Kalender Pekan Ini</span>
+                    <span>Atur rencana belajar</span>
                   </button>
                 </div>
 
@@ -308,11 +309,13 @@ export function PlanDesign({
                                 ? "Dilewati"
                                 : "Terjadwal"}{" "}
                             ·{" "}
-                            {a.kind === "manual"
+                            {a.kind === "custom"
                               ? "Kegiatan mandiri"
                               : "Saran belajar"}
                           </p>
-                          <h2 className="text-xl font-bold my-3">{a.title}</h2>
+                          <h2 className="text-xl font-bold my-3 ui-section-title">
+                            {a.title}
+                          </h2>
                           <div className="flex flex-wrap gap-3">
                             <button
                               disabled={busy || !a.material_id}
@@ -338,7 +341,7 @@ export function PlanDesign({
                             <button
                               onClick={() => {
                                 onEdit();
-                                setControls(true);
+                                openControls();
                               }}
                             >
                               Ubah jadwal
@@ -350,8 +353,8 @@ export function PlanDesign({
                   ))}
                   {!visibleActivities.length && (
                     <p className="bg-surface border border-divider rounded-2xl p-8">
-                      Belum ada kegiatan pada hari ini. Pilih aktivitas saat
-                      kamu siap.
+                      Belum ada kegiatan pada tanggal ini. Tambahkan aktivitas
+                      atau pilih materi saat kamu siap.
                     </p>
                   )}
                 </div>
@@ -359,7 +362,7 @@ export function PlanDesign({
                 <button
                   className="w-full py-3.5 px-space-md rounded-2xl bg-surface hover:bg-surface-container-low text-primary font-label text-label font-bold flex items-center justify-center gap-2 shadow-sm transition-colors"
                   type="button"
-                  onClick={() => setControls(true)}
+                  onClick={openControls}
                 >
                   <span
                     className="material-symbols-outlined text-[20px]"
@@ -367,9 +370,7 @@ export function PlanDesign({
                   >
                     add_circle
                   </span>
-                  <span>
-                    + Tambah Aktivitas Belajar Sendiri atau Sesi Istirahat
-                  </span>
+                  <span>Tambah aktivitas atau istirahat</span>
                 </button>
               </section>
 
@@ -382,7 +383,7 @@ export function PlanDesign({
                     alt=""
                     className="w-36 h-auto object-contain mx-auto"
                   />
-                  <h2 className="font-display font-bold text-xl mt-3">
+                  <h2 className="font-display font-bold text-xl mt-3 ui-section-title">
                     Sesuai ritmemu, {profile.display_name}
                   </h2>
                   <p className="mt-3">
@@ -402,9 +403,18 @@ export function PlanDesign({
             </div>
           </div>
         </div>
-        <div className="max-w-6xl mx-auto px-6 pb-10">
+        <div className="max-w-[1200px] mx-auto px-margin-mobile sm:px-margin-tablet lg:px-margin pb-10 ui-container">
           {" "}
-          <section className="mt-6 p-6 rounded-2xl bg-surface space-y-4">
+          <section
+            id="plan-controls"
+            className="mt-6 p-6 rounded-2xl bg-surface space-y-4"
+            style={{ scrollMarginTop: "calc(var(--ui-header-height) + 16px)" }}
+          >
+            {message && (
+              <p role="status" className="p-3 rounded-xl bg-butter-tint">
+                {message}
+              </p>
+            )}
             <div className="flex flex-wrap gap-3">
               <button onClick={() => setControls(!controls)}>
                 Atur rencana
@@ -416,59 +426,61 @@ export function PlanDesign({
             </div>
             {controls && (
               <>
-                <label className="block">
-                  Rencana aktif
-                  <select
-                    value={plan?.id || ""}
-                    onChange={(e) => onSelectPlan(e.target.value)}
-                  >
-                    <option value="">Rencana baru</option>
-                    {plans.map((p) => (
-                      <option key={p.id} value={p.id}>
-                        Versi {p.version} • {p.activities.length} kegiatan
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label className="block">
-                  Materi
-                  <select
-                    value={materialId}
-                    onChange={(e) => setMaterialId(e.target.value)}
-                  >
-                    {materials.map((m) => (
-                      <option key={m.id} value={m.id}>
-                        {m.title}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label className="block">
-                  Waktu mulai (zona perangkat)
-                  <input
-                    type="datetime-local"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                  />
-                </label>
-                <label className="block">
-                  Judul kegiatan mandiri
-                  <input
-                    value={title}
-                    maxLength={200}
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
-                </label>
-                <label className="block">
-                  Durasi (menit)
-                  <input
-                    type="number"
-                    min={1}
-                    max={240}
-                    value={duration}
-                    onChange={(e) => setDuration(+e.target.value)}
-                  />
-                </label>
+                <div className="plan-fields">
+                  <label className="block">
+                    Rencana aktif
+                    <select
+                      value={plan?.id || ""}
+                      onChange={(e) => onSelectPlan(e.target.value)}
+                    >
+                      <option value="">Rencana baru</option>
+                      {plans.map((p) => (
+                        <option key={p.id} value={p.id}>
+                          Versi {p.version} • {p.activities.length} kegiatan
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="block">
+                    Materi
+                    <select
+                      value={materialId}
+                      onChange={(e) => setMaterialId(e.target.value)}
+                    >
+                      {materials.map((m) => (
+                        <option key={m.id} value={m.id}>
+                          {m.title}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="block">
+                    Waktu mulai (zona perangkat)
+                    <input
+                      type="datetime-local"
+                      value={date}
+                      onChange={(e) => setDate(e.target.value)}
+                    />
+                  </label>
+                  <label className="block">
+                    Judul kegiatan mandiri
+                    <input
+                      value={title}
+                      maxLength={160}
+                      onChange={(e) => setTitle(e.target.value)}
+                    />
+                  </label>
+                  <label className="block">
+                    Durasi (menit)
+                    <input
+                      type="number"
+                      min={1}
+                      max={240}
+                      value={duration}
+                      onChange={(e) => setDuration(+e.target.value)}
+                    />
+                  </label>
+                </div>
                 <div className="flex flex-wrap gap-3">
                   <button disabled={busy} onClick={onSuggest}>
                     Susun usulan awal

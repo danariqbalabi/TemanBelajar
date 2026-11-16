@@ -32,9 +32,9 @@ export function ProposalDesign({
     .sort((a, b) => b - a)[0];
   return (
     <>
-      <div className="final-design final-screen-21 w-full pt-[8.25rem] bg-canvas flex-1">
+      <div className="final-design final-screen-21 w-full bg-canvas flex-1 screen-page">
         <div className="flex flex-col w-full">
-          <div className="max-w-[1200px] w-full mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin py-space-xl flex flex-col gap-space-xl">
+          <div className="max-w-[1200px] w-full mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin py-space-xl flex flex-col gap-space-xl ui-container">
             <section className="flex flex-col md:flex-row md:items-center justify-between gap-space-md">
               <div className="flex items-center flex-wrap gap-space-xs text-metadata font-metadata text-on-surface-variant">
                 <a
@@ -132,7 +132,7 @@ export function ProposalDesign({
                     </span>
                     <span>{proposal.reason}</span>
                   </div>
-                  <h1 className="font-page-title text-page-title text-primary tracking-tight">
+                  <h1 className="font-page-title text-page-title text-primary tracking-tight ui-page-title">
                     {proposal.status === "accepted"
                       ? "Rencana belajarmu sudah diperbarui"
                       : "Ada usulan buat rencana belajarmu"}
@@ -218,7 +218,7 @@ export function ProposalDesign({
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-display text-section-title text-primary font-black">
+                  <h3 className="font-display text-section-title text-primary font-black ui-card-title">
                     {proposal.reason}
                   </h3>
                   <p className="font-body text-body text-on-surface-variant mt-1">
@@ -252,7 +252,7 @@ export function ProposalDesign({
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-display text-section-title text-primary font-black">
+                  <h3 className="font-display text-section-title text-primary font-black ui-card-title">
                     +4 Menit Review
                   </h3>
                   <p className="font-body text-body text-on-surface-variant mt-1">
@@ -287,7 +287,7 @@ export function ProposalDesign({
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-display text-section-title text-primary font-black">
+                  <h3 className="font-display text-section-title text-primary font-black ui-card-title">
                     Digeser ke Besok
                   </h3>
                   <p className="font-body text-body text-on-surface-variant mt-1">
@@ -312,7 +312,7 @@ export function ProposalDesign({
               className="flex flex-col gap-space-lg"
               id="komparasi-jadwal"
             >
-              <h2 className="font-section-title text-section-title text-primary tracking-tight">
+              <h2 className="font-section-title text-section-title text-primary tracking-tight ui-section-title">
                 Perbandingan Jadwal: Sebelum vs Usulan Baru
               </h2>
               <div className="grid md:grid-cols-2 gap-6">
@@ -324,7 +324,7 @@ export function ProposalDesign({
                     key={label as string}
                     className="bg-surface border border-divider rounded-2xl p-6"
                   >
-                    <h3 className="font-bold text-xl mb-4">
+                    <h3 className="font-bold text-xl mb-4 ui-card-title">
                       {label as string}
                     </h3>
                     {(items as typeof before).map((a) => (
@@ -332,7 +332,7 @@ export function ProposalDesign({
                         key={a.id}
                         className="p-4 border-b border-divider"
                       >
-                        <h4 className="font-bold">{a.title}</h4>
+                        <h4 className="font-bold ui-label-title">{a.title}</h4>
                         <p className="text-sm">
                           {new Date(a.start_at).toLocaleString("id-ID")} ·{" "}
                           {a.duration_minutes} menit
@@ -350,7 +350,7 @@ export function ProposalDesign({
 
             <section className="bg-surface rounded-2xl p-space-lg flex flex-col gap-space-md shadow-sm">
               <div className="flex items-center gap-space-xs">
-                <h2 className="font-section-title text-section-title text-primary tracking-tight">
+                <h2 className="font-section-title text-section-title text-primary tracking-tight ui-section-title">
                   Kenapa Jadwal Ini Diusulkan? (Transparansi Cerdas)
                 </h2>
                 <button
@@ -487,7 +487,7 @@ export function ProposalDesign({
             </section>
           </div>
         </div>
-        <div className="max-w-6xl mx-auto px-6 pb-10 space-y-3">
+        <div className="max-w-6xl mx-auto px-6 pb-10 space-y-3 ui-container">
           {proposal.status === "pending" &&
             proposal.base_version !== plan.version && (
               <p role="alert" className="text-error">
@@ -506,8 +506,12 @@ export function ProposalDesign({
             Pulihkan versi sebelumnya
           </button>
         </div>
-        <dialog ref={historyDialog} className="stitch-reason">
-          <h2>Riwayat rencana</h2>
+        <dialog
+          ref={historyDialog}
+          className="stitch-reason"
+          aria-label="Riwayat rencana"
+        >
+          <h2 className="ui-section-title">Riwayat rencana</h2>
           {Object.entries(plan.history).map(([version, items]) => (
             <p key={version}>
               Versi {version}: {items.length} kegiatan

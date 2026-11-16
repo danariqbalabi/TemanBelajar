@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { Material, LearningSession, Job } from "@/lib/types";
 export function Catalog({
   materials,
@@ -29,34 +29,72 @@ export function Catalog({
 }) {
   const [subject, setSubject] = useState("Semua Topik"),
     [status, setStatus] = useState("all"),
-    [list, setList] = useState(false);
+    [list, setList] = useState(false),
+    [sort, setSort] = useState("recent");
+  const search = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    function focusSearch(event: KeyboardEvent) {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        search.current?.focus();
+      }
+    }
+    window.addEventListener("keydown", focusSearch);
+    return () => window.removeEventListener("keydown", focusSearch);
+  }, []);
   const completed = (id: string) =>
     new Set(
       sessions
         .filter((s) => s.material_id === id)
         .flatMap((s) => s.completed_concepts),
     ).size;
-  const filtered = materials.filter(
-    (m) =>
-      (m.title + " " + m.subject).toLowerCase().includes(query.toLowerCase()) &&
-      (subject === "Semua Topik" || m.subject === subject) &&
-      (status === "all" ||
-        (status === "learning" &&
-          sessions.some(
-            (s) => s.material_id === m.id && s.status !== "completed",
-          )) ||
-        (status === "ready" && !sessions.some((s) => s.material_id === m.id))),
-  );
+  const latest = (id: string) =>
+    sessions
+      .filter((session) => session.material_id === id)
+      .reduce(
+        (value, session) =>
+          Math.max(value, Date.parse(session.updated_at) || 0),
+        0,
+      );
+  const filtered = materials
+    .filter((material) => {
+      const text = [
+        material.title,
+        material.subject,
+        ...material.concepts.map((concept) => concept.title),
+      ]
+        .join(" ")
+        .toLocaleLowerCase("id-ID");
+      const started = sessions.some(
+        (session) => session.material_id === material.id,
+      );
+      const finished =
+        material.concepts.length > 0 &&
+        completed(material.id) >= material.concepts.length;
+      return (
+        text.includes(query.trim().toLocaleLowerCase("id-ID")) &&
+        (subject === "Semua Topik" || material.subject === subject) &&
+        (status === "all" ||
+          (status === "learning" && started && !finished) ||
+          (status === "ready" && !started) ||
+          (status === "completed" && finished))
+      );
+    })
+    .toSorted((a, b) =>
+      sort === "title"
+        ? a.title.localeCompare(b.title, "id")
+        : latest(b.id) - latest(a.id),
+    );
   return (
     <>
-      <div className="final-design final-screen-8 w-full pt-20 bg-canvas flex-1">
+      <div className="final-design final-screen-8 w-full bg-canvas flex-1 screen-page">
         <button onClick={onSettings} className="sr-only focus:not-sr-only">
           Aksesibilitas
         </button>
         {errorsPanel}
         {uploadPanel}
         <div className="flex flex-col w-full">
-          <div className="max-w-[1200px] w-full mx-auto px-margin py-space-xl flex flex-col gap-space-xl">
+          <div className="max-w-[1200px] w-full mx-auto px-margin py-space-xl flex flex-col gap-space-xl ui-container">
             <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg">
               <div className="flex flex-col gap-space-xs max-w-2xl">
                 <div className="flex items-center gap-space-sm">
@@ -66,7 +104,7 @@ export function Catalog({
                   </span>
                   <span className="text-on-surface-variant font-metadata text-metadata">{`${materials.length} materi · ${jobs.filter((j) => j.status !== "ready").length} unggahan belum siap`}</span>
                 </div>
-                <h1 className="font-display text-page-title text-primary tracking-tight">
+                <h1 className="font-display text-page-title text-primary tracking-tight ui-page-title">
                   Materi Saya
                 </h1>
                 <p className="font-body text-body text-on-surface-variant">
@@ -79,6 +117,7 @@ export function Catalog({
                 <button
                   className="inline-flex items-center justify-center gap-space-xs px-5 py-3 rounded-xl bg-surface text-primary font-label text-label hover:bg-canvas transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-tertiary"
                   type="button"
+                  disabled={!materials.some((material) => material.is_demo)}
                   onClick={() => {
                     const m = materials.find((m) => m.is_demo);
                     if (m) onDetail(m);
@@ -108,12 +147,14 @@ export function Catalog({
               </div>
             </header>
 
-            <section
-              aria-label="Status Pemrosesan Berjalan"
-              className="w-full bg-butter-tint rounded-2xl p-space-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md shadow-sm"
-            >
-              {jobsPanel}
-            </section>
+            {jobs.length > 0 && (
+              <section
+                aria-label="Status Pemrosesan Berjalan"
+                className="w-full bg-butter-tint rounded-2xl p-space-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md shadow-sm"
+              >
+                {jobsPanel}
+              </section>
+            )}
 
             <section
               aria-label="Pencarian dan Filter Materi"
@@ -131,6 +172,7 @@ export function Catalog({
                 <input
                   className="w-full pl-12 pr-28 py-3.5 rounded-xl bg-surface text-primary placeholder-outline font-body text-body shadow-sm focus:outline-none focus:ring-2 focus:ring-tertiary"
                   placeholder="Cari judul materi, bab, kata kunci, atau mata pelajaran..."
+                  ref={search}
                   type="search"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
@@ -164,12 +206,14 @@ export function Catalog({
                   <div className="relative inline-block text-left">
                     <select
                       aria-label="Filter status belajar"
+                      value={status}
+                      onChange={(event) => setStatus(event.target.value)}
                       className="appearance-none bg-surface text-primary font-label text-label pl-3.5 pr-8 py-2 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-tertiary cursor-pointer"
                     >
-                      <option>Semua Status</option>
-                      <option>Sedang Dipelajari</option>
-                      <option>Belum Mulai</option>
-                      <option>Selesai</option>
+                      <option value="all">Semua Status</option>
+                      <option value="learning">Sedang Dipelajari</option>
+                      <option value="ready">Belum Mulai</option>
+                      <option value="completed">Selesai</option>
                     </select>
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-outline">
                       <span
@@ -183,11 +227,12 @@ export function Catalog({
                   <div className="relative inline-block text-left">
                     <select
                       aria-label="Urutkan materi"
+                      value={sort}
+                      onChange={(event) => setSort(event.target.value)}
                       className="appearance-none bg-surface text-primary font-label text-label pl-3.5 pr-8 py-2 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-tertiary cursor-pointer"
                     >
-                      <option>Terakhir Dipelajari</option>
-                      <option>Terbaru Ditambahkan</option>
-                      <option>A-Z Judul</option>
+                      <option value="recent">Terakhir Dipelajari</option>
+                      <option value="title">A-Z Judul</option>
                     </select>
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-outline">
                       <span
@@ -263,7 +308,9 @@ export function Catalog({
                       {item.concepts.length} konsep · {item.question_count} soal
                     </p>
                   </div>
-                  <h2 className="text-xl font-bold">{item.title}</h2>
+                  <h2 className="text-xl font-bold ui-section-title">
+                    {item.title}
+                  </h2>
                   <p className="text-sm mt-3">
                     {completed(item.id)} / {item.concepts.length} konsep dibaca
                   </p>
@@ -285,7 +332,7 @@ export function Catalog({
               ))}
               {!filtered.length && (
                 <div className="col-span-full text-center bg-mint-tint rounded-3xl p-12">
-                  <h2 className="text-2xl font-bold">
+                  <h2 className="text-2xl font-bold ui-section-title">
                     {materials.length
                       ? "Belum ada materi yang cocok"
                       : "Belum ada materi tersimpan"}

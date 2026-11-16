@@ -30,9 +30,9 @@ export function UploadDesign({
   const fileInput = useRef<HTMLInputElement>(null);
   return (
     <>
-      <div className="final-design final-screen-9 w-full pt-20 bg-canvas flex-1">
+      <div className="final-design final-screen-9 w-full bg-canvas flex-1 screen-page">
         <div className="flex flex-col w-full">
-          <div className="max-w-[1200px] w-full mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin py-space-md lg:py-space-lg flex flex-col gap-space-lg">
+          <div className="max-w-[1200px] w-full mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin py-space-md lg:py-space-lg flex flex-col gap-space-lg ui-container">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-sm">
               <div className="flex items-center gap-space-xs text-metadata font-metadata text-on-surface-variant">
                 <a
@@ -86,7 +86,7 @@ export function UploadDesign({
                 </span>
                 <span>Studio Konversi TemanBelajar • Modul Ramah Kognitif</span>
               </div>
-              <h1 className="font-page-title text-page-title text-contrast-ink tracking-tight">
+              <h1 className="font-page-title text-page-title text-contrast-ink tracking-tight ui-page-title">
                 Tambah Materi Belajarmu
               </h1>
               <p className="font-reading text-reading text-on-surface-variant max-w-3xl leading-relaxed">
@@ -597,7 +597,7 @@ export function UploadDesign({
                     >
                       magic_button
                     </span>
-                    <h2 className="font-card-title text-card-title text-contrast-ink">
+                    <h2 className="font-card-title text-card-title text-contrast-ink ui-section-title">
                       Apa yang Terjadi Sesudah Diunggah?
                     </h2>
                   </div>

@@ -20,7 +20,6 @@ export function ResultDesign({
   onRest,
   onSaveReview,
   onSpeak,
-  onPreferences,
   notice,
 }: {
   attempt: Attempt;
@@ -57,10 +56,10 @@ export function ResultDesign({
   }
   return (
     <>
-      <div className="final-design final-screen-18 w-full pt-[8.25rem] bg-canvas flex-1">
+      <div className="final-design final-screen-18 w-full bg-canvas flex-1 screen-page">
         <div className="flex flex-col w-full">
           <div className="w-full bg-mint-tint/80 border-b border-divider py-space-sm px-margin">
-            <div className="max-w-[1200px] mx-auto flex flex-wrap items-center justify-between gap-space-sm">
+            <div className="max-w-[1200px] mx-auto flex flex-wrap items-center justify-between gap-space-sm ui-container">
               <div className="flex items-center gap-space-sm">
                 <a
                   className="inline-flex items-center gap-space-xs font-label text-label text-primary hover:text-primary-hover transition-colors font-bold group"
@@ -89,7 +88,7 @@ export function ResultDesign({
                   id="btn-font-toggle"
                   title="Sesuaikan Ukuran Teks"
                   type="button"
-                  onClick={() => onPreferences?.({ font_size: 22 })}
+                  onClick={onBack}
                   disabled={busy}
                 >
                   <span
@@ -98,7 +97,9 @@ export function ResultDesign({
                   >
                     format_size
                   </span>
-                  <span className="text-[12px] font-bold">A- / A+</span>
+                  <span className="text-[12px] font-bold">
+                    Atur bacaan di materi
+                  </span>
                 </button>
                 <button
                   className="inline-flex items-center gap-space-xs px-space-md py-1 rounded-lg bg-surface border border-divider text-primary font-label text-label hover:bg-surface-container transition-colors min-h-[36px]"
@@ -117,7 +118,7 @@ export function ResultDesign({
               </div>
             </div>
           </div>
-          <div className="max-w-[1200px] w-full mx-auto px-margin py-space-lg flex flex-col gap-space-xl">
+          <div className="max-w-[1200px] w-full mx-auto px-margin py-space-lg flex flex-col gap-space-xl ui-container">
             <section className="w-full rounded-2xl bg-mint-tint border border-secondary/20 p-space-lg md:p-space-xl relative overflow-hidden">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-center">
                 <div className="lg:col-span-8 flex flex-col gap-space-md z-10">
@@ -131,7 +132,7 @@ export function ResultDesign({
                     <span>Latihan Selesai Tanpa Terburu-buru</span>
                   </div>
                   <div className="space-y-space-xs">
-                    <h1 className="font-display text-page-title md:text-[2.25rem] text-primary leading-tight font-extrabold">{`Terima kasih sudah berusaha, ${displayName}!`}</h1>
+                    <h1 className="font-display text-page-title md:text-[2.25rem] text-primary leading-tight font-extrabold ui-page-title">{`Terima kasih sudah berusaha, ${displayName}!`}</h1>
                     <p className="font-reading text-reading text-on-surface-variant max-w-2xl">
                       Kamu sudah menyelesaikan latihan. Tinjau jawaban dan
                       penjelasan di bawah sesuai hasil yang tersimpan.
@@ -227,7 +228,7 @@ export function ResultDesign({
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
               <section className="lg:col-span-8 flex flex-col gap-space-md">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs pb-space-xs border-b border-divider">
-                  <h2 className="font-section-title text-section-title text-primary font-bold">
+                  <h2 className="font-section-title text-section-title text-primary font-bold ui-section-title">
                     Evaluasi Konsep &amp; Pembahasan Terbuka
                   </h2>
                   <p className="text-sm my-4">
@@ -245,7 +246,9 @@ export function ResultDesign({
                           ? "Tepat"
                           : "Perlu ditinjau"}
                       </span>
-                      <h3 className="font-bold text-lg mt-3">{q.prompt}</h3>
+                      <h3 className="font-bold text-lg mt-3 ui-card-title">
+                        {q.prompt}
+                      </h3>
                       <p className="my-3">
                         Jawabanmu:{" "}
                         {q.options[attempt.answers[q.id]?.selected_index]}
@@ -275,7 +278,9 @@ export function ResultDesign({
                     height={1120}
                     className="w-40 h-auto object-contain mx-auto"
                   />
-                  <h2 className="font-bold text-xl mt-4">Langkah berikutnya</h2>
+                  <h2 className="font-bold text-xl mt-4 ui-section-title">
+                    Langkah berikutnya
+                  </h2>
                   <p className="mt-3">
                     {recommendation?.reason ||
                       "Kamu bisa meninjau pembahasan atau mencoba lagi."}
@@ -291,7 +296,7 @@ export function ResultDesign({
                     Mulai Rekomendasi Sekarang
                   </a>
                   <button onClick={onRetry} disabled={busy} className="mt-4">
-                    Coba cara belajar lain
+                    Ulangi latihan
                   </button>
                 </div>
               </aside>
@@ -313,7 +318,7 @@ export function ResultDesign({
                   >
                     keyboard_backspace
                   </span>
-                  <span>Kembali ke ringkasan</span>
+                  <span>Kembali ke materi</span>
                 </a>
                 <div className="flex flex-wrap items-center gap-space-sm w-full sm:w-auto justify-end">
                   <button
@@ -329,7 +334,7 @@ export function ResultDesign({
                     >
                       bookmark_add
                     </span>
-                    <span>Simpan ke Riwayat Progres</span>
+                    <span>Simpan pembahasan ke catatan</span>
                   </button>
                   <a
                     className="flex-1 sm:flex-initial min-h-[44px] px-space-lg py-2.5 rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label font-bold transition-colors flex items-center justify-center gap-space-xs text-center shadow-sm"
@@ -352,7 +357,7 @@ export function ResultDesign({
             </div>
           </div>
         </div>
-        <div className="max-w-6xl mx-auto flex flex-wrap gap-4 px-6 pb-10">
+        <div className="max-w-6xl mx-auto flex flex-wrap gap-4 px-6 pb-10 ui-container">
           <button
             onClick={() =>
               onSpeak(attempt.questions.map((q) => q.explanation).join(". "))

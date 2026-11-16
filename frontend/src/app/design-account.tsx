@@ -1,4 +1,5 @@
 "use client";
+import { Brand } from "./brand";
 import { useState } from "react";
 import Image from "next/image";
 import { auth } from "@/lib/api";
@@ -27,7 +28,7 @@ export function AccountDesign({
     run(async () => {
       if (!auth) throw Error("Layanan akun belum tersedia.");
       const { error } = await auth.auth.signInWithOtp({
-        email,
+        email: email.trim(),
         options: {
           emailRedirectTo: window.location.origin,
           shouldCreateUser: true,
@@ -40,48 +41,20 @@ export function AccountDesign({
   return (
     <>
       <div className="final-design final-screen-2 bg-canvas font-body text-body text-on-surface min-h-screen flex items-center justify-center stitch-shell stitch-landing stitch-account">
-        <main className="w-full max-w-[1200px] mx-auto px-margin bg-canvas flex items-center justify-center">
+        <main className="w-full max-w-[1200px] mx-auto px-margin bg-canvas flex items-center justify-center ui-container">
           <div className="flex flex-col w-full py-8 md:py-12">
-            <header className="w-full flex items-center justify-between mb-8 px-2 md:px-0">
-              <div className="flex items-center gap-3.5">
-                <div className="w-11 h-11 bg-secondary-fixed rounded-2xl flex items-center justify-center p-2.5 shadow-sm ring-1 ring-primary/10">
-                  <svg
-                    className="w-full h-full text-primary"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="3.2"
-                    viewBox="0 0 48 48"
-                  >
-                    <path d="M6 14C6 14 14 11 24 14C34 11 42 14 42 14V37C42 37 34 34 24 37C14 34 6 37 6 37V14Z"></path>
-                    <path d="M24 14V37"></path>
-                    <path d="M12 23L36 17"></path>
-                    <circle
-                      cx="37"
-                      cy="16"
-                      fill="#FFE7A3"
-                      r="3"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                    ></circle>
-                  </svg>
-                </div>
-                <div className="flex flex-col">
-                  <div className="flex items-center gap-2">
-                    <span className="font-display text-[1.5rem] font-extrabold tracking-tight text-primary leading-none">
-                      TemanBelajar
-                    </span>
-                    <span className="px-2 py-0.5 rounded-full bg-butter font-display text-[0.7rem] font-extrabold text-primary tracking-wide uppercase">
-                      Zine Edition
-                    </span>
-                  </div>
-                  <span className="font-reading text-metadata text-on-surface-variant flex items-center gap-1.5 mt-0.5">
-                    Belajar seru dengan caramu sendiri
-                    <span className="inline-block w-2 h-2 rounded-full bg-peach"></span>
-                  </span>
-                </div>
-              </div>
+            <header className="w-full flex flex-wrap gap-4 items-center justify-between mb-8">
+              <a
+                className="standalone-brand"
+                href="#"
+                aria-label="Kembali ke beranda"
+                onClick={(event) => {
+                  event.preventDefault();
+                  onBack();
+                }}
+              >
+                <Brand />
+              </a>
               <div className="flex items-center gap-2.5">
                 <a
                   className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-butter-tint hover:bg-butter text-primary text-metadata font-label border border-warning/20 shadow-sm transition-all"
@@ -121,7 +94,7 @@ export function AccountDesign({
               </div>
             </header>
 
-            <main className="w-full bg-surface rounded-[1.75rem] shadow-[0_3px_0_rgba(39,59,53,0.09)] overflow-hidden">
+            <div className="w-full bg-surface rounded-[1.75rem] shadow-[0_3px_0_rgba(39,59,53,0.09)] overflow-hidden">
               <div className="relative w-full">
                 <div className="absolute -top-3 left-12 z-20 bg-butter/90 border border-warning/30 px-5 py-1 rounded-sm shadow-sm transform -rotate-2 select-none pointer-events-none">
                   <span className="text-[0.7rem] font-display font-extrabold text-primary tracking-widest uppercase flex items-center gap-1.5">
@@ -146,7 +119,7 @@ export function AccountDesign({
                         HALO TEMAN BARU! 🦎✨
                       </span>
                     </div>
-                    <h1 className="font-display text-[2rem] md:text-[2.35rem] text-primary leading-[1.18] font-extrabold mb-3 tracking-tight">
+                    <h1 className="font-display text-[2rem] md:text-[2.35rem] text-primary leading-[1.18] font-extrabold mb-3 tracking-tight ui-page-title">
                       Hai! Aku Mimo.
                       <br />
                       <span className="relative inline-block">
@@ -292,7 +265,7 @@ export function AccountDesign({
                       </span>
                     </div>
                     <div className="mb-6">
-                      <h2 className="font-display text-[1.65rem] md:text-[1.85rem] text-primary font-extrabold tracking-tight">
+                      <h2 className="font-display text-[1.65rem] md:text-[1.85rem] text-primary font-extrabold tracking-tight ui-section-title">
                         Mulai langkah belajarmu
                       </h2>
                       <p className="font-reading text-reading text-on-surface-variant mt-1.5 leading-relaxed">
@@ -473,7 +446,7 @@ export function AccountDesign({
                   </div>
                 </section>
               </div>
-            </main>
+            </div>
           </div>
         </main>
       </div>

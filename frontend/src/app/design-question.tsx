@@ -73,10 +73,10 @@ export function QuestionDesign({
   }
   return (
     <>
-      <div className="final-design final-screen-17 w-full pt-20 bg-canvas flex-1">
+      <div className="final-design final-screen-17 w-full bg-canvas flex-1 screen-page">
         <div className="flex flex-col w-full">
           <section className="w-full bg-surface border-b border-divider py-space-sm px-margin">
-            <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-space-sm">
+            <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-space-sm ui-container">
               <div className="flex flex-wrap items-center gap-space-sm">
                 <a
                   className="inline-flex items-center gap-1 text-on-surface-variant hover:text-primary font-label text-label transition-colors py-1 px-2 rounded-lg hover:bg-canvas"
@@ -176,7 +176,7 @@ export function QuestionDesign({
           </section>
 
           <section className="w-full bg-surface-container-low border-b border-divider py-space-xs px-margin">
-            <div className="max-w-[1200px] mx-auto flex items-center justify-between gap-space-md">
+            <div className="max-w-[1200px] mx-auto flex items-center justify-between gap-space-md ui-container">
               <div className="flex items-center gap-2 min-w-fit">
                 <span
                   className="material-symbols-outlined text-secondary text-[18px]"
@@ -189,16 +189,18 @@ export function QuestionDesign({
               <div className="w-full max-w-md bg-canvas rounded-full h-2.5 overflow-hidden border border-divider">
                 <div
                   className="bg-secondary-container h-full rounded-full transition-all duration-500 ease-out"
-                  style={{ width: "40%" }}
+                  style={{
+                    width: `${(Object.keys(attempt.answers).length / Math.max(1, attempt.question_ids.length)) * 100}%`,
+                  }}
                 ></div>
               </div>
               <span className="text-metadata font-metadata text-outline text-[12px] hidden sm:inline">{`Soal ${attempt.question_ids.indexOf(question.id) + 1} dari ${attempt.questions.length} · ${material.title}`}</span>
             </div>
           </section>
 
-          <div className="w-full max-w-[1200px] mx-auto px-margin py-space-lg flex-1">
+          <div className="w-full max-w-[1200px] mx-auto px-margin py-space-lg flex-1 ui-container">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
-              <main
+              <div
                 className="lg:col-span-8 flex flex-col gap-space-md"
                 id="question-stage"
               >
@@ -220,7 +222,7 @@ export function QuestionDesign({
 
                   <div className="transition-all" id="quiz-stem-wrapper">
                     <h1
-                      className="font-section-title text-section-title text-contrast-ink leading-relaxed font-bold"
+                      className="font-section-title text-section-title text-contrast-ink leading-relaxed font-bold ui-page-title"
                       id="quiz-question-text"
                       style={{ fontSize: large ? 28 : 22 }}
                     >
@@ -351,7 +353,7 @@ export function QuestionDesign({
                   >
                     Pertanyaan berikutnya
                   </button>
-                  <h2 className="font-bold">
+                  <h2 className="font-bold ui-section-title">
                     {attempt.answers[question.id]?.correct
                       ? "Jawabanmu tepat"
                       : "Belum pas, yuk pelajari alasannya"}
@@ -366,7 +368,7 @@ export function QuestionDesign({
                       </details>
                     ))}
                 </div>
-              </main>
+              </div>
 
               <aside className="lg:col-span-4 flex flex-col gap-space-md">
                 <div className="bg-surface rounded-3xl p-6 border border-divider shadow-sm relative overflow-hidden flex flex-col items-center">
@@ -408,28 +410,55 @@ export function QuestionDesign({
 
                 <div className="bg-surface rounded-3xl p-6 border border-divider shadow-sm flex flex-col gap-space-sm">
                   <div className="flex items-center justify-between">
-                    <h2 className="font-card-title text-card-title font-bold text-primary">
+                    <h2 className="font-card-title text-card-title font-bold text-primary ui-section-title">
                       Peta Soal Latihan
                     </h2>
                     <span className="text-[12px] font-metadata text-outline">
-                      5 Soal Adaptif
+                      {attempt.question_ids.length} Soal
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-5 gap-2"></div>
+                  <ol
+                    className="grid grid-cols-5 gap-2"
+                    aria-label="Status soal"
+                  >
+                    {attempt.question_ids.map((id, index) => (
+                      <li
+                        key={id}
+                        className="p-2 rounded-lg bg-mint-tint text-center"
+                        aria-current={id === question.id ? "step" : undefined}
+                        title={
+                          attempt.answers[id]
+                            ? "Sudah dijawab"
+                            : id === question.id
+                              ? "Sedang dikerjakan"
+                              : "Belum dijawab"
+                        }
+                      >
+                        {index + 1}
+                        {attempt.answers[id] ? " ?" : ""}
+                      </li>
+                    ))}
+                  </ol>
 
                   <div className="flex items-center justify-between text-[11px] font-metadata text-on-surface-variant pt-2 border-t border-divider">
                     <span className="inline-flex items-center gap-1">
                       <span className="w-2 h-2 rounded-full bg-success"></span>{" "}
-                      1 Selesai
+                      {Object.keys(attempt.answers).length} Selesai
                     </span>
                     <span className="inline-flex items-center gap-1">
                       <span className="w-2 h-2 rounded-full bg-primary"></span>{" "}
-                      1 Aktif
+                      {answered ? 0 : 1} Aktif
                     </span>
                     <span className="inline-flex items-center gap-1">
                       <span className="w-2 h-2 rounded-full bg-divider"></span>{" "}
-                      3 Menunggu
+                      {Math.max(
+                        0,
+                        attempt.question_ids.length -
+                          Object.keys(attempt.answers).length -
+                          (answered ? 0 : 1),
+                      )}{" "}
+                      Menunggu
                     </span>
                   </div>
                 </div>
@@ -454,7 +483,9 @@ export function QuestionDesign({
                   </div>
                 </div>
                 <section className="bg-surface border border-divider rounded-2xl p-5">
-                  <h2 className="font-bold">Catatan latihan</h2>
+                  <h2 className="font-bold ui-section-title">
+                    Catatan latihan
+                  </h2>
                   <textarea
                     aria-label="Catatan latihan"
                     className="w-full mt-3"

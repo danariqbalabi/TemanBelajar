@@ -1,6 +1,7 @@
 "use client";
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { readingStyle } from "./reading-style";
 import type { Session } from "@supabase/supabase-js";
 import {
   defaultProfile,
@@ -42,20 +43,12 @@ export function SettingsDesign({
   );
   const update = <K extends keyof Preferences>(key: K, v: Preferences[K]) =>
     setValue({ ...value, preferences: { ...prefs, [key]: v } });
-  const previewStyle: CSSProperties = {
-    fontFamily:
-      prefs.font_family === "nunito"
-        ? "Nunito"
-        : prefs.font_family === "system"
-          ? "system-ui"
-          : '"Plus Jakarta Sans"',
-    fontSize: prefs.font_size,
-    lineHeight: prefs.line_height,
-    letterSpacing: prefs.letter_spacing + "em",
-    maxWidth: prefs.reading_width + "ch",
+  const previewStyle = {
+    ...readingStyle(prefs),
     color: prefs.high_contrast ? "#101a16" : undefined,
     backgroundColor: prefs.high_contrast ? "white" : undefined,
   };
+
   function speak() {
     if (!window.speechSynthesis) {
       setSpeechNotice("Baca nyaring belum tersedia di peramban ini.");
@@ -88,7 +81,7 @@ export function SettingsDesign({
         <p className="sr-only">{account.user.email || "Akun demo anonim"}</p>
         <nav
           aria-label="Bagian pengaturan"
-          className="final-settings-tabs flex gap-3 px-6 py-4"
+          className="final-settings-tabs flex gap-3 max-w-[1200px] w-full mx-auto px-margin py-4 ui-container"
         >
           <button
             onClick={() => setTab("accessibility")}
@@ -103,17 +96,20 @@ export function SettingsDesign({
             Profil
           </button>
         </nav>
-        <p role="status" className="px-6 text-sm">
+        <p
+          role="status"
+          className="max-w-[1200px] w-full mx-auto px-margin text-sm ui-container"
+        >
           {JSON.stringify(value) === JSON.stringify(profile)
             ? "Preferensi tersimpan."
             : "Ada perubahan yang belum disimpan."}
         </p>
         {tab === "accessibility" ? (
-          <div className="final-design final-screen-23 w-full pt-[8.25rem] bg-canvas flex-1">
+          <div className="final-design final-screen-23 w-full bg-canvas flex-1 screen-page">
             <div className="flex flex-col w-full">
-              <section className="max-w-[1200px] w-full mx-auto px-margin pt-space-lg pb-space-md">
+              <section className="max-w-[1200px] w-full mx-auto px-margin pt-space-lg pb-space-md ui-container">
                 <div className="flex flex-wrap items-center justify-between gap-space-sm mb-space-sm">
-                  <nav className="flex items-center gap-space-xs text-metadata font-metadata text-on-surface-variant">
+                  <nav className="flex items-center gap-space-xs text-metadata font-metadata text-on-surface-variant ui-breadcrumb">
                     <a
                       className="hover:text-primary transition-colors"
                       href="#"
@@ -162,7 +158,7 @@ export function SettingsDesign({
                         Target WCAG 2.2 AA
                       </span>
                     </div>
-                    <h1 className="font-page-title text-page-title text-primary tracking-tight">
+                    <h1 className="font-page-title text-page-title text-primary tracking-tight ui-page-title">
                       Pengaturan Aksesibilitas
                     </h1>
                     <p className="font-body text-body text-on-surface-variant mt-1.5 leading-relaxed">
@@ -212,15 +208,21 @@ export function SettingsDesign({
                 </div>
               </section>
 
-              <div className="max-w-[1200px] w-full mx-auto px-margin pb-20">
+              <div className="max-w-[1200px] w-full mx-auto px-margin pb-20 ui-container">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
                   <aside className="lg:col-span-5 lg:sticky lg:top-[9rem] flex flex-col gap-space-md order-1 lg:order-2">
                     <div className="bg-surface rounded-2xl p-6 border border-divider">
-                      <h2 className="font-bold text-xl">
+                      <h2 className="font-bold text-xl ui-section-title">
                         Pratinjau Teks Nyata
                       </h2>
-                      <div className="mt-6 space-y-4" style={previewStyle}>
-                        <h3 className="font-bold">Belajar satu langkah dulu</h3>
+                      <div
+                        className="mt-6 space-y-4"
+                        data-reading-preview
+                        style={previewStyle}
+                      >
+                        <h3 className="font-bold ui-card-title">
+                          Belajar satu langkah dulu
+                        </h3>
                         <p
                           className={
                             prefs.reading_ruler
@@ -249,7 +251,7 @@ export function SettingsDesign({
                     </div>
                   </aside>
 
-                  <main className="lg:col-span-7 flex flex-col gap-space-lg order-2 lg:order-1">
+                  <div className="lg:col-span-7 flex flex-col gap-space-lg order-2 lg:order-1">
                     <section
                       aria-labelledby="section-typography"
                       className="bg-surface rounded-2xl p-space-lg border border-divider shadow-sm"
@@ -265,7 +267,7 @@ export function SettingsDesign({
                         </div>
                         <div>
                           <h2
-                            className="font-section-title text-section-title text-primary"
+                            className="font-section-title text-section-title text-primary ui-section-title"
                             id="section-typography"
                           >
                             1. Tampilan Teks &amp; Bacaan
@@ -339,7 +341,7 @@ export function SettingsDesign({
                               aria-pressed={prefs.font_family === "nunito"}
                             >
                               <div>
-                                <span className="font-bold text-primary block text-[15px] font-sans">
+                                <span className="font-bold text-primary block text-[15px] font-nunito">
                                   Nunito (Bulat Lembut)
                                 </span>
                                 <span className="text-xs font-metadata text-on-surface-variant">
@@ -362,7 +364,7 @@ export function SettingsDesign({
                               aria-pressed={prefs.font_family === "system"}
                             >
                               <div>
-                                <span className="font-bold text-primary block text-[15px] font-mono">
+                                <span className="font-bold text-primary block text-[15px] font-preview-system">
                                   Sistem Bersih (Monospace)
                                 </span>
                                 <span className="text-xs font-metadata text-on-surface-variant">
@@ -608,7 +610,7 @@ export function SettingsDesign({
                         </div>
                         <div>
                           <h2
-                            className="font-section-title text-section-title text-primary"
+                            className="font-section-title text-section-title text-primary ui-section-title"
                             id="section-contrast"
                           >
                             2. Kontras &amp; Tema Visual Kanvas
@@ -771,7 +773,7 @@ export function SettingsDesign({
                         </div>
                         <div>
                           <h2
-                            className="font-section-title text-section-title text-primary"
+                            className="font-section-title text-section-title text-primary ui-section-title"
                             id="section-reading-tools"
                           >
                             3. Alat Bantu Membaca &amp; Sensorik
@@ -953,7 +955,7 @@ export function SettingsDesign({
                         </div>
                         <div>
                           <h2
-                            className="font-section-title text-section-title text-primary"
+                            className="font-section-title text-section-title text-primary ui-section-title"
                             id="section-audio"
                           >
                             4. Audio &amp; Baca Nyaring (Text-to-Speech)
@@ -1100,7 +1102,7 @@ export function SettingsDesign({
                         </div>
                         <div>
                           <h2
-                            className="font-section-title text-section-title text-primary"
+                            className="font-section-title text-section-title text-primary ui-section-title"
                             id="section-motion"
                           >
                             5. Fokus, Gerak, &amp; Keterangan (Captions)
@@ -1188,17 +1190,17 @@ export function SettingsDesign({
                         </div>
                       </div>
                     </section>
-                  </main>
+                  </div>
                 </div>
               </div>
 
               <div className="w-full bg-surface border-t border-divider py-space-sm shadow-md mt-auto">
-                <div className="max-w-[1200px] mx-auto px-margin flex flex-col sm:flex-row items-center justify-between gap-space-sm">
+                <div className="max-w-[1200px] mx-auto px-margin flex flex-col sm:flex-row items-center justify-between gap-space-sm ui-container">
                   <div className="flex items-center gap-space-xs text-xs font-metadata text-on-surface-variant">
                     <span className="w-2 h-2 rounded-full bg-success"></span>
                     <span>
-                      Semua penyesuaian langsung aktif dan dapat kamu uji pada
-                      materi belajar lainnya.
+                      Pratinjau mengikuti pilihanmu. Simpan untuk menerapkannya
+                      pada materi belajar lainnya.
                     </span>
                   </div>
                   <div className="flex items-center gap-space-sm w-full sm:w-auto justify-end">
@@ -1247,7 +1249,7 @@ export function SettingsDesign({
                 </span>
               </div>
             </div>
-            <div className="max-w-6xl mx-auto px-6 pb-8">
+            <div className="max-w-6xl mx-auto px-6 pb-8 ui-container">
               <label className="flex items-center gap-3">
                 <input
                   type="checkbox"
@@ -1267,9 +1269,9 @@ export function SettingsDesign({
             </div>
           </div>
         ) : (
-          <div className="final-design final-screen-24 w-full pt-[8.25rem] bg-canvas flex-1">
+          <div className="final-design final-screen-24 w-full bg-canvas flex-1 screen-page">
             <div className="flex flex-col w-full">
-              <div className="max-w-[1200px] w-full mx-auto px-margin-mobile md:px-margin py-space-lg space-y-space-xl">
+              <div className="max-w-[1200px] w-full mx-auto px-margin-mobile md:px-margin py-space-lg space-y-space-xl ui-container">
                 <section
                   aria-label="Konteks Pengaturan"
                   className="space-y-space-sm"
@@ -1309,7 +1311,7 @@ export function SettingsDesign({
                   </nav>
                   <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md pt-space-xs">
                     <div className="space-y-1 max-w-3xl">
-                      <h1 className="font-display font-extrabold text-display-mobile md:text-page-title text-primary tracking-tight">
+                      <h1 className="font-display font-extrabold text-display-mobile md:text-page-title text-primary tracking-tight ui-page-title">
                         Profil &amp; Preferensi Belajar
                       </h1>
                       <p className="font-reading text-reading text-on-surface-variant leading-relaxed">
@@ -1327,7 +1329,7 @@ export function SettingsDesign({
                         check_circle
                       </span>
                       <span className="text-label font-label text-success font-semibold text-[13px]">
-                        Perubahan tersimpan otomatis per bagian
+                        Simpan untuk menerapkan perubahan
                       </span>
                     </div>
                   </div>
@@ -1336,15 +1338,18 @@ export function SettingsDesign({
                     <div
                       aria-label="Sub-kategori Pengaturan"
                       className="flex items-center gap-space-xs overflow-x-auto pb-1"
-                      role="tablist"
+                      role="navigation"
                     >
                       <button
-                        aria-selected="true"
+                        aria-current="location"
                         className="px-space-md py-space-sm rounded-lg bg-secondary-container text-on-secondary-fixed font-label text-label font-bold whitespace-nowrap shadow-sm flex items-center gap-1.5"
-                        role="tab"
+
                         type="button"
-                        disabled={true}
-                        title="Fitur ini belum tersedia di layanan saat ini."
+                        onClick={() =>
+                          document
+                            .getElementById("profil-preferensi")
+                            ?.scrollIntoView({ block: "start" })
+                        }
                       >
                         <span
                           className="material-symbols-outlined text-[18px]"
@@ -1355,10 +1360,9 @@ export function SettingsDesign({
                         Profil &amp; Akun
                       </button>
                       <a
-                        aria-selected="false"
                         className="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors whitespace-nowrap flex items-center gap-space-xs"
                         href="#"
-                        role="tab"
+
                         onClick={(e) => {
                           e.preventDefault();
                           (() => setTab("accessibility"))();
@@ -1376,13 +1380,14 @@ export function SettingsDesign({
                         </span>
                       </a>
                       <a
-                        aria-selected="false"
                         className="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors whitespace-nowrap flex items-center gap-1.5"
                         href="#"
-                        role="tab"
+
                         onClick={(e) => {
                           e.preventDefault();
-                          onBack();
+                          document
+                            .getElementById("rencana-preferensi")
+                            ?.scrollIntoView({ block: "start" });
                         }}
                       >
                         <span
@@ -1394,13 +1399,14 @@ export function SettingsDesign({
                         Rencana &amp; Jadwal
                       </a>
                       <a
-                        aria-selected="false"
                         className="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors whitespace-nowrap flex items-center gap-1.5"
                         href="#"
-                        role="tab"
+
                         onClick={(e) => {
                           e.preventDefault();
-                          onBack();
+                          document
+                            .getElementById("privasi-preferensi")
+                            ?.scrollIntoView({ block: "start" });
                         }}
                       >
                         <span
@@ -1415,7 +1421,10 @@ export function SettingsDesign({
                   </div>
                 </section>
 
-                <section className="bg-surface rounded-2xl border border-divider p-space-md md:p-space-lg relative overflow-hidden shadow-sm">
+                <section
+                  id="profil-preferensi"
+                  className="bg-surface rounded-2xl border border-divider p-space-md md:p-space-lg relative overflow-hidden shadow-sm"
+                >
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-center">
                     <div className="lg:col-span-6 flex items-start gap-space-md">
                       <div className="relative flex-shrink-0">
@@ -1440,7 +1449,7 @@ export function SettingsDesign({
                             Akun Pelajar Terverifikasi
                           </span>
                         </div>
-                        <h2 className="font-section-title text-section-title text-primary font-bold tracking-tight truncate">
+                        <h2 className="font-section-title text-section-title text-primary font-bold tracking-tight truncate ui-section-title">
                           {value.display_name}
                         </h2>
                         <p className="font-metadata text-metadata text-on-surface-variant flex items-center gap-1">
@@ -1505,7 +1514,7 @@ export function SettingsDesign({
                           </span>
                           <div>
                             <h3
-                              className="font-section-title text-card-title text-primary font-bold"
+                              className="font-section-title text-card-title text-primary font-bold ui-card-title"
                               id="heading-data-diri"
                             >
                               Data Diri &amp; Jenjang Sekolah
@@ -1833,6 +1842,7 @@ export function SettingsDesign({
                     </section>
 
                     <section
+                      id="rencana-preferensi"
                       aria-labelledby="heading-target-waktu"
                       className="bg-surface rounded-2xl border border-divider p-space-md md:p-space-lg space-y-space-md shadow-sm"
                     >
@@ -1843,7 +1853,7 @@ export function SettingsDesign({
                           </span>
                           <div>
                             <h3
-                              className="font-section-title text-card-title text-primary font-bold"
+                              className="font-section-title text-card-title text-primary font-bold ui-card-title"
                               id="heading-target-waktu"
                             >
                               Target &amp; Komitmen Waktu Belajar
@@ -2239,7 +2249,7 @@ export function SettingsDesign({
                           </span>
                           <div>
                             <h3
-                              className="font-section-title text-card-title text-primary font-bold"
+                              className="font-section-title text-card-title text-primary font-bold ui-card-title"
                               id="heading-notifikasi"
                             >
                               Pengingat Ramah Sensorik
@@ -2365,6 +2375,7 @@ export function SettingsDesign({
                     </section>
 
                     <section
+                      id="privasi-preferensi"
                       aria-labelledby="heading-privasi"
                       className="bg-surface rounded-2xl border border-divider p-space-md md:p-space-lg space-y-space-md shadow-sm"
                     >
@@ -2375,7 +2386,7 @@ export function SettingsDesign({
                           </span>
                           <div>
                             <h3
-                              className="font-section-title text-card-title text-primary font-bold"
+                              className="font-section-title text-card-title text-primary font-bold ui-card-title"
                               id="heading-privasi"
                             >
                               Privasi &amp; Kendali Data Mandiri
@@ -2498,13 +2509,13 @@ export function SettingsDesign({
 
                 <aside
                   aria-label="Bilah Konfirmasi Perubahan"
-                  className="sticky bottom-4 z-40 bg-surface/95 backdrop-blur-md rounded-2xl border border-divider p-space-sm md:p-space-md shadow-md flex flex-col sm:flex-row items-center justify-between gap-space-sm"
+                  className="screen-action-bar sticky bottom-4 z-40 bg-surface/95 backdrop-blur-md rounded-2xl border border-divider p-space-sm md:p-space-md shadow-md flex flex-col sm:flex-row items-center justify-between gap-space-sm"
                 >
                   <div className="flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-success"></span>
                     <span className="font-metadata text-metadata text-on-surface-variant text-[13px]">
-                      Semua konfigurasi tersinkronisasi dengan{" "}
-                      <strong>Sesi Aktif: IPA Bab 4</strong>.
+                      Perubahan diterapkan setelah disimpan.{" "}
+                      <strong>Preferensi belajar</strong>.
                     </span>
                   </div>
                   <div className="flex items-center gap-space-sm w-full sm:w-auto justify-end">
@@ -2534,7 +2545,7 @@ export function SettingsDesign({
                 </aside>
               </div>
             </div>
-            <div className="max-w-6xl mx-auto px-6 pb-8">
+            <div className="max-w-6xl mx-auto px-6 pb-8 ui-container">
               <button
                 onClick={signOut}
                 disabled={busy}

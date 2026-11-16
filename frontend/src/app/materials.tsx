@@ -81,8 +81,12 @@ export function Materials({
   }
   function submit() {
     setValidation("");
-    if (!title.trim()) {
-      setValidation("Beri judul materi terlebih dahulu.");
+    if (!title.trim() || title.trim().length > 200) {
+      setValidation("Isi judul materi sepanjang 1?200 karakter.");
+      return;
+    }
+    if (file && !file.name.toLowerCase().endsWith(".pdf")) {
+      setValidation("Pilih dokumen PDF. Foto dan format lain belum didukung.");
       return;
     }
     if (file && file.size > 4 * 1024 * 1024) {
@@ -91,6 +95,10 @@ export function Materials({
     }
     if (!file && !text.trim()) {
       setValidation("Pilih PDF atau tempel teks materi.");
+      return;
+    }
+    if (!file && (text.trim().length < 30 || text.length > 100000)) {
+      setValidation("Teks materi harus sepanjang 30–100.000 karakter.");
       return;
     }
     let request: () => Promise<Job>;

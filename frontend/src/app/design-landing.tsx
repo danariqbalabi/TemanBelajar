@@ -1,4 +1,5 @@
 "use client";
+import { Brand } from "./brand";
 import Image from "next/image";
 export function Landing({
   onContinue,
@@ -22,30 +23,19 @@ export function Landing({
           Lompat ke konten utama
         </a>
 
-        <header className="w-full border-b border-divider bg-surface/90 backdrop-blur-md sticky top-0 z-40 transition-all">
-          <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <header className="w-full border-b border-divider bg-surface sticky top-0 z-40 transition-all">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 min-h-20 py-3 flex flex-wrap gap-3 items-center justify-between ui-container">
             <a
               aria-label="TemanBelajar Beranda"
               className="flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-focus rounded-xl p-1 -ml-1 transition-transform hover:scale-[1.01]"
               href="#main-content"
             >
-              <Image
-                src="/design/logo-final.png"
-                width={1024}
-                height={280}
-                alt="TemanBelajar"
-                className="h-11 w-auto object-contain"
-              />
-
-              <span className="hidden xl:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-mint-tint border border-mint text-xs font-bold text-primary">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary/70"></span>
-                ✨ Inklusif &amp; Ramah Gen Z
-              </span>
+              <Brand />
             </a>
 
             <nav
               aria-label="Navigasi Utama"
-              className="hidden lg:flex items-center gap-2 bg-canvas/80 p-1.5 rounded-full border border-divider shadow-inner"
+              className="hidden xl:flex items-center gap-2 bg-canvas/80 p-1.5 rounded-full border border-divider shadow-inner"
             >
               <a
                 className="text-text-secondary hover:text-primary hover:bg-surface px-4 py-1.5 rounded-full text-sm font-semibold transition-all"
@@ -105,7 +95,7 @@ export function Landing({
         </header>
 
         <main
-          className="relative z-10 max-w-7xl mx-auto px-6 pt-8 pb-24"
+          className="relative z-10 max-w-7xl mx-auto px-6 pt-8 pb-24 ui-container"
           id="main-content"
         >
           <section
@@ -122,7 +112,7 @@ export function Landing({
               </div>
 
               <h1
-                className="font-nunito font-black text-4xl sm:text-5xl lg:text-[3.5rem] text-primary leading-[1.12] tracking-tight mb-6"
+                className="font-nunito font-black text-4xl sm:text-5xl lg:text-[3.5rem] text-primary leading-[1.12] tracking-tight mb-6 ui-hero-title"
                 id="hero-title"
               >
                 Setiap orang punya <br className="hidden sm:inline" />
@@ -130,7 +120,7 @@ export function Landing({
                   <span className="relative z-10">cara belajarnya</span>
 
                   <span className="absolute bottom-1.5 left-0 w-full h-4 sm:h-5 bg-butter -rotate-1 rounded-sm z-0"></span>
-                </span>
+                </span>{" "}
                 sendiri.
               </h1>
               <p className="text-lg sm:text-xl text-text-secondary leading-relaxed mb-8 max-w-xl font-medium">
@@ -195,7 +185,7 @@ export function Landing({
                 <div className="relative bg-mint-tint border-2 border-primary rounded-feature rounded-tl-none p-6 sm:p-8 shadow-zine flex flex-col items-center justify-center overflow-visible">
                   <div className="absolute -top-3.5 right-6 w-20 h-5 washi-tape rotate-3 rounded-sm opacity-90 pointer-events-none"></div>
 
-                  <div className="absolute -top-3 -left-3 bg-butter text-primary text-[11px] font-black px-3 py-1 rounded-full border-2 border-primary rotate-[-8deg] shadow-zine-sm">
+                  <div className="absolute top-3 right-3 bg-butter text-primary text-[11px] font-black px-3 py-1 rounded-full border-2 border-primary rotate-[-8deg] shadow-zine-sm">
                     ✨ 100% Dukungan Siswa
                   </div>
 
@@ -253,7 +243,7 @@ export function Landing({
                 <span>📝</span> Belajar Tanpa Bingung
               </div>
               <h2
-                className="font-nunito font-black text-3xl sm:text-4xl text-primary"
+                className="font-nunito font-black text-3xl sm:text-4xl text-primary ui-section-title"
                 id="cara-kerja-title"
               >
                 Tiga langkah mudah belajar lebih nyaman
@@ -272,7 +262,7 @@ export function Landing({
                   <div className="w-13 h-13 w-12 h-12 rounded-2xl bg-mint-tint border-2 border-primary text-primary flex items-center justify-center font-bold text-2xl mb-6 shadow-zine-sm">
                     ✨
                   </div>
-                  <h3 className="font-nunito font-extrabold text-2xl text-primary mb-3">
+                  <h3 className="font-nunito font-extrabold text-2xl text-primary mb-3 ui-card-title">
                     Pilih format favoritmu
                   </h3>
                   <p className="text-text-secondary text-sm leading-relaxed mb-6 font-medium">
@@ -298,7 +288,7 @@ export function Landing({
                   <div className="w-12 h-12 rounded-2xl bg-lavender-tint border-2 border-primary text-primary flex items-center justify-center font-bold text-2xl mb-6 shadow-zine-sm">
                     💡
                   </div>
-                  <h3 className="font-nunito font-extrabold text-2xl text-primary mb-3">
+                  <h3 className="font-nunito font-extrabold text-2xl text-primary mb-3 ui-card-title">
                     Rekomendasi yang beralasan
                   </h3>
                   <p className="text-text-secondary text-sm leading-relaxed mb-6 font-medium">
@@ -324,7 +314,7 @@ export function Landing({
                   <div className="w-12 h-12 rounded-2xl bg-butter-tint border-2 border-primary text-primary flex items-center justify-center font-bold text-2xl mb-6 shadow-zine-sm">
                     ⏰
                   </div>
-                  <h3 className="font-nunito font-extrabold text-2xl text-primary mb-3">
+                  <h3 className="font-nunito font-extrabold text-2xl text-primary mb-3 ui-card-title">
                     Atur jadwal tanpa rasa bersalah
                   </h3>
                   <p className="text-text-secondary text-sm leading-relaxed mb-6 font-medium">
@@ -355,7 +345,7 @@ export function Landing({
                   <span>🎨</span> Ragam Pilihan
                 </div>
                 <h2
-                  className="font-nunito font-black text-3xl sm:text-4xl text-primary"
+                  className="font-nunito font-black text-3xl sm:text-4xl text-primary ui-section-title"
                   id="mode-title"
                 >
                   5 Mode Belajar yang Bisa Kamu Pilih
@@ -377,7 +367,7 @@ export function Landing({
                       Reading Companion
                     </span>
                   </div>
-                  <h3 className="font-nunito font-extrabold text-xl text-primary mb-2">
+                  <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
                     Teman Baca
                   </h3>
                   <p className="text-xs sm:text-sm text-text-secondary leading-relaxed mb-5 font-medium">
@@ -408,7 +398,7 @@ export function Landing({
                       Focus Navigator
                     </span>
                   </div>
-                  <h3 className="font-nunito font-extrabold text-xl text-primary mb-2">
+                  <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
                     Selangkah demi Selangkah
                   </h3>
                   <p className="text-xs sm:text-sm text-text-secondary leading-relaxed mb-5 font-medium">
@@ -438,7 +428,7 @@ export function Landing({
                       Audio &amp; Explorer
                     </span>
                   </div>
-                  <h3 className="font-nunito font-extrabold text-xl text-primary mb-2">
+                  <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
                     Dengarkan &amp; Jelajahi
                   </h3>
                   <p className="text-xs sm:text-sm text-text-secondary leading-relaxed mb-5 font-medium">
@@ -468,7 +458,7 @@ export function Landing({
                       Visual &amp; Caption
                     </span>
                   </div>
-                  <h3 className="font-nunito font-extrabold text-xl text-primary mb-2">
+                  <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
                     Teks &amp; Visual
                   </h3>
                   <p className="text-xs sm:text-sm text-text-secondary leading-relaxed mb-5 font-medium">
@@ -496,7 +486,7 @@ export function Landing({
                       Standard Learning
                     </span>
                   </div>
-                  <h3 className="font-nunito font-extrabold text-xl text-primary mb-2">
+                  <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
                     Belajar Biasa
                   </h3>
                   <p className="text-xs sm:text-sm text-text-secondary leading-relaxed mb-5 font-medium">
@@ -519,7 +509,7 @@ export function Landing({
                 <span aria-hidden="true" className="text-2xl mb-2">
                   🔄
                 </span>
-                <h3 className="font-nunito font-black text-xl text-primary mb-2">
+                <h3 className="font-nunito font-black text-xl text-primary mb-2 ui-card-title">
                   Bebas Ganti Kapan Saja
                 </h3>
                 <p className="text-xs sm:text-sm text-primary/90 font-medium leading-relaxed mb-4">
@@ -553,7 +543,7 @@ export function Landing({
                   <span>🔬</span> CONTOH MATERI NYATA: BIOLOGI SMP/SMA
                 </div>
                 <h2
-                  className="font-nunito font-black text-3xl sm:text-4xl text-primary mb-4 leading-tight"
+                  className="font-nunito font-black text-3xl sm:text-4xl text-primary mb-4 leading-tight ui-section-title"
                   id="showcase-title"
                 >
                   Dari pemahaman konsep sampai latihan ramah cemas
@@ -640,7 +630,7 @@ export function Landing({
                       ⏱️ 15 Menit
                     </span>
                   </div>
-                  <h3 className="font-nunito font-black text-xl text-primary mb-2">
+                  <h3 className="font-nunito font-black text-xl text-primary mb-2 ui-card-title">
                     Ulangi peran cahaya lewat audio santai
                   </h3>
                   <p className="text-xs sm:text-sm text-primary/90 font-medium mb-4 leading-relaxed bg-surface/60 p-3 rounded-xl border border-primary/10">
@@ -740,7 +730,7 @@ export function Landing({
                 <span>💜</span> Belajar Nyaman Untuk Semua
               </div>
               <h2
-                className="font-nunito font-black text-3xl sm:text-4xl text-primary"
+                className="font-nunito font-black text-3xl sm:text-4xl text-primary ui-section-title"
                 id="inclusive-title"
               >
                 Dirancang untuk belajar yang lebih nyaman
@@ -815,8 +805,8 @@ export function Landing({
             <div className="bg-canvas rounded-feature p-8 border-2 border-primary shadow-zine-sm grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="flex flex-col items-start">
                 <span className="text-2xl mb-2">👁️</span>
-                <h4 className="font-nunito font-extrabold text-base text-primary mb-1">
-                  Target Target aksesibilitas Target WCAG 2.2 AA
+                <h4 className="font-nunito font-extrabold text-base text-primary mb-1 ui-label-title">
+                  Target WCAG 2.2 AA
                 </h4>
                 <p className="text-xs text-text-secondary">
                   Kontras tinggi teruji, navigasi keyboard penuh, dan fokus
@@ -825,7 +815,7 @@ export function Landing({
               </div>
               <div className="flex flex-col items-start">
                 <span className="text-2xl mb-2">🔒</span>
-                <h4 className="font-nunito font-extrabold text-base text-primary mb-1">
+                <h4 className="font-nunito font-extrabold text-base text-primary mb-1 ui-label-title">
                   Privasi Terjaga
                 </h4>
                 <p className="text-xs text-text-secondary">
@@ -835,7 +825,7 @@ export function Landing({
               </div>
               <div className="flex flex-col items-start">
                 <span className="text-2xl mb-2">🎛️</span>
-                <h4 className="font-nunito font-extrabold text-base text-primary mb-1">
+                <h4 className="font-nunito font-extrabold text-base text-primary mb-1 ui-label-title">
                   Kontrol Multi-Sensorik
                 </h4>
                 <p className="text-xs text-text-secondary">
@@ -845,7 +835,7 @@ export function Landing({
               </div>
               <div className="flex flex-col items-start">
                 <span className="text-2xl mb-2">🌱</span>
-                <h4 className="font-nunito font-extrabold text-base text-primary mb-1">
+                <h4 className="font-nunito font-extrabold text-base text-primary mb-1 ui-label-title">
                   Tanpa Diagnosis Medis
                 </h4>
                 <p className="text-xs text-text-secondary">
@@ -861,7 +851,7 @@ export function Landing({
               <span>🎒</span> AYO BELAJAR BERSAMA MIMO!
             </div>
             <div className="max-w-2xl mx-auto relative z-10">
-              <h2 className="font-nunito font-black text-3xl sm:text-5xl text-primary mb-4 leading-tight">
+              <h2 className="font-nunito font-black text-3xl sm:text-5xl text-primary mb-4 leading-tight ui-section-title">
                 Siap belajar dengan caramu sendiri?
               </h2>
               <p className="text-text-secondary text-base sm:text-lg mb-8 font-medium">
@@ -905,81 +895,13 @@ export function Landing({
         </main>
 
         <footer className="border-t-2 border-primary bg-surface py-14 mt-12 relative z-10">
-          <div className="max-w-7xl mx-auto px-6">
+          <div className="max-w-7xl mx-auto px-6 ui-container">
             <div className="flex flex-col md:flex-row items-center justify-between gap-8 pb-10 border-b border-divider">
-              <div className="flex items-center gap-3">
-                <svg
-                  aria-label="Ikon TemanBelajar"
-                  className="w-9 h-9"
-                  role="img"
-                  viewBox="0 0 160 160"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect
-                    fill="#C8E8CE"
-                    height="144"
-                    rx="38"
-                    width="144"
-                    x="8"
-                    y="8"
-                  ></rect>
-                  <rect
-                    height="144"
-                    rx="38"
-                    stroke="#273B35"
-                    strokeOpacity="0.12"
-                    strokeWidth="4"
-                    width="144"
-                    x="8"
-                    y="8"
-                  ></rect>
-                  <path
-                    d="M80 54 C63 48 44 50 35 58 V105 C44 98 63 96 80 101 Z"
-                    fill="#FFFFFF"
-                    stroke="#273B35"
-                    strokeLinejoin="round"
-                    strokeWidth="6"
-                  ></path>
-                  <path
-                    d="M80 54 C97 48 116 50 125 58 V105 C116 98 97 96 80 101 Z"
-                    fill="#FFFFFF"
-                    stroke="#273B35"
-                    strokeLinejoin="round"
-                    strokeWidth="6"
-                  ></path>
-                  <line
-                    stroke="#273B35"
-                    strokeLinecap="round"
-                    strokeWidth="6"
-                    x1="80"
-                    x2="80"
-                    y1="54"
-                    y2="103"
-                  ></line>
-                  <path
-                    d="M45 82 C58 72, 75 72, 86 63 C97 54, 107 46, 116 40"
-                    fill="none"
-                    stroke="#273B35"
-                    strokeLinecap="round"
-                    strokeWidth="6"
-                  ></path>
-                  <circle
-                    cx="118"
-                    cy="38"
-                    fill="#FFE7A3"
-                    r="6"
-                    stroke="#273B35"
-                    strokeWidth="3.5"
-                  ></circle>
-                </svg>
-                <div>
-                  <span className="font-nunito font-black text-primary text-xl tracking-tight">
-                    TemanBelajar
-                  </span>
-                  <span className="block text-xs font-semibold text-text-secondary">
-                    Belajar dengan caramu.
-                  </span>
-                </div>
+              <div className="flex flex-col gap-2">
+                <Brand />
+                <span className="text-xs font-semibold text-text-secondary">
+                  Belajar dengan caramu.
+                </span>
               </div>
 
               <div className="flex flex-wrap items-center justify-center gap-6 text-sm font-bold text-text-secondary">
@@ -1021,8 +943,8 @@ export function Landing({
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 text-xs font-semibold text-text-secondary">
               <p>
-                © 2025 TemanBelajar. Didesain untuk siswa SMP &amp; SMA di
-                seluruh Indonesia.
+                © {new Date().getFullYear()} TemanBelajar. Didesain untuk siswa
+                SMP &amp; SMA di seluruh Indonesia.
               </p>
               <p className="flex items-center gap-1.5">
                 <span>Dibuat dengan ramah &amp; inklusif bersama Mimo 🦎</span>

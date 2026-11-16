@@ -31,6 +31,7 @@ export default function Home() {
     [plans, setPlans] = useState<Plan[]>([]),
     [page, setPage] = useState("Beranda"),
     [active, setActive] = useState<LearningSession | null>(null),
+    [practiceRequested, setPracticeRequested] = useState(false),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
     [notice, setNotice] = useState(""),
@@ -133,7 +134,12 @@ export default function Home() {
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
   }, []);
-  async function start(material: Material, mode?: Mode, conceptId?: string) {
+  async function start(
+    material: Material,
+    mode?: Mode,
+    conceptId?: string,
+    practice = false,
+  ) {
     const existing = sessions.find(
       (s) => s.material_id === material.id && s.status !== "completed",
     );
@@ -154,7 +160,7 @@ export default function Home() {
     await run(async () => {
       let s = recovered || (await create());
       recovered = s;
-      if (conceptId || s.mode !== chosenMode) {
+      if (conceptId || s.mode !== chosenMode || s.status === "paused") {
         change ||= mutation<LearningSession>(
           `/sessions/${s.id}`,
           {
@@ -172,6 +178,7 @@ export default function Home() {
         recovered = s;
       }
       setActive(s);
+      setPracticeRequested(practice);
       setPage("Mulai Belajar");
       await refresh();
     });
@@ -286,7 +293,7 @@ export default function Home() {
       )}
       {page === "Beranda" && profile.onboarding_step < 4 && (
         <section className="stitch-screen bg-secondary-container rounded-2xl p-space-lg mb-space-lg">
-          <h2 className="font-card-title text-card-title text-primary">
+          <h2 className="font-card-title text-card-title text-primary ui-card-title">
             Atur ritme belajarmu saat kamu siap
           </h2>
           <p className="font-body text-body text-text-secondary">
@@ -378,6 +385,7 @@ export default function Home() {
       ) : selected && active ? (
         <Reader
           key={active.id}
+          initialPractice={practiceRequested}
           material={selected}
           session={active}
           preferences={prefs}

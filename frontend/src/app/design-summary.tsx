@@ -16,10 +16,10 @@ export function SummaryDesign({
   const sourceDialog = useRef<HTMLDialogElement>(null);
   return (
     <>
-      <div className="final-design final-screen-11 w-full pt-20 bg-canvas flex-1">
+      <div className="final-design final-screen-11 w-full bg-canvas flex-1 screen-page">
         <div className="flex flex-col w-full">
           <section className="w-full bg-surface-container-low/70 py-space-sm">
-            <div className="max-w-[1200px] mx-auto px-margin-mobile md:px-margin flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+            <div className="max-w-[1200px] mx-auto px-margin-mobile md:px-margin flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm ui-container">
               <div className="flex items-center flex-wrap gap-space-xs text-metadata font-metadata text-on-surface-variant">
                 <a
                   className="inline-flex items-center gap-1 hover:text-primary transition-colors font-label"
@@ -61,7 +61,7 @@ export function SummaryDesign({
             </div>
           </section>
 
-          <main className="w-full max-w-[1200px] mx-auto px-margin-mobile md:px-margin py-space-lg flex flex-col gap-space-xl">
+          <div className="w-full max-w-[1200px] mx-auto px-margin-mobile md:px-margin py-space-lg flex flex-col gap-space-xl ui-container">
             <header className="relative w-full rounded-2xl bg-surface p-space-md md:p-space-xl shadow-md overflow-hidden">
               <div className="absolute -top-12 -right-12 w-64 h-64 rounded-full bg-mint-tint/80 pointer-events-none"></div>
               <div className="absolute -bottom-16 left-1/3 w-48 h-48 rounded-full bg-butter-tint/60 pointer-events-none"></div>
@@ -98,15 +98,15 @@ export function SummaryDesign({
                 </div>
 
                 <div className="space-y-space-xs max-w-4xl">
-                  <h1 className="font-page-title text-page-title text-primary tracking-tight">
+                  <h1 className="font-page-title text-page-title text-primary tracking-tight ui-page-title">
                     {material.title}
                   </h1>
                   <p className="font-reading text-reading text-on-surface-variant max-w-3xl leading-relaxed">
                     Modul ini telah diringkas oleh{" "}
                     <strong className="text-primary font-bold">Mimo</strong>{" "}
-                    menjadi 3 konsep inti yang bebas pusing, ramah disleksia,
-                    dan terbagi ke dalam segmen santai 10–15 menit agar kamu
-                    bisa belajar dengan ritme sendiri.
+                    menjadi {material.concepts.length} konsep inti yang bebas
+                    pusing, ramah disleksia, dan terbagi ke dalam segmen santai
+                    10–15 menit agar kamu bisa belajar dengan ritme sendiri.
                   </p>
                 </div>
 
@@ -136,7 +136,7 @@ export function SummaryDesign({
                     href="#"
                     onClick={(e) => {
                       e.preventDefault();
-                      onBack();
+                      onChoose();
                     }}
                   >
                     <span>Pilih Cara Belajar</span>
@@ -189,7 +189,7 @@ export function SummaryDesign({
                           Alur Belajar Direkomendasikan
                         </span>
                       </div>
-                      <h2 className="font-section-title text-section-title text-primary mt-1">
+                      <h2 className="font-section-title text-section-title text-primary mt-1 ui-section-title">
                         Peta Konsep &amp; Urutan Belajar
                       </h2>
                     </div>
@@ -212,7 +212,9 @@ export function SummaryDesign({
                             {c.estimated_minutes} menit
                           </span>
                         </div>
-                        <h3 className="font-bold text-xl mt-4">{c.title}</h3>
+                        <h3 className="font-bold text-xl mt-4 ui-card-title">
+                          {c.title}
+                        </h3>
                         <p className="my-3 text-text-secondary">
                           {c.paragraphs[0]}
                         </p>
@@ -241,7 +243,7 @@ export function SummaryDesign({
                       <span className="text-metadata font-metadata text-secondary uppercase font-bold tracking-wider text-[11px]">
                         Kenyamanan Sensorik &amp; Kognitif
                       </span>
-                      <h2 className="font-section-title text-section-title text-primary">
+                      <h2 className="font-section-title text-section-title text-primary ui-section-title">
                         Tersedia 4 Mode Belajar Adaptif
                       </h2>
                     </div>
@@ -250,7 +252,7 @@ export function SummaryDesign({
                       href="#"
                       onClick={(e) => {
                         e.preventDefault();
-                        onBack();
+                        onChoose();
                       }}
                     >
                       <span>Buka Mode Selector Lengkap</span>
@@ -279,7 +281,7 @@ export function SummaryDesign({
                             Ramah Disleksia
                           </span>
                         </div>
-                        <h4 className="font-card-title text-card-title text-primary mt-2">
+                        <h4 className="font-card-title text-card-title text-primary mt-2 ui-label-title">
                           1. Teman Baca (Reading Companion)
                         </h4>
                         <p className="font-body text-body text-on-surface-variant text-[14px]">
@@ -318,7 +320,7 @@ export function SummaryDesign({
                             Bebas Distraksi
                           </span>
                         </div>
-                        <h4 className="font-card-title text-card-title text-primary mt-2">
+                        <h4 className="font-card-title text-card-title text-primary mt-2 ui-label-title">
                           2. Belajar Selangkah demi Selangkah
                         </h4>
                         <p className="font-body text-body text-on-surface-variant text-[14px]">
@@ -357,7 +359,7 @@ export function SummaryDesign({
                             Audio Naratif
                           </span>
                         </div>
-                        <h4 className="font-card-title text-card-title text-primary mt-2">
+                        <h4 className="font-card-title text-card-title text-primary mt-2 ui-label-title">
                           3. Dengarkan &amp; Jelajahi
                         </h4>
                         <p className="font-body text-body text-on-surface-variant text-[14px]">
@@ -395,7 +397,7 @@ export function SummaryDesign({
                             Visual &amp; Teks
                           </span>
                         </div>
-                        <h4 className="font-card-title text-card-title text-primary mt-2">
+                        <h4 className="font-card-title text-card-title text-primary mt-2 ui-label-title">
                           4. Belajar Teks &amp; Visual
                         </h4>
                         <p className="font-body text-body text-on-surface-variant text-[14px]">
@@ -431,7 +433,9 @@ export function SummaryDesign({
                     alt=""
                     className="w-32 h-auto object-contain mx-auto"
                   />
-                  <h2 className="text-lg font-bold mt-4">Pesan Hangat Mimo</h2>
+                  <h2 className="text-lg font-bold mt-4 ui-section-title">
+                    Pesan Hangat Mimo
+                  </h2>
                   <p className="mt-3">
                     Mulai dari {material.concepts[0]?.title}. Pilih format yang
                     nyaman, dan kamu bisa berganti kapan saja.
@@ -463,7 +467,7 @@ export function SummaryDesign({
                   </span>
                 </div>
                 <div>
-                  <h4 className="font-card-title text-card-title text-primary text-[16px]">{`${material.concepts.length} konsep · ${material.concepts.reduce((n, c) => n + c.estimated_minutes, 0)} menit`}</h4>
+                  <h4 className="font-card-title text-card-title text-primary text-[16px] ui-label-title">{`${material.concepts.length} konsep · ${material.concepts.reduce((n, c) => n + c.estimated_minutes, 0)} menit`}</h4>
                   <p className="font-body text-body text-on-surface-variant text-[13px]">
                     {material.title}
                   </p>
@@ -479,14 +483,18 @@ export function SummaryDesign({
                 </button>
               </div>
             </section>
-          </main>
+          </div>
         </div>
       </div>
-      <dialog ref={sourceDialog} className="stitch-reason">
-        <h2>Teks sumber asli</h2>
+      <dialog
+        ref={sourceDialog}
+        className="stitch-reason"
+        aria-label="Teks sumber asli"
+      >
+        <h2 className="ui-section-title">Teks sumber asli</h2>
         {material.sources.map((s) => (
           <article key={s.id}>
-            <h3>{s.label}</h3>
+            <h3 className="ui-card-title">{s.label}</h3>
             <p className="whitespace-pre-wrap">{s.text}</p>
           </article>
         ))}
