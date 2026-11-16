@@ -20,6 +20,7 @@ export function ProgressView({
   onBack,
   displayName,
   timezone,
+  availableMinutes = 15,
 }: {
   materials: Material[];
   sessions: LearningSession[];
@@ -29,6 +30,7 @@ export function ProgressView({
   onBack: () => void;
   displayName: string;
   timezone: string;
+  availableMinutes?: number;
   start: (
     m: Material,
     mode?: Mode,
@@ -47,7 +49,7 @@ export function ProgressView({
     Promise.all([
       api<Progress>(`/progress?material_id=${encodeURIComponent(selected)}`),
       api<Recommendation>(
-        `/recommendations?material_id=${encodeURIComponent(selected)}&available_minutes=15`,
+        `/recommendations?material_id=${encodeURIComponent(selected)}&available_minutes=${availableMinutes}`,
       ),
     ])
       .then(([p, r]) => {
@@ -63,7 +65,7 @@ export function ProgressView({
     return () => {
       alive = false;
     };
-  }, [selected, revision]);
+  }, [selected, revision, availableMinutes]);
   return (
     <ProgressDesign
       materials={materials}

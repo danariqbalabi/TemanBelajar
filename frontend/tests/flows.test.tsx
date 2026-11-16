@@ -202,8 +202,7 @@ describe("alur belajar", () => {
     expect((await screen.findAllByText(reason)).length).toBeGreaterThan(0);
     expect(screen.queryByText(/42%/)).toBeNull();
   });
-  it("melanjutkan latihan tersimpan dari soal yang belum dijawab", async () => {
-    localStorage.setItem("temanbelajar-attempt:session", "saved-attempt");
+  it("melanjutkan latihan dari server tanpa pointer browser perangkat lama", async () => {
     request.mockResolvedValue({
       id: "saved-attempt",
       session_id: "session",

@@ -76,7 +76,7 @@ export function Dashboard({
                 <div className="flex items-center gap-space-sm flex-wrap">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-butter-tint text-primary font-label text-[13px] tracking-wide shadow-sm">
                     <span className="w-2 h-2 rounded-full bg-secondary"></span>
-                    Sore Santai · Target 15 Menit
+                    Target {profile.daily_minutes} menit per hari
                   </span>
                   <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-mint-tint text-success font-label text-[12px]">
                     <span

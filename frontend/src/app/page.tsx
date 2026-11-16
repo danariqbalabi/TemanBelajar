@@ -20,10 +20,35 @@ import { ProgressView } from "./progress";
 import { Dashboard } from "./dashboard";
 import { DesignShell } from "./design-shell";
 export type Run = (action: () => Promise<void>) => Promise<void>;
+async function readWorkspace(minutes: number) {
+  const [m, s, p] = await Promise.all([
+    api<{ items: Material[] }>("/materials"),
+    api<{ items: LearningSession[] }>("/sessions"),
+    api<{ items: Plan[] }>("/plans"),
+  ]);
+  const recent = [...s.items].sort((a, b) =>
+    b.updated_at.localeCompare(a.updated_at),
+  )[0];
+  const target =
+    m.items.find((item) => item.id === recent?.material_id) || m.items[0];
+  const recommendation = target
+    ? await api<Recommendation>(
+        `/recommendations?material_id=${encodeURIComponent(target.id)}&available_minutes=${minutes}`,
+      )
+    : null;
+  return {
+    materials: m.items,
+    sessions: s.items,
+    plans: p.items,
+    recommendation,
+  };
+}
 export default function Home() {
   const [account, setAccount] = useState<Session | null>(null),
     [ready, setReady] = useState(false),
     [loadedUserId, setLoadedUserId] = useState<string | null>(null),
+    [loadFailure, setLoadFailure] = useState(""),
+    [loadRevision, setLoadRevision] = useState(0),
     [profile, setProfile] = useState<Profile>(defaultProfile),
     [onboarding, setOnboarding] = useState(false),
     [materials, setMaterials] = useState<Material[]>([]),
@@ -38,6 +63,8 @@ export default function Home() {
     [recommendation, setRecommendation] = useState<Recommendation | null>(null),
     [landing, setLanding] = useState(true);
   const retry = useRef<null | (() => Promise<void>)>(null);
+  const workspaceEpoch = useRef(0);
+  const dailyMinutes = useRef(defaultProfile.daily_minutes);
   const running = useRef(false);
   const run = useCallback(async (action: () => Promise<void>) => {
     if (running.current) return;
@@ -55,22 +82,20 @@ export default function Home() {
       setBusy(false);
     }
   }, []);
+  const applyWorkspace = useCallback(
+    (data: Awaited<ReturnType<typeof readWorkspace>>) => {
+      setMaterials(data.materials);
+      setSessions(data.sessions);
+      setPlans(data.plans);
+      setRecommendation(data.recommendation);
+    },
+    [],
+  );
   const refresh = useCallback(async () => {
-    const [m, s, p] = await Promise.all([
-      api<{ items: Material[] }>("/materials"),
-      api<{ items: LearningSession[] }>("/sessions"),
-      api<{ items: Plan[] }>("/plans"),
-    ]);
-    setMaterials(m.items);
-    setSessions(s.items);
-    setPlans(p.items);
-    if (m.items[0])
-      setRecommendation(
-        await api<Recommendation>(
-          `/recommendations?material_id=${encodeURIComponent(m.items[0].id)}&available_minutes=15`,
-        ),
-      );
-  }, []);
+    const epoch = workspaceEpoch.current;
+    const data = await readWorkspace(dailyMinutes.current);
+    if (epoch === workspaceEpoch.current) applyWorkspace(data);
+  }, [applyWorkspace]);
   useEffect(() => {
     if (!auth) {
       queueMicrotask(() => setReady(true));
@@ -94,36 +119,38 @@ export default function Home() {
   }, []);
   const userId = account?.user.id;
   useEffect(() => {
+    const epoch = ++workspaceEpoch.current;
     if (!userId) return;
     let alive = true;
-    Promise.all([
-      api<Profile>("/profile")
-        .then((p) => {
-          if (alive) {
-            setProfile(p);
-            setOnboarding(false);
-          }
-        })
-        .catch((e) => {
-          if (e instanceof ApiError && e.status === 404) {
-            if (alive) {
-              setProfile(defaultProfile);
-              setOnboarding(false);
-            }
-          } else throw e;
-        }),
-      Promise.resolve().then(refresh),
-    ])
-      .catch((e) => {
-        if (alive) setError(userMessage(e));
+    Promise.resolve()
+      .then(async () => {
+        if (!alive) return;
+        setLoadFailure("");
+        setLoadedUserId(null);
+        setActive(null);
+        setPage("Beranda");
+        retry.current = null;
+        setError("");
+        setNotice("");
+        const loadedProfile = await api<Profile>("/profile").catch((e) => {
+          if (e instanceof ApiError && e.status === 404) return defaultProfile;
+          throw e;
+        });
+        const data = await readWorkspace(loadedProfile.daily_minutes);
+        if (!alive || epoch !== workspaceEpoch.current) return;
+        dailyMinutes.current = loadedProfile.daily_minutes;
+        setProfile(loadedProfile);
+        setOnboarding(false);
+        applyWorkspace(data);
+        setLoadedUserId(userId);
       })
-      .finally(() => {
-        if (alive) setLoadedUserId(userId);
+      .catch((e) => {
+        if (alive) setLoadFailure(userMessage(e));
       });
     return () => {
       alive = false;
     };
-  }, [userId, refresh]);
+  }, [userId, loadRevision, applyWorkspace]);
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.altKey && e.key.toLowerCase() === "a") {
@@ -193,6 +220,7 @@ export default function Home() {
       "PUT",
     );
     setProfile(saved);
+    dailyMinutes.current = saved.daily_minutes;
     setOnboarding(false);
     setNotice("Preferensi tersimpan. Ritmemu bisa diubah kapan saja.");
   }
@@ -216,7 +244,23 @@ export default function Home() {
   if (loadedUserId !== userId)
     return (
       <main className="welcome">
-        <p role="status">Memuat ruang belajarmu...</p>
+        {loadFailure ? (
+          <section>
+            <h1>Ruang belajar belum berhasil dimuat</h1>
+            <p role="alert">{loadFailure}</p>
+            <p>
+              Data akunmu belum diubah. Periksa koneksi, lalu coba muat kembali.
+            </p>
+            <button onClick={() => setLoadRevision((value) => value + 1)}>
+              Coba muat kembali
+            </button>
+            <button onClick={() => setLanding(true)}>
+              Kembali ke halaman awal
+            </button>
+          </section>
+        ) : (
+          <p role="status">Memuat ruang belajarmu...</p>
+        )}
       </main>
     );
   if (onboarding)
@@ -257,7 +301,7 @@ export default function Home() {
           <div className="actions">
             <button
               disabled={busy}
-              onClick={() => retry.current && run(retry.current)}
+              onClick={() => run(retry.current || refresh)}
             >
               Coba lagi
             </button>
@@ -351,6 +395,7 @@ export default function Home() {
         />
       ) : page === "Progres" ? (
         <ProgressView
+          availableMinutes={profile.daily_minutes}
           onPlan={() => setPage("Rencana Belajar")}
           onSettings={() => setPage("Pengaturan")}
           onBack={() => setPage("Beranda")}
@@ -370,7 +415,9 @@ export default function Home() {
           account={account}
           signOut={() =>
             run(async () => {
-              await auth!.auth.signOut();
+              const { error: signOutError } = await auth!.auth.signOut();
+              if (signOutError) throw signOutError;
+              workspaceEpoch.current += 1;
               setLoadedUserId(null);
               setOnboarding(false);
               setProfile(defaultProfile);
@@ -384,6 +431,7 @@ export default function Home() {
         />
       ) : selected && active ? (
         <Reader
+          availableMinutes={profile.daily_minutes}
           key={active.id}
           initialPractice={practiceRequested}
           material={selected}

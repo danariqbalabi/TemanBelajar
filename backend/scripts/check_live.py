@@ -52,6 +52,25 @@ def check_learning(client):
         url = f"/v1/attempts/{attempt['id']}/answers"
         first = require(client.post(url, json=body))
         assert require(client.post(url, json=body)) == first
+        if number == 1:
+            resumed = require(
+                client.get(f"/v1/sessions/{session['id']}/attempts/active")
+            )
+            assert resumed == first
+            assert (
+                require(
+                    client.post(
+                        "/v1/attempts",
+                        json={
+                            "request_id": rid(),
+                            "session_id": session["id"],
+                        },
+                    ),
+                    201,
+                )
+                == first
+            )
+    assert require(client.get(f"/v1/sessions/{session['id']}/attempts/active")) is None
     progress = require(
         client.get("/v1/progress", params={"material_id": "demo-pythagoras"})
     )

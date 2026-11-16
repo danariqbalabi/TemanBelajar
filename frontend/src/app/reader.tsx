@@ -29,6 +29,7 @@ export function Reader({
   onPreferences,
   displayName = "Manda",
   initialPractice = false,
+  availableMinutes = 15,
 }: {
   material: Material;
   session: LearningSession;
@@ -43,6 +44,7 @@ export function Reader({
   onPreferences?: (p: Partial<Preferences>) => void;
   displayName?: string;
   initialPractice?: boolean;
+  availableMinutes?: number;
 }) {
   const { draft, setDraft, draftNotice } = useReadingDraft(session);
   const [attempt, setAttempt] = useState<Attempt | null>(null),
@@ -90,7 +92,7 @@ export function Reader({
         }
         if (result.status === "completed") {
           const suggestion = await api<Recommendation>(
-            `/recommendations?material_id=${encodeURIComponent(material.id)}&available_minutes=15`,
+            `/recommendations?material_id=${encodeURIComponent(material.id)}&available_minutes=${availableMinutes}`,
           );
           if (alive) setRec(suggestion);
         }
@@ -101,7 +103,7 @@ export function Reader({
     return () => {
       alive = false;
     };
-  }, [session.id, material.id, initialPractice]);
+  }, [session.id, material.id, initialPractice, availableMinutes]);
   useEffect(() => {
     return () => {
       if ("speechSynthesis" in window) speechSynthesis.cancel();
@@ -159,7 +161,7 @@ export function Reader({
   async function recommendation() {
     setRec(
       await api<Recommendation>(
-        `/recommendations?material_id=${encodeURIComponent(material.id)}&available_minutes=15`,
+        `/recommendations?material_id=${encodeURIComponent(material.id)}&available_minutes=${availableMinutes}`,
       ),
     );
     await refresh();

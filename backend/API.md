@@ -85,8 +85,10 @@ dan `draft`. saat berganti mode, kirim posisi serta draft tersimpan. penanda
 konsep selesai bersifat kumulatif. `completed` memerlukan semua konsep selesai.
 
 `POST /v1/attempts` menerima `request_id`, `session_id`, dan opsional
-`concept_id`. setiap pengulangan latihan membuat attempt baru. ambil attempt
-dengan `GET /v1/attempts/{id}`.
+`concept_id`. Latihan aktif dengan sesi dan daftar soal yang sama dilanjutkan,
+agar perangkat lain tidak membuat duplikat. Setelah selesai, pengulangan membuat
+attempt baru. Ambil attempt dengan `GET /v1/attempts/{id}` atau pulihkan latihan
+aktif terbaru lewat `GET /v1/sessions/{id}/attempts/active` (JSON `null` jika tidak ada).
 
 `POST /v1/attempts/{id}/answers` menerima `request_id`, `expected_version`,
 `question_id`, dan `selected_index` berbasis nol. kirim sesuai urutan soal.
