@@ -178,6 +178,26 @@ async def create_attempt(body: AttemptCreate, store: StoreDep):
     ]
     if not questions:
         raise HTTPException(422, "soal untuk konsep ini belum tersedia")
+    # Resume unfinished work across browsers/devices, not only via local pointers.
+    existing = next(
+        (
+            a
+            for a in snapshot.data["attempts"].values()
+            if a["session_id"] == body.session_id
+            and a["status"] == "active"
+            and a["question_ids"] == questions
+        ),
+        None,
+    )
+    if existing is not None:
+        return await commit(
+            store,
+            snapshot,
+            str(body.request_id),
+            "attempt.create",
+            payload,
+            public_attempt(existing, material),
+        )
     attempt = {
         "id": str(uuid4()),
         "session_id": body.session_id,
@@ -193,6 +213,25 @@ async def create_attempt(body: AttemptCreate, store: StoreDep):
     return await commit(
         store, snapshot, str(body.request_id), "attempt.create", payload, result
     )
+
+
+@router.get(
+    "/sessions/{session_id}/attempts/active",
+    response_model=AttemptResponse | None,
+    response_model_exclude_none=True,
+)
+async def active_attempt(session_id: str, store: StoreDep):
+    snapshot = await store.load()
+    session = find_item(snapshot.data["sessions"], session_id, "sesi")
+    attempts = [
+        a
+        for a in snapshot.data["attempts"].values()
+        if a["session_id"] == session_id and a["status"] == "active"
+    ]
+    if not attempts:
+        return None
+    attempt = max(attempts, key=lambda a: a["created_at"])
+    return public_attempt(attempt, get_material(snapshot.data, session["material_id"]))
 
 
 @router.get(

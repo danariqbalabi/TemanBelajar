@@ -81,3 +81,37 @@ def test_invalid_mode_and_foreign_ids_rejected(client):
         "mode": "explore",
     }
     assert client.put(f"/v1/sessions/{session['id']}", json=body).status_code == 422
+
+
+def test_unfinished_attempt_resumes_across_devices_without_duplicate(client):
+    session = create_session(client)
+    url = f"/v1/sessions/{session['id']}/attempts/active"
+    assert client.get(url).json() is None
+    attempt = client.post(
+        "/v1/attempts",
+        json={
+            "request_id": request_id(),
+            "session_id": session["id"],
+        },
+    ).json()
+    answered = client.post(
+        f"/v1/attempts/{attempt['id']}/answers",
+        json={
+            "request_id": request_id(),
+            "expected_version": 1,
+            "question_id": "cahaya-1",
+            "selected_index": 0,
+        },
+    ).json()
+    resumed = client.get(url).json()
+    assert resumed == answered
+    second_device = client.post(
+        "/v1/attempts",
+        json={
+            "request_id": request_id(),
+            "session_id": session["id"],
+        },
+    ).json()
+    assert second_device == resumed
+    assert "correct_index" not in resumed["questions"][1]
+    assert client.get("/v1/sessions/foreign/attempts/active").status_code == 404

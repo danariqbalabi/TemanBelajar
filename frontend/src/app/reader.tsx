@@ -14,6 +14,7 @@ import { ReaderDesign } from "./design-reader";
 import { QuestionDesign } from "./design-question";
 import { ResultDesign } from "./design-result";
 import { RecommendationDesign } from "./design-recommendation";
+import { useReadingDraft } from "./use-reading-draft";
 export function Reader({
   material,
   session,
@@ -43,8 +44,8 @@ export function Reader({
   displayName?: string;
   initialPractice?: boolean;
 }) {
-  const [draft, setDraft] = useState(session.draft),
-    [attempt, setAttempt] = useState<Attempt | null>(null),
+  const { draft, setDraft, draftNotice } = useReadingDraft(session);
+  const [attempt, setAttempt] = useState<Attempt | null>(null),
     [choice, setChoice] = useState<number | null>(null),
     [feedback, setFeedback] = useState<string | null>(null),
     [rec, setRec] = useState<Recommendation | null>(null),
@@ -61,37 +62,42 @@ export function Reader({
   useEffect(() => {
     let alive = true;
     const saved = attemptPointer(session.id);
-    if (saved || initialPractice)
-      (saved
-        ? api<Attempt>(`/attempts/${saved}`).catch((error) => {
-            if (
-              initialPractice &&
-              error instanceof ApiError &&
-              error.status === 404
-            )
-              return initialAttempt.current();
-            throw error;
-          })
-        : initialAttempt.current()
-      )
-        .then(async (result) => {
-          if (result.status === "completed" && initialPractice)
-            result = await initialAttempt.current();
-          if (!alive) return;
-          if (result.status !== "completed") {
-            setAttempt(result);
-            attemptPointer(session.id, result.id);
-          }
-          if (result.status === "completed") {
-            const suggestion = await api<Recommendation>(
-              `/recommendations?material_id=${encodeURIComponent(material.id)}&available_minutes=15`,
-            );
-            if (alive) setRec(suggestion);
-          }
-        })
-        .catch((error) => {
-          if (alive && initialPractice) setFeedback(userMessage(error));
-        });
+    api<Attempt | null>(`/sessions/${session.id}/attempts/active`)
+      .then((current) => {
+        if (current?.status === "active") return current;
+        return saved
+          ? api<Attempt>(`/attempts/${saved}`).catch((error) => {
+              if (
+                initialPractice &&
+                error instanceof ApiError &&
+                error.status === 404
+              )
+                return initialAttempt.current();
+              throw error;
+            })
+          : initialPractice
+            ? initialAttempt.current()
+            : null;
+      })
+      .then(async (result) => {
+        if (!result) return;
+        if (result.status === "completed" && initialPractice)
+          result = await initialAttempt.current();
+        if (!alive) return;
+        if (result.status === "active") {
+          setAttempt(result);
+          attemptPointer(session.id, result.id);
+        }
+        if (result.status === "completed") {
+          const suggestion = await api<Recommendation>(
+            `/recommendations?material_id=${encodeURIComponent(material.id)}&available_minutes=15`,
+          );
+          if (alive) setRec(suggestion);
+        }
+      })
+      .catch((error) => {
+        if (alive && initialPractice) setFeedback(userMessage(error));
+      });
     return () => {
       alive = false;
     };
@@ -325,25 +331,32 @@ export function Reader({
     );
   }
   return (
-    <ReaderDesign
-      key={session.concept_id + session.mode}
-      material={material}
-      session={session}
-      preferences={preferences}
-      draft={draft}
-      setDraft={setDraft}
-      busy={busy}
-      feedback={feedback}
-      speaking={speaking}
-      onSpeak={speak}
-      update={update}
-      onPractice={() => practice()}
-      onSettings={onSettings}
-      onBack={onBack}
-      onPreferences={onPreferences}
-      elapsed={elapsed}
-      displayName={displayName}
-    />
+    <>
+      {draftNotice && (
+        <p className="notice" role="status">
+          {draftNotice}
+        </p>
+      )}
+      <ReaderDesign
+        key={session.concept_id + session.mode}
+        material={material}
+        session={session}
+        preferences={preferences}
+        draft={draft}
+        setDraft={setDraft}
+        busy={busy}
+        feedback={feedback}
+        speaking={speaking}
+        onSpeak={speak}
+        update={update}
+        onPractice={() => practice()}
+        onSettings={onSettings}
+        onBack={onBack}
+        onPreferences={onPreferences}
+        elapsed={elapsed}
+        displayName={displayName}
+      />
+    </>
   );
 }
 function attemptPointer(sessionId: string, value?: string): string | null {

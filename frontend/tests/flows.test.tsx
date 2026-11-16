@@ -247,11 +247,18 @@ describe("alur belajar", () => {
     );
     expect(await screen.findByText("Pertanyaan yang dilanjutkan")).toBeTruthy();
     expect(screen.queryByText("Pertanyaan lama")).toBeNull();
-    expect(request.mock.calls[0][0]).toBe("/attempts/saved-attempt");
+    expect(request.mock.calls[0][0]).toBe("/sessions/session/attempts/active");
+    expect(request.mock.calls.some(([path]) => path === "/attempts")).toBe(
+      false,
+    );
   });
   it("pergantian format mempertahankan posisi dan draft", async () => {
     const onUpdate = vi.fn();
-    request.mockResolvedValue({ ...session, mode: "reading", version: 4 });
+    request.mockImplementation(async (path: string) =>
+      path.endsWith("/attempts/active")
+        ? null
+        : { ...session, mode: "reading", version: 4 },
+    );
     render(
       <Reader
         material={material}
@@ -268,8 +275,10 @@ describe("alur belajar", () => {
       screen.getByLabelText("Format belajar"),
       "reading",
     );
-    await waitFor(() => expect(request).toHaveBeenCalled());
-    expect(request.mock.calls[0][1]).toMatchObject({
+    await waitFor(() => expect(onUpdate).toHaveBeenCalled());
+    expect(
+      request.mock.calls.find((call) => call[2] === "PUT")![1],
+    ).toMatchObject({
       paragraph: 1,
       draft: "catatan awal",
       mode: "reading",
@@ -839,5 +848,5 @@ it("aksi rekomendasi latihan membuka soal langsung", async () => {
     />,
   );
   expect(await screen.findByText("Soal dari rekomendasi")).toBeTruthy();
-  expect(request.mock.calls[0][0]).toBe("/attempts");
+  expect(request.mock.calls[0][0]).toBe("/sessions/session/attempts/active");
 });
