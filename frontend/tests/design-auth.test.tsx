@@ -16,11 +16,10 @@ const run = async (action: () => Promise<void>) => {
 it("mengirim tautan masuk dari form revamp dengan redirect lokal", async () => {
   otp.mockResolvedValue({ error: null });
   render(<AccountDesign onBack={vi.fn()} run={run} busy={false} error="" />);
-  await userEvent.type(
-    screen.getByLabelText("Alamat email"),
-    "manda@example.invalid",
+  await userEvent.type(screen.getByLabelText(/Email/), "manda@example.invalid");
+  await userEvent.click(
+    screen.getByRole("button", { name: "Kirim Tautan Masuk Ajaib" }),
   );
-  await userEvent.click(screen.getByRole("button", { name: "Kirim Tautan" }));
   await waitFor(() =>
     expect(otp).toHaveBeenCalledWith({
       email: "manda@example.invalid",
@@ -38,7 +37,7 @@ it("tombol demo revamp membuat sesi anonim nyata", async () => {
   demo.mockResolvedValue({ error: null });
   render(<AccountDesign onBack={vi.fn()} run={run} busy={false} error="" />);
   await userEvent.click(
-    screen.getByRole("button", { name: "Mulai Bersama Manda" }),
+    screen.getByRole("link", { name: "Coba Demo Materi Fotosintesis" }),
   );
   expect(demo).toHaveBeenCalledOnce();
 });

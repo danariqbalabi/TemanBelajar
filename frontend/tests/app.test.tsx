@@ -50,20 +50,20 @@ it("saves the complete editable profile while excluding server-owned fields", as
   );
   render(<Home />);
   await userEvent.click(
-    await screen.findByRole("link", { name: "Mulai Sekarang (Demo Manda)" }),
+    await screen.findByRole("link", { name: "Mulai Belajar Gratis" }),
   );
   await screen.findByRole("navigation");
   await userEvent.click(
-    within(screen.getByRole("navigation")).getByRole("button", {
+    within(screen.getByRole("navigation")).getByRole("link", {
       name: "Pengaturan",
     }),
   );
   await userEvent.click(screen.getByRole("button", { name: "Profil" }));
-  const name = await screen.findByLabelText("Nama panggilan");
+  const name = await screen.findByLabelText("Nama Panggilan di Aplikasi");
   await userEvent.clear(name);
   await userEvent.type(name, "Manda baru");
   await userEvent.click(
-    screen.getByRole("button", { name: "Simpan Semua Preferensi" }),
+    screen.getByRole("button", { name: "Simpan Perubahan Profil" }),
   );
   await waitFor(() =>
     expect(
@@ -90,14 +90,14 @@ it("menampilkan landing meski sesi tersimpan dan tidak memaksa onboarding yang b
   render(<Home />);
   expect(
     await screen.findByRole("heading", {
-      name: /Belajar Santai, Pakai Caramu Sendiri/,
+      name: /Setiap orang punya/,
     }),
   ).toBeTruthy();
   expect(
     screen.queryByRole("button", { name: "Atur preferensi belajar" }),
   ).toBeNull();
   await userEvent.click(
-    screen.getByRole("link", { name: "Mulai Sekarang (Demo Manda)" }),
+    screen.getByRole("link", { name: "Mulai Belajar Gratis" }),
   );
   expect(
     await screen.findByRole("button", { name: "Atur preferensi belajar" }),

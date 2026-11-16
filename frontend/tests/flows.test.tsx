@@ -153,16 +153,12 @@ describe("alur belajar", () => {
         onPlanner={() => {}}
       />,
     );
-    expect(
-      await screen.findByRole("heading", {
-        name: /1 dari 2 soal terjawab tepat/,
-      }),
-    ).toBeTruthy();
+    expect(await screen.findByText(/1 dari 2 jawaban tepat/)).toBeTruthy();
     expect(
       screen.getByText("Cahaya, bukan air, menjadi sumber energi."),
     ).toBeTruthy();
     await userEvent.click(
-      screen.getByRole("button", { name: "Lihat langkah berikutnya" }),
+      screen.getByRole("link", { name: /Mulai Rekomendasi Sekarang/ }),
     );
     expect((await screen.findAllByText(reason)).length).toBeGreaterThan(0);
     expect(screen.queryByText(/42%/)).toBeNull();
@@ -306,7 +302,7 @@ describe("alur belajar", () => {
     expect(screen.queryByText("Apa bahan fotosintesis?")).toBeNull();
     await userEvent.click(screen.getByLabelText("Energi"));
     await userEvent.click(
-      screen.getByRole("button", { name: "Kirim Jawaban & Lihat Penjelasan" }),
+      screen.getByRole("button", { name: "Periksa Jawaban Sekarang" }),
     );
     expect(await screen.findByText("Cahaya menyediakan energi.")).toBeTruthy();
     expect(request.mock.calls[1][1]).toMatchObject({
@@ -370,7 +366,9 @@ describe("planner yang dapat ditinjau", () => {
     );
     await userEvent.click(screen.getByText("Buat usulan perubahan"));
     expect(
-      await screen.findByRole("button", { name: "Pakai Rencana Baru Ini" }),
+      await screen.findByRole("button", {
+        name: "Pakai Rencana Baru (Terapkan)",
+      }),
     ).toBeTruthy();
     expect(request.mock.calls[0][0]).toBe("/plans/plan/proposals");
     expect(
@@ -391,10 +389,12 @@ it("menyimpan sumber terlebih dahulu tanpa memulai AI diam-diam", async () => {
     />,
   );
   await userEvent.click(
-    screen.getByRole("button", { name: "+ Unggah Materi Baru" }),
+    screen.getByRole("button", { name: /Tambah Materi Baru/ }),
   );
   await userEvent.type(screen.getByLabelText("Judul materi"), "Catatan IPA");
-  await userEvent.click(screen.getByRole("tab", { name: /Tempel Teks/ }));
+  await userEvent.click(
+    screen.getByRole("button", { name: /Tempel Rangkuman/ }),
+  );
   await userEvent.type(
     screen.getByLabelText("Teks materi"),
     "Cahaya menyediakan energi untuk fotosintesis pada daun.",
@@ -407,7 +407,9 @@ it("menyimpan sumber terlebih dahulu tanpa memulai AI diam-diam", async () => {
     error: null,
     material_id: null,
   });
-  await userEvent.click(screen.getByRole("button", { name: "Siapkan materi" }));
+  await userEvent.click(
+    screen.getByRole("button", { name: "Siapkan Materi Bersama Mimo" }),
+  );
   expect(
     await screen.findByRole("button", { name: "Mulai pemrosesan" }),
   ).toBeTruthy();
@@ -435,18 +437,18 @@ it("menghubungkan katalog, ringkasan, dan mode belajar tanpa membuka format yang
       start={start}
     />,
   );
-  await userEvent.click(screen.getByRole("button", { name: "Buka Ringkasan" }));
   await userEvent.click(
-    screen.getAllByRole("button", { name: "Pilih Cara Belajar" })[0],
+    screen.getByRole("button", { name: "Buka Ringkasan →" }),
   );
-  const alternatives = screen.getAllByRole("button", {
-    name: "Pilih Mode Ini",
-  });
+  await userEvent.click(
+    screen.getAllByRole("button", { name: "Pilih cara belajar" })[0],
+  );
+  const alternatives = screen.getAllByRole("radio");
   expect(
     alternatives.filter((b) => (b as HTMLButtonElement).disabled),
   ).toHaveLength(2);
   await userEvent.click(
-    screen.getByRole("button", { name: "Mulai dengan Teman Baca" }),
+    screen.getByRole("button", { name: "Mulai Belajar Sekarang" }),
   );
   expect(start).toHaveBeenCalledWith(noMedia, "reading");
 });
@@ -456,27 +458,27 @@ it("onboarding menampilkan pratinjau sebelum menyimpan profil", async () => {
     <Onboarding initial={defaultProfile} onSave={save} busy={false} error="" />,
   );
   await userEvent.click(
-    screen.getByRole("button", { name: "Lanjut ke langkah berikutnya" }),
+    screen.getByRole("link", { name: "Simpan & Lanjut ke Aksesibilitas" }),
   );
   await userEvent.click(
-    screen.getByRole("button", { name: "Lanjut ke langkah berikutnya" }),
+    screen.getByRole("link", { name: "Pakai Pengaturan Ini & Lanjut" }),
   );
-  const math = screen.getByRole("checkbox", { name: /Matematika/ });
-  expect(math.getAttribute("aria-checked")).toBe("false");
+  const math = screen.getByRole("button", { name: /Matematika/ });
+  expect(math.getAttribute("aria-pressed")).toBe("false");
   await userEvent.click(math);
-  expect(math.getAttribute("aria-checked")).toBe("true");
+  expect(math.getAttribute("aria-pressed")).toBe("true");
 
   await userEvent.click(
-    screen.getByRole("button", { name: "Lanjut ke langkah berikutnya" }),
+    screen.getByRole("link", { name: "Lihat Rencana Belajarku" }),
   );
   expect(
     screen.getByRole("heading", {
-      name: /Hore Manda! Ruang belajarmu sudah siap/,
+      name: /Yeay! Rencana belajarmu udah siap/,
     }),
   ).toBeTruthy();
   expect(save).not.toHaveBeenCalled();
   await userEvent.click(
-    screen.getByRole("button", { name: /Masuk ke Beranda Utama/ }),
+    screen.getByRole("link", { name: /Lanjut ke Beranda Utama/ }),
   );
   expect(save).toHaveBeenCalledWith(
     expect.objectContaining({
@@ -499,15 +501,19 @@ it("menyimpan preferensi eksplisit dan mempertahankan profil saat tab diganti", 
       onBack={vi.fn()}
     />,
   );
-  await userEvent.click(screen.getByRole("button", { name: "Nunito Ramah" }));
+  await userEvent.click(
+    screen.getByRole("button", { name: /Nunito \(Bulat Lembut\)/ }),
+  );
   expect(save).not.toHaveBeenCalled();
-  await userEvent.click(screen.getByRole("switch", { name: "Penggaris Baca" }));
+  await userEvent.click(
+    screen.getAllByRole("checkbox", { name: "Penggaris baca" })[0],
+  );
   await userEvent.click(screen.getByRole("button", { name: "Profil" }));
-  const name = screen.getByLabelText("Nama panggilan");
+  const name = screen.getByLabelText("Nama Panggilan di Aplikasi");
   await userEvent.clear(name);
   await userEvent.type(name, "Manda santai");
   await userEvent.click(
-    screen.getByRole("button", { name: "Simpan Semua Preferensi" }),
+    screen.getByRole("button", { name: "Simpan Perubahan Profil" }),
   );
   expect(save).toHaveBeenCalledWith(
     expect.objectContaining({
@@ -554,3 +560,37 @@ it("memisahkan jawaban teramati dari estimasi model yang belum tersedia", async 
   expect(screen.getByText(/Estimasi penguasaan belum tersedia/)).toBeTruthy();
   expect(screen.queryByText(/82%/)).toBeNull();
 });
+
+import { ReaderDesign } from "../src/app/design-reader";
+it.each(["reading", "standard", "focus", "explore", "transcript"] as const)(
+  "mode %s memakai materi aktif tanpa contoh anatomi dari ekspor",
+  (mode) => {
+    render(
+      <ReaderDesign
+        material={material}
+        session={{ ...session, mode }}
+        preferences={defaultProfile.preferences}
+        draft="catatan"
+        setDraft={vi.fn()}
+        busy={false}
+        feedback={null}
+        speaking={false}
+        onSpeak={vi.fn()}
+        update={vi.fn()}
+        onPractice={vi.fn()}
+        onSettings={vi.fn()}
+        onBack={vi.fn()}
+        elapsed={0}
+        displayName="Manda"
+      />,
+    );
+    expect(
+      screen.getAllByText(
+        /Peran cahaya|Cahaya memasok energi|Cahaya menuju daun|Air adalah bahan/,
+      ).length,
+    ).toBeGreaterThan(0);
+    expect(screen.queryByText(/glomerulus|urine|tubulus/i)).toBeNull();
+    expect(screen.getByLabelText("Catatan sesi")).toBeTruthy();
+    expect(screen.getByLabelText("Format belajar")).toBeTruthy();
+  },
+);
