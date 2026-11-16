@@ -1,4 +1,5 @@
 import asyncio
+import ssl
 from uuid import uuid4
 
 import httpx
@@ -32,6 +33,32 @@ def install_transport(monkeypatch, handler):
         "AsyncClient",
         lambda **kwargs: original(transport=httpx.MockTransport(handler), **kwargs),
     )
+
+
+def test_raw_tls_failure_returns_retryable_service_error(monkeypatch):
+    monkeypatch.setattr(
+        profiles,
+        "settings",
+        lambda: Settings(
+            supabase_url="https://test.supabase.co", supabase_anon_key="public-key"
+        ),
+    )
+    calls = []
+
+    def fail_tls(request):
+        calls.append(request)
+        raise ssl.SSLError("upstream transport details must stay private")
+
+    install_transport(monkeypatch, fail_tls)
+    with pytest.raises(HTTPException) as exc:
+        asyncio.run(
+            profiles.request_supabase(
+                "POST", "/rest/v1/rpc/save_learning_state", "token", json={}
+            )
+        )
+    assert exc.value.status_code == 503
+    assert exc.value.detail == "layanan akun sedang tidak tersedia"
+    assert len(calls) == 1  # Do not silently replay a possibly committed mutation.
 
 
 def test_supabase_uses_server_token_and_owner_filter_without_overwriting_conflict(

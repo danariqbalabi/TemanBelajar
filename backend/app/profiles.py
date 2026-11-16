@@ -1,3 +1,4 @@
+import ssl
 from datetime import date
 from typing import Annotated, Literal
 from uuid import UUID
@@ -123,7 +124,7 @@ async def request_supabase(
                 headers=headers,
                 **kwargs,
             )
-    except httpx.RequestError as exc:
+    except (httpx.RequestError, ssl.SSLError) as exc:
         raise HTTPException(503, "layanan akun sedang tidak tersedia") from exc
     if response.status_code in (401, 403):
         raise HTTPException(401, "sesi masuk tidak valid atau sudah berakhir")
