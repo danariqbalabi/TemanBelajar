@@ -14,387 +14,234 @@ export function SummaryDesign({
   onPlan: () => void;
 }) {
   const sourceDialog = useRef<HTMLDialogElement>(null);
-  return (
-    <>
-      <div className="stitch-screen revamp-screen px-4 py-6 md:px-8">
-        <div className="flex flex-col w-full">
-          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center gap-3 text-sm">
-                <button
-                  className="inline-flex items-center gap-1.5 font-bold text-primary hover:text-primary-hover transition-colors px-3 py-1.5 rounded-xl bg-surface shadow-sm"
-                  type="button"
-                  onClick={onBack}
-                >
-                  <span
-                    className="material-symbols-outlined text-base"
-                    aria-hidden="true"
-                  >
-                    arrow_back
-                  </span>
-                  <span>Kembali ke Materi Saya</span>
-                </button>
-                <span className="text-muted-gray">•</span>
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-mint text-mint-dark">
-                  Matematika SMP Kelas 8
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-surface text-text-secondary hover:text-primary transition-all shadow-sm"
-                  type="button"
-                  onClick={() => sourceDialog.current?.showModal()}
-                >
-                  <span
-                    className="material-symbols-outlined text-sm"
-                    aria-hidden="true"
-                  >
-                    bookmark
-                  </span>
-                  Simpan Modul
-                </button>
-                <button
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-surface text-text-secondary hover:text-primary transition-all shadow-sm"
-                  type="button"
-                  onClick={() => sourceDialog.current?.showModal()}
-                >
-                  <span
-                    className="material-symbols-outlined text-sm"
-                    aria-hidden="true"
-                  >
-                    share
-                  </span>
-                  Bagikan
-                </button>
-              </div>
-            </div>
+return (<><div className="final-design final-screen-11 w-full pt-20 bg-canvas flex-1"><div className="flex flex-col w-full">
 
-            <header className="relative overflow-hidden rounded-3xl bg-surface p-6 sm:p-8 md:p-10 shadow-card">
-              <div className="absolute -right-16 -bottom-16 w-64 h-64 rounded-full bg-mint/30 blur-2xl pointer-events-none"></div>
-              <div className="absolute -right-4 -top-8 w-48 h-48 rounded-full bg-butter/40 blur-xl pointer-events-none"></div>
-              <div className="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-                <div className="max-w-3xl space-y-4">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-mint/50 text-mint-dark text-xs font-bold tracking-wide uppercase">
-                    <span className="w-2 h-2 rounded-full bg-mint-dark animate-pulse"></span>
-                    Modul Pembelajaran Mandiri
-                  </div>
-                  <h1 className="font-sans font-extrabold text-2xl sm:text-3xl md:text-4xl text-primary tracking-tight leading-tight">
-                    {material.title}
-                  </h1>
-                  <p className="text-base sm:text-lg text-text-secondary font-medium leading-relaxed max-w-2xl">
-                    Konsep kuadrat sisi miring, tripel pythagoras, dan
-                    penggunaannya dalam soal kontekstual.
-                  </p>
+<section className="w-full bg-surface-container-low/70 py-space-sm">
+<div className="max-w-[1200px] mx-auto px-margin-mobile md:px-margin flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div className="flex items-center flex-wrap gap-space-xs text-metadata font-metadata text-on-surface-variant">
+<a className="inline-flex items-center gap-1 hover:text-primary transition-colors font-label" href="#" onClick={e=>{e.preventDefault();(onBack)()}}>
+<span className="material-symbols-outlined text-[18px]" aria-hidden="true">arrow_back</span>
+<span>Kembali ke Materi Saya</span>
+</a>
+<span className="text-outline-variant">/</span>
+<span className="hover:text-primary cursor-pointer">{material.subject}</span>
+<span className="text-outline-variant">/</span>
+<span className="text-primary font-label truncate max-w-[220px] md:max-w-none">{material.title}</span>
+</div>
+<div className="flex items-center gap-space-sm">
+<a className="inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-surface text-primary hover:bg-mint-tint transition-all text-label font-label text-[13px] shadow-sm" href="#" onClick={e=>{e.preventDefault();(()=>sourceDialog.current?.showModal())()}}>
+<span className="material-symbols-outlined text-[16px] text-secondary" aria-hidden="true">menu_book</span>
+<span>{`${material.concepts.length} konsep · ${material.concepts.reduce((n,c)=>n+c.estimated_minutes,0)} menit`}</span>
+</a>
+</div>
+</div>
+</section>
 
-                  <div className="flex flex-wrap items-center gap-2.5 pt-2">
-                    <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-canvas text-primary text-xs font-semibold shadow-xs">
-                      <span
-                        className="material-symbols-outlined text-base text-mint-dark"
-                        aria-hidden="true"
-                      >
-                        schedule
-                      </span>
-                      <span>
-                        Estimasi Belajar: <strong>25 Menit Total</strong>
-                      </span>
-                    </div>
-                    <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-canvas text-primary text-xs font-semibold shadow-xs">
-                      <span
-                        className="material-symbols-outlined text-base text-lavender"
-                        aria-hidden="true"
-                      >
-                        extension
-                      </span>
-                      <span>
-                        <strong>6 Konsep Kunci</strong>
-                      </span>
-                    </div>
-                    <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-canvas text-primary text-xs font-semibold shadow-xs">
-                      <span
-                        className="material-symbols-outlined text-base text-success"
-                        aria-hidden="true"
-                      >
-                        analytics
-                      </span>
-                      <span>
-                        Penguasaan:{" "}
-                        <strong className="text-mint-dark">
-                          {"Hasil latihan tersedia di halaman progres"}
-                        </strong>
-                      </span>
-                    </div>
-                    <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-canvas text-text-secondary text-xs font-medium shadow-xs">
-                      <span
-                        className="material-symbols-outlined text-base"
-                        aria-hidden="true"
-                      >
-                        menu_book
-                      </span>
-                      <span>Sumber: Bab 3 Buku Paket Kemendikbudristek</span>
-                    </div>
-                  </div>
-                </div>
+<main className="w-full max-w-[1200px] mx-auto px-margin-mobile md:px-margin py-space-lg flex flex-col gap-space-xl">
 
-                <div className="shrink-0">
-                  <button
-                    className="inline-flex items-center justify-center gap-3 px-6 py-4 rounded-2xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-surface font-sans font-bold text-base shadow-modal transition-all transform hover:-translate-y-0.5"
-                    type="button"
-                    onClick={onChoose}
-                  >
-                    <span>Pilih Cara Belajar</span>
-                    <span
-                      className="material-symbols-outlined text-xl"
-                      aria-hidden="true"
-                    >
-                      arrow_forward
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </header>
+<header className="relative w-full rounded-2xl bg-surface p-space-md md:p-space-xl shadow-md overflow-hidden">
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              <section className="lg:col-span-8 space-y-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-3 h-8 bg-mint rounded-full"></div>
-                    <div>
-                      <h2 className="font-display font-bold text-xl text-primary tracking-tight">
-                        Alur Konsep yang Dipelajari
-                      </h2>
-                      <p className="text-xs text-text-secondary">
-                        Peta navigasi terstruktur agar belajar terarah tanpa
-                        rasa kewalahan
-                      </p>
-                    </div>
-                  </div>
-                  <span className="text-xs font-mono font-bold text-muted-gray uppercase tracking-wider bg-surface px-3 py-1.5 rounded-xl shadow-xs">
-                    Modul 02 / 05
-                  </span>
-                </div>
+<div className="absolute -top-12 -right-12 w-64 h-64 rounded-full bg-mint-tint/80 pointer-events-none"></div>
+<div className="absolute -bottom-16 left-1/3 w-48 h-48 rounded-full bg-butter-tint/60 pointer-events-none"></div>
+<div className="relative z-10 flex flex-col gap-space-md">
 
-                <div className="space-y-3.5">
-                  {material.concepts.map((c, i) => (
-                    <article
-                      className="p-5 rounded-2xl bg-surface shadow-card flex items-start gap-4 transition-all hover:shadow-md"
-                      key={c.id}
-                    >
-                      <span className="w-10 h-10 rounded-xl bg-mint flex items-center justify-center font-bold shrink-0">
-                        {i + 1}
-                      </span>
-                      <div className="flex-1">
-                        <h3 className="font-bold text-base text-primary">
-                          {c.title}
-                        </h3>
-                        <p className="text-sm text-text-secondary mt-2">
-                          {c.paragraphs[0]}
-                        </p>
-                        <p className="text-xs text-text-secondary mt-3">
-                          ± {c.estimated_minutes} menit •{" "}
-                          {c.prerequisites.length} prasyarat
-                        </p>
-                      </div>
-                    </article>
-                  ))}
-                </div>
+<div className="flex flex-wrap items-center gap-space-xs">
+<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary text-on-primary font-label text-label text-[12px] tracking-wide uppercase">
+<span className="material-symbols-outlined text-[14px]" aria-hidden="true">biotech</span>
+            IPA Biologi · SMP Kelas 8
+          </span>
+<span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-mint-tint text-success font-label text-label text-[12px]">
+<span className="material-symbols-outlined text-[15px]" aria-hidden="true">spa</span>
+            Siap Dipelajari · Ramah Sensorik
+          </span>
+<span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-lavender-tint text-primary font-label text-label text-[12px]">
+<span className="material-symbols-outlined text-[15px]" aria-hidden="true">auto_stories</span>
+            Kemendikbudristek Hlm. 78–106
+          </span>
+</div>
 
-                <div className="p-4 rounded-2xl bg-surface shadow-xs flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex items-center gap-2.5 text-xs text-text-secondary font-medium">
-                    <span
-                      className="material-symbols-outlined text-lg text-primary"
-                      aria-hidden="true"
-                    >
-                      description
-                    </span>
-                    <span>
-                      Tersedia dokumen asli kurikulum nasional (PDF Bab 3).
-                    </span>
-                  </div>
-                  <button
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:text-mint-dark px-3.5 py-2 rounded-xl bg-canvas hover:bg-mint/40 transition-colors"
-                    type="button"
-                    onClick={() => sourceDialog.current?.showModal()}
-                  >
-                    <span>Lihat Dokumen Asli / Halaman Referensi</span>
-                    <span
-                      className="material-symbols-outlined text-sm"
-                      aria-hidden="true"
-                    >
-                      open_in_new
-                    </span>
-                  </button>
-                </div>
-              </section>
+<div className="space-y-space-xs max-w-4xl">
+<h1 className="font-page-title text-page-title text-primary tracking-tight">{material.title}</h1>
+<p className="font-reading text-reading text-on-surface-variant max-w-3xl leading-relaxed">
+            Modul ini telah diringkas oleh <strong className="text-primary font-bold">Mimo</strong> menjadi 3 konsep inti yang bebas pusing, ramah disleksia, dan terbagi ke dalam segmen santai 10–15 menit agar kamu bisa belajar dengan ritme sendiri.
+          </p>
+</div>
 
-              <aside className="lg:col-span-4 space-y-6">
-                <div className="relative overflow-hidden rounded-3xl bg-mint/40 p-6 shadow-card space-y-4">
-                  <div className="flex items-center gap-4">
-                    <div className="relative w-16 h-16 rounded-2xl bg-surface p-1 shadow-sm shrink-0 flex items-center justify-center">
-                      <Image
-                        className="w-full h-full object-contain rounded-xl"
-                        data-alt="Charming 2D vector chameleon character Mimo sitting comfortably reading an open colorful geometry workbook, pastel sage green skin, light mint belly, big curious expressive eyes, blush on cheeks, warm clean minimal cartoon style"
-                        src="/design/mimo-5.png"
-                        width={1024}
-                        height={1024}
-                        alt="Mimo, teman belajarmu"
-                      ></Image>
-                    </div>
-                    <div>
-                      <div className="inline-flex items-center gap-1 text-[11px] font-bold text-mint-dark bg-mint px-2 py-0.5 rounded-md">
-                        🌿 Teman Belajarmu
-                      </div>
-                      <h3 className="font-display font-bold text-base text-primary mt-0.5">
-                        Mimo si Bunglon
-                      </h3>
-                    </div>
-                  </div>
+<div className="grid grid-cols-2 sm:grid-cols-4 gap-space-sm pt-space-xs">
+<div className="p-space-sm rounded-xl bg-canvas flex flex-col justify-center">
+<span className="text-metadata font-metadata text-outline text-[12px]">Estimasi Total</span>
+<div className="flex items-center gap-1 mt-0.5">
+<span className="material-symbols-outlined text-secondary text-[18px]" aria-hidden="true">schedule</span>
+<span className="font-label text-label text-primary font-bold">{`${material.concepts.length} konsep · ${material.concepts.reduce((n,c)=>n+c.estimated_minutes,0)} menit`}</span>
+</div>
+</div>
+<div className="p-space-sm rounded-xl bg-canvas flex flex-col justify-center">
+<span className="text-metadata font-metadata text-outline text-[12px]">Beban Belajar</span>
+<div className="flex items-center gap-1 mt-0.5">
+<span className="material-symbols-outlined text-secondary text-[18px]" aria-hidden="true">hub</span>
+<span className="font-label text-label text-primary font-bold">3 Konsep Inti</span>
+</div>
+</div>
+<div className="p-space-sm rounded-xl bg-canvas flex flex-col justify-center">
+<span className="text-metadata font-metadata text-outline text-[12px]">Status Sesi</span>
+<div className="flex items-center gap-1 mt-0.5">
+<span className="inline-block w-2.5 h-2.5 rounded-full bg-butter"></span>
+<span className="font-label text-label text-primary font-bold">Belum Dimulai</span>
+</div>
+</div>
+<div className="p-space-sm rounded-xl bg-canvas flex flex-col justify-center">
+<span className="text-metadata font-metadata text-outline text-[12px]">Tingkat Penguasaan BKT</span>
+<div className="flex items-center gap-1 mt-0.5">
+<span className="material-symbols-outlined text-outline text-[18px]" aria-hidden="true">radar</span>
+<span className="font-label text-label text-primary font-bold">Belum Diuji</span>
+</div>
+</div>
+</div>
 
-                  <div className="p-4 rounded-2xl bg-surface text-primary text-xs sm:text-sm font-medium leading-relaxed shadow-sm">
-                    <span className="font-bold text-mint-dark">
-                      {
-                        "Satu langkah kecil sudah berarti. Pilih format yang nyaman untukmu."
-                      }
-                    </span>{" "}
-                    {material.title}
-                  </div>
-                </div>
+<div className="flex flex-wrap items-center gap-space-sm pt-space-sm">
+<a className="inline-flex items-center justify-center gap-space-xs px-space-lg py-3 rounded-xl bg-primary text-on-primary hover:bg-primary-hover active:bg-primary-pressed transition-all font-label text-label shadow-sm" href="#" onClick={e=>{e.preventDefault();(onBack)()}}>
+<span>Pilih Cara Belajar</span>
+<span className="material-symbols-outlined text-[18px]" aria-hidden="true">arrow_forward</span>
+</a>
+<button className="inline-flex items-center justify-center gap-space-xs px-space-lg py-3 rounded-xl bg-secondary-container text-primary hover:bg-secondary-fixed transition-all font-label text-label" type="button" onClick={onChoose}>
+<span className="material-symbols-outlined text-[20px] text-primary" aria-hidden="true">play_arrow</span>
+<span>Mulai Langsung (Rekomendasi Mimo)</span>
+</button>
+<button className="p-3 rounded-xl bg-surface-container hover:bg-surface-variant text-primary transition-colors" title="Simpan ke Rencana Belajar" type="button" onClick={onPlan} aria-label="Susun rencana belajar">
+<span className="material-symbols-outlined text-[20px]" aria-hidden="true">bookmark_add</span>
+</button>
+</div>
+</div>
+</header>
 
-                <div className="rounded-3xl bg-surface p-6 shadow-card space-y-5">
-                  <div>
-                    <h3 className="font-display font-bold text-base text-primary">
-                      Pilihan Format Belajar
-                    </h3>
-                    <p className="text-xs text-text-secondary mt-0.5">
-                      Pilih mode yang paling nyaman untuk indra belajarmu
-                    </p>
-                  </div>
-                  <div
-                    aria-label="Format Belajar"
-                    className="space-y-3"
-                    role="radiogroup"
-                  >
-                    <label className="group relative flex items-start gap-3.5 p-3.5 rounded-2xl bg-canvas hover:bg-mint/20 cursor-pointer transition-all shadow-xs">
-                      <input
-                        className="mt-1 text-primary focus:ring-mint-dark"
-                        name="learning_format"
-                        type="radio"
-                        disabled={true}
-                        aria-label="Pilih format di langkah berikutnya"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span
-                            className="material-symbols-outlined text-lg text-primary"
-                            aria-hidden="true"
-                          >
-                            menu_book
-                          </span>
-                          <span className="font-bold text-xs sm:text-sm text-primary">
-                            Teman Baca
-                          </span>
-                        </div>
-                        <p className="text-[11px] text-text-secondary mt-0.5">
-                          Format teks lapang &amp; penggaris fokus baca anti
-                          lelah.
-                        </p>
-                      </div>
-                    </label>
+<div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
 
-                    <label className="group relative flex items-start gap-3.5 p-3.5 rounded-2xl bg-canvas hover:bg-mint/20 cursor-pointer transition-all shadow-xs">
-                      <input
-                        className="mt-1 text-primary focus:ring-mint-dark"
-                        name="learning_format"
-                        type="radio"
-                        disabled={true}
-                        aria-label="Pilih format di langkah berikutnya"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span
-                            className="material-symbols-outlined text-lg text-primary"
-                            aria-hidden="true"
-                          >
-                            headphones
-                          </span>
-                          <span className="font-bold text-xs sm:text-sm text-primary">
-                            Audio &amp; Visual Explorer
-                          </span>
-                        </div>
-                        <p className="text-[11px] text-text-secondary mt-0.5">
-                          Dengarkan narasi ramah sambil mengamati animasi
-                          segitiga.
-                        </p>
-                      </div>
-                    </label>
+<section className="lg:col-span-8 flex flex-col gap-space-xl">
 
-                    <label className="group relative flex items-start gap-3.5 p-3.5 rounded-2xl bg-canvas hover:bg-mint/20 cursor-pointer transition-all shadow-xs">
-                      <input
-                        className="mt-1 text-primary focus:ring-mint-dark"
-                        name="learning_format"
-                        type="radio"
-                        disabled={true}
-                        aria-label="Pilih format di langkah berikutnya"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span
-                            className="material-symbols-outlined text-lg text-primary"
-                            aria-hidden="true"
-                          >
-                            bolt
-                          </span>
-                          <span className="font-bold text-xs sm:text-sm text-primary">
-                            Focus Navigator
-                          </span>
-                        </div>
-                        <p className="text-[11px] text-text-secondary mt-0.5">
-                          Pecah materi ke dalam langkah mikro 2 menit satu
-                          kartu.
-                        </p>
-                      </div>
-                    </label>
-                  </div>
+<div className="w-full flex flex-col gap-space-md">
+<div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-space-xs">
+<div>
+<div className="flex items-center gap-space-xs">
+<span className="inline-block w-3 h-3 rounded-full bg-secondary"></span>
+<span className="text-metadata font-metadata text-secondary uppercase font-bold tracking-wider text-[11px]">Alur Belajar Direkomendasikan</span>
+</div>
+<h2 className="font-section-title text-section-title text-primary mt-1">Peta Konsep &amp; Urutan Belajar</h2>
+</div>
+<p className="text-metadata font-metadata text-outline">Ikuti nomor urut untuk pemahaman terbaik</p>
+</div>
 
-                  <button
-                    className="w-full py-4 px-5 rounded-2xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-surface font-sans font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-modal transition-all transform hover:-translate-y-0.5"
-                    type="button"
-                    onClick={onChoose}
-                  >
-                    {"Pilih Cara Belajar"}
-                  </button>
-                </div>
+<div className="flex flex-col gap-space-md relative">{material.concepts.map((c,index)=>(<article className="relative z-10 rounded-2xl bg-surface p-space-md md:p-space-lg shadow-sm hover:shadow-md transition-shadow" key={c.id}><div className="flex justify-between gap-4"><span className="w-10 h-10 bg-mint rounded-full flex items-center justify-center font-bold">{index+1}</span><span className="text-sm">{c.estimated_minutes} menit</span></div><h3 className="font-bold text-xl mt-4">{c.title}</h3><p className="my-3 text-text-secondary">{c.paragraphs[0]}</p><p className="text-sm">{c.prerequisites.length?`${c.prerequisites.length} konsep prasyarat`:"Bisa dimulai langsung"}</p><button className="bg-primary text-white rounded-xl px-5 py-3 mt-4" onClick={onChoose}>Pelajari bagian ini →</button></article>))}</div>
+</div>
 
-                <div className="p-4 rounded-2xl bg-butter/30 shadow-xs flex items-center gap-3 text-xs text-butter-dark">
-                  <span className="text-xl shrink-0">💡</span>
-                  <p className="font-medium">
-                    Sesi singkat bisa kamu sesuaikan dengan waktu dan
-                    kebutuhanmu. Belajar jangka panjang dibanding belajar
-                    maraton 2 jam.
-                  </p>
-                </div>
-              </aside>
-            </div>
-          </div>
-        </div>
-        <button
-          onClick={onPlan}
-          className="mt-6 min-h-[44px] px-5 rounded-xl bg-canvas text-primary"
-        >
-          Susun rencana belajar
-        </button>
-        <dialog ref={sourceDialog} className="stitch-reason max-w-3xl">
-          <h2>Sumber Materi</h2>
-          {material.sources.map((s) => (
-            <article key={s.id}>
-              <h3 className="font-bold">{s.label}</h3>
-              <p className="whitespace-pre-wrap">{s.text}</p>
-            </article>
-          ))}
-          <button onClick={() => sourceDialog.current?.close()}>
-            Tutup sumber
-          </button>
-        </dialog>
-      </div>
-    </>
-  );
-}
+<div className="w-full flex flex-col gap-space-md pt-space-sm" id="pilih-mode">
+<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs">
+<div>
+<span className="text-metadata font-metadata text-secondary uppercase font-bold tracking-wider text-[11px]">Kenyamanan Sensorik &amp; Kognitif</span>
+<h2 className="font-section-title text-section-title text-primary">Tersedia 4 Mode Belajar Adaptif</h2>
+</div>
+<a className="inline-flex items-center gap-1 text-label font-label text-primary hover:underline" href="#" onClick={e=>{e.preventDefault();(onBack)()}}>
+<span>Buka Mode Selector Lengkap</span>
+<span className="material-symbols-outlined text-[16px]" aria-hidden="true">open_in_new</span>
+</a>
+</div>
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+
+<div className="p-space-md rounded-2xl bg-mint-tint flex flex-col justify-between gap-space-md shadow-sm transition-transform hover:-translate-y-0.5">
+<div className="flex flex-col gap-space-xs">
+<div className="flex items-center justify-between">
+<span className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center text-primary">
+<span className="material-symbols-outlined text-[22px]" aria-hidden="true">format_size</span>
+</span>
+<span className="px-2.5 py-0.5 rounded-full bg-surface text-primary font-label text-[11px]">Ramah Disleksia</span>
+</div>
+<h4 className="font-card-title text-card-title text-primary mt-2">1. Teman Baca (Reading Companion)</h4>
+<p className="font-body text-body text-on-surface-variant text-[14px]">
+                  Teks diformat dengan font ramah baca, pemenggalan suku kata bantu, dan fitur mistar pemandu fokus baris per baris.
+                </p>
+</div>
+<button className="w-full py-2 rounded-xl bg-surface text-primary hover:bg-canvas font-label text-label text-[13px] flex items-center justify-center gap-1 transition-colors" type="button" onClick={onChoose}>
+<span>Pilih Mode Teman Baca</span>
+<span className="material-symbols-outlined text-[16px]" aria-hidden="true">chevron_right</span>
+</button>
+</div>
+
+<div className="p-space-md rounded-2xl bg-butter-tint flex flex-col justify-between gap-space-md shadow-sm transition-transform hover:-translate-y-0.5">
+<div className="flex flex-col gap-space-xs">
+<div className="flex items-center justify-between">
+<span className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center text-primary">
+<span className="material-symbols-outlined text-[22px]" aria-hidden="true">checklist</span>
+</span>
+<span className="px-2.5 py-0.5 rounded-full bg-surface text-primary font-label text-[11px]">Bebas Distraksi</span>
+</div>
+<h4 className="font-card-title text-card-title text-primary mt-2">2. Belajar Selangkah demi Selangkah</h4>
+<p className="font-body text-body text-on-surface-variant text-[14px]">
+                  Navigasi per fragmen mini (chunking). Satu aktivitas per layar, dilengkapi timer lembut tanpa alarm mendadak.
+                </p>
+</div>
+<button className="w-full py-2 rounded-xl bg-surface text-primary hover:bg-canvas font-label text-label text-[13px] flex items-center justify-center gap-1 transition-colors" type="button" onClick={onChoose}>
+<span>Pilih Mode Selangkah</span>
+<span className="material-symbols-outlined text-[16px]" aria-hidden="true">chevron_right</span>
+</button>
+</div>
+
+<div className="p-space-md rounded-2xl bg-lavender-tint flex flex-col justify-between gap-space-md shadow-sm transition-transform hover:-translate-y-0.5">
+<div className="flex flex-col gap-space-xs">
+<div className="flex items-center justify-between">
+<span className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center text-primary">
+<span className="material-symbols-outlined text-[22px]" aria-hidden="true">headphones</span>
+</span>
+<span className="px-2.5 py-0.5 rounded-full bg-surface text-primary font-label text-[11px]">Audio Naratif</span>
+</div>
+<h4 className="font-card-title text-card-title text-primary mt-2">3. Dengarkan &amp; Jelajahi</h4>
+<p className="font-body text-body text-on-surface-variant text-[14px]">
+                  Narasi suara santai dan hangat dengan deskripsi suara terstruktur untuk setiap organ anatomi ginjal dan kulit.
+                </p>
+</div>
+<button className="w-full py-2 rounded-xl bg-surface text-primary hover:bg-canvas font-label text-label text-[13px] flex items-center justify-center gap-1 transition-colors" type="button" onClick={onChoose}>
+<span>Pilih Mode Dengarkan</span>
+<span className="material-symbols-outlined text-[16px]" aria-hidden="true">chevron_right</span>
+</button>
+</div>
+
+<div className="p-space-md rounded-2xl bg-peach-tint flex flex-col justify-between gap-space-md shadow-sm transition-transform hover:-translate-y-0.5">
+<div className="flex flex-col gap-space-xs">
+<div className="flex items-center justify-between">
+<span className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center text-primary">
+<span className="material-symbols-outlined text-[22px]" aria-hidden="true">palette</span>
+</span>
+<span className="px-2.5 py-0.5 rounded-full bg-surface text-primary font-label text-[11px]">Visual &amp; Teks</span>
+</div>
+<h4 className="font-card-title text-card-title text-primary mt-2">4. Belajar Teks &amp; Visual</h4>
+<p className="font-body text-body text-on-surface-variant text-[14px]">
+                  Diagram anatomi berwarna lembut dengan penomoran jelas, kartu intisari, dan transkrip teks pendamping lengkap.
+                </p>
+</div>
+<button className="w-full py-2 rounded-xl bg-surface text-primary hover:bg-canvas font-label text-label text-[13px] flex items-center justify-center gap-1 transition-colors" type="button" onClick={onChoose}>
+<span>Pilih Mode Visual</span>
+<span className="material-symbols-outlined text-[16px]" aria-hidden="true">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+
+<aside className="lg:col-span-4 flex flex-col gap-space-md"><div className="rounded-2xl bg-mint-tint p-6 border border-divider"><Image src="/design/mimo-final.png" width={1408} height={1120} alt="" className="w-32 h-auto object-contain mx-auto"/><h2 className="text-lg font-bold mt-4">Pesan Hangat Mimo</h2><p className="mt-3">Mulai dari {material.concepts[0]?.title}. Pilih format yang nyaman, dan kamu bisa berganti kapan saja.</p><button onClick={onChoose} className="bg-primary text-white px-5 py-3 rounded-xl mt-5">Pilih cara belajar</button><button onClick={onPlan} className="block mt-4">Tambahkan ke rencana</button></div></aside>
+</div>
+
+<section className="w-full rounded-2xl bg-surface p-space-md md:p-space-lg flex flex-col sm:flex-row items-center justify-between gap-space-md shadow-sm" id="sumber-asli">
+<div className="flex items-start sm:items-center gap-space-md">
+<div className="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary flex-shrink-0">
+<span className="material-symbols-outlined text-[26px]" aria-hidden="true">description</span>
+</div>
+<div>
+<h4 className="font-card-title text-card-title text-primary text-[16px]">{`${material.concepts.length} konsep · ${material.concepts.reduce((n,c)=>n+c.estimated_minutes,0)} menit`}</h4>
+<p className="font-body text-body text-on-surface-variant text-[13px]">{material.title}</p>
+</div>
+</div>
+<div className="flex items-center gap-space-xs flex-shrink-0 w-full sm:w-auto">
+<button className="w-full sm:w-auto px-space-md py-2 rounded-xl bg-canvas hover:bg-surface-container text-primary font-label text-label text-[13px] transition-colors flex items-center justify-center gap-1" type="button" onClick={()=>window.print()}>Cetak ringkasan</button>
+</div>
+</section>
+</main>
+</div></div><dialog ref={sourceDialog} className="stitch-reason"><h2>Teks sumber asli</h2>{material.sources.map(s=><article key={s.id}><h3>{s.label}</h3><p className="whitespace-pre-wrap">{s.text}</p></article>)}<button onClick={()=>sourceDialog.current?.close()}>Tutup sumber</button></dialog></>);}

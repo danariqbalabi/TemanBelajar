@@ -28,7 +28,7 @@ export function Catalog({
   errorsPanel: ReactNode;
 }) {
   const [subject, setSubject] = useState("Semua Topik"),
-    [status, setStatus] = useState("all");
+    [status, setStatus] = useState("all"), [list,setList]=useState(false);
   const completed = (id: string) =>
     new Set(
       sessions
@@ -46,244 +46,136 @@ export function Catalog({
           )) ||
         (status === "ready" && !sessions.some((s) => s.material_id === m.id))),
   );
-  return (
-    <>
-      <div className="stitch-screen revamp-screen px-4 py-6 md:px-8">
-        {errorsPanel}
-        {uploadPanel}
-        <div className="flex flex-col w-full">
-          <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-            <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 pb-2">
-              <div className="space-y-1.5">
-                <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-mint text-primary">
-                    Koleksi Aktif
-                  </span>
-                  <span className="text-xs text-text-secondary font-mono">{`${materials.length} materi tersedia`}</span>
-                </div>
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary tracking-tight font-sans">
-                  {"Materi Belajarmu 🌿"}
-                </h1>
-                <p className="text-sm sm:text-base text-text-secondary">
-                  Pilih materi yang ingin kamu pelajari hari ini dengan ritme
-                  santai dan bebas cemas.
-                </p>
-              </div>
-              <div className="flex items-center gap-3">
-                <button
-                  className="inline-flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-primary text-surface font-semibold text-sm shadow-md hover:bg-primary-hover active:bg-primary-pressed transition-all focus-visible:outline-focus min-h-[44px]"
-                  type="button"
-                  onClick={onUpload}
-                >
-                  <span
-                    aria-hidden="true"
-                    className="material-symbols-outlined text-lg leading-none"
-                  >
-                    add_circle
-                  </span>
-                  <span>+ Unggah Materi Baru</span>
-                </button>
-              </div>
-            </header>
+return (<><div className="final-design final-screen-8 w-full pt-20 bg-canvas flex-1">{errorsPanel}{uploadPanel}<div className="flex flex-col w-full">
+<div className="max-w-[1200px] w-full mx-auto px-margin py-space-xl flex flex-col gap-space-xl">
 
-            <section
-              aria-label="Alat Pencarian dan Filter Materi"
-              className="space-y-4"
-            >
-              <div className="flex flex-col lg:flex-row gap-4 lg:items-center justify-between">
-                <div className="relative flex-1 max-w-xl">
-                  <label className="sr-only" htmlFor="material-search">
-                    Cari materi atau topik konsep
-                  </label>
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-text-secondary">
-                    <span
-                      aria-hidden="true"
-                      className="material-symbols-outlined text-xl"
-                    >
-                      search
-                    </span>
-                  </div>
-                  <input
-                    className="w-full pl-10 pr-10 py-3 rounded-xl bg-surface border-0 shadow-sm text-sm text-primary placeholder:text-muted-gray focus-visible:outline-focus transition-all"
-                    id="material-search"
-                    placeholder="Cari materi, rumus segitiga, fotosintesis..."
-                    type="text"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    aria-label="Cari materi atau topik konsep"
-                  />
-                  <button
-                    aria-label="Bersihkan pencarian"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted-gray hover:text-primary hidden"
-                    id="search-clear-btn"
-                    type="button"
-                    onClick={() => setQuery("")}
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="material-symbols-outlined text-base"
-                    >
-                      cancel
-                    </span>
-                  </button>
-                </div>
+<header className="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg">
+<div className="flex flex-col gap-space-xs max-w-2xl">
+<div className="flex items-center gap-space-sm">
+<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-primary font-label text-label">
+<span className="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+            Katalog Belajar Pribadi
+          </span>
+<span className="text-on-surface-variant font-metadata text-metadata">{`${materials.length} materi · ${jobs.filter(j=>j.status!=="ready").length} unggahan belum siap`}</span>
+</div>
+<h1 className="font-display text-page-title text-primary tracking-tight">
+          Materi Saya
+        </h1>
+<p className="font-body text-body text-on-surface-variant">
+          Kumpulan modul, rangkuman, dan catatan belajarmu yang sudah disesuaikan agar nyaman dibaca dan dipahami tanpa rasa cemas.
+        </p>
+</div>
 
-                <div className="flex items-center gap-2 self-start lg:self-center shrink-0">
-                  <span className="text-xs font-semibold text-text-secondary hidden sm:inline">
-                    Urutan:
-                  </span>
-                  <div className="relative">
-                    <select
-                      aria-label="Filter status materi"
-                      className="appearance-none bg-surface text-primary text-xs font-semibold py-2.5 pl-3.5 pr-8 rounded-xl shadow-sm cursor-pointer hover:bg-canvas focus-visible:outline-focus transition-all border-0"
-                      value={status}
-                      onChange={(e) => setStatus(e.target.value)}
-                    >
-                      <option value="all">Semua materi</option>
-                      <option value="learning">Sedang dipelajari</option>
-                      <option value="ready">Belum dimulai</option>
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-text-secondary">
-                      <span
-                        aria-hidden="true"
-                        className="material-symbols-outlined text-sm"
-                      >
-                        expand_more
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+<div className="flex flex-wrap items-center gap-space-sm shrink-0">
+<button className="inline-flex items-center justify-center gap-space-xs px-5 py-3 rounded-xl bg-surface text-primary font-label text-label hover:bg-canvas transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-tertiary" type="button" onClick={()=>{const m=materials.find(m=>m.is_demo);if(m)onDetail(m)}}>
+<span className="material-symbols-outlined text-[20px]" aria-hidden="true">lightbulb</span>
+          Coba Materi Contoh
+        </button>
+<button className="inline-flex items-center justify-center gap-space-xs px-6 py-3 rounded-xl bg-primary text-on-primary font-label text-label hover:bg-primary-hover active:bg-primary-pressed transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-tertiary focus:ring-offset-2" type="button" onClick={onUpload}>
+<span className="material-symbols-outlined text-[20px]" aria-hidden="true">add_circle</span>
+          + Tambah Materi Baru
+        </button>
+</div>
+</header>
 
-              <div
-                aria-label="Filter Mata Pelajaran"
-                className="flex items-center gap-2 overflow-x-auto pb-1 text-xs font-semibold no-scrollbar"
-                role="tablist"
-              >
-                {[
-                  "Semua Topik",
-                  ...new Set(materials.map((m) => m.subject)),
-                ].map((s) => (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => setSubject(s)}
-                    aria-pressed={subject === s}
-                    className={
-                      "px-4 py-2 rounded-full text-sm min-h-[44px] " +
-                      (subject === s
-                        ? "bg-mint text-primary"
-                        : "bg-surface text-text-secondary")
-                    }
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-            </section>
+<section aria-label="Status Pemrosesan Berjalan" className="w-full bg-butter-tint rounded-2xl p-space-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md shadow-sm">{jobsPanel}</section>
 
-            <section
-              aria-label="Daftar Modul Pembelajaran"
-              className="grid grid-cols-1 lg:grid-cols-2 gap-6"
-            >
-              {filtered.map((item) => (
-                <article
-                  className="bg-surface rounded-2xl p-6 shadow-card hover:shadow-lg transition-all flex flex-col justify-between relative group"
-                  key={item.id}
-                >
-                  <div className="flex justify-between gap-3 text-xs text-text-secondary">
-                    <span>{item.subject}</span>
-                    <span>
-                      {item.is_demo ? "Contoh terkurasi" : "Materi kamu"}
-                    </span>
-                  </div>
-                  <div className="my-5">
-                    <h2 className="text-xl font-extrabold text-primary">
-                      {item.title}
-                    </h2>
-                    <p className="text-sm text-text-secondary mt-2">
-                      {item.concepts.length} konsep • {item.question_count} soal
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="text-xs text-text-secondary">
-                      {completed(item.id)} / {item.concepts.length} konsep
-                      dibaca
-                    </span>
-                    <button
-                      onClick={() => onDetail(item)}
-                      className="px-5 py-2.5 rounded-xl bg-primary text-surface text-xs font-semibold min-h-[44px]"
-                    >
-                      Buka Ringkasan
-                    </button>
-                  </div>
-                </article>
-              ))}
-              {!filtered.length && (
-                <p className="p-6 rounded-2xl bg-surface text-text-secondary">
-                  Belum ada materi yang cocok. Ubah pencarian atau unggah materi
-                  baru.
-                </p>
-              )}
-            </section>
+<section aria-label="Pencarian dan Filter Materi" className="flex flex-col gap-space-md">
 
-            <section
-              aria-label="Bantuan Pendamping Mimo"
-              className="bg-mint rounded-3xl p-6 sm:p-8 shadow-card relative overflow-hidden"
-            >
-              <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8 relative z-10">
-                <div className="w-32 h-32 sm:w-36 sm:h-36 shrink-0 flex items-center justify-center">
-                  <Image
-                    alt="Mimo si bunglon hijau menggemaskan sedang duduk santai sambil membaca buku dengan penuh semangat"
-                    className="w-full h-full object-contain filter drop-shadow-md select-none transform hover:scale-105 transition-transform"
-                    src="/design/mimo-0.png"
-                    width={1024}
-                    height={1024}
-                  ></Image>
-                </div>
+<div className="relative w-full">
+<span className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-outline">
+<span className="material-symbols-outlined text-[22px]" aria-hidden="true">search</span>
+</span>
+<input className="w-full pl-12 pr-28 py-3.5 rounded-xl bg-surface text-primary placeholder-outline font-body text-body shadow-sm focus:outline-none focus:ring-2 focus:ring-tertiary" placeholder="Cari judul materi, bab, kata kunci, atau mata pelajaran..." type="search" value={query} onChange={e=>setQuery(e.target.value)} aria-label="Cari materi atau topik konsep"/>
+<div className="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none">
+<kbd className="hidden sm:inline-block px-2.5 py-1 bg-surface-container rounded-lg font-metadata text-metadata text-on-surface-variant text-xs font-semibold">
+            Ctrl + K
+          </kbd>
+</div>
+</div>
 
-                <div className="flex-1 space-y-3 text-center md:text-left">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/70 text-primary text-xs font-bold shadow-xs">
-                    <span>🦎 Mimo Siap Membantu</span>
-                  </div>
-                  <h3 className="text-lg sm:text-xl font-extrabold text-primary leading-snug">
-                    Mau belajar bab atau tugas lain hari ini?
-                  </h3>
-                  <p className="text-xs sm:text-sm text-primary/80 max-w-2xl leading-relaxed">
-                    Manda bisa unggah catatan sekolah dalam bentuk PDF, foto
-                    rangkuman, atau ketik langsung. Mimo bantu susunkan zine
-                    belajar yang ramah mata, tanpa dinding teks yang bikin
-                    pusing!
-                  </p>
-                  <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-2">
-                    <button
-                      className="px-4 py-2.5 rounded-xl bg-primary text-surface font-semibold text-xs shadow-sm hover:bg-primary-hover active:bg-primary-pressed transition-all min-h-[44px] focus-visible:outline-focus"
-                      type="button"
-                      onClick={onUpload}
-                    >
-                      Coba Materi Demo Lain
-                    </button>
-                    <button
-                      className="px-4 py-2.5 rounded-xl bg-white/80 text-primary font-bold text-xs shadow-xs hover:bg-white active:bg-white/90 transition-all min-h-[44px] focus-visible:outline-focus"
-                      type="button"
-                      onClick={onSettings}
-                    >
-                      Atur Preferensi Format
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </div>
+<div className="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+
+<div className="flex items-center gap-space-xs overflow-x-auto pb-1 -mx-margin px-margin lg:mx-0 lg:px-0">{['Semua Topik',...new Set(materials.map(m=>m.subject))].map(s=><button key={s} onClick={()=>setSubject(s)} aria-pressed={subject===s} className="px-4 py-2 rounded-full bg-surface border border-divider">{s}</button>)}</div>
+
+<div className="flex items-center gap-space-sm shrink-0 flex-wrap">
+<div className="relative inline-block text-left">
+<select aria-label="Filter status belajar" className="appearance-none bg-surface text-primary font-label text-label pl-3.5 pr-8 py-2 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-tertiary cursor-pointer">
+<option>Semua Status</option>
+<option>Sedang Dipelajari</option>
+<option>Belum Mulai</option>
+<option>Selesai</option>
+</select>
+<span className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-outline">
+<span className="material-symbols-outlined text-[18px]" aria-hidden="true">expand_more</span>
+</span>
+</div>
+<div className="relative inline-block text-left">
+<select aria-label="Urutkan materi" className="appearance-none bg-surface text-primary font-label text-label pl-3.5 pr-8 py-2 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-tertiary cursor-pointer">
+<option>Terakhir Dipelajari</option>
+<option>Terbaru Ditambahkan</option>
+<option>A-Z Judul</option>
+</select>
+<span className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-outline">
+<span className="material-symbols-outlined text-[18px]" aria-hidden="true">sort</span>
+</span>
+</div>
+<div className="flex items-center bg-surface p-1 rounded-xl shadow-sm">
+<button aria-label="Tampilan kartu" className="p-1.5 rounded-lg bg-surface-container text-primary" type="button" onClick={()=>setList(false)} aria-pressed={!list}>
+<span className="material-symbols-outlined text-[18px]" aria-hidden="true">grid_view</span>
+</button>
+<button aria-label="Tampilan daftar" className="p-1.5 rounded-lg text-outline hover:text-primary transition-colors" type="button" onClick={()=>setList(true)} aria-pressed={list}>
+<span className="material-symbols-outlined text-[18px]" aria-hidden="true">format_list_bulleted</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+
+<section aria-label="Daftar Modul Belajar" className={"grid gap-6 "+(list?"grid-cols-1":"grid-cols-1 md:grid-cols-2 lg:grid-cols-3")}>{filtered.map(item=>(<article className="flex flex-col justify-between bg-surface rounded-3xl p-space-lg shadow-sm hover:shadow-md transition-shadow relative" key={item.id}><div className="flex justify-between text-sm"><span>{item.subject}</span><span>{item.is_demo?'Materi contoh':'Materi kamu'}</span></div><div className="my-5 p-5 rounded-2xl bg-mint-tint border border-divider"><span className="material-symbols-outlined text-4xl" aria-hidden="true">menu_book</span><p className="mt-3 text-sm">{item.concepts.length} konsep · {item.question_count} soal</p></div><h2 className="text-xl font-bold">{item.title}</h2><p className="text-sm mt-3">{completed(item.id)} / {item.concepts.length} konsep dibaca</p><div className="h-2 rounded-full bg-mint-tint my-4"><div className="h-full bg-primary rounded-full" style={{width:`${item.concepts.length?Math.min(100,completed(item.id)/item.concepts.length*100):0}%`}}/></div><button onClick={()=>onDetail(item)} className="bg-primary text-white rounded-xl px-5 py-3 font-bold">Buka Ringkasan →</button></article>))}{!filtered.length&&<div className="col-span-full text-center bg-mint-tint rounded-3xl p-12"><h2 className="text-2xl font-bold">{materials.length?"Belum ada materi yang cocok":"Belum ada materi tersimpan"}</h2><p className="mt-3">{materials.length?"Coba kata kunci atau filter lain.":"Tambahkan PDF atau tempel catatanmu untuk mulai belajar."}</p><button className="mt-6 bg-primary text-white px-5 py-3 rounded-xl" onClick={()=>{if(materials.length){setQuery("");setSubject("Semua Topik");setStatus("all")}else onUpload()}}>{materials.length?"Hapus filter":"Tambah materi"}</button></div>}</section>
+
+<section aria-label="Catatan Pendamping dari Mimo" className="w-full bg-surface rounded-3xl p-space-lg lg:p-space-xl shadow-sm flex flex-col md:flex-row items-center gap-space-lg">
+<div className="w-28 h-28 shrink-0 flex items-center justify-center bg-mint-tint rounded-2xl p-2 relative">
+
+<svg className="w-24 h-24" fill="none" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+
+<circle cx="80" cy="85" fill="#C8E8CE" r="48"></circle>
+<path d="M45 105 C30 115, 25 135, 40 145 C55 155, 75 140, 65 125 C60 118, 50 120, 52 130" fill="none" stroke="#C8E8CE" strokeLinecap="round" strokeWidth="12"></path>
+
+<path d="M80 32 C70 45, 90 45, 80 32" fill="#C8E8CE"></path>
+
+<rect fill="#001766" height="15" rx="4" width="76" x="42" y="55"></rect>
+<polygon fill="#FFFFFF" points="80,57 76,64 81,64 77,70 85,63 80,63"></polygon>
+
+<ellipse cx="68" cy="80" fill="#FFCA9D" opacity="0.7" rx="10" ry="7"></ellipse>
+<ellipse cx="98" cy="80" fill="#FFCA9D" opacity="0.7" rx="10" ry="7"></ellipse>
+
+<circle cx="70" cy="74" fill="#112520" r="6"></circle>
+<circle cx="72" cy="72" fill="#FFFFFF" r="2"></circle>
+<path d="M93 74 Q98 70 103 74" fill="none" stroke="#112520" strokeLinecap="round" strokeWidth="2.5"></path>
+
+<path d="M78 88 Q83 94 88 88" fill="none" stroke="#112520" strokeLinecap="round" strokeWidth="2.5"></path>
+
+<ellipse cx="80" cy="115" fill="#EAF6EB" rx="14" ry="12"></ellipse>
+</svg>
+</div>
+<div className="flex flex-col gap-space-xs text-center md:text-left">
+<div className="inline-flex items-center justify-center md:justify-start gap-1.5 text-secondary font-label text-label">
+<span className="material-symbols-outlined text-[18px]" aria-hidden="true">verified</span>
+          Catatan Sahabat Belajar dari Mimo
         </div>
-        <div className="mt-6">
-          {jobsPanel}
-          <p className="text-xs text-text-secondary">
-            {jobs.filter((j) => j.status !== "ready").length} unggahan belum
-            siap
-          </p>
-        </div>
-      </div>
-    </>
-  );
-}
+<blockquote className="font-mimo-voice text-mimo-voice text-primary max-w-3xl">
+          “Semua materi yang kamu unggah bakal otomatis disesuaikan dengan preferensi bacamu (font ramah disleksia, pemenggal suku kata, dan pemecah durasi 15 menit). Belajar jadi tenang tanpa pusing!”
+        </blockquote>
+<div className="flex items-center justify-center md:justify-start gap-space-sm mt-1 text-on-surface-variant font-metadata text-metadata">
+<span>✓ Otomatis simpan posisi baca</span>
+<span>•</span>
+<span>✓ Mode bebas distraksi aktif</span>
+<span>•</span>
+<span>✓ Sesuai standar kurikulum nasional</span>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div></>);}
