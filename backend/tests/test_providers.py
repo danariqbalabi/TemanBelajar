@@ -188,3 +188,32 @@ def test_gemini_failure_releases_job_and_preserves_source(client, monkeypatch, f
     assert "private" not in response.text
     assert client.get(url).json()["status"] == "failed"
     assert client.get(url + "/source").json()["sources"]
+
+
+def test_atomic_ai_admission_maps_quota_denial_without_extra_request(monkeypatch):
+    from app.store import Snapshot
+
+    config = Settings(
+        supabase_url="https://test.supabase.co",
+        supabase_anon_key="public",
+        supabase_service_role_key="server",
+        ai_daily_global_limit=7,
+    )
+    monkeypatch.setattr(profiles, "settings", lambda: config)
+    monkeypatch.setattr(store_module, "settings", lambda: config)
+    calls = []
+
+    def handler(request):
+        import json
+
+        calls.append(request)
+        assert request.url.path == "/rest/v1/rpc/save_learning_state_with_ai_budget"
+        assert json.loads(request.content)["daily_limit"] == 7
+        return httpx.Response(200, json=-1)
+
+    install_transport(monkeypatch, handler)
+    store = Store(Identity(id=uuid4(), token="user"))
+    with pytest.raises(HTTPException) as error:
+        asyncio.run(store.save(Snapshot(), reserve_ai=True))
+    assert error.value.status_code == 429
+    assert len(calls) == 1

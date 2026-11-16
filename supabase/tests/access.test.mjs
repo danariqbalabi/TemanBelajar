@@ -50,6 +50,7 @@ test('migrasi, akses antar akun, dan konflik versi berjalan di postgres', async 
     assert.equal((await db.query('update public.learner_profiles set display_name=$1 where id=$2 and revision=1 returning revision',['Manda baru',first])).rows[0].revision,2);
     assert.equal((await db.query('update public.learner_profiles set display_name=$1 where id=$2 and revision=1 returning revision',['tab lama',first])).rows.length,0);
     await assert.rejects(db.query('select public.reserve_ai_attempt(2)'), /permission denied/);
+    await assert.rejects(db.query('select public.save_learning_state_with_ai_budget($1,0,$2,2)', [first, '{}']), /permission denied/);
     await db.exec('set role service_role');
     assert.equal((await db.query('select public.reserve_ai_attempt(2) as allowed')).rows[0].allowed,true);
     assert.equal((await db.query('select public.reserve_ai_attempt(2) as allowed')).rows[0].allowed,true);
@@ -67,6 +68,19 @@ test('migrasi, akses antar akun, dan konflik versi berjalan di postgres', async 
     const own = await db.query('select data from public.learning_states where user_id = $1', [first]);
     assert.deepEqual(own.rows[0].data, { saved: true });
     await assert.rejects(save(null, 0, {}), /invalid state/);
+
+    const admit = (learner, revision, data, limit) => db.query(
+      'select public.save_learning_state_with_ai_budget($1,$2,$3::jsonb,$4) as revision',
+      [learner, revision, JSON.stringify(data), limit],
+    );
+    // Quota is at 2: denied admission must roll back both revision and payload.
+    assert.equal(Number((await admit(first, 2, { jobs: { a: 'processing' } }, 2)).rows[0].revision), -1);
+    assert.deepEqual((await db.query('select data from public.learning_states where user_id=$1', [first])).rows[0].data, { saved: true });
+    assert.equal(Number((await admit(first, 2, { jobs: { a: 'processing' } }, 3)).rows[0].revision), 3);
+    // A competing writer with the old revision must not consume a fourth unit.
+    assert.equal((await admit(first, 2, { lost: true }, 4)).rows[0].revision, null);
+    assert.equal((await db.query('select public.reserve_ai_attempt(4) as allowed')).rows[0].allowed, true);
+    assert.equal((await db.query('select public.reserve_ai_attempt(4) as allowed')).rows[0].allowed, false);
 
   } finally {
     await db.close();

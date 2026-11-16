@@ -18,9 +18,11 @@ class MemoryStore:
     async def load(self):
         return deepcopy(self.snapshot)
 
-    async def save(self, snapshot):
+    async def save(self, snapshot, *, reserve_ai=False):
         if snapshot.revision != self.snapshot.revision:
             raise HTTPException(409, "data sudah berubah")
+        if reserve_ai:
+            await self.reserve_ai_attempt()
         self.snapshot = deepcopy(snapshot)
         self.snapshot.revision += 1
         return self.snapshot.revision

@@ -95,16 +95,12 @@ pengujian antarmuka mengikuti tahap frontend dan integrasi.
 
 ## keputusan penyimpanan
 
-aktivitas mvp disimpan sebagai satu dokumen jsonb per pengguna dengan revision
-dan compare-and-swap. hasil tindakan dan receipt idempotensi tersimpan dalam
-transaksi yang sama. dua penulis pada revision sama menghasilkan satu
-keberhasilan dan satu konflik. api mengembalikan `409` agar frontend memuat
-ulang sebelum mengirim perubahan baru.
-
-pendekatan ini menjaga konsistensi lintas sesi, jawaban, dan rencana untuk mvp.
-riwayat dan receipt masih tumbuh bersama dokumen. penggunaan jangka panjang
-dengan banyak materi membutuhkan pemisahan tabel, pagination, dan kebijakan
-arsip setelah kebutuhan nyata diukur.
+Aktivitas disimpan per record sejak migrasi 007, lalu dibaca sebagai snapshot
+per pengguna dengan revision dan compare-and-swap. Hasil tindakan dan receipt
+idempotensi tersimpan dalam transaksi yang sama. Dua penulis pada revision
+sama menghasilkan satu keberhasilan dan satu konflik. API mengembalikan `409`
+agar frontend memuat ulang sebelum mengirim perubahan baru. Riwayat dan receipt
+masih ikut snapshot penuh; pagination dan arsip tetap diperlukan untuk skala besar.
 
 
 ## persiapan vercel
@@ -136,3 +132,8 @@ rollback setelah ada aktivitas baru tanpa rekonsiliasi data.
 Pembacaan masih menggabungkan snapshot penuh dan konflik masih di tingkat
 akun. Pagination dan pembacaan per koleksi merupakan pekerjaan lanjutan;
 perubahan ini belum menyelesaikan batas pertumbuhan riwayat/receipts.
+
+Migrasi 008 menyatukan klaim job dan reservasi kuota AI global dalam satu
+transaksi. Konflik revision tidak menghabiskan kuota; penolakan kuota membatalkan
+perubahan status job dan pemakaian per akun. Terapkan migrasi sebelum menjalankan
+backend ini. [Audit backend dan training](AUDIT.md) mencatat pemeriksaan terbaru.

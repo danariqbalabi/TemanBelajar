@@ -296,7 +296,6 @@ async def process_job(job_id: str, store: StoreDep):
                 raise HTTPException(429, "tunggu pemrosesan materi sebelumnya selesai")
     if today not in usage:
         usage.clear()
-    await store.reserve_ai_attempt()
     usage[today] = usage.get(today, 0) + 1
     lease = str(uuid4())
     job.update(
@@ -306,7 +305,7 @@ async def process_job(job_id: str, store: StoreDep):
         updated_at=now(),
         error=None,
     )
-    await store.save(snapshot)
+    await store.save(snapshot, reserve_ai=True)
     try:
         async with asyncio.timeout(95):
             material = await generate_material(job)

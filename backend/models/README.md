@@ -31,3 +31,10 @@ hasil latihan dan aturan rekomendasi dengan estimasi penguasaan kosong.
 
 Evaluasi mengukur prediksi pada dataset publik. Penggunaan dalam materi
 Indonesia dan klaim dampak belajar memerlukan evaluasi pengguna lanjutan.
+
+Audit 17 November 2026 menjalankan ulang kelima inisialisasi dengan data lokal
+yang lolos checksum. Artefak hasilnya identik byte demi byte dengan `bkt.json`.
+Test berisi 39 siswa / 902 respons: AUC 0,5741, log loss 0,6394 dibanding baseline
+0,6496. Ini perbaikan prediksi yang kecil, bukan bukti efektivitas pembelajaran.
+Parameter tidak diganti hanya untuk mengejar skor test; pemilihan tetap memakai
+validation. Penulisan artefak sekarang atomik dan menolak nilai non-finite.

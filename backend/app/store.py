@@ -90,19 +90,28 @@ class Store:
         except ValidationError as exc:
             raise HTTPException(502, "data aktivitas belum dapat dibaca") from exc
 
-    async def save(self, snapshot: Snapshot) -> int:
+    async def save(self, snapshot: Snapshot, *, reserve_ai: bool = False) -> int:
+        payload = {
+            "learner": str(self.user.id),
+            "expected_revision": snapshot.revision,
+            "new_data": snapshot.data,
+        }
+        rpc = "save_learning_state"
+        if reserve_ai:
+            rpc = "save_learning_state_with_ai_budget"
+            payload["daily_limit"] = settings().ai_daily_global_limit
         response = await request_supabase(
             "POST",
-            "/rest/v1/rpc/save_learning_state",
+            f"/rest/v1/rpc/{rpc}",
             self.service_token(),
             server=True,
-            json={
-                "learner": str(self.user.id),
-                "expected_revision": snapshot.revision,
-                "new_data": snapshot.data,
-            },
+            json=payload,
         )
         revision = response_json(response)
+        if reserve_ai and revision == -1:
+            raise HTTPException(
+                429, "kuota AI layanan hari ini sudah penuh, coba besok"
+            )
         if revision is None:
             raise HTTPException(409, "data sudah berubah, muat ulang sebelum menyimpan")
         if type(revision) is not int or revision != snapshot.revision + 1:
