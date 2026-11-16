@@ -57,260 +57,302 @@ export function ResultDesign({
   }
   return (
     <>
-      <div className="stitch-screen stitch-results revamp-screen px-4 py-6 md:px-8">
+      <div className="final-design final-screen-18 w-full pt-[8.25rem] bg-canvas flex-1">
         <div className="flex flex-col w-full">
-          <div className="w-full bg-surface-container-low/70 backdrop-blur-sm px-margin-mobile md:px-margin-tablet lg:px-margin py-3 mb-6">
-            <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-2 text-primary font-medium text-sm">
-                <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-secondary-container text-primary font-bold text-xs">
+          <div className="w-full bg-mint-tint/80 border-b border-divider py-space-sm px-margin">
+            <div className="max-w-[1200px] mx-auto flex flex-wrap items-center justify-between gap-space-sm">
+              <div className="flex items-center gap-space-sm">
+                <a
+                  className="inline-flex items-center gap-space-xs font-label text-label text-primary hover:text-primary-hover transition-colors font-bold group"
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onBack();
+                  }}
+                >
+                  <span
+                    className="material-symbols-outlined text-[18px] group-hover:-translate-x-0.5 transition-transform"
+                    aria-hidden="true"
+                  >
+                    arrow_back
+                  </span>
+                  <span>Kembali ke materi</span>
+                </a>
+                <span className="text-divider hidden sm:inline">•</span>
+                <span className="hidden md:inline font-metadata text-metadata text-on-surface-variant">
+                  Rute Sesi: /belajar/ipa-ekskresi/hasil
+                </span>
+              </div>
+              <div className="flex items-center gap-space-xs sm:gap-space-sm">
+                <button
+                  className="inline-flex items-center gap-1 px-space-sm py-1 rounded-lg bg-surface border border-divider text-on-surface font-label text-label hover:bg-surface-container transition-colors min-h-[36px]"
+                  id="btn-font-toggle"
+                  title="Sesuaikan Ukuran Teks"
+                  type="button"
+                  onClick={() => onPreferences?.({ font_size: 22 })}
+                  disabled={busy}
+                >
                   <span
                     className="material-symbols-outlined text-[16px]"
                     aria-hidden="true"
                   >
-                    task_alt
+                    format_size
                   </span>
-                </span>
-                <span className="tracking-wide">{"Sesi Latihan Selesai"}</span>
-                <span className="text-text-secondary text-xs">
-                  {material.title}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface text-primary shadow-sm text-xs font-semibold">
-                  <span className="w-2 h-2 rounded-full bg-success animate-ping"></span>
-                  Progres Adaptif Tersimpan
-                </span>
+                  <span className="text-[12px] font-bold">A- / A+</span>
+                </button>
+                <button
+                  className="inline-flex items-center gap-space-xs px-space-md py-1 rounded-lg bg-surface border border-divider text-primary font-label text-label hover:bg-surface-container transition-colors min-h-[36px]"
+                  type="button"
+                  onClick={() => window.print()}
+                  disabled={busy}
+                >
+                  <span
+                    className="material-symbols-outlined text-[18px]"
+                    aria-hidden="true"
+                  >
+                    print
+                  </span>
+                  <span className="hidden sm:inline">Cetak / Simpan PDF</span>
+                </button>
               </div>
             </div>
           </div>
+          <div className="max-w-[1200px] w-full mx-auto px-margin py-space-lg flex flex-col gap-space-xl">
+            <section className="w-full rounded-2xl bg-mint-tint border border-secondary/20 p-space-lg md:p-space-xl relative overflow-hidden">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-center">
+                <div className="lg:col-span-8 flex flex-col gap-space-md z-10">
+                  <div className="inline-flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-surface/90 border border-success/30 text-success self-start font-label text-[13px] font-bold">
+                    <span
+                      className="material-symbols-outlined text-[16px]"
+                      aria-hidden="true"
+                    >
+                      celebration
+                    </span>
+                    <span>Latihan Selesai Tanpa Terburu-buru</span>
+                  </div>
+                  <div className="space-y-space-xs">
+                    <h1 className="font-display text-page-title md:text-[2.25rem] text-primary leading-tight font-extrabold">{`Terima kasih sudah berusaha, ${displayName}!`}</h1>
+                    <p className="font-reading text-reading text-on-surface-variant max-w-2xl">
+                      Kamu sudah menyelesaikan latihan. Tinjau jawaban dan
+                      penjelasan di bawah sesuai hasil yang tersimpan.
+                    </p>
+                  </div>
 
-          <div className="max-w-7xl mx-auto w-full px-margin-mobile md:px-margin-tablet lg:px-margin pb-16">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              <section className="lg:col-span-7 flex flex-col gap-6">
-                <div className="space-y-4">
-                  <span className="text-xs font-bold text-text-secondary">
-                    Hasil Latihan Pemahaman
-                  </span>
-                  <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-primary">
-                    Keren, {displayName}! {correct} dari{" "}
-                    {attempt.questions.length} soal terjawab tepat.
-                  </h1>
-                  <p className="text-sm text-text-secondary">
-                    {accuracy}% jawaban tepat pada latihan ini. Setiap jawaban
-                    membantu memilih langkah berikutnya.
-                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-space-sm pt-space-xs">
+                    <div className="bg-surface rounded-xl p-space-md border border-divider flex items-center gap-space-sm">
+                      <div className="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-success shrink-0">
+                        <span
+                          className="material-symbols-outlined text-[22px]"
+                          aria-hidden="true"
+                        >
+                          task_alt
+                        </span>
+                      </div>
+                      <div className="leading-tight">
+                        <div className="font-label text-card-title text-primary font-bold">{`${correct} / ${attempt.questions.length} soal`}</div>
+                        <div className="font-metadata text-metadata text-on-surface-variant">
+                          {recommendation?.reason || material.title}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="bg-surface rounded-xl p-space-md border border-divider flex items-center gap-space-sm">
+                      <div className="w-10 h-10 rounded-full bg-butter-tint flex items-center justify-center text-warning shrink-0">
+                        <span
+                          className="material-symbols-outlined text-[22px]"
+                          aria-hidden="true"
+                        >
+                          schedule
+                        </span>
+                      </div>
+                      <div className="leading-tight">
+                        <div className="font-label text-card-title text-primary font-bold">
+                          6m 15d
+                        </div>
+                        <div className="font-metadata text-metadata text-on-surface-variant">
+                          Irama Pikir Santai
+                        </div>
+                      </div>
+                    </div>
+                    <div className="bg-surface rounded-xl p-space-md border border-divider flex items-center gap-space-sm">
+                      <div className="w-10 h-10 rounded-full bg-lavender-tint flex items-center justify-center text-on-tertiary-fixed-variant shrink-0">
+                        <span
+                          className="material-symbols-outlined text-[22px]"
+                          aria-hidden="true"
+                        >
+                          trending_up
+                        </span>
+                      </div>
+                      <div className="leading-tight">
+                        <div className="font-label text-card-title text-primary font-bold">
+                          {recommendation?.reason || material.title}
+                        </div>
+                        <div className="font-metadata text-metadata text-on-surface-variant">
+                          Penguasaan Berkembang
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="space-y-4">
+
+                <div className="lg:col-span-4 flex flex-col items-center lg:items-end justify-center relative">
+                  <div className="bg-surface rounded-2xl p-space-md border border-divider shadow-sm relative max-w-sm mb-space-sm">
+                    <div className="flex items-start gap-space-xs">
+                      <span
+                        className="material-symbols-outlined text-success text-[20px] shrink-0 mt-0.5"
+                        aria-hidden="true"
+                      >
+                        chat
+                      </span>
+                      <p className="font-mimo-voice text-on-surface text-[14px] leading-snug">
+                        {displayName}
+                      </p>
+                    </div>
+
+                    <div className="absolute -bottom-2 right-12 w-4 h-4 bg-surface border-b border-r border-divider transform rotate-45"></div>
+                  </div>
+
+                  <div className="w-48 h-40 sm:w-56 sm:h-44 flex items-center justify-center">
+                    <Image
+                      alt=""
+                      className="max-h-full max-w-full object-contain select-none pointer-events-none  object-contain"
+                      src="/design/mimo-final.png"
+                      width={1408}
+                      height={1120}
+                    ></Image>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+              <section className="lg:col-span-8 flex flex-col gap-space-md">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs pb-space-xs border-b border-divider">
+                  <h2 className="font-section-title text-section-title text-primary font-bold">
+                    Evaluasi Konsep &amp; Pembahasan Terbuka
+                  </h2>
+                  <p className="text-sm my-4">
+                    {correct} dari {attempt.questions.length} jawaban tepat ·
+                    akurasi latihan {accuracy}%
+                  </p>
                   {attempt.questions.map((q, i) => (
                     <article
                       key={q.id}
-                      className="bg-surface rounded-2xl p-5 shadow-card"
+                      className="bg-surface border border-divider rounded-2xl p-6 mb-4"
                     >
-                      <span className="text-xs text-text-secondary">
-                        Soal {i + 1}
+                      <span className="text-sm font-bold">
+                        Soal {i + 1} ·{" "}
+                        {attempt.answers[q.id]?.correct
+                          ? "Tepat"
+                          : "Perlu ditinjau"}
                       </span>
-                      <h2 className="font-bold text-lg text-primary mt-2">
-                        {q.prompt}
-                      </h2>
-                      <p className="mt-3 text-sm">
+                      <h3 className="font-bold text-lg mt-3">{q.prompt}</h3>
+                      <p className="my-3">
                         Jawabanmu:{" "}
-                        {q.options[attempt.answers[q.id]?.selected_index] ||
-                          "Belum dijawab"}
+                        {q.options[attempt.answers[q.id]?.selected_index]}
                       </p>
-                      <p className="text-sm">
-                        Jawaban tepat:{" "}
-                        {q.correct_index === null
-                          ? "Belum tersedia"
-                          : q.options[q.correct_index]}
-                      </p>
-                      <p className="mt-3 text-sm text-text-secondary">
-                        {q.explanation}
-                      </p>
-                      <details className="mt-3">
-                        <summary>Sumber penjelasan</summary>
-                        {material.sources
-                          .filter((s) => q.source_ids.includes(s.id))
-                          .map((s) => (
-                            <p
-                              key={s.id}
-                              className="text-sm whitespace-pre-wrap"
-                            >
-                              {s.label}: {s.text}
-                            </p>
-                          ))}
-                      </details>
+                      <p>{q.explanation}</p>
+                      {material.sources
+                        .filter((s) => q.source_ids.includes(s.id))
+                        .map((s) => (
+                          <details key={s.id} className="mt-3">
+                            <summary className="cursor-pointer font-semibold">
+                              {s.label}
+                            </summary>
+                            <p className="whitespace-pre-wrap">{s.text}</p>
+                          </details>
+                        ))}
                     </article>
                   ))}
                 </div>
               </section>
 
-              <section className="lg:col-span-5 flex flex-col gap-6">
-                <div className="rounded-3xl bg-surface p-6 shadow-sm flex flex-col items-center text-center relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-b from-secondary-container/20 to-transparent pointer-events-none"></div>
-
-                  <div className="relative w-full mb-4">
-                    <div className="rounded-2xl bg-secondary-container/60 p-4 text-left shadow-sm relative">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-display font-extrabold text-xs uppercase tracking-wider text-secondary">
-                          Mimo Berkata
-                        </span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-success"></span>
-                      </div>
-                      <p className="font-mimo-voice text-sm md:text-base text-primary leading-snug">
-                        {material.title}
-                      </p>
-
-                      <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-secondary-container/60 rotate-45"></div>
-                    </div>
-                  </div>
-
-                  <div className="relative w-48 h-48 md:w-56 md:h-56 my-1 rounded-2xl overflow-hidden flex items-center justify-center">
-                    <Image
-                      src="/design/mimo-9.png"
-                      alt="Mimo Encouraging"
-                      className="w-full h-full object-contain filter drop-shadow-sm transition-transform duration-300 hover:scale-105 rounded-2xl"
-                      width={1024}
-                      height={1024}
-                    ></Image>
-                  </div>
-                  <div className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-1">
-                    Kawan Belajar Setiamu
-                  </div>
-                </div>
-
-                <div className="rounded-3xl bg-surface p-6 shadow-sm flex flex-col gap-5">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
-                        <span
-                          className="material-symbols-outlined text-[18px]"
-                          aria-hidden="true"
-                        >
-                          hub
-                        </span>
-                      </div>
-                      <h3 className="font-bold text-sm text-primary">
-                        {recommendation?.reason ||
-                          "Hasil latihanmu tersimpan untuk langkah berikutnya."}
-                      </h3>
-                    </div>
-                    <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-surface-container-high text-text-secondary">
-                      {recommendation?.reason ||
-                        "Hasil latihanmu tersimpan untuk langkah berikutnya."}
-                    </span>
-                  </div>
-                  <p className="text-xs text-text-secondary -mt-2 leading-relaxed">
-                    Sistem mencatat pemahamanmu berdasarkan akurasi dan pola
-                    jawaban latihan tadi:
+              <aside className="lg:col-span-4 flex flex-col gap-space-md">
+                <div className="bg-butter-tint rounded-2xl p-6 border border-divider">
+                  <Image
+                    src="/design/mimo-final.png"
+                    alt=""
+                    width={1408}
+                    height={1120}
+                    className="w-40 h-auto object-contain mx-auto"
+                  />
+                  <h2 className="font-bold text-xl mt-4">Langkah berikutnya</h2>
+                  <p className="mt-3">
+                    {recommendation?.reason ||
+                      "Kamu bisa meninjau pembahasan atau mencoba lagi."}
                   </p>
-
-                  <div className="flex flex-col gap-1.5">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-semibold text-primary">
-                        Mengenal Sudut 90°
-                      </span>
-                      <span className="font-bold text-success flex items-center gap-1">
-                        90% • Sangat Paham
-                        <span className="w-2 h-2 rounded-full bg-success"></span>
-                      </span>
-                    </div>
-                    <div className="w-full h-2.5 rounded-full bg-surface-container-high overflow-hidden">
-                      <div
-                        className="h-full rounded-full bg-success transition-all duration-700 ease-out"
-                        style={{ width: "90%" }}
-                      ></div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col gap-1.5">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-semibold text-primary">
-                        {material.title}
-                      </span>
-                      <span className="font-bold text-success flex items-center gap-1">
-                        85% • Kuat
-                        <span className="w-2 h-2 rounded-full bg-success"></span>
-                      </span>
-                    </div>
-                    <div className="w-full h-2.5 rounded-full bg-surface-container-high overflow-hidden">
-                      <div
-                        className="h-full rounded-full bg-secondary transition-all duration-700 ease-out"
-                        style={{ width: "85%" }}
-                      ></div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col gap-1.5">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-semibold text-primary">
-                        Rumus Kuadrat Sisi (a² + b² = c²)
-                      </span>
-                      <span className="font-bold text-warning flex items-center gap-1">
-                        55% • Sedang Berkembang
-                        <span className="w-2 h-2 rounded-full bg-warning"></span>
-                      </span>
-                    </div>
-                    <div className="w-full h-2.5 rounded-full bg-surface-container-high overflow-hidden">
-                      <div
-                        className="h-full rounded-full bg-peach transition-all duration-700 ease-out"
-                        style={{ width: "55%" }}
-                      ></div>
-                    </div>
-                  </div>
-                  <div className="pt-2 text-[11px] text-text-secondary flex items-center gap-1.5 bg-surface-container-low p-2.5 rounded-xl">
-                    <span
-                      className="material-symbols-outlined text-[15px] text-secondary"
-                      aria-hidden="true"
-                    >
-                      info
-                    </span>
-                    <span>
-                      Mimo akan menyesuaikan 2 soal berikutnya agar fokus
-                      memperkuat rumus kuadrat sisi tanpa bikin pusing!
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-3 pt-2">
-                  <button
-                    className="w-full py-4 px-6 rounded-2xl bg-primary hover:bg-primary-hover text-on-primary font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all duration-200 transform active:scale-[0.99] text-center"
-                    data-path="pythagoras-interactive-step"
-                    type="button"
-                    onClick={onRecommend}
+                  <a
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onRecommend();
+                    }}
+                    className="block mt-5 bg-primary text-white rounded-xl p-3 text-center"
                   >
-                    <span>
-                      Lihat Langkah Belajar Berikutnya (Rekomendasi Mimo)
-                    </span>
-                    <span
-                      className="material-symbols-outlined text-[20px]"
-                      aria-hidden="true"
-                    >
-                      arrow_forward
-                    </span>
+                    Mulai Rekomendasi Sekarang
+                  </a>
+                  <button onClick={onRetry} disabled={busy} className="mt-4">
+                    Coba cara belajar lain
                   </button>
+                </div>
+              </aside>
+            </div>
 
+            <div className="w-full bg-surface rounded-2xl border border-divider p-space-md mt-space-md shadow-sm">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-space-md">
+                <a
+                  className="inline-flex items-center gap-space-xs font-label text-label text-on-surface-variant hover:text-primary transition-colors py-2"
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onBack();
+                  }}
+                >
+                  <span
+                    className="material-symbols-outlined text-[18px]"
+                    aria-hidden="true"
+                  >
+                    keyboard_backspace
+                  </span>
+                  <span>Kembali ke ringkasan</span>
+                </a>
+                <div className="flex flex-wrap items-center gap-space-sm w-full sm:w-auto justify-end">
                   <button
-                    className="w-full py-3.5 px-6 rounded-2xl bg-surface hover:bg-surface-container-high text-primary font-semibold text-sm flex items-center justify-center gap-2 transition-colors duration-150 shadow-sm text-center"
-                    data-path="learning-hub"
+                    className="flex-1 sm:flex-initial min-h-[44px] px-space-md py-2 rounded-xl bg-surface border border-divider hover:bg-canvas text-primary font-label text-label font-semibold transition-colors flex items-center justify-center gap-space-xs"
+                    id="btn-save-progress"
                     type="button"
-                    onClick={onRest}
+                    onClick={onSaveReview}
+                    disabled={busy}
                   >
                     <span
-                      className="material-symbols-outlined text-[18px] text-text-secondary"
+                      className="material-symbols-outlined text-[18px]"
                       aria-hidden="true"
                     >
                       bookmark_add
                     </span>
-                    <span>Simpan ke Materi Saya &amp; Istirahat</span>
+                    <span>Simpan ke Riwayat Progres</span>
                   </button>
+                  <a
+                    className="flex-1 sm:flex-initial min-h-[44px] px-space-lg py-2.5 rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label font-bold transition-colors flex items-center justify-center gap-space-xs text-center shadow-sm"
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onRecommend();
+                    }}
+                  >
+                    <span>Lanjut ke Rekomendasi Belajar</span>
+                    <span
+                      className="material-symbols-outlined text-[18px]"
+                      aria-hidden="true"
+                    >
+                      arrow_forward
+                    </span>
+                  </a>
                 </div>
-              </section>
+              </div>
             </div>
           </div>
         </div>
-        <div className="max-w-6xl mx-auto mt-6 flex flex-wrap gap-3">
-          <button onClick={onBack}>Kembali ke materi</button>
-          <button onClick={onPlanner}>Rencana belajar</button>
+        <div className="max-w-6xl mx-auto flex flex-wrap gap-4 px-6 pb-10">
           <button
             onClick={() =>
               onSpeak(attempt.questions.map((q) => q.explanation).join(". "))
@@ -318,45 +360,13 @@ export function ResultDesign({
           >
             Bacakan pembahasan
           </button>
-          <button
-            disabled={busy}
-            onClick={onRecommend}
-            className="min-h-[44px] px-5 rounded-xl bg-primary text-surface"
-          >
-            Lihat langkah berikutnya
-          </button>
-          <button
-            disabled={busy}
-            onClick={onRetry}
-            className="min-h-[44px] px-5 rounded-xl bg-surface"
-          >
-            Ulang latihan
-          </button>
-          <button
-            disabled={busy}
-            onClick={onSaveReview}
-            className="min-h-[44px] px-5 rounded-xl bg-surface"
-          >
-            Simpan ulasan ke catatan
-          </button>
-          <button
-            onClick={copyReview}
-            className="min-h-[44px] px-5 rounded-xl bg-surface"
-          >
-            Salin pembahasan
-          </button>
-          <button
-            onClick={() => onPreferences?.({ high_contrast: true })}
-            className="min-h-[44px] px-5 rounded-xl bg-surface"
-          >
-            Kontras tinggi
-          </button>
+          <button onClick={copyReview}>Salin pembahasan</button>
+          <button onClick={onRetry}>Latihan lagi</button>
+          <button onClick={onPlanner}>Rencana belajar</button>
+          <button onClick={onRest}>Istirahat dulu</button>
+          <button onClick={onBack}>Kembali ke materi</button>
+          <p role="status">{notice || copied}</p>
         </div>
-        {(notice || copied) && (
-          <p role="status" className="max-w-6xl mx-auto p-4">
-            {notice || copied}
-          </p>
-        )}
       </div>
     </>
   );

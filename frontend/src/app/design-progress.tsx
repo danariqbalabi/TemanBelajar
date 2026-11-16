@@ -73,89 +73,192 @@ export function ProgressDesign({
   });
   return (
     <>
-      <div className="stitch-screen revamp-screen px-4 py-6 md:px-8">
-        <button onClick={onBack}>Kembali ke beranda</button>
-        <div className="flex flex-col w-full gap-space-xl">
-          <header className="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
-            <div className="flex flex-col gap-1 max-w-2xl">
-              <div className="inline-flex items-center gap-2 mb-1">
-                <span className="px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container text-xs font-label">
-                  SMP Kelas 8 • Semester Ganjil
-                </span>
-                <span className="text-xs text-text-secondary font-metadata flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-success"></span>
-                  Data terkalibrasi aman
-                </span>
-              </div>
-              <h1 className="text-page-title text-primary font-section-title tracking-tight flex items-center gap-2">{`Progres Belajar ${displayName} 🌿`}</h1>
-              <p className="text-text-secondary text-reading text-sm sm:text-base leading-relaxed">
-                Perkembangan belajarmu dihitung dari pemahaman nyata tanpa
-                peringkat angka yang bikin cemas.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-space-sm">
-              <button
-                className="inline-flex items-center gap-2 min-h-[44px] px-space-md py-2.5 rounded-xl bg-surface shadow-sm hover:shadow text-primary font-label text-sm transition-all focus:outline-none focus:ring-2 focus:ring-focus"
-                type="button"
-                onClick={onRefresh}
+      <div className="final-design final-screen-22 w-full pt-[8.25rem] bg-canvas flex-1">
+        <div className="flex flex-col w-full">
+          <div className="max-w-[1200px] w-full mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin py-space-lg space-y-space-xl">
+            <section className="flex flex-col gap-space-md">
+              <nav
+                aria-label="Jejak Navigasi"
+                className="flex items-center gap-space-xs text-metadata font-metadata text-on-surface-variant flex-wrap"
               >
-                {"Perbarui progres"}
-              </button>
-              <button
-                className="inline-flex items-center gap-2 min-h-[44px] px-space-md py-2.5 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-primary font-label text-sm transition-all focus:outline-none focus:ring-2 focus:ring-focus shadow-sm"
-                type="button"
-                onClick={() => window.print()}
-              >
-                <span
-                  className="material-symbols-outlined text-[18px] text-primary"
-                  aria-hidden="true"
+                <a
+                  className="hover:text-primary transition-colors"
+                  data-path="beranda"
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onBack();
+                  }}
                 >
-                  download
+                  Beranda
+                </a>
+                <span className="text-outline-variant">•</span>
+                <span className="text-primary font-semibold">
+                  Progres Belajar
                 </span>
-                <span>Unduh Rangkuman</span>
-              </button>
-            </div>
-          </header>
+                <span className="text-outline-variant">•</span>
+                <span className="text-on-surface-variant">
+                  Perkembangan Pemahaman Konsep
+                </span>
+              </nav>
 
-          <section
-            aria-label="Ringkasan Statistik Pekan Ini"
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md"
-          >
-            {[
-              [
-                "Sesi selesai",
-                sessions.filter(
-                  (s) => s.material_id === selected && s.status === "completed",
-                ).length,
-              ],
-              ["Konsep dibaca", completed.size],
-              ["Jawaban tercatat", total],
-              ["Jawaban tepat", correct],
-            ].map(([label, value]) => (
-              <div
-                key={String(label)}
-                className="p-5 bg-surface rounded-2xl shadow-card"
-              >
-                <p className="text-sm text-text-secondary">{label}</p>
-                <p className="text-3xl font-bold text-primary mt-3">{value}</p>
+              <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg">
+                <div className="max-w-2xl space-y-space-xs">
+                  <div className="inline-flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-mint-tint text-success font-label text-[12px] uppercase tracking-wider font-bold">
+                    <span className="w-2 h-2 rounded-full bg-success"></span>
+                    Pelacak Adaptif TemanBelajar
+                  </div>
+                  <h1 className="font-page-title text-page-title text-primary tracking-tight">{`Progres Belajarmu, ${displayName}`}</h1>
+                  <p className="font-reading text-reading text-on-surface-variant">
+                    Lihat seberapa jauh pemahamanmu berkembang, rayakan
+                    pencapaian kecil, dan temukan topik yang asyik untuk diulang
+                    santai.
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-space-sm">
+                  <div className="inline-flex p-1 bg-surface rounded-xl shadow-sm">
+                    <button
+                      className="px-space-md py-2 rounded-lg bg-secondary-container text-primary font-label text-label font-bold shadow-sm transition-all min-h-[44px]"
+                      type="button"
+                      onClick={onRefresh}
+                    >
+                      Pekan Ini (11–17 Nov)
+                    </button>
+                    <button
+                      className="px-space-md py-2 rounded-lg text-on-surface-variant hover:text-primary font-label text-label transition-colors min-h-[44px]"
+                      type="button"
+                      onClick={onRefresh}
+                    >
+                      Bulan Ini
+                    </button>
+                    <button
+                      className="px-space-md py-2 rounded-lg text-on-surface-variant hover:text-primary font-label text-label transition-colors min-h-[44px]"
+                      type="button"
+                      onClick={onRefresh}
+                    >
+                      Sepanjang Waktu
+                    </button>
+                  </div>
+
+                  <div className="flex items-center gap-space-xs">
+                    <button
+                      aria-label="Ekspor Rapor Mandiri PDF"
+                      className="flex items-center gap-space-xs px-space-md py-2.5 bg-surface hover:bg-canvas rounded-xl text-primary font-label text-label shadow-sm min-h-[44px] transition-colors"
+                      type="button"
+                      onClick={() => window.print()}
+                    >
+                      <span
+                        className="material-symbols-outlined text-[18px]"
+                        aria-hidden="true"
+                      >
+                        download
+                      </span>
+                      <span>Rapor Mandiri</span>
+                    </button>
+                    <button
+                      aria-label="Atur Target Belajar"
+                      className="flex items-center gap-space-xs px-space-md py-2.5 bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary rounded-xl font-label text-label min-h-[44px] transition-colors shadow-sm"
+                      type="button"
+                      onClick={onPlan}
+                    >
+                      <span
+                        className="material-symbols-outlined text-[18px]"
+                        aria-hidden="true"
+                      >
+                        tune
+                      </span>
+                      <span>Atur Target</span>
+                    </button>
+                  </div>
+                </div>
               </div>
-            ))}
-          </section>
+            </section>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
-            <section
-              aria-labelledby="bkt-title"
-              className="lg:col-span-8 flex flex-col gap-space-md"
-            >
-              <h2 className="font-bold text-lg text-primary">
-                Pemahaman per konsep
+            <section className="relative bg-surface rounded-[24px] p-space-md md:p-space-lg lg:p-space-xl shadow-sm overflow-hidden">
+              <div className="flex flex-col md:flex-row items-center gap-space-lg">
+                <div className="relative w-36 h-36 md:w-44 md:h-44 flex-shrink-0 flex items-center justify-center">
+                  <Image
+                    alt=""
+                    className="w-full h-full object-contain select-none object-contain"
+                    src="/design/mimo-final.png"
+                    width={1408}
+                    height={1120}
+                  ></Image>
+                </div>
+
+                <div className="flex-1 flex flex-col gap-space-sm w-full">
+                  <div className="flex flex-wrap items-center justify-between gap-space-xs">
+                    <div className="inline-flex items-center gap-space-xs px-space-sm py-1 bg-lavender-tint text-primary font-label text-label rounded-full">
+                      <span
+                        className="material-symbols-outlined text-[16px] text-tertiary"
+                        aria-hidden="true"
+                      >
+                        record_voice_over
+                      </span>
+                      <span className="font-bold">Mimo berkata:</span>
+                    </div>
+                    <div className="flex items-center gap-space-xs text-metadata font-metadata text-on-surface-variant">
+                      <span className="w-2 h-2 rounded-full bg-success"></span>
+                      <span>{`${displayName}, setiap langkahmu berarti. Progres mengikuti aktivitas yang tersimpan.`}</span>
+                      <span className="text-outline-variant">•</span>
+                      <span>Ritme: Seimbang Tanpa Beban</span>
+                    </div>
+                  </div>
+                  <div className="bg-lavender-tint rounded-[20px] p-space-md md:p-space-lg">
+                    <p className="font-mimo-voice text-mimo-voice text-primary leading-relaxed">
+                      {rec?.reason ||
+                        "Pilih satu konsep yang ingin dipelajari. Hasil belajar akan muncul setelah aktivitas tersimpan."}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-space-sm text-metadata font-metadata text-on-surface-variant pt-space-xs">
+                    <span
+                      className="material-symbols-outlined text-[16px] text-success"
+                      aria-hidden="true"
+                    >
+                      psychology_alt
+                    </span>
+                    <span>
+                      Didukung Analisis Pelacak Pengetahuan Bayesian (BKT) yang
+                      menghargai proses belajarmu.
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+              {[
+                [
+                  "Sesi selesai",
+                  sessions.filter((s) => s.status === "completed").length,
+                ],
+                ["Konsep dibaca", completed.size],
+                ["Jawaban tersimpan", total],
+                ["Jawaban tepat", correct],
+              ].map(([label, count]) => (
+                <div
+                  key={label}
+                  className="bg-surface rounded-2xl p-6 border border-divider"
+                >
+                  <h2 className="text-sm font-bold">{label}</h2>
+                  <p className="text-3xl font-display font-bold my-3">
+                    {count}
+                  </p>
+                </div>
+              ))}
+            </section>
+
+            <section className="bg-surface rounded-[24px] p-space-md md:p-space-lg lg:p-space-xl shadow-sm flex flex-col gap-space-lg">
+              <h2 className="font-section-title text-section-title text-primary tracking-tight">
+                Rincian Penguasaan Tiap Konsep
               </h2>
-              <label className="block">
+              <label className="block mt-4">
                 Materi
                 <select
+                  aria-label="Materi progres"
                   value={selected}
                   onChange={(e) => onSelect(e.target.value)}
+                  className="block w-full mt-2"
                 >
                   {materials.map((m) => (
                     <option key={m.id} value={m.id}>
@@ -164,34 +267,35 @@ export function ProgressDesign({
                   ))}
                 </select>
               </label>
-              {error && <p role="alert">{error}</p>}
-              {!selected ? (
-                <p>
-                  Belum ada materi. Mulai dari materi contoh atau unggah
-                  sumbermu.
+              {error && (
+                <p role="alert" className="text-error">
+                  {error}
                 </p>
-              ) : !progress ? (
-                <p role="status">Memuat progres...</p>
+              )}
+              {!progress ? (
+                <p className="py-8">
+                  {error ? "Progres belum dapat dimuat." : "Memuat progres…"}
+                </p>
               ) : (
                 progress.concepts.map((c) => (
                   <article
                     key={c.id}
-                    className="p-6 bg-surface rounded-2xl shadow-card"
+                    className="bg-canvas border border-divider rounded-2xl p-5 mt-4"
                   >
-                    <h3 className="text-lg font-bold">{c.title}</h3>
-                    <p className="text-sm mt-3">
+                    <h3 className="font-bold text-lg">{c.title}</h3>
+                    <p className="text-sm my-3">
                       {c.observed.correct}/{c.observed.total} jawaban tepat
                     </p>
                     {c.mastery === null ? (
-                      <p className="text-sm text-text-secondary">
+                      <p className="text-sm">
                         Estimasi penguasaan belum tersedia. Diperlukan skill
                         yang didukung model dan sedikitnya tiga jawaban.
                       </p>
                     ) : (
                       <>
                         <progress
-                          max={1}
                           value={c.mastery}
+                          max={1}
                           aria-label={"Estimasi penguasaan " + c.title}
                         />
                         <p className="text-sm">
@@ -203,75 +307,61 @@ export function ProgressDesign({
                       onClick={() =>
                         material && start(material, undefined, c.id)
                       }
-                      className="min-h-[44px] px-4 rounded-xl bg-primary text-surface mt-4"
+                      className="mt-4 px-4 py-2 bg-primary text-white rounded-xl"
                     >
                       Tinjau konsep
                     </button>
                   </article>
                 ))
               )}
-              <div className="p-6 rounded-2xl bg-surface">
-                <h3 className="font-bold">Aktivitas 7 hari terakhir</h3>
-                <p className="text-xs text-text-secondary">
-                  Sesi berdasarkan tanggal pembaruan terakhir.
-                </p>
-                <div className="grid grid-cols-7 gap-2 mt-4">
-                  {days.map((d) => (
-                    <div key={d.key} className="text-center">
-                      <b>{d.count}</b>
-                      <p className="text-xs">{d.label}</p>
-                    </div>
-                  ))}
-                </div>
+            </section>
+
+            <section className="bg-surface rounded-[24px] p-space-md md:p-space-lg lg:p-space-xl shadow-sm flex flex-col gap-space-lg">
+              <h2 className="font-bold text-xl">Ritme Belajar</h2>
+              <p className="text-sm my-3">
+                Jumlah sesi berdasarkan pembaruan terakhir dalam 7 hari terakhir
+                ({timezone}).
+              </p>
+              <div className="grid grid-cols-7 gap-3">
+                {days.map((d) => (
+                  <div
+                    key={d.key}
+                    className="text-center bg-mint-tint rounded-xl py-4"
+                  >
+                    <b>{d.count}</b>
+                    <p className="text-sm">{d.label}</p>
+                  </div>
+                ))}
               </div>
             </section>
 
-            <aside
-              aria-label="Rekomendasi & Pendamping Mimo"
-              className="lg:col-span-4 flex flex-col gap-space-md"
-            >
-              <div className="p-6 rounded-2xl bg-mint shadow-card">
-                <Image
-                  src="/design/mimo-9.png"
-                  alt="Mimo menyemangati belajarmu"
-                  width={200}
-                  height={200}
-                  className="w-32 h-32 object-contain mx-auto"
-                />
-                <h3 className="font-display font-bold text-lg text-primary mt-4">
-                  Setiap langkahmu berarti
-                </h3>
-                <p className="text-sm mt-3">
-                  Jawaban tepat adalah hasil pengamatan. Estimasi BKT
-                  eksperimental saat ini hanya mendukung Pythagoras.
+            <section className="flex flex-col gap-space-md pb-space-lg">
+              <h2 className="font-bold text-xl">
+                Rekomendasi Langkah Berikutnya
+              </h2>
+              <div className="bg-mint-tint rounded-2xl p-6">
+                <p>
+                  {rec?.reason ||
+                    "Mulai satu konsep pendek untuk membangun riwayat belajar."}
                 </p>
                 {rec && (
-                  <>
-                    <p className="text-sm mt-4">{rec.reason}</p>
-                    <button
-                      onClick={() =>
-                        material && start(material, undefined, rec.concept_id)
-                      }
-                      className="min-h-[44px] px-4 rounded-xl bg-primary text-surface mt-4"
-                    >
-                      Ikuti saran belajar
-                    </button>
-                  </>
+                  <button
+                    className="mt-4 bg-primary text-white px-5 py-3 rounded-xl"
+                    onClick={() =>
+                      material && start(material, undefined, rec.concept_id)
+                    }
+                  >
+                    Ikuti saran belajar
+                  </button>
                 )}
-                <button
-                  onClick={onPlan}
-                  className="min-h-[44px] px-4 rounded-xl bg-surface mt-3"
-                >
-                  Lihat rencana belajar
+                <button onClick={onPlan} className="block mt-4">
+                  Lihat rencana belajar →
                 </button>
-                <button
-                  onClick={onSettings}
-                  className="min-h-[44px] px-4 rounded-xl bg-surface mt-3"
-                >
+                <button onClick={onSettings} className="block mt-3">
                   Aksesibilitas
                 </button>
               </div>
-            </aside>
+            </section>
           </div>
         </div>
       </div>

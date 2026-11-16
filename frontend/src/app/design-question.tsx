@@ -31,6 +31,7 @@ export function QuestionDesign({
 }) {
   const [hints, setHints] = useState(false),
     [scratch, setScratch] = useState("");
+  const [large, setLarge] = useState(false);
   const scratchKey = "temanbelajar-scratch:" + attempt.id;
   useEffect(() => {
     let alive = true;
@@ -72,356 +73,404 @@ export function QuestionDesign({
   }
   return (
     <>
-      <div className="stitch-screen stitch-quiz revamp-screen px-4 py-6 md:px-8">
+      <div className="final-design final-screen-17 w-full pt-20 bg-canvas flex-1">
         <div className="flex flex-col w-full">
-          <section className="w-full px-margin-mobile md:px-margin-tablet lg:px-margin py-space-sm bg-surface-container-low/70">
-            <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-space-sm">
-              <div className="flex items-center gap-space-sm">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-primary text-xs font-bold font-label tracking-wide">
-                  <span className="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
-                  {`Latihan Pemahaman • Soal ${attempt.question_ids.indexOf(question.id) + 1} dari ${attempt.questions.length}`}
-                </span>
-                <span className="hidden sm:inline-flex items-center gap-1 text-xs font-label text-text-secondary bg-surface px-2.5 py-1 rounded-full shadow-sm">
+          <section className="w-full bg-surface border-b border-divider py-space-sm px-margin">
+            <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-space-sm">
+              <div className="flex flex-wrap items-center gap-space-sm">
+                <a
+                  className="inline-flex items-center gap-1 text-on-surface-variant hover:text-primary font-label text-label transition-colors py-1 px-2 rounded-lg hover:bg-canvas"
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onPause();
+                  }}
+                >
                   <span
-                    className="material-symbols-outlined text-[15px] text-secondary"
+                    className="material-symbols-outlined text-[18px]"
+                    aria-hidden="true"
+                  >
+                    arrow_back
+                  </span>
+                  <span>Kembali ke Materi</span>
+                </a>
+                <div className="h-4 w-[1px] bg-divider hidden sm:block"></div>
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-mint-tint border border-secondary/20 text-success text-[12px] font-label font-bold">
+                    Latihan Adaptif
+                  </span>
+                  <span className="text-on-surface-variant font-metadata text-metadata truncate max-w-[280px] sm:max-w-none">{`Soal ${attempt.question_ids.indexOf(question.id) + 1} dari ${attempt.questions.length} · ${material.title}`}</span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-space-xs self-end md:self-auto flex-wrap">
+                <button
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-control-border/40 bg-surface hover:bg-canvas text-primary font-label text-label transition-colors"
+                  id="btn-tts"
+                  title="Dengarkan soal dengan suara"
+                  type="button"
+                  onClick={() => onSpeak(question.prompt)}
+                >
+                  <span
+                    className="material-symbols-outlined text-[18px] text-secondary"
+                    aria-hidden="true"
+                  >
+                    volume_up
+                  </span>
+                  <span className="hidden sm:inline">Bacakan Soal</span>
+                </button>
+                <div className="inline-flex items-center rounded-xl border border-control-border/40 bg-surface p-0.5">
+                  <button
+                    className="px-2 py-1 text-[13px] font-bold text-on-surface-variant hover:text-primary transition-colors"
+                    id="btn-font-dec"
+                    title="Perkecil Teks"
+                    type="button"
+                    onClick={() => setLarge(false)}
+                  >
+                    A−
+                  </button>
+                  <div className="h-3 w-[1px] bg-divider"></div>
+                  <button
+                    className="px-2 py-1 text-[13px] font-bold text-on-surface-variant hover:text-primary transition-colors"
+                    id="btn-font-inc"
+                    title="Perbesar Teks"
+                    type="button"
+                    onClick={() => setLarge(true)}
+                  >
+                    A+
+                  </button>
+                </div>
+                <button
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-butter-tint/80 border border-warning/30 text-warning font-label text-label"
+                  id="btn-relax-mode"
+                  title="Mode santai tanpa batas waktu aktif"
+                  type="button"
+                  onClick={onPause}
+                >
+                  <span
+                    className="material-symbols-outlined text-[18px]"
                     aria-hidden="true"
                   >
                     self_improvement
                   </span>
-                  Ritme Santai: Tanpa Batas Waktu
-                </span>
-              </div>
-              <div className="flex items-center gap-space-xs">
-                <button
-                  className="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-surface hover:bg-surface-container text-xs font-label font-semibold text-primary shadow-sm transition-transform active:scale-95"
-                  title="Aksesibilitas Kontras & Font"
-                  type="button"
-                  onClick={() => setHints(!hints)}
-                  disabled={busy}
+                  <span className="hidden lg:inline">Mode Santai</span>
+                </button>
+                <a
+                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border border-divider hover:bg-canvas text-outline hover:text-on-surface font-label text-label transition-colors"
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onPause();
+                  }}
                 >
                   <span
-                    className="material-symbols-outlined text-[16px] text-secondary"
+                    className="material-symbols-outlined text-[18px]"
                     aria-hidden="true"
                   >
-                    visibility
+                    logout
                   </span>
-                  <span className="hidden md:inline">Mode Nyaman Mata</span>
-                </button>
-                <div className="flex items-center gap-1 text-xs text-text-secondary pl-2">
-                  <span>Progres:</span>
-                  <div className="w-16 h-2 rounded-full bg-surface-container overflow-hidden">
-                    <div className="w-1/2 h-full bg-secondary rounded-full transition-all duration-300"></div>
-                  </div>
-                  <span className="font-bold text-primary">50%</span>
-                </div>
+                  <span className="hidden sm:inline">Simpan &amp; Keluar</span>
+                </a>
               </div>
             </div>
           </section>
 
-          <section className="w-full px-margin-mobile md:px-margin-tablet lg:px-margin py-space-md lg:py-space-lg">
-            <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
-              <main className="lg:col-span-7 flex flex-col gap-space-md">
-                <article className="bg-surface rounded-xl p-space-md md:p-space-lg shadow-sm relative overflow-hidden">
-                  <div className="absolute -right-12 -top-12 w-32 h-32 rounded-full bg-secondary-container/20 blur-2xl pointer-events-none"></div>
+          <section className="w-full bg-surface-container-low border-b border-divider py-space-xs px-margin">
+            <div className="max-w-[1200px] mx-auto flex items-center justify-between gap-space-md">
+              <div className="flex items-center gap-2 min-w-fit">
+                <span
+                  className="material-symbols-outlined text-secondary text-[18px]"
+                  aria-hidden="true"
+                >
+                  task_alt
+                </span>
+                <span className="font-label text-label font-bold text-primary">{`Soal ${attempt.question_ids.indexOf(question.id) + 1} dari ${attempt.questions.length} · ${material.title}`}</span>
+              </div>
+              <div className="w-full max-w-md bg-canvas rounded-full h-2.5 overflow-hidden border border-divider">
+                <div
+                  className="bg-secondary-container h-full rounded-full transition-all duration-500 ease-out"
+                  style={{ width: "40%" }}
+                ></div>
+              </div>
+              <span className="text-metadata font-metadata text-outline text-[12px] hidden sm:inline">{`Soal ${attempt.question_ids.indexOf(question.id) + 1} dari ${attempt.questions.length} · ${material.title}`}</span>
+            </div>
+          </section>
 
-                  <div className="flex items-center justify-between gap-space-xs mb-space-sm flex-wrap">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-peach/30 text-primary text-xs font-bold font-label">
+          <div className="w-full max-w-[1200px] mx-auto px-margin py-space-lg flex-1">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+              <main
+                className="lg:col-span-8 flex flex-col gap-space-md"
+                id="question-stage"
+              >
+                <article className="bg-surface rounded-3xl p-6 sm:p-8 border border-divider shadow-[0_3px_0_rgba(39,59,53,0.09)] flex flex-col gap-space-md">
+                  <div className="flex items-center justify-between border-b border-divider/60 pb-3">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-lavender-tint text-primary text-[13px] font-label font-bold border border-lavender/30">
                       <span
-                        className="material-symbols-outlined text-[15px] text-secondary"
+                        className="material-symbols-outlined text-[16px] text-tertiary"
                         aria-hidden="true"
                       >
-                        lightbulb
+                        biotech
                       </span>
-                      {material.title}
+                      Konsep 2: Tekanan Filtrasi &amp; Hasil Filtrasi Glomerulus
                     </span>
-                    <span className="text-xs font-metadata text-text-secondary">{`${displayName}, ambil waktu yang kamu butuhkan.`}</span>
+                    <span className="text-outline text-metadata font-metadata text-[13px]">
+                      Bobot 20 Poin
+                    </span>
                   </div>
 
-                  <h1 className="text-card-title md:text-section-title font-page-title text-primary font-bold mb-space-md leading-snug">
-                    {question.prompt}
-                  </h1>
+                  <div className="transition-all" id="quiz-stem-wrapper">
+                    <h1
+                      className="font-section-title text-section-title text-contrast-ink leading-relaxed font-bold"
+                      id="quiz-question-text"
+                      style={{ fontSize: large ? 28 : 22 }}
+                    >
+                      {question.prompt}
+                    </h1>
+                  </div>
 
-                  <div className="w-full rounded-xl bg-surface-container-low p-space-md md:p-space-lg flex flex-col items-center justify-center relative mb-space-md">
-                    <span className="text-xs font-metadata text-text-secondary mb-2 flex items-center gap-1">
+                  <div className="rounded-2xl p-4 bg-butter-tint/60 border border-warning/20 flex items-start gap-3.5">
+                    <div className="w-9 h-9 rounded-xl bg-butter flex items-center justify-center shrink-0 text-warning mt-0.5 shadow-sm">
                       <span
-                        className="material-symbols-outlined text-[14px]"
+                        className="material-symbols-outlined text-[20px]"
                         aria-hidden="true"
                       >
-                        architecture
+                        filter_alt
                       </span>
-                      Diagram Geometri: Segitiga Siku-Siku ABC
-                    </span>
-
-                    <div className="w-full max-w-sm aspect-[4/3] flex items-center justify-center"></div>
-                    <p className="text-xs font-metadata text-text-secondary text-center mt-1">
-                      Garis putus-putus menunjukkan sisi yang persis{" "}
-                      <strong className="text-primary">
-                        berhadapan langsung
-                      </strong>{" "}
-                      dengan sudut 90°.
-                    </p>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <p className="font-label text-label font-bold text-warning">
+                          Analogi Memori Sederhana
+                        </p>
+                        <span className="text-[11px] font-metadata uppercase tracking-wider text-warning/70 bg-butter px-1.5 py-0.2 rounded">
+                          Pori Saringan
+                        </span>
+                      </div>
+                      <p className="text-on-surface-variant font-body text-body text-[14px] mt-0.5 leading-snug">
+                        Ingat prinsip saringan teh: partikel berukuran besar
+                        (seperti daun teh) akan tertahan di atas saringan,
+                        sedangkan molekul air serta zat terlarut yang sangat
+                        kecil akan bebas lolos ke cangkir.
+                      </p>
+                    </div>
                   </div>
 
                   <fieldset
-                    aria-label="Pilihan Jawaban Soal Hipotenusa"
-                    className="flex flex-col gap-space-sm"
-                    id="mcq-options"
+                    aria-label="Pilihan jawaban"
+                    className="flex flex-col gap-3 mt-1"
+                    role="radiogroup"
                   >
-                    <legend className="font-semibold text-primary mb-4">
+                    <legend className="sr-only">
                       Pilih salah satu jawaban
                     </legend>
                     {question.options.map((option, i) => (
                       <label
                         key={i}
-                        data-selected={choice === i}
-                        className="flex items-center gap-4 p-4 rounded-xl border border-divider cursor-pointer"
+                        className={
+                          "flex items-center gap-4 p-5 rounded-xl border-2 cursor-pointer " +
+                          (choice === i
+                            ? "bg-mint-tint border-primary"
+                            : "bg-surface border-divider")
+                        }
                       >
                         <input
                           type="radio"
-                          name="jawaban"
-                          aria-label={option}
+                          name="answer"
                           checked={choice === i}
                           disabled={busy || answered}
                           onChange={() => select(i)}
                         />
-                        <span>
-                          {String.fromCharCode(65 + i)}. {option}
-                        </span>
+                        <span>{option}</span>
                       </label>
                     ))}
                   </fieldset>
-                </article>
-              </main>
 
-              <aside className="lg:col-span-5 flex flex-col gap-space-md">
-                <div className="bg-surface rounded-xl p-space-md md:p-space-lg shadow-sm flex flex-col items-center text-center relative overflow-hidden">
-                  <div className="w-full flex items-center justify-between mb-space-sm">
-                    <span className="inline-flex items-center gap-1 text-xs font-label text-secondary font-bold bg-secondary-container px-2.5 py-1 rounded-full">
+                  <div className="pt-4 border-t border-divider flex flex-col sm:flex-row items-center justify-between gap-space-sm">
+                    <div className="flex items-center gap-2 w-full sm:w-auto">
+                      <button
+                        className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl border border-control-border/40 hover:bg-canvas text-on-surface font-label text-label transition-colors"
+                        id="btn-doubt"
+                        type="button"
+                        aria-pressed={Boolean(scratch)}
+                        onClick={() =>
+                          scratchChange(scratch ? "" : "Perlu ditinjau lagi")
+                        }
+                      >
+                        <span
+                          className="material-symbols-outlined text-[18px] text-warning"
+                          aria-hidden="true"
+                        >
+                          flag
+                        </span>
+                        <span>Tandai Ragu-ragu</span>
+                      </button>
+                      <button
+                        className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl border border-secondary/30 bg-surface-container hover:bg-surface-container-high text-primary font-label text-label transition-colors"
+                        id="btn-ask-mimo"
+                        type="button"
+                        aria-expanded={hints}
+                        onClick={() => setHints(!hints)}
+                      >
+                        <span
+                          className="material-symbols-outlined text-[18px] text-secondary"
+                          aria-hidden="true"
+                        >
+                          lightbulb
+                        </span>
+                        <span>Bantuan Petunjuk</span>
+                      </button>
+                    </div>
+                    <button
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label font-bold shadow-[0_3px_0_rgba(19,37,31,0.3)] transition-all"
+                      id="btn-submit-answer"
+                      type="button"
+                      disabled={busy || choice === null || answered}
+                      onClick={onAnswer}
+                    >
+                      <span>Periksa Jawaban Sekarang</span>
                       <span
-                        className="material-symbols-outlined text-[15px]"
+                        className="material-symbols-outlined text-[18px]"
                         aria-hidden="true"
                       >
-                        favorite
-                      </span>{" "}
-                      Teman Belajarmu
-                    </span>
-                    <span className="text-xs font-metadata text-text-secondary">
-                      Mimo si Bunglon
-                    </span>
+                        arrow_forward
+                      </span>
+                    </button>
                   </div>
+                </article>
 
-                  <div className="relative w-36 h-36 md:w-44 md:h-44 my-space-xs flex items-center justify-center overflow-hidden rounded-2xl bg-secondary-container/20 p-2">
+                <div
+                  className="p-5 rounded-2xl bg-mint-tint"
+                  id="feedback-panel"
+                  hidden={!answered}
+                >
+                  <button
+                    type="button"
+                    disabled={busy}
+                    onClick={onNext}
+                    className="bg-primary text-white rounded-xl px-5 py-3 mb-4"
+                  >
+                    Pertanyaan berikutnya
+                  </button>
+                  <h2 className="font-bold">
+                    {attempt.answers[question.id]?.correct
+                      ? "Jawabanmu tepat"
+                      : "Belum pas, yuk pelajari alasannya"}
+                  </h2>
+                  <p>{question.explanation}</p>
+                  {material.sources
+                    .filter((s) => question.source_ids.includes(s.id))
+                    .map((s) => (
+                      <details key={s.id}>
+                        <summary>{s.label}</summary>
+                        <p className="whitespace-pre-wrap">{s.text}</p>
+                      </details>
+                    ))}
+                </div>
+              </main>
+
+              <aside className="lg:col-span-4 flex flex-col gap-space-md">
+                <div className="bg-surface rounded-3xl p-6 border border-divider shadow-sm relative overflow-hidden flex flex-col items-center">
+                  <div className="w-44 h-36 flex items-center justify-center relative -mb-1">
                     <Image
-                      alt="Mimo si bunglon ramah menyemangati belajar"
-                      className="w-full h-full object-contain relative z-10 transition-transform duration-300 hover:scale-105 rounded-xl"
-                      src="/design/mimo-5.png"
-                      width={1024}
-                      height={1024}
+                      alt=""
+                      className="w-full h-full object-contain pointer-events-none select-none object-contain"
+                      src="/design/mimo-final.png"
+                      width={1408}
+                      height={1120}
                     ></Image>
                   </div>
 
-                  <div className="w-full bg-surface-container-low rounded-xl p-space-md text-left mt-space-xs relative">
-                    <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-surface-container-low rotate-45"></div>
-                    <p className="font-mimo-voice text-sm md:text-base text-primary leading-relaxed relative z-10">
-                      &quot;Santai aja Manda, pilih jawaban yang menurutmu
-                      paling masuk akal. Latihan ini cuma buat ngecek pemahaman,{" "}
-                      <span className="text-secondary font-extrabold">
-                        bukan ujian bertarget nilai!
-                      </span>
-                      &quot;
+                  <div className="w-full bg-lavender-tint rounded-2xl p-4 border border-lavender/30 relative">
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                      <span className="w-2 h-2 rounded-full bg-tertiary"></span>
+                      <p className="font-mimo-voice text-primary text-[14px] font-bold tracking-tight">
+                        Mimo Menyemangati
+                      </p>
+                    </div>
+                    <p
+                      className="font-mimo-voice text-primary text-[15px] font-bold leading-snug"
+                      id="mimo-speech-text"
+                    >{`${displayName}, ambil waktu yang kamu butuhkan. Tidak ada batas waktu.`}</p>
+                  </div>
+
+                  <div
+                    className="p-4 rounded-xl bg-butter-tint"
+                    id="mimo-hint-box"
+                    hidden={!hints}
+                  >
+                    <p>
+                      Baca kembali kata kunci pada soal. Kamu bisa membuka teks
+                      sumber untuk mengingat konsep, lalu memilih sendiri
+                      jawabanmu.
                     </p>
                   </div>
                 </div>
 
-                <div className="bg-surface rounded-xl p-space-md shadow-sm">
-                  <details className="group" open={true}>
-                    <summary className="flex items-center justify-between cursor-pointer list-none select-none">
-                      <div className="flex items-center gap-space-xs">
-                        <div className="w-8 h-8 rounded-lg bg-butter/60 text-primary flex items-center justify-center">
-                          <span
-                            className="material-symbols-outlined text-[18px]"
-                            aria-hidden="true"
-                          >
-                            psychology_alt
-                          </span>
-                        </div>
-                        <div>
-                          <h3 className="font-label text-sm text-primary font-bold">
-                            Bantuan Sensorik Visual
-                          </h3>
-                          <p className="font-metadata text-xs text-text-secondary">
-                            Trik mata dari Mimo
-                          </p>
-                        </div>
-                      </div>
-                      <span
-                        className="material-symbols-outlined text-[20px] text-text-secondary transition-transform group-open:rotate-180"
-                        aria-hidden="true"
-                      >
-                        expand_more
-                      </span>
-                    </summary>
-                    <div className="mt-space-sm pt-space-sm border-t border-divider/60 text-xs md:text-sm font-reading text-on-surface-variant leading-relaxed">
-                      <div className="p-space-sm rounded-lg bg-surface-container-low flex items-start gap-2">
-                        <span
-                          className="material-symbols-outlined text-[18px] text-secondary flex-shrink-0 mt-0.5"
-                          aria-hidden="true"
-                        >
-                          tips_and_updates
-                        </span>
-                        <p>
-                          <strong>Tips dari Mimo:</strong> Ingat trik sudut
-                          siku-siku! Sisi terpanjang (hipotenusa) selalu berada{" "}
-                          <em>di depan matanya langsung</em>, tidak pernah
-                          menyentuh langsung sudut 90°-nya.
-                        </p>
-                      </div>
+                <div className="bg-surface rounded-3xl p-6 border border-divider shadow-sm flex flex-col gap-space-sm">
+                  <div className="flex items-center justify-between">
+                    <h2 className="font-card-title text-card-title font-bold text-primary">
+                      Peta Soal Latihan
+                    </h2>
+                    <span className="text-[12px] font-metadata text-outline">
+                      5 Soal Adaptif
+                    </span>
+                  </div>
 
-                      <div className="grid grid-cols-2 gap-2 mt-space-sm">
-                        <div className="p-2 rounded-lg bg-surface-container text-xs">
-                          <span className="font-bold text-primary block">
-                            Sisi Penyiku:
-                          </span>
-                          <span className="text-text-secondary">
-                            AB &amp; BC (Membentuk huruf L)
-                          </span>
-                        </div>
-                        <div className="p-2 rounded-lg bg-secondary-container/50 text-xs">
-                          <span className="font-bold text-primary block">
-                            {material.title}
-                          </span>
-                          <span className="text-secondary font-semibold">
-                            AC (Sisi miring seberangnya)
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </details>
+                  <div className="grid grid-cols-5 gap-2"></div>
+
+                  <div className="flex items-center justify-between text-[11px] font-metadata text-on-surface-variant pt-2 border-t border-divider">
+                    <span className="inline-flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-success"></span>{" "}
+                      1 Selesai
+                    </span>
+                    <span className="inline-flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-primary"></span>{" "}
+                      1 Aktif
+                    </span>
+                    <span className="inline-flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-divider"></span>{" "}
+                      3 Menunggu
+                    </span>
+                  </div>
                 </div>
 
-                <div className="bg-surface-container-low rounded-xl p-space-md flex items-center gap-space-sm">
-                  <span
-                    className="material-symbols-outlined text-[24px] text-secondary flex-shrink-0"
-                    aria-hidden="true"
-                  >
-                    nature_people
-                  </span>
-                  <p className="font-metadata text-xs text-text-secondary leading-normal">
-                    Merasa lelah? Tarik napas sejenak. Kamu bisa menyimpan
-                    progres kapan saja tanpa kehilangan jejak belajar.
+                <div className="bg-surface rounded-3xl p-5 border border-divider shadow-sm flex items-center gap-3.5">
+                  <div className="w-10 h-10 rounded-2xl bg-mint-tint flex items-center justify-center text-success shrink-0">
+                    <span
+                      className="material-symbols-outlined text-[22px]"
+                      aria-hidden="true"
+                    >
+                      timer
+                    </span>
+                  </div>
+                  <div>
+                    <p className="font-label text-label font-bold text-primary">
+                      Irama Belajar Santai
+                    </p>
+                    <p className="font-metadata text-metadata text-on-surface-variant text-[12px] leading-tight">
+                      Timer dihentikan. Kerjakan dengan kecepatan pikiranmu
+                      sendiri tanpa cemas.
+                    </p>
+                  </div>
+                </div>
+                <section className="bg-surface border border-divider rounded-2xl p-5">
+                  <h2 className="font-bold">Catatan latihan</h2>
+                  <textarea
+                    aria-label="Catatan latihan"
+                    className="w-full mt-3"
+                    value={scratch}
+                    onChange={(e) => scratchChange(e.target.value)}
+                    rows={4}
+                  />
+                  <p className="text-sm mt-3">
+                    {Object.keys(attempt.answers).length}/
+                    {attempt.questions.length} jawaban tersimpan
                   </p>
-                </div>
+                </section>
               </aside>
             </div>
-          </section>
-
-          <section className="sticky bottom-20 z-30 w-full px-margin-mobile md:px-margin-tablet lg:px-margin py-3 bg-surface/95 backdrop-blur-md shadow-md">
-            <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-space-sm">
-              <div className="flex items-center gap-space-sm w-full sm:w-auto justify-between sm:justify-start">
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-secondary"></span>
-                  <span className="font-label text-sm text-primary font-bold">{`Soal ${attempt.question_ids.indexOf(question.id) + 1} dari ${attempt.questions.length}`}</span>
-                </div>
-                <span className="font-metadata text-xs text-text-secondary hidden md:inline">
-                  {choice === null
-                    ? "Belum memilih jawaban"
-                    : `Pilihan ${String.fromCharCode(65 + choice)} dipilih`}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-space-sm w-full sm:w-auto justify-end">
-                <button
-                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-space-md py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-primary font-label text-xs md:text-sm font-semibold transition-colors active:scale-95"
-                  type="button"
-                  onClick={() => setHints(!hints)}
-                  disabled={busy}
-                >
-                  <span
-                    className="material-symbols-outlined text-[18px]"
-                    aria-hidden="true"
-                  >
-                    help_outline
-                  </span>
-                  <span>Tanya Penjelasan</span>
-                </button>
-                <button
-                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-space-lg py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-on-primary font-label text-xs md:text-sm font-bold shadow-sm transition-transform active:scale-95"
-                  type="button"
-                  onClick={onAnswer}
-                  disabled={busy}
-                >
-                  <span>Kirim Jawaban &amp; Lihat Hasil</span>
-                  <span
-                    className="material-symbols-outlined text-[18px]"
-                    aria-hidden="true"
-                  >
-                    arrow_forward
-                  </span>
-                </button>
-              </div>
-            </div>
-          </section>
-        </div>
-        <section className="max-w-6xl mx-auto p-6 bg-surface rounded-2xl space-y-4">
-          {hints && (
-            <p>
-              Periksa kembali bacaan dan sumber konsep sebelum memilih. Tidak
-              ada batas waktu.
-            </p>
-          )}
-          <button onClick={() => onSpeak(question.prompt)}>Bacakan soal</button>
-          <label className="block">
-            Coretan latihan
-            <textarea
-              value={scratch}
-              maxLength={3000}
-              onChange={(e) => scratchChange(e.target.value)}
-            />
-          </label>
-          {answered && (
-            <div role="status">
-              <h2>
-                {attempt.answers[question.id]?.correct
-                  ? "Pemahamanmu sudah tepat."
-                  : "Belum tepat, kita pahami bareng."}
-              </h2>
-              <p>{question.explanation}</p>
-              <p>
-                Jawaban yang tepat:{" "}
-                {question.options[question.correct_index ?? 0]}
-              </p>
-              {material.sources
-                .filter((s) => question.source_ids.includes(s.id))
-                .map((s) => (
-                  <p key={s.id}>
-                    {s.label}: {s.text}
-                  </p>
-                ))}
-            </div>
-          )}
-          <div className="flex gap-3 flex-wrap">
-            {!answered ? (
-              <button
-                disabled={busy || choice === null}
-                onClick={onAnswer}
-                className="min-h-[44px] px-5 rounded-xl bg-primary text-surface"
-              >
-                Kirim Jawaban & Lihat Penjelasan
-              </button>
-            ) : (
-              <button
-                disabled={busy}
-                onClick={onNext}
-                className="min-h-[44px] px-5 rounded-xl bg-primary text-surface"
-              >
-                Pertanyaan berikutnya
-              </button>
-            )}
-            <button disabled={busy} onClick={onPause}>
-              Kembali membaca
-            </button>
           </div>
-        </section>
+        </div>
       </div>
     </>
   );

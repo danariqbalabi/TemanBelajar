@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useRef, useState, type CSSProperties } from "react";
 import Image from "next/image";
 import type { Material, LearningSession, Preferences } from "@/lib/types";
@@ -43,13 +43,9 @@ export function ReaderDesign({
     index = material.concepts.indexOf(concept),
     sources = material.sources.filter((s) => concept.source_ids.includes(s.id));
   const [zen, setZen] = useState(false),
-    [selectedPart, setSelectedPart] = useState(0),
     [note, setNote] = useState("");
   const modeSelect = useRef<HTMLSelectElement>(null);
-  function chooseMode() {
-    modeSelect.current?.scrollIntoView({ block: "center" });
-    modeSelect.current?.focus();
-  }
+
   const pauseDialog = useRef<HTMLDialogElement>(null),
     sourcesDialog = useRef<HTMLDialogElement>(null);
   const readingStyle: CSSProperties = {
@@ -111,1461 +107,1077 @@ export function ReaderDesign({
     }
   }
   return (
-    <div className="stitch-screen stitch-reader" data-zen={zen}>
-      {session.mode === "reading" && (
-        <div className="revamp-reader-body">
-          <div className="flex flex-col w-full">
-            <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
-              <div className="bg-surface rounded-2xl shadow-sm p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-secondary-container flex items-center justify-center text-primary">
-                    <span
-                      className="material-symbols-outlined text-[20px]"
-                      aria-hidden="true"
+    <>
+      <div className="stitch-reader" data-zen={zen}>
+        {session.mode === "reading" || session.mode === "standard" ? (
+          <div className="final-design final-screen-13 w-full pt-20 bg-canvas flex-1 final-reader">
+            <div className="flex flex-col w-full">
+              <section className="w-full bg-surface shadow-sm">
+                <div className="max-w-[1200px] mx-auto px-margin py-space-sm flex flex-col md:flex-row items-center justify-between gap-space-md">
+                  <div className="flex items-center gap-space-sm w-full md:w-auto justify-between md:justify-start">
+                    <a
+                      className="inline-flex items-center gap-space-xs text-primary font-label text-label hover:bg-surface-container px-space-sm py-space-xs rounded-xl transition-colors"
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onBack();
+                      }}
                     >
-                      tune
-                    </span>
+                      <span
+                        className="material-symbols-outlined text-[20px]"
+                        aria-hidden="true"
+                      >
+                        arrow_back
+                      </span>
+                      <span>Ganti Cara Belajar</span>
+                    </a>
+                    <div className="flex items-center gap-space-xs px-space-sm py-1 bg-mint-tint rounded-full">
+                      <span
+                        className="material-symbols-outlined text-[16px] text-success"
+                        aria-hidden="true"
+                      >
+                        menu_book
+                      </span>
+                      <span className="text-metadata font-label font-bold text-success text-[12px]">
+                        Mode: Teman Baca
+                      </span>
+                    </div>
                   </div>
-                  <div>
-                    <span className="text-xs uppercase tracking-wider font-bold text-text-secondary block">
-                      Alat Baca Santai
-                    </span>
-                    <span className="text-xs font-semibold text-primary">
-                      Kenyamanan membaca ramah fokus
-                    </span>
+
+                  <div className="flex flex-col items-center w-full md:w-80 gap-1.5">
+                    <div className="flex items-center justify-between w-full text-metadata font-metadata text-[13px] text-on-surface-variant">
+                      <span className="font-bold text-primary">
+                        {`Paragraf ${session.paragraph + 1} dari ${concept.paragraphs.length}`}
+                      </span>
+                      <span className="text-outline">Estimasi sisa 8 mnt</span>
+                    </div>
+                    <div className="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+                      <div className="h-full bg-secondary rounded-full transition-all duration-300 w-1/3"></div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-space-xs w-full md:w-auto justify-end">
+                    <button
+                      className="inline-flex items-center gap-1.5 px-space-md py-space-xs rounded-xl text-primary font-label text-label hover:bg-surface-container transition-colors"
+                      type="button"
+                      onClick={pause}
+                      disabled={busy}
+                    >
+                      <span
+                        className="material-symbols-outlined text-[18px]"
+                        aria-hidden="true"
+                      >
+                        pause_circle
+                      </span>
+                      <span className="hidden sm:inline">Jeda Belajar</span>
+                    </button>
+                    <button
+                      className="inline-flex items-center gap-1.5 px-space-md py-space-xs rounded-xl bg-primary text-on-primary font-label text-label hover:bg-primary-hover active:bg-primary-pressed transition-colors shadow-sm"
+                      type="button"
+                      onClick={next}
+                      disabled={busy}
+                    >
+                      <span
+                        className="material-symbols-outlined text-[18px]"
+                        aria-hidden="true"
+                      >
+                        check_circle
+                      </span>
+                      <span>Tandai Selesai</span>
+                    </button>
                   </div>
                 </div>
+              </section>
 
-                <div className="flex flex-wrap items-center gap-2">
-                  <div className="flex items-center bg-surface-container-low rounded-xl p-1 gap-1">
+              <section className="sticky top-20 z-40 w-full bg-surface/95 backdrop-blur-md shadow-sm">
+                <div className="max-w-[1200px] mx-auto px-margin py-space-sm flex items-center justify-between gap-space-md overflow-x-auto">
+                  <div className="flex items-center gap-space-sm min-w-max">
                     <button
-                      aria-label="Kecilkan ukuran teks"
-                      className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs text-on-surface-variant hover:bg-surface hover:text-primary transition-all"
-                      id="btn-font-dec"
+                      className="inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-secondary-container text-primary font-label text-label transition-colors"
+                      id="ruler-toggle-btn"
                       type="button"
-                      disabled={busy}
+                      aria-pressed={preferences.reading_ruler}
                       onClick={() =>
                         onPreferences?.({
-                          font_size: Math.max(14, preferences.font_size - 2),
+                          reading_ruler: !preferences.reading_ruler,
                         })
                       }
-                    >
-                      A-
-                    </button>
-                    <span
-                      className="text-xs font-bold px-2 text-primary"
-                      id="font-size-label"
-                    >
-                      18px
-                    </span>
-                    <button
-                      aria-label="Besarkan ukuran teks"
-                      className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs text-on-surface-variant hover:bg-surface hover:text-primary transition-all"
-                      id="btn-font-inc"
-                      type="button"
                       disabled={busy}
-                      onClick={() =>
-                        onPreferences?.({
-                          font_size: Math.min(32, preferences.font_size + 2),
-                        })
-                      }
                     >
-                      A+
+                      {preferences.reading_ruler
+                        ? "Penggaris Baca: Aktif"
+                        : "Penggaris Baca: Nonaktif"}
                     </button>
-                  </div>
 
-                  <button
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-container-low hover:bg-surface text-xs font-bold text-on-surface-variant hover:text-primary transition-all"
-                    id="btn-spacing-toggle"
-                    type="button"
-                    disabled={busy}
-                    onClick={() =>
-                      onPreferences?.({
-                        line_height: preferences.line_height === 1.7 ? 2 : 1.7,
-                      })
-                    }
-                  >
-                    <span
-                      className="material-symbols-outlined text-[17px] text-secondary"
-                      aria-hidden="true"
-                    >
-                      format_line_spacing
-                    </span>
-                    <span id="spacing-label">Spasi: 1.7x</span>
-                  </button>
-
-                  <button
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-secondary-container text-on-secondary-container text-xs font-bold transition-all shadow-xs"
-                    id="btn-ruler-toggle"
-                    type="button"
-                    disabled={busy}
-                    onClick={() =>
-                      onPreferences?.({
-                        reading_ruler: !preferences.reading_ruler,
-                      })
-                    }
-                    aria-pressed={preferences.reading_ruler}
-                  >
-                    <span
-                      className="material-symbols-outlined text-[17px] text-primary"
-                      aria-hidden="true"
-                    >
-                      rule
-                    </span>
-                    <span>Sorot Fokus: Nyala</span>
-                  </button>
-
-                  <button
-                    className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-primary text-on-primary hover:bg-primary-hover text-xs font-bold transition-all shadow-sm"
-                    id="btn-audio-speak"
-                    type="button"
-                    disabled={busy}
-                    onClick={() => onSpeak()}
-                  >
-                    <span
-                      className="material-symbols-outlined text-[17px] animate-pulse"
-                      aria-hidden="true"
-                    >
-                      volume_up
-                    </span>
-                    <span>Dengarkan Paragraf Ini</span>
-                  </button>
-                </div>
-              </div>
-            </section>
-
-            <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                <article className="lg:col-span-8 flex flex-col gap-6">
-                  <div className="bg-surface rounded-3xl p-6 sm:p-8 lg:p-10 shadow-sm relative overflow-hidden">
-                    <div className="absolute -top-24 -right-24 w-64 h-64 bg-secondary-container/30 rounded-full blur-3xl pointer-events-none"></div>
-                    <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
-                      <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-secondary-container text-primary font-bold text-xs tracking-wide">
-                        <span className="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
-                        <span>{`Konsep ${index + 1} dari ${material.concepts.length}`}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-xs text-text-secondary font-medium">
-                        <span
-                          className="material-symbols-outlined text-[16px] text-secondary"
-                          aria-hidden="true"
-                        >
-                          auto_stories
-                        </span>
-                        <span>Waktu baca santai: ~2 menit</span>
-                      </div>
+                    <div className="flex items-center bg-surface-container p-0.5 rounded-full text-label font-label text-[13px]">
+                      <button
+                        className="px-space-md py-1 rounded-full bg-surface text-primary font-bold shadow-sm transition-all"
+                        id="font-btn-jakarta"
+                        type="button"
+                        aria-pressed={preferences.font_family === "jakarta"}
+                        onClick={() =>
+                          onPreferences?.({ font_family: "jakarta" })
+                        }
+                        disabled={busy}
+                      >
+                        Jakarta Sans
+                      </button>
+                      <button
+                        className="px-space-md py-1 rounded-full text-on-surface-variant hover:text-primary transition-all"
+                        id="font-btn-dyslexic"
+                        type="button"
+                        disabled={true}
+                        title="Kontrol ini belum tersedia untuk materi ini."
+                      >
+                        OpenDyslexic
+                      </button>
+                      <button
+                        className="px-space-md py-1 rounded-full text-on-surface-variant hover:text-primary transition-all"
+                        id="font-btn-system"
+                        type="button"
+                        aria-pressed={preferences.font_family === "system"}
+                        onClick={() =>
+                          onPreferences?.({ font_family: "system" })
+                        }
+                        disabled={busy}
+                      >
+                        Sistem
+                      </button>
                     </div>
 
-                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary tracking-tight leading-snug mb-4">
-                      {concept.title}
-                    </h1>
-                    <p className="text-sm sm:text-base text-text-secondary mb-8 leading-relaxed max-w-xl">
-                      {
-                        concept.paragraphs[
-                          Math.min(
-                            session.paragraph,
-                            concept.paragraphs.length - 1,
-                          )
-                        ]
-                      }
-                    </p>
+                    <div className="flex items-center bg-surface-container rounded-full p-0.5">
+                      <button
+                        className="w-8 h-8 rounded-full flex items-center justify-center text-primary hover:bg-surface transition-colors font-bold text-[14px]"
+                        title="Kecilkan Teks"
+                        type="button"
+                        onClick={() =>
+                          onPreferences?.({
+                            font_size: Math.max(14, preferences.font_size - 2),
+                          })
+                        }
+                        disabled={busy}
+                      >
+                        A-
+                      </button>
+                      <span
+                        className="px-space-xs text-metadata font-label text-primary font-bold text-[13px]"
+                        id="font-size-label"
+                      >
+                        18px Standar
+                      </span>
+                      <button
+                        className="w-8 h-8 rounded-full flex items-center justify-center text-primary hover:bg-surface transition-colors font-bold text-[16px]"
+                        title="Besarkan Teks"
+                        type="button"
+                        onClick={() =>
+                          onPreferences?.({
+                            font_size: Math.min(32, preferences.font_size + 2),
+                          })
+                        }
+                        disabled={busy}
+                      >
+                        A+
+                      </button>
+                    </div>
 
+                    <div className="flex items-center bg-surface-container p-0.5 rounded-full text-label font-label text-[13px]">
+                      <button
+                        className="px-space-md py-1 rounded-full bg-surface text-primary font-bold shadow-sm transition-all"
+                        id="spacing-btn-1"
+                        type="button"
+                        onClick={() => onPreferences?.({ line_height: 1.7 })}
+                        disabled={busy}
+                      >
+                        1.7x Santai
+                      </button>
+                      <button
+                        className="px-space-md py-1 rounded-full text-on-surface-variant hover:text-primary transition-all"
+                        id="spacing-btn-2"
+                        type="button"
+                        onClick={() => onPreferences?.({ line_height: 2 })}
+                        disabled={busy}
+                      >
+                        2.0x Longgar
+                      </button>
+                    </div>
+
+                    <button
+                      className="inline-flex items-center gap-1.5 px-space-md py-1.5 rounded-full bg-butter-tint text-primary font-label text-label hover:bg-butter transition-colors"
+                      id="syllable-btn"
+                      type="button"
+                      disabled={true}
+                      title="Kontrol ini belum tersedia untuk materi ini."
+                    >
+                      <span
+                        className="material-symbols-outlined text-[18px]"
+                        aria-hidden="true"
+                      >
+                        spellcheck
+                      </span>
+                      <span>
+                        Pemenggal Kata:{" "}
+                        <strong id="syllable-state">Aktif</strong>
+                      </span>
+                    </button>
+                  </div>
+
+                  <div className="flex items-center gap-space-xs min-w-max pl-space-md">
+                    <button
+                      className="inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-lavender-tint hover:bg-lavender text-primary font-label text-label transition-colors"
+                      id="tts-play-btn"
+                      type="button"
+                      onClick={() => onSpeak()}
+                      disabled={busy}
+                    >
+                      {speaking ? "Hentikan bacaan" : "Bacakan teks"}
+                    </button>
+                  </div>
+                </div>
+              </section>
+
+              <main className="w-full max-w-[1200px] mx-auto px-margin py-space-xl">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
+                  <article className="lg:col-span-8 flex flex-col gap-space-lg max-w-[740px] mx-auto w-full">
+                    <p className="text-sm text-text-secondary">
+                      {material.title} · Konsep {index + 1}/
+                      {material.concepts.length}
+                    </p>
+                    <h1 className="text-3xl font-bold">{concept.title}</h1>
                     <div
-                      className={
-                        "reference-reading space-y-6 " +
-                        (preferences.reading_ruler ? "reference-ruler" : "")
-                      }
-                      id="reading-content-pane"
+                      className="reference-reading space-y-6"
                       style={readingStyle}
                     >
-                      {concept.paragraphs.map((p, i) => (
-                        <p key={i} tabIndex={0}>
+                      {concept.paragraphs.map((p, j) => (
+                        <p
+                          key={j}
+                          className={
+                            preferences.reading_ruler && j === session.paragraph
+                              ? "bg-mint-tint p-4 rounded-xl"
+                              : ""
+                          }
+                          onClick={() => update({ paragraph: j })}
+                        >
                           {p}
                         </p>
                       ))}
                     </div>
-                  </div>
-
-                  <div className="bg-surface rounded-2xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 shadow-sm">
-                    <div className="flex items-center gap-3">
-                      <span
-                        className="material-symbols-outlined text-secondary text-[24px]"
-                        aria-hidden="true"
-                      >
-                        sentiment_satisfied
-                      </span>
-                      <div>
-                        <span className="text-xs font-bold text-primary block">{`${displayName}, ambil satu langkah kecil sesuai ritmemu.`}</span>
-                        <span className="text-xs text-text-secondary">
-                          Kamu bisa menandai bagian ini atau membacanya lagi
-                          santai.
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex justify-between gap-3">
                       <button
-                        className="px-3.5 py-1.5 rounded-xl bg-surface-container-low hover:bg-surface-container text-xs font-bold text-primary transition-colors flex items-center gap-1.5"
-                        type="button"
+                        onClick={previous}
+                        disabled={busy || index === 0}
+                        className="border border-divider px-5 py-3 rounded-xl"
+                      >
+                        Sebelumnya
+                      </button>
+                      <button
+                        onClick={next}
+                        disabled={busy}
+                        className="bg-primary text-white px-5 py-3 rounded-xl"
+                      >
+                        Tandai selesai & lanjut →
+                      </button>
+                    </div>
+                  </article>
+
+                  <aside className="lg:col-span-4 flex flex-col gap-space-lg sticky top-36">
+                    <div
+                      hidden={zen || !preferences.show_mimo}
+                      className="bg-mint-tint border border-divider rounded-2xl p-6"
+                    >
+                      <Image
+                        src="/design/mimo-final.png"
+                        alt=""
+                        width={1408}
+                        height={1120}
+                        className="w-40 h-auto object-contain mx-auto"
+                      />
+                      <h2 className="font-display font-bold text-lg mt-3">
+                        Mimo Menemanimu
+                      </h2>
+                      <p className="mt-3">
+                        {displayName}, pelajari satu bagian dulu. Kamu bebas
+                        mengganti cara belajar.
+                      </p>
+                    </div>
+                    <div className="bg-surface border border-divider rounded-2xl p-6 space-y-4">
+                      <label className="block font-bold">
+                        Format belajar
+                        <select
+                          aria-label="Format belajar"
+                          ref={modeSelect}
+                          value={session.mode}
+                          disabled={busy}
+                          onChange={(e) =>
+                            update({
+                              mode: e.target.value as LearningSession["mode"],
+                            })
+                          }
+                          className="block w-full mt-2"
+                        >
+                          {(
+                            [
+                              ["reading", "Teman Baca"],
+                              ["focus", "Selangkah demi Selangkah"],
+                              ["explore", "Dengarkan dan Jelajahi"],
+                              ["transcript", "Teks dan Visual"],
+                              ["standard", "Belajar Biasa"],
+                            ] as const
+                          ).map(([v, t]) => (
+                            <option
+                              key={v}
+                              value={v}
+                              disabled={
+                                (v === "explore" &&
+                                  !concept.diagram_description) ||
+                                (v === "transcript" && !concept.transcript)
+                              }
+                            >
+                              {t}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                      <button onClick={onSettings} className="block">
+                        Atur aksesibilitas →
+                      </button>
+                      <button
+                        onClick={() => sourcesDialog.current?.showModal()}
+                        className="block"
+                      >
+                        Lihat sumber asli →
+                      </button>
+                      <button onClick={copyText} className="block">
+                        Salin bacaan
+                      </button>
+                      <button
+                        onClick={() => setZen(!zen)}
+                        aria-pressed={zen}
+                        className="block"
+                      >
+                        Mode fokus penuh
+                      </button>
+                    </div>
+                    <div className="bg-surface border border-divider rounded-2xl p-6 space-y-4">
+                      <label className="block font-bold">
+                        Catatan sesi
+                        <textarea
+                          className="block w-full mt-2"
+                          value={draft}
+                          maxLength={3000}
+                          rows={5}
+                          onChange={(e) => setDraft(e.target.value)}
+                        />
+                      </label>
+                      <button
                         disabled={busy}
                         onClick={() => update({})}
+                        className="w-full bg-primary text-white px-4 py-3 rounded-xl"
                       >
-                        <span
-                          className="material-symbols-outlined text-[16px] text-secondary"
-                          aria-hidden="true"
-                        >
-                          bookmark_border
-                        </span>{" "}
-                        Simpan Catatan
+                        Simpan posisi dan catatan
                       </button>
                       <button
-                        className="px-3.5 py-1.5 rounded-xl bg-secondary-container hover:bg-secondary-fixed text-xs font-bold text-on-secondary-container transition-colors flex items-center gap-1.5"
-                        type="button"
                         disabled={busy}
-                        onClick={next}
+                        onClick={onPractice}
+                        className="w-full bg-mint-tint px-4 py-3 rounded-xl"
                       >
-                        {"Langkah berikutnya"}
+                        Latihan pemahaman
+                      </button>
+                      {(feedback || note) && (
+                        <p role="status">{feedback || note}</p>
+                      )}
+                    </div>
+                  </aside>
+                </div>
+              </main>
+            </div>
+          </div>
+        ) : null}
+        {session.mode === "focus" ? (
+          <div className="final-design final-screen-14 w-full pt-20 bg-canvas flex-1 final-reader">
+            <div className="flex flex-col w-full">
+              <section className="sticky top-20 z-40 bg-surface/95 backdrop-blur-sm border-b border-divider px-margin py-3">
+                <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+                  <div className="flex items-center gap-space-sm flex-wrap">
+                    <a
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-primary hover:bg-surface-container transition-colors font-label text-label group"
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onBack();
+                      }}
+                    >
+                      <span
+                        className="material-symbols-outlined text-[18px] transition-transform group-hover:-translate-x-1"
+                        aria-hidden="true"
+                      >
+                        arrow_back
+                      </span>
+                      <span>Ganti Cara Belajar</span>
+                    </a>
+                    <div className="hidden sm:inline-block h-4 w-[1px] bg-divider"></div>
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-butter-tint text-primary font-label text-[13px] border border-butter">
+                      <span
+                        className="material-symbols-outlined text-[16px] text-warning"
+                        aria-hidden="true"
+                      >
+                        splitscreen
+                      </span>
+                      <span className="font-bold">
+                        Mode: Selangkah demi Selangkah
+                      </span>
+                      <span className="text-on-surface-variant font-normal hidden lg:inline">
+                        (Focus Navigator)
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between md:justify-end gap-space-md flex-wrap">
+                    <div className="flex items-center gap-2">
+                      <span className="text-on-surface-variant font-metadata text-[13px] font-medium hidden sm:inline">{`${index + 1} / ${material.concepts.length} konsep`}</span>
+                      <div
+                        aria-label={`Progres langkah ${session.paragraph + 1} dari ${concept.paragraphs.length}`}
+                        className="flex items-center gap-1.5"
+                      >
+                        <span className="w-6 h-2 rounded-full bg-secondary"></span>
+                        <span className="w-8 h-2 rounded-full bg-primary animate-pulse"></span>
+                        <span className="w-2 h-2 rounded-full bg-surface-container-high"></span>
+                        <span className="w-2 h-2 rounded-full bg-surface-container-high"></span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 bg-mint-tint px-3 py-1 rounded-full text-secondary font-metadata text-[13px] border border-secondary-container">
+                      <span
+                        className="material-symbols-outlined text-[17px] text-success"
+                        aria-hidden="true"
+                      >
+                        timer
+                      </span>
+                      <span
+                        className="font-bold text-primary font-mono"
+                        id="gentle-timer"
+                      >{`${index + 1} / ${material.concepts.length} konsep`}</span>
+                      <span className="text-[11px] text-on-surface-variant uppercase tracking-wider">
+                        santai
+                      </span>
+                      <button
+                        className="ml-1 text-[12px] font-label text-secondary hover:text-primary underline cursor-pointer"
+                        id="toggle-timer-btn"
+                        type="button"
+                        onClick={pause}
+                        disabled={busy}
+                      >
+                        Jeda
+                      </button>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        className="px-3 py-1.5 rounded-lg border border-control-border text-primary hover:bg-canvas font-label text-label transition-colors"
+                        type="button"
+                        onClick={pause}
+                        disabled={busy}
+                      >
+                        Jeda Belajar
                       </button>
                     </div>
                   </div>
-                </article>
+                </div>
+              </section>
 
-                <aside className="lg:col-span-4 flex flex-col gap-6 lg:sticky lg:top-24">
-                  <div className="bg-surface rounded-3xl p-6 shadow-sm flex flex-col items-center text-center relative overflow-hidden">
-                    <div className="absolute -bottom-12 -left-12 w-44 h-44 bg-peach/20 rounded-full blur-2xl pointer-events-none"></div>
-
-                    <div className="w-36 h-36 sm:w-40 sm:h-40 relative mb-4 rounded-2xl overflow-hidden flex items-center justify-center">
-                      <Image
-                        src="/design/mimo-5.png"
-                        alt="Mimo membaca ramah"
-                        className="w-full h-full object-contain filter drop-shadow-md rounded-2xl"
-                        width={1024}
-                        height={1024}
-                      ></Image>
-                    </div>
-
-                    <div className="bg-surface-container-low rounded-2xl p-4 w-full relative mb-4">
-                      <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-surface-container-low rotate-45"></div>
-                      <p className="font-mimo-voice text-xs sm:text-sm text-primary leading-relaxed relative z-10 font-bold">{`${displayName}, ambil satu langkah kecil sesuai ritmemu.`}</p>
-                    </div>
-
-                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-container/60 text-secondary text-xs font-bold">
-                      <span className="w-2 h-2 rounded-full bg-secondary"></span>
-                      <span>Mimo sedang menemanimu belajar</span>
-                    </div>
-                  </div>
-
-                  <div className="bg-surface rounded-3xl p-6 shadow-sm flex flex-col gap-4">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-sm font-bold text-primary flex items-center gap-2">
-                        <span
-                          className="material-symbols-outlined text-[18px] text-secondary"
-                          aria-hidden="true"
+              <main className="w-full max-w-[1200px] mx-auto px-margin py-8 md:py-12">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                  <div className="lg:col-span-8 flex flex-col items-center">
+                    <article className="w-full max-w-[720px] bg-surface rounded-3xl p-6 sm:p-10 border border-divider shadow-[0_3px_0_rgba(39,59,53,0.06)] flex flex-col gap-6">
+                      <p className="text-sm text-text-secondary">
+                        Langkah {session.paragraph + 1} dari{" "}
+                        {concept.paragraphs.length} ·{" "}
+                        {preferences.timer_enabled
+                          ? `${Math.floor(elapsed / 60)} menit belajar`
+                          : "Tanpa batas waktu"}
+                      </p>
+                      <h1 className="text-3xl font-bold my-5">
+                        {concept.title}
+                      </h1>
+                      <div
+                        className="bg-mint-tint p-6 rounded-2xl reference-reading"
+                        style={readingStyle}
+                      >
+                        <p>
+                          {concept.paragraphs[session.paragraph] ||
+                            concept.paragraphs[0]}
+                        </p>
+                      </div>
+                      <div className="flex justify-between gap-3 mt-6">
+                        <button
+                          onClick={previous}
+                          disabled={
+                            busy || (index === 0 && session.paragraph === 0)
+                          }
+                          className="border border-divider px-5 py-3 rounded-xl"
                         >
-                          checklist
-                        </span>
-                        Checklist Pemahaman
-                      </h3>
-                      <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-surface-container-high text-primary">
-                        2 / 2 Terbaca
-                      </span>
-                    </div>
-                    <div className="flex flex-col gap-3">
-                      <div className="flex items-start gap-3 p-3 rounded-2xl bg-surface-container-low">
-                        <div className="w-5 h-5 rounded-full bg-secondary-container flex items-center justify-center flex-shrink-0 mt-0.5 text-primary">
-                          <span
-                            className="material-symbols-outlined text-[14px]"
-                            aria-hidden="true"
-                          >
-                            check
-                          </span>
-                        </div>
-                        <div className="text-xs text-primary leading-snug">
-                          <span className="font-bold block mb-0.5">
-                            {concept.title}
-                          </span>
-                          Selalu tepat berhadapan di depan sudut siku-siku 90°.
-                        </div>
+                          Sebelumnya
+                        </button>
+                        <button
+                          onClick={next}
+                          disabled={busy}
+                          className="bg-primary text-white px-5 py-3 rounded-xl"
+                        >
+                          Lanjutkan →
+                        </button>
                       </div>
-
-                      <div className="flex items-start gap-3 p-3 rounded-2xl bg-surface-container-low">
-                        <div className="w-5 h-5 rounded-full bg-secondary-container flex items-center justify-center flex-shrink-0 mt-0.5 text-primary">
-                          <span
-                            className="material-symbols-outlined text-[14px]"
-                            aria-hidden="true"
-                          >
-                            check
-                          </span>
-                        </div>
-                        <div className="text-xs text-primary leading-snug">
-                          <span className="font-bold block mb-0.5">
-                            Sisi Terpanjang
-                          </span>
-                          Karena sudut 90° adalah bukaan terbesar pada segitiga
-                          siku-siku.
-                        </div>
-                      </div>
-                    </div>
+                    </article>
                   </div>
 
-                  <div className="bg-surface rounded-3xl p-6 shadow-sm flex flex-col gap-3">
-                    <span className="text-xs font-bold uppercase tracking-wider text-text-secondary">
-                      Langkah Selanjutnya
-                    </span>
-                    <p className="text-xs text-primary leading-relaxed">
-                      Yuk uji santai pemahaman barusan lewat kuis ringan 2 soal!
-                    </p>
-                    <button
-                      className="w-full py-3.5 px-4 rounded-2xl bg-primary hover:bg-primary-hover text-on-primary font-bold text-xs sm:text-sm text-center flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg"
-                      data-path="quiz-check-1"
-                      type="button"
-                      onClick={() => onSpeak()}
-                      disabled={busy}
+                  <aside className="lg:col-span-4 flex flex-col gap-6">
+                    <div
+                      hidden={zen || !preferences.show_mimo}
+                      className="bg-mint-tint border border-divider rounded-2xl p-6"
                     >
-                      <span>Lanjut ke Cek Pemahaman Santai (2 Soal)</span>
+                      <Image
+                        src="/design/mimo-final.png"
+                        alt=""
+                        width={1408}
+                        height={1120}
+                        className="w-40 h-auto object-contain mx-auto"
+                      />
+                      <h2 className="font-display font-bold text-lg mt-3">
+                        Mimo Menemanimu
+                      </h2>
+                      <p className="mt-3">
+                        {displayName}, pelajari satu bagian dulu. Kamu bebas
+                        mengganti cara belajar.
+                      </p>
+                    </div>
+                    <div className="bg-surface border border-divider rounded-2xl p-6 space-y-4">
+                      <label className="block font-bold">
+                        Format belajar
+                        <select
+                          aria-label="Format belajar"
+                          ref={modeSelect}
+                          value={session.mode}
+                          disabled={busy}
+                          onChange={(e) =>
+                            update({
+                              mode: e.target.value as LearningSession["mode"],
+                            })
+                          }
+                          className="block w-full mt-2"
+                        >
+                          {(
+                            [
+                              ["reading", "Teman Baca"],
+                              ["focus", "Selangkah demi Selangkah"],
+                              ["explore", "Dengarkan dan Jelajahi"],
+                              ["transcript", "Teks dan Visual"],
+                              ["standard", "Belajar Biasa"],
+                            ] as const
+                          ).map(([v, t]) => (
+                            <option
+                              key={v}
+                              value={v}
+                              disabled={
+                                (v === "explore" &&
+                                  !concept.diagram_description) ||
+                                (v === "transcript" && !concept.transcript)
+                              }
+                            >
+                              {t}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                      <button onClick={onSettings} className="block">
+                        Atur aksesibilitas →
+                      </button>
+                      <button
+                        onClick={() => sourcesDialog.current?.showModal()}
+                        className="block"
+                      >
+                        Lihat sumber asli →
+                      </button>
+                      <button onClick={copyText} className="block">
+                        Salin bacaan
+                      </button>
+                      <button
+                        onClick={() => setZen(!zen)}
+                        aria-pressed={zen}
+                        className="block"
+                      >
+                        Mode fokus penuh
+                      </button>
+                    </div>
+                    <div className="bg-surface border border-divider rounded-2xl p-6 space-y-4">
+                      <label className="block font-bold">
+                        Catatan sesi
+                        <textarea
+                          className="block w-full mt-2"
+                          value={draft}
+                          maxLength={3000}
+                          rows={5}
+                          onChange={(e) => setDraft(e.target.value)}
+                        />
+                      </label>
+                      <button
+                        disabled={busy}
+                        onClick={() => update({})}
+                        className="w-full bg-primary text-white px-4 py-3 rounded-xl"
+                      >
+                        Simpan posisi dan catatan
+                      </button>
+                      <button
+                        disabled={busy}
+                        onClick={onPractice}
+                        className="w-full bg-mint-tint px-4 py-3 rounded-xl"
+                      >
+                        Latihan pemahaman
+                      </button>
+                      {(feedback || note) && (
+                        <p role="status">{feedback || note}</p>
+                      )}
+                    </div>
+                  </aside>
+                </div>
+              </main>
+            </div>
+          </div>
+        ) : null}
+        {session.mode === "explore" ? (
+          <div className="final-design final-screen-15 w-full pt-20 bg-canvas flex-1 final-reader">
+            <div className="flex flex-col w-full pb-16">
+              <section className="w-full bg-surface-container-low/60 py-space-sm px-margin">
+                <div className="max-w-[1200px] mx-auto flex flex-wrap items-center justify-between gap-space-sm">
+                  <div className="flex items-center gap-space-sm">
+                    <a
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface hover:bg-surface-container text-primary font-label text-label transition-colors"
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onBack();
+                      }}
+                    >
                       <span
                         className="material-symbols-outlined text-[18px]"
                         aria-hidden="true"
                       >
-                        arrow_forward
+                        arrow_back
                       </span>
-                    </button>
+                      <span>Ganti Cara Belajar</span>
+                    </a>
+                    <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-lavender-tint text-primary font-label text-label">
+                      <span
+                        className="material-symbols-outlined text-[18px] text-tertiary"
+                        aria-hidden="true"
+                      >
+                        headphones
+                      </span>
+                      <span>Mode: Dengarkan &amp; Jelajahi</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-space-sm ml-auto">
+                    <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-lg bg-surface text-primary font-metadata text-metadata">
+                      <span className="w-2.5 h-2.5 rounded-full bg-lavender"></span>
+                      <span>
+                        Segmen {index + 1} dari {material.concepts.length}:{" "}
+                        <strong>{concept.title}</strong>
+                      </span>
+                      <span className="text-on-surface-variant font-mono text-xs">{`${index + 1} / ${material.concepts.length} konsep`}</span>
+                    </div>
                     <button
-                      className="w-full py-2.5 px-4 rounded-xl hover:bg-surface-container text-text-secondary hover:text-primary font-semibold text-xs text-center transition-colors"
-                      data-path="learning-hub"
+                      className="px-3 py-1.5 rounded-lg bg-surface hover:bg-surface-container text-on-surface-variant hover:text-primary font-label text-label transition-colors flex items-center gap-1"
                       type="button"
-                      onClick={() => onSpeak()}
+                      onClick={pause}
                       disabled={busy}
                     >
-                      Simpan &amp; Lanjutkan Nanti
+                      <span
+                        className="material-symbols-outlined text-[18px]"
+                        aria-hidden="true"
+                      >
+                        pause_circle
+                      </span>
+                      <span className="hidden sm:inline">Jeda Belajar</span>
                     </button>
+                    <button
+                      className="px-3 py-1.5 rounded-lg bg-secondary-container text-on-secondary-container hover:bg-secondary-fixed font-label text-label transition-colors flex items-center gap-1"
+                      type="button"
+                      onClick={next}
+                      disabled={busy}
+                    >
+                      <span
+                        className="material-symbols-outlined text-[18px]"
+                        aria-hidden="true"
+                      >
+                        check_circle
+                      </span>
+                      <span>Tandai Selesai</span>
+                    </button>
+                  </div>
+                </div>
+              </section>
+
+              <main className="w-full max-w-[1200px] mx-auto px-margin pt-space-md grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+                <div className="lg:col-span-8 flex flex-col gap-space-lg min-w-0">
+                  <section
+                    aria-label="Pemutar Audio Materi"
+                    className="rounded-3xl bg-lavender-tint/70 p-space-md sm:p-space-lg shadow-sm flex flex-col gap-space-md relative overflow-hidden"
+                  >
+                    <div className="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-lavender/25 pointer-events-none"></div>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm relative z-10">
+                      <div className="flex items-start gap-3">
+                        <div className="w-11 h-11 rounded-2xl bg-primary text-on-primary flex items-center justify-center shrink-0 shadow-sm">
+                          <span
+                            className="material-symbols-outlined text-[24px]"
+                            aria-hidden="true"
+                          >
+                            graphic_eq
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-xs font-label uppercase tracking-wider text-secondary font-bold">
+                            Narasi Santai Bersama Mimo
+                          </span>
+                          <h1 className="font-section-title text-section-title text-primary tracking-tight">
+                            Pabrik Penyaring Ajaib di Tubuh Kita
+                          </h1>
+                          <p className="font-metadata text-metadata text-on-surface-variant mt-0.5">
+                            {concept.title}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="self-start sm:self-center inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface/80 text-success text-xs font-label">
+                        <span className="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+                        <span>Audio Sinkron Aktif</span>
+                      </div>
+                    </div>
+
+                    <div className="bg-surface rounded-2xl p-space-md shadow-sm flex flex-col gap-space-xs relative z-10">
+                      <div className="flex items-center justify-between font-metadata text-metadata text-on-surface-variant font-mono text-xs mb-1">
+                        <span
+                          className="text-primary font-bold"
+                          id="current-timestamp"
+                        >{`${index + 1} / ${material.concepts.length} konsep`}</span>
+                        <span className="font-label text-on-surface-variant text-[12px]">
+                          {concept.title}
+                        </span>
+                        <span>{`${index + 1} / ${material.concepts.length} konsep`}</span>
+                      </div>
+
+                      <div className="flex flex-wrap items-center justify-between gap-y-3 pt-2 mt-1">
+                        <div className="flex items-center gap-1 bg-canvas rounded-xl p-1">
+                          <button
+                            className="speed-btn px-2.5 py-1 rounded-lg text-xs font-label text-on-surface-variant hover:text-primary transition-colors"
+                            data-speed="0.8"
+                            type="button"
+                            aria-pressed={preferences.speech_rate === 0.8}
+                            onClick={() =>
+                              onPreferences?.({ speech_rate: 0.8 })
+                            }
+                            disabled={busy}
+                          >
+                            0.8x
+                          </button>
+                          <button
+                            className="speed-btn px-2.5 py-1 rounded-lg bg-surface text-primary font-bold shadow-xs text-xs font-label"
+                            data-speed="1.0"
+                            type="button"
+                            aria-pressed={preferences.speech_rate === 1.0}
+                            onClick={() =>
+                              onPreferences?.({ speech_rate: 1.0 })
+                            }
+                            disabled={busy}
+                          >
+                            1.0x (Normal)
+                          </button>
+                          <button
+                            className="speed-btn px-2.5 py-1 rounded-lg text-xs font-label text-on-surface-variant hover:text-primary transition-colors"
+                            data-speed="1.2"
+                            type="button"
+                            aria-pressed={preferences.speech_rate === 1.2}
+                            onClick={() =>
+                              onPreferences?.({ speech_rate: 1.2 })
+                            }
+                            disabled={busy}
+                          >
+                            1.2x
+                          </button>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <button
+                            aria-label="Mundur 10 detik"
+                            className="w-10 h-10 rounded-full bg-surface-container hover:bg-surface-container-high text-primary flex items-center justify-center transition-all active:scale-95"
+                            type="button"
+                            disabled={true}
+                            title="Kontrol ini belum tersedia untuk materi ini."
+                          >
+                            <span
+                              className="material-symbols-outlined text-[20px]"
+                              aria-hidden="true"
+                            >
+                              replay_10
+                            </span>
+                          </button>
+                          <button
+                            aria-label="Jeda atau Putar Audio"
+                            className="w-13 h-13 px-4 py-2.5 rounded-full bg-primary hover:bg-primary-hover text-on-primary flex items-center justify-center shadow-md transition-all active:scale-95"
+                            id="play-toggle-btn"
+                            type="button"
+                            onClick={() => onSpeak()}
+                            disabled={busy}
+                          >
+                            {speaking ? "Hentikan bacaan" : "Bacakan teks"}
+                          </button>
+                          <button
+                            aria-label="Maju 10 detik"
+                            className="w-10 h-10 rounded-full bg-surface-container hover:bg-surface-container-high text-primary flex items-center justify-center transition-all active:scale-95"
+                            type="button"
+                            disabled={true}
+                            title="Kontrol ini belum tersedia untuk materi ini."
+                          >
+                            <span
+                              className="material-symbols-outlined text-[20px]"
+                              aria-hidden="true"
+                            >
+                              forward_10
+                            </span>
+                          </button>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1.5 px-2 py-1 rounded-xl bg-canvas">
+                            <span
+                              className="material-symbols-outlined text-[18px] text-on-surface-variant"
+                              aria-hidden="true"
+                            >
+                              volume_up
+                            </span>
+                            <input
+                              aria-label="Kontrol Volume"
+                              className="w-16 accent-primary h-1 bg-surface-dim rounded-lg cursor-pointer"
+                              max="100"
+                              min="0"
+                              type="range"
+                              value="80"
+                              disabled={true}
+                            />
+                          </div>
+                          <button
+                            aria-label="Kamus Istilah Cepat"
+                            className="p-1.5 rounded-xl bg-canvas hover:bg-surface-container text-primary transition-colors"
+                            title="Kontrol ini belum tersedia untuk materi ini."
+                            type="button"
+                            disabled={true}
+                          >
+                            <span
+                              className="material-symbols-outlined text-[20px]"
+                              aria-hidden="true"
+                            >
+                              dictionary
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section
+                    aria-labelledby="diagram-title"
+                    className="rounded-3xl bg-surface p-space-md sm:p-space-lg shadow-sm flex flex-col gap-space-md"
+                  >
+                    <h2 id="diagram-title" className="font-bold text-xl">
+                      {concept.title}
+                    </h2>
+                    <p className="text-sm mt-3">
+                      Deskripsi diagram dari materi. Gambar diagram belum
+                      tersedia.
+                    </p>
+                    <div className="bg-lavender-tint rounded-2xl p-6 my-5">
+                      <p
+                        className="whitespace-pre-wrap reference-reading"
+                        style={readingStyle}
+                      >
+                        {concept.diagram_description ||
+                          concept.paragraphs.join("\n\n")}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() =>
+                        onSpeak(concept.diagram_description || undefined)
+                      }
+                      className="bg-primary text-white px-5 py-3 rounded-xl"
+                    >
+                      Bacakan deskripsi
+                    </button>
+                  </section>
+
+                  <section
+                    aria-labelledby="transcript-title"
+                    className="rounded-3xl bg-surface p-space-md sm:p-space-lg shadow-sm flex flex-col gap-space-md"
+                  >
+                    <div className="flex items-center justify-between border-b-0 pb-1">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className="material-symbols-outlined text-[22px] text-tertiary"
+                          aria-hidden="true"
+                        >
+                          subtitles
+                        </span>
+                        <h2
+                          className="font-section-title text-section-title text-primary"
+                          id="transcript-title"
+                        >
+                          Transkrip Narasi Sinkron
+                        </h2>
+                      </div>
+                      <span className="text-xs font-label text-on-surface-variant bg-canvas px-3 py-1 rounded-full">
+                        Klik kalimat untuk melompat audio
+                      </span>
+                    </div>
+                    <div
+                      className="flex flex-col gap-space-sm text-reading font-reading"
+                      id="transcript-flow"
+                    >
+                      <div style={readingStyle} className="whitespace-pre-wrap">
+                        {concept.transcript || concept.paragraphs.join("\n\n")}
+                      </div>
+                    </div>
+                  </section>
+                </div>
+
+                <aside className="lg:col-span-4 flex flex-col gap-space-lg">
+                  <div
+                    hidden={zen || !preferences.show_mimo}
+                    className="bg-mint-tint border border-divider rounded-2xl p-6"
+                  >
+                    <Image
+                      src="/design/mimo-final.png"
+                      alt=""
+                      width={1408}
+                      height={1120}
+                      className="w-40 h-auto object-contain mx-auto"
+                    />
+                    <h2 className="font-display font-bold text-lg mt-3">
+                      Mimo Menemanimu
+                    </h2>
+                    <p className="mt-3">
+                      {displayName}, pelajari satu bagian dulu. Kamu bebas
+                      mengganti cara belajar.
+                    </p>
+                  </div>
+                  <div className="bg-surface border border-divider rounded-2xl p-6 space-y-4">
+                    <label className="block font-bold">
+                      Format belajar
+                      <select
+                        aria-label="Format belajar"
+                        ref={modeSelect}
+                        value={session.mode}
+                        disabled={busy}
+                        onChange={(e) =>
+                          update({
+                            mode: e.target.value as LearningSession["mode"],
+                          })
+                        }
+                        className="block w-full mt-2"
+                      >
+                        {(
+                          [
+                            ["reading", "Teman Baca"],
+                            ["focus", "Selangkah demi Selangkah"],
+                            ["explore", "Dengarkan dan Jelajahi"],
+                            ["transcript", "Teks dan Visual"],
+                            ["standard", "Belajar Biasa"],
+                          ] as const
+                        ).map(([v, t]) => (
+                          <option
+                            key={v}
+                            value={v}
+                            disabled={
+                              (v === "explore" &&
+                                !concept.diagram_description) ||
+                              (v === "transcript" && !concept.transcript)
+                            }
+                          >
+                            {t}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <button onClick={onSettings} className="block">
+                      Atur aksesibilitas →
+                    </button>
+                    <button
+                      onClick={() => sourcesDialog.current?.showModal()}
+                      className="block"
+                    >
+                      Lihat sumber asli →
+                    </button>
+                    <button onClick={copyText} className="block">
+                      Salin bacaan
+                    </button>
+                    <button
+                      onClick={() => setZen(!zen)}
+                      aria-pressed={zen}
+                      className="block"
+                    >
+                      Mode fokus penuh
+                    </button>
+                  </div>
+                  <div className="bg-surface border border-divider rounded-2xl p-6 space-y-4">
+                    <label className="block font-bold">
+                      Catatan sesi
+                      <textarea
+                        className="block w-full mt-2"
+                        value={draft}
+                        maxLength={3000}
+                        rows={5}
+                        onChange={(e) => setDraft(e.target.value)}
+                      />
+                    </label>
+                    <button
+                      disabled={busy}
+                      onClick={() => update({})}
+                      className="w-full bg-primary text-white px-4 py-3 rounded-xl"
+                    >
+                      Simpan posisi dan catatan
+                    </button>
+                    <button
+                      disabled={busy}
+                      onClick={onPractice}
+                      className="w-full bg-mint-tint px-4 py-3 rounded-xl"
+                    >
+                      Latihan pemahaman
+                    </button>
+                    {(feedback || note) && (
+                      <p role="status">{feedback || note}</p>
+                    )}
                   </div>
                 </aside>
-              </div>
-            </section>
-          </div>
-        </div>
-      )}
-      {session.mode === "focus" && (
-        <div className="revamp-reader-body">
-          <div className="flex flex-col w-full">
-            <div className="relative w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col items-center">
-              <div className="w-full max-w-3xl flex items-center justify-between pb-6">
-                <div className="flex items-center gap-3">
-                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold font-label">
-                    2/4
-                  </span>
-                  <div className="flex flex-col">
-                    <span className="text-xs uppercase tracking-wider font-semibold text-text-secondary font-label">
-                      Fokus Step-by-Step
-                    </span>
-                    <span className="text-sm font-bold text-primary font-body">
-                      {concept.title}
-                    </span>
-                  </div>
-                </div>
+              </main>
 
-                <div className="flex items-center gap-2">
+              <section className="w-full max-w-[1200px] mx-auto px-margin pt-space-xl">
+                <div className="w-full rounded-2xl bg-surface p-space-md shadow-sm flex flex-col sm:flex-row items-center justify-between gap-space-md">
                   <button
-                    aria-label="Pengaturan Aksesibilitas Sensorik"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface hover:bg-surface-container text-text-secondary hover:text-on-surface text-xs font-label font-semibold shadow-sm transition-all duration-200"
-                    id="contrastBtn"
+                    className="w-full sm:w-auto px-5 py-3 rounded-xl bg-canvas hover:bg-surface-container text-primary font-label text-label transition-colors flex items-center justify-center gap-2"
                     type="button"
+                    onClick={onBack}
                     disabled={busy}
-                    onClick={onSettings}
                   >
                     <span
-                      className="material-symbols-outlined text-[16px] text-secondary"
+                      className="material-symbols-outlined text-[20px]"
                       aria-hidden="true"
                     >
-                      tune
+                      arrow_back
                     </span>
-                    <span className="hidden sm:inline">Aksesibilitas</span>
+                    <span>Kembali ke Ringkasan Materi</span>
                   </button>
-                  <button
-                    aria-label="Ganti Cara Belajar"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface hover:bg-surface-container text-text-secondary hover:text-on-surface text-xs font-label font-semibold shadow-sm transition-all duration-200"
-                    type="button"
-                    disabled={busy}
-                    onClick={chooseMode}
-                  >
-                    <span
-                      className="material-symbols-outlined text-[16px] text-secondary"
-                      aria-hidden="true"
-                    >
-                      swap_horiz
-                    </span>
-                    <span className="hidden sm:inline">Ganti Cara Belajar</span>
-                  </button>
-                </div>
-              </div>
-
-              <div className="w-full max-w-3xl mb-8">
-                <div className="flex items-center justify-between text-xs font-medium text-text-secondary mb-2 font-label">
-                  <span className="flex items-center gap-1 text-primary font-bold">
-                    <span className="w-2 h-2 rounded-full bg-secondary inline-block"></span>
-                    {concept.title}
-                  </span>
-                  <span className="text-muted-gray">50% selesai</span>
-                </div>
-                <div className="w-full h-2.5 bg-surface-container rounded-full overflow-hidden p-0.5">
-                  <div className="h-full bg-gradient-to-r from-secondary to-primary rounded-full transition-all duration-700 ease-out w-1/2"></div>
-                </div>
-
-                <div className="flex justify-between items-center mt-2 px-1 text-[11px] text-muted-gray font-label">
-                  <span className="text-secondary font-semibold">
-                    1. Bentuk Siku
-                  </span>
-                  <span className="text-primary font-bold">
-                    2. Cari Sudut 90°
-                  </span>
-                  <span>3. Kuadrat Sisi</span>
-                  <span>4. Nilai C</span>
-                </div>
-              </div>
-
-              <div className="w-full max-w-3xl flex items-center justify-between bg-surface-container-low px-4 py-2.5 rounded-2xl mb-6 shadow-sm">
-                <div className="flex items-center gap-2.5 text-text-secondary font-label text-xs sm:text-sm">
-                  <span
-                    className="material-symbols-outlined text-secondary text-[20px]"
-                    aria-hidden="true"
-                  >
-                    spa
-                  </span>
-                  <span
-                    className="font-medium text-on-surface"
-                    id="mindfulTimerLabel"
-                  >
-                    Ritme Santai:{" "}
-                    <strong className="text-primary font-bold">
-                      {preferences.timer_enabled
-                        ? `${Math.floor(elapsed / 60)}:${String(elapsed % 60).padStart(2, "0")}`
-                        : "Tanpa batas waktu"}
-                    </strong>{" "}
-                    mengalir
-                  </span>
-                  <span className="hidden md:inline text-muted-gray text-xs">
-                    • Tidak ada penalti waktu
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-surface hover:bg-surface-container text-on-surface text-xs font-label font-bold transition-colors"
-                    id="pauseTimerBtn"
-                    type="button"
-                    disabled={busy}
-                    onClick={pause}
-                  >
-                    <span
-                      className="material-symbols-outlined text-[16px]"
-                      aria-hidden="true"
-                    >
-                      pause
-                    </span>
-                    <span>Jeda Dulu</span>
-                  </button>
-                  <button
-                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-secondary-container hover:bg-secondary-fixed text-on-secondary-fixed font-label text-xs font-bold transition-colors"
-                    id="breakBtn"
-                    type="button"
-                    disabled={busy}
-                    onClick={pause}
-                  >
-                    <span
-                      className="material-symbols-outlined text-[16px]"
-                      aria-hidden="true"
-                    >
-                      coffee
-                    </span>
-                    <span>Istirahat 3 Mnt</span>
-                  </button>
-                </div>
-              </div>
-
-              <div className="w-full max-w-[760px] bg-surface rounded-3xl p-6 sm:p-10 shadow-xl shadow-surface-dim/30 flex flex-col relative overflow-hidden">
-                <h1 className="text-2xl sm:text-3xl font-bold font-page-title text-primary tracking-tight mb-6">
-                  {concept.title}
-                </h1>
-                <p
-                  className="reference-reading text-primary"
-                  style={readingStyle}
-                >
-                  {
-                    concept.paragraphs[
-                      Math.min(session.paragraph, concept.paragraphs.length - 1)
-                    ]
-                  }
-                </p>
-                <p className="text-sm text-text-secondary mt-4">
-                  Langkah {session.paragraph + 1} dari{" "}
-                  {concept.paragraphs.length}
-                </p>
-              </div>
-
-              <div className="mt-8 flex items-center justify-center gap-2 text-xs text-muted-gray font-label">
-                <span
-                  className="material-symbols-outlined text-[16px] text-secondary"
-                  aria-hidden="true"
-                >
-                  check
-                </span>
-                <span>
-                  Satu konsep dalam satu waktu. Bernapas tenang, pahami
-                  perlahan.
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-      {session.mode === "explore" && (
-        <div className="revamp-reader-body">
-          <div className="flex flex-col w-full">
-            <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
-              <section className="w-full bg-surface shadow-md rounded-2xl p-5 sm:p-6 transition-all duration-300">
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                  <div className="flex items-center gap-4 sm:gap-6 flex-1 min-w-0">
+                  <div className="flex items-center gap-3 w-full sm:w-auto">
                     <button
-                      aria-label="Putar atau jeda audio penjelasan Mimo"
-                      className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-primary text-on-primary hover:bg-primary-hover flex items-center justify-center flex-shrink-0 shadow-md transition-transform active:scale-95"
-                      id="audio-play-btn"
+                      className="w-full sm:w-auto px-6 py-3 rounded-xl bg-primary hover:bg-primary-hover text-on-primary font-label text-label shadow-sm transition-all flex items-center justify-center gap-2 active:scale-95"
                       type="button"
-                      disabled={busy}
-                      onClick={() => onSpeak()}
-                    >
-                      <span
-                        className="material-symbols-outlined text-[30px]"
-                        id="play-icon"
-                        style={{ fontVariationSettings: "'FILL' 1" }}
-                        aria-hidden="true"
-                      >
-                        pause
-                      </span>
-                    </button>
-                    <div className="flex flex-col flex-1 min-w-0 gap-1.5">
-                      <div className="flex items-center justify-between text-xs font-semibold tracking-wide text-text-secondary">
-                        <span className="flex items-center gap-1.5 text-primary">
-                          <span className="inline-block w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
-                          <span>{concept.title}</span>
-                        </span>
-                        <span
-                          className="font-mono text-contrast-ink"
-                          id="audio-timer"
-                        >
-                          {preferences.timer_enabled
-                            ? `${Math.floor(elapsed / 60)}:${String(elapsed % 60).padStart(2, "0")}`
-                            : "Tanpa batas waktu"}
-                        </span>
-                      </div>
-
-                      <div
-                        className="hidden"
-                        id="waveform-track"
-                        title="Klik untuk melompat titik audio"
-                        aria-hidden="true"
-                      >
-                        <div
-                          className="absolute inset-y-0 left-0 bg-secondary-container/40 transition-all duration-300"
-                          style={{ width: "38%" }}
-                        ></div>
-                        <div className="relative z-10 w-full flex items-center justify-between gap-1 h-6">
-                          <div className="w-1 bg-secondary rounded-full h-3"></div>
-                          <div className="w-1 bg-secondary rounded-full h-5"></div>
-                          <div className="w-1 bg-secondary rounded-full h-4"></div>
-                          <div className="w-1 bg-secondary rounded-full h-6 animate-pulse"></div>
-                          <div className="w-1 bg-secondary rounded-full h-3"></div>
-                          <div className="w-1 bg-secondary rounded-full h-5"></div>
-                          <div className="w-1 bg-secondary rounded-full h-4"></div>
-                          <div className="w-1 bg-secondary rounded-full h-6"></div>
-                          <div className="w-1 bg-secondary rounded-full h-5"></div>
-                          <div className="w-1 bg-secondary rounded-full h-3"></div>
-
-                          <div className="w-1.5 bg-primary rounded-full h-7 shadow-sm"></div>
-                          <div className="w-1 bg-outline-variant rounded-full h-4"></div>
-                          <div className="w-1 bg-outline-variant rounded-full h-5"></div>
-                          <div className="w-1 bg-outline-variant rounded-full h-3"></div>
-                          <div className="w-1 bg-outline-variant rounded-full h-6"></div>
-                          <div className="w-1 bg-outline-variant rounded-full h-4"></div>
-                          <div className="w-1 bg-outline-variant rounded-full h-5"></div>
-                          <div className="w-1 bg-outline-variant rounded-full h-3"></div>
-                          <div className="w-1 bg-outline-variant rounded-full h-6"></div>
-                          <div className="w-1 bg-outline-variant rounded-full h-4"></div>
-                          <div className="w-1 bg-outline-variant rounded-full h-5"></div>
-                          <div className="w-1 bg-outline-variant rounded-full h-3"></div>
-                          <div className="w-1 bg-outline-variant rounded-full h-2"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 self-end lg:self-center">
-                    <div
-                      aria-label="Kecepatan narasi"
-                      className="flex items-center bg-surface-container-high p-1 rounded-xl"
-                      role="group"
-                    >
-                      <button
-                        className="px-2.5 py-1 text-xs font-semibold rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface/60 transition-colors"
-                        type="button"
-                        disabled={busy}
-                        onClick={() => onPreferences?.({ speech_rate: 0.8 })}
-                      >
-                        0.8x
-                      </button>
-                      <button
-                        className="px-2.5 py-1 text-xs font-bold rounded-lg bg-surface text-primary shadow-sm"
-                        type="button"
-                        disabled={busy}
-                        onClick={() => onPreferences?.({ speech_rate: 1.0 })}
-                      >
-                        1.0x
-                      </button>
-                      <button
-                        className="px-2.5 py-1 text-xs font-semibold rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface/60 transition-colors"
-                        type="button"
-                        disabled={busy}
-                        onClick={() => onPreferences?.({ speech_rate: 1.2 })}
-                      >
-                        1.2x
-                      </button>
-                    </div>
-
-                    <button
-                      className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-surface-container hover:bg-secondary-container/50 text-contrast-ink text-xs font-semibold transition-all"
-                      id="ambient-toggle"
-                      type="button"
-                      disabled={true}
-                      title="Audio latar belum tersedia"
-                    >
-                      <span
-                        className="material-symbols-outlined text-[18px] text-secondary"
-                        aria-hidden="true"
-                      >
-                        rainy
-                      </span>
-                      <span id="ambient-label">Hujan Santai: Off</span>
-                    </button>
-                  </div>
-                </div>
-              </section>
-
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                <section className="lg:col-span-7 flex flex-col gap-5">
-                  <div className="bg-surface shadow-md rounded-2xl p-6 sm:p-8 flex flex-col items-center relative overflow-hidden">
-                    <div className="w-full flex items-center justify-between mb-2">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-high text-xs font-semibold text-primary">
-                        <span
-                          className="material-symbols-outlined text-[16px]"
-                          aria-hidden="true"
-                        >
-                          touch_app
-                        </span>
-                        Eksplorasi Sentuh Aktif
-                      </span>
-                      <span className="text-xs text-text-secondary tracking-wider font-mono">
-                        MODEL 2D · SKALA ASLI
-                      </span>
-                    </div>
-
-                    <div className="w-full max-w-lg aspect-square sm:aspect-[4/3] relative flex items-center justify-center my-3 select-none">
-                      <div aria-live="polite" className="sr-only" role="region">
-                        Diagram menampilkan segitiga siku-siku ABC dengan
-                        panjang alas a=6 cm, tinggi b=8 cm, dan hipotenusa c=10
-                        cm. Sudut siku-siku berada di titik B dengan tanda bujur
-                        sangkar 90 derajat. Sisi C sedang disorot.
-                      </div>
-
-                      <svg
-                        id="geom-canvas"
-                        viewBox="0 0 420 340"
-                        aria-hidden="true"
-                        className={
-                          material.id !== "demo-pythagoras"
-                            ? "hidden"
-                            : "w-full h-full"
-                        }
-                        style={{ transform: `rotate(${selectedPart * 90}deg)` }}
-                      >
-                        <defs>
-                          <linearGradient
-                            id="hypoGlow"
-                            x1="0%"
-                            x2="100%"
-                            y1="0%"
-                            y2="100%"
-                          >
-                            <stop offset="0%" stopColor="#496550"></stop>
-                            <stop offset="100%" stopColor="#91AF87"></stop>
-                          </linearGradient>
-                          <pattern
-                            height="20"
-                            id="squareGrid"
-                            patternUnits="userSpaceOnUse"
-                            width="20"
-                          >
-                            <path
-                              d="M 20 0 L 0 0 0 20"
-                              fill="none"
-                              stroke="#E5E8E1"
-                              strokeWidth="0.8"
-                            ></path>
-                          </pattern>
-                        </defs>
-
-                        <rect
-                          fill="url(#squareGrid)"
-                          height="300"
-                          opacity="0.6"
-                          rx="16"
-                          width="380"
-                          x="20"
-                          y="20"
-                        ></rect>
-
-                        <g
-                          className="opacity-0 transition-opacity duration-300"
-                          id="square-c-area"
-                        >
-                          <polygon
-                            fill="#FFE7A3"
-                            fillOpacity="0.25"
-                            points="90,70 170,-36 330,84 250,190"
-                          ></polygon>
-                          <text
-                            fill="#61450E"
-                            fontSize="12"
-                            fontWeight="700"
-                            textAnchor="middle"
-                            x="210"
-                            y="70"
-                          >
-                            Luas c² = 100 cm²
-                          </text>
-                        </g>
-
-                        <polygon
-                          fill="#F5F4EF"
-                          points="90,70 90,270 330,270"
-                          stroke="#496550"
-                          strokeLinejoin="round"
-                          strokeWidth="3"
-                        ></polygon>
-
-                        <g
-                          className="transition-all duration-300"
-                          id="angle-90-highlight"
-                        >
-                          <rect
-                            fill="#C8E8CE"
-                            fillOpacity="0.8"
-                            height="24"
-                            stroke="#496550"
-                            strokeWidth="1.5"
-                            width="24"
-                            x="90"
-                            y="246"
-                          ></rect>
-                          <circle
-                            cx="102"
-                            cy="258"
-                            fill="#112520"
-                            r="2.5"
-                          ></circle>
-                        </g>
-
-                        <text
-                          fill="#424846"
-                          fontSize="14"
-                          fontWeight="700"
-                          textAnchor="middle"
-                          x="64"
-                          y="175"
-                        >
-                          b = 8 cm
-                        </text>
-
-                        <text
-                          fill="#424846"
-                          fontSize="14"
-                          fontWeight="700"
-                          textAnchor="middle"
-                          x="210"
-                          y="295"
-                        >
-                          a = 6 cm
-                        </text>
-
-                        <line
-                          stroke="url(#hypoGlow)"
-                          strokeLinecap="round"
-                          strokeWidth="7"
-                          x1="90"
-                          x2="330"
-                          y1="70"
-                          y2="270"
-                        ></line>
-                        <line
-                          stroke="#FFFFFF"
-                          strokeDasharray="6,4"
-                          strokeLinecap="round"
-                          strokeWidth="2"
-                          x1="90"
-                          x2="330"
-                          y1="70"
-                          y2="270"
-                        ></line>
-
-                        <g transform="translate(230, 145)">
-                          <rect
-                            fill="#112520"
-                            filter="drop-shadow(0 4px 6px rgba(0,0,0,0.15))"
-                            height="34"
-                            rx="17"
-                            width="168"
-                            x="-10"
-                            y="-22"
-                          ></rect>
-                          <circle
-                            className="animate-ping"
-                            cx="8"
-                            cy="-5"
-                            fill="#C8E8CE"
-                            r="5"
-                          ></circle>
-                          <circle cx="8" cy="-5" fill="#C8E8CE" r="5"></circle>
-                          <text
-                            fill="#FFFFFF"
-                            fontSize="12"
-                            fontWeight="700"
-                            x="22"
-                            y="0"
-                          >
-                            {concept.title}
-                          </text>
-                        </g>
-
-                        <g
-                          aria-label="Titik Sudut A"
-                          className="cursor-pointer group"
-                          role="button"
-                          tabIndex={0}
-                        >
-                          <circle
-                            className="group-hover:stroke-primary group-hover:scale-110 transition-transform"
-                            cx="90"
-                            cy="70"
-                            fill="#F5F4EF"
-                            r="16"
-                            stroke="#727875"
-                            strokeWidth="1.5"
-                          ></circle>
-                          <circle cx="90" cy="70" fill="#112520" r="6"></circle>
-                          <text
-                            fill="#112520"
-                            fontSize="13"
-                            fontWeight="800"
-                            textAnchor="middle"
-                            x="90"
-                            y="44"
-                          >
-                            A
-                          </text>
-                        </g>
-
-                        <g
-                          aria-label="Titik Sudut B Siku-siku 90 derajat"
-                          className="cursor-pointer group"
-                          role="button"
-                          tabIndex={0}
-                        >
-                          <circle
-                            className="group-hover:stroke-primary group-hover:scale-110 transition-transform"
-                            cx="90"
-                            cy="270"
-                            fill="#F5F4EF"
-                            r="16"
-                            stroke="#727875"
-                            strokeWidth="1.5"
-                          ></circle>
-                          <circle
-                            cx="90"
-                            cy="270"
-                            fill="#112520"
-                            r="6"
-                          ></circle>
-                          <text
-                            fill="#112520"
-                            fontSize="13"
-                            fontWeight="800"
-                            textAnchor="middle"
-                            x="70"
-                            y="285"
-                          >
-                            B
-                          </text>
-                        </g>
-
-                        <g
-                          aria-label="Titik Sudut C"
-                          className="cursor-pointer group"
-                          role="button"
-                          tabIndex={0}
-                        >
-                          <circle
-                            className="animate-pulse"
-                            cx="330"
-                            cy="270"
-                            fill="#C8E8CE"
-                            fillOpacity="0.5"
-                            r="22"
-                          ></circle>
-                          <circle
-                            cx="330"
-                            cy="270"
-                            fill="#28583E"
-                            r="15"
-                          ></circle>
-                          <circle
-                            cx="330"
-                            cy="270"
-                            fill="#FFFFFF"
-                            r="6"
-                          ></circle>
-                          <text
-                            fill="#112520"
-                            fontSize="14"
-                            fontWeight="800"
-                            x="355"
-                            y="275"
-                          >
-                            C
-                          </text>
-                        </g>
-                      </svg>
-                    </div>
-
-                    <div
-                      className="w-full bg-surface-container-low rounded-xl p-3.5 flex items-center justify-between text-xs text-contrast-ink"
-                      id="hotspot-status-card"
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="w-2.5 h-2.5 rounded-full bg-secondary"></span>
-                        <span className="font-bold">Fokus Aktif:</span>
-                        <span id="active-hotspot-text">
-                          {note ||
-                            concept.diagram_description ||
-                            "Deskripsi diagram belum tersedia."}
-                        </span>
-                      </div>
-                      <span className="text-text-secondary hidden sm:inline text-[11px]">
-                        {"Target aksesibilitas WCAG 2.2 AA"}
-                      </span>
-                    </div>
-
-                    <div className="w-full grid grid-cols-3 gap-2.5 pt-4">
-                      <button
-                        className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-surface-container hover:bg-surface-container-high text-contrast-ink text-xs font-bold transition-all active:scale-95"
-                        id="btn-rotate"
-                        type="button"
-                        disabled={busy}
-                        onClick={() => setSelectedPart((selectedPart + 1) % 4)}
-                      >
-                        <span
-                          className="material-symbols-outlined text-[18px]"
-                          aria-hidden="true"
-                        >
-                          rotate_right
-                        </span>
-                        <span>Putar Segitiga</span>
-                      </button>
-                      <button
-                        className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-secondary-container hover:bg-secondary-fixed text-on-secondary-fixed text-xs font-bold transition-all active:scale-95"
-                        id="btn-highlight-90"
-                        type="button"
-                        disabled={busy}
-                        onClick={() =>
-                          setNote(
-                            concept.diagram_description ||
-                              "Deskripsi diagram belum tersedia.",
-                          )
-                        }
-                      >
-                        <span
-                          className="material-symbols-outlined text-[18px]"
-                          aria-hidden="true"
-                        >
-                          square_foot
-                        </span>
-                        <span>Sorot Sudut 90°</span>
-                      </button>
-                      <button
-                        className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-surface-container hover:bg-surface-container-high text-contrast-ink text-xs font-bold transition-all active:scale-95"
-                        id="btn-toggle-squares"
-                        type="button"
-                        disabled={busy}
-                        onClick={() =>
-                          setNote(
-                            concept.diagram_description ||
-                              "Deskripsi diagram belum tersedia.",
-                          )
-                        }
-                      >
-                        <span
-                          className="material-symbols-outlined text-[18px]"
-                          aria-hidden="true"
-                        >
-                          shapes
-                        </span>
-                        <span id="square-btn-text">Tampilkan Luas</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="bg-surface-container-low rounded-xl p-4 flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-peach/40 flex items-center justify-center text-warning flex-shrink-0">
-                      <span
-                        className="material-symbols-outlined text-[18px]"
-                        aria-hidden="true"
-                      >
-                        lightbulb
-                      </span>
-                    </div>
-                    <p className="text-xs text-on-surface-variant leading-relaxed">
-                      <strong className="text-on-surface">
-                        Tips Sensorik:
-                      </strong>{" "}
-                      Kamu bisa menyentuh titik huruf di diagram untuk
-                      memindahkan fokus suara narasi langsung ke bagian tersebut
-                      tanpa perlu membaca banyak teks.
-                    </p>
-                  </div>
-                </section>
-
-                <section className="lg:col-span-5 flex flex-col gap-6">
-                  <div className="bg-surface shadow-md rounded-2xl p-6 sm:p-7 flex flex-col gap-4 relative overflow-hidden">
-                    <div className="flex items-center justify-between">
-                      <span
-                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-contrast-ink"
-                        style={{ backgroundColor: "#A8B7F5" }}
-                      >
-                        <span
-                          className="material-symbols-outlined text-[16px]"
-                          aria-hidden="true"
-                        >
-                          record_voice_over
-                        </span>
-                        Segmen 2 dari 3 · Suara Sedang Membahas Sisi C
-                      </span>
-                      <span className="text-xs font-mono text-secondary">
-                        Sinkron Otomatis
-                      </span>
-                    </div>
-
-                    <div className="space-y-3 pt-2">
-                      <p className="text-sm text-muted-gray leading-relaxed transition-opacity">
-                        {
-                          concept.paragraphs[
-                            Math.min(
-                              session.paragraph,
-                              concept.paragraphs.length - 1,
-                            )
-                          ]
-                        }
-                      </p>
-
-                      <div className="p-3.5 rounded-xl bg-butter/30 transition-all shadow-sm">
-                        <p className="text-base sm:text-lg font-bold text-contrast-ink leading-relaxed flex items-start gap-2">
-                          <span
-                            className="material-symbols-outlined text-secondary text-[20px] flex-shrink-0 mt-0.5"
-                            aria-hidden="true"
-                          >
-                            volume_up
-                          </span>
-                          <span>
-                            “Sekarang lihat tepat ke seberangnya! Garis miring
-                            terpanjang ini namanya{" "}
-                            <mark className="bg-peach/60 text-contrast-ink px-1 rounded">
-                              {concept.title}
-                            </mark>{" "}
-                            (sisi c = 10 cm).”
-                          </span>
-                        </p>
-                      </div>
-
-                      <p className="text-sm text-muted-gray/70 leading-relaxed">
-                        {
-                          concept.paragraphs[
-                            Math.min(
-                              session.paragraph,
-                              concept.paragraphs.length - 1,
-                            )
-                          ]
-                        }
-                      </p>
-                    </div>
-
-                    <div className="flex items-center gap-2 pt-2 text-[11px] text-text-secondary">
-                      <span
-                        className="material-symbols-outlined text-[14px] text-secondary"
-                        aria-hidden="true"
-                      >
-                        verified
-                      </span>
-                      <span>
-                        Kalimat diringkas ramah beban kognitif (No cognitive
-                        overload).
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="bg-surface shadow-md rounded-2xl p-6 sm:p-7 flex flex-col gap-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-primary flex-shrink-0">
-                        <span
-                          className="material-symbols-outlined text-[22px]"
-                          aria-hidden="true"
-                        >
-                          smart_toy
-                        </span>
-                      </div>
-                      <div>
-                        <h2 className="text-base font-bold text-primary">
-                          Tanya Mimo tentang Bagian Ini
-                        </h2>
-                        <p className="text-xs text-text-secondary">
-                          Jawaban instan ramah teman belajar tanpa rumus rumit
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-wrap gap-2 pt-1">
-                      <button
-                        className="px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-secondary-container text-xs font-semibold text-primary transition-colors text-left flex items-center gap-1.5"
-                        type="button"
-                        disabled={busy}
-                        onClick={() =>
-                          setNote(
-                            concept.diagram_description ||
-                              concept.paragraphs[0],
-                          )
-                        }
-                      >
-                        <span>💡 Kenapa sisi C paling panjang?</span>
-                      </button>
-                      <button
-                        className="px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-secondary-container text-xs font-semibold text-primary transition-colors text-left flex items-center gap-1.5"
-                        type="button"
-                        disabled={busy}
-                        onClick={() =>
-                          setNote(
-                            concept.diagram_description ||
-                              concept.paragraphs[0],
-                          )
-                        }
-                      >
-                        <span>📐 Selalu miring?</span>
-                      </button>
-                    </div>
-
-                    <div className="flex items-center gap-2 bg-surface-container-low p-1.5 rounded-xl">
-                      <input
-                        className="flex-1 bg-transparent px-3 py-1.5 text-xs text-contrast-ink placeholder:text-muted-gray focus:outline-none"
-                        id="mimo-question-input"
-                        placeholder="Ketik pertanyaan santaimu ke Mimo..."
-                        type="text"
-                        value={note}
-                        onChange={(e) => setNote(e.target.value)}
-                        aria-label="Bagian diagram yang ingin ditinjau"
-                      />
-                      <button
-                        className="px-4 py-2 rounded-lg bg-primary hover:bg-primary-hover text-on-primary text-xs font-bold transition-all shadow-sm flex items-center gap-1"
-                        id="ask-btn"
-                        type="button"
-                        disabled={busy}
-                        onClick={() =>
-                          setNote(
-                            concept.diagram_description ||
-                              concept.paragraphs[0],
-                          )
-                        }
-                      >
-                        {"Lihat penjelasan sumber"}
-                      </button>
-                    </div>
-
-                    <div
-                      className="mt-2 p-4 rounded-xl bg-surface-container-low flex items-start gap-4 transition-all"
-                      id="mimo-response-area"
-                    >
-                      {note ||
-                        concept.diagram_description ||
-                        "Deskripsi diagram belum tersedia."}
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col gap-3 pt-2">
-                    <button
-                      className="w-full py-3.5 px-5 rounded-xl bg-primary hover:bg-primary-hover text-on-primary font-bold text-sm shadow-md transition-all flex items-center justify-between group"
-                      data-path="pythagoras-concept-2"
-                      type="button"
-                      onClick={() => onSpeak()}
+                      onClick={next}
                       disabled={busy}
                     >
-                      <span>{`Konsep ${index + 1} dari ${material.concepts.length}`}</span>
-                      <span
-                        className="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform"
-                        aria-hidden="true"
-                      >
-                        arrow_forward
-                      </span>
-                    </button>
-                    <button
-                      className="w-full py-3 px-5 rounded-xl bg-surface hover:bg-surface-container-high text-contrast-ink font-semibold text-xs transition-colors flex items-center justify-center gap-2 shadow-sm"
-                      data-path="quiz-pythagoras"
-                      type="button"
-                      onClick={onPractice}
-                      disabled={busy}
-                    >
-                      <span
-                        className="material-symbols-outlined text-[18px] text-secondary"
-                        aria-hidden="true"
-                      >
-                        psychology_alt
-                      </span>
-                      <span>Selesai Jelajah, Mulai Latihan Santai</span>
-                    </button>
-                  </div>
-                </section>
-              </div>
-            </div>
-          </div>
-          <p
-            className="max-w-6xl mx-auto p-6 rounded-2xl bg-surface text-primary"
-            style={readingStyle}
-          >
-            {concept.diagram_description}
-          </p>
-        </div>
-      )}
-      {session.mode === "transcript" && (
-        <div className="revamp-reader-body">
-          <div className="flex flex-col w-full">
-            <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
-              <section className="bg-surface rounded-2xl shadow-sm p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div className="flex flex-wrap items-center gap-3">
-                  <span className="text-xs uppercase tracking-wider font-bold text-secondary px-2.5 py-1 bg-surface-container rounded-full">
-                    Tampilan Belajar
-                  </span>
-
-                  <div className="inline-flex p-1 bg-surface-container-low rounded-xl">
-                    <button
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg bg-surface text-primary shadow-sm transition-all"
-                      id="viewStepBtn"
-                      type="button"
-                      disabled={busy}
-                      onClick={() => setSelectedPart(0)}
-                    >
-                      <span
-                        className="material-symbols-outlined text-[18px] text-secondary"
-                        aria-hidden="true"
-                      >
-                        view_carousel
-                      </span>
-                      <span>Kartu Langkah Bergambar</span>
-                    </button>
-                    <button
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg text-on-surface-variant hover:text-on-surface transition-all"
-                      id="viewTranscriptBtn"
-                      type="button"
-                      disabled={busy}
-                      onClick={() => setSelectedPart(1)}
-                    >
-                      <span
-                        className="material-symbols-outlined text-[18px]"
-                        aria-hidden="true"
-                      >
-                        article
-                      </span>
-                      <span>Transkrip Lengkap</span>
-                    </button>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 flex-wrap">
-                  <div className="flex items-center gap-1.5 text-xs text-text-secondary bg-surface-container-high px-3 py-1.5 rounded-xl">
-                    <span
-                      className="material-symbols-outlined text-[16px] text-secondary"
-                      aria-hidden="true"
-                    >
-                      closed_caption
-                    </span>
-                    <span className="font-bold text-on-surface">Takarir:</span>
-                    <button
-                      className="ml-1 px-2 py-0.5 rounded bg-surface text-primary font-bold shadow-xs hover:bg-surface-container transition-colors"
-                      id="fontToggle"
-                      type="button"
-                      disabled={busy}
-                      onClick={() =>
-                        onPreferences?.({
-                          font_size: Math.min(32, preferences.font_size + 2),
-                        })
-                      }
-                    >
-                      Teks Sangat Jelas (18px)
-                    </button>
-                    <button
-                      className="px-2 py-0.5 rounded bg-surface text-primary font-semibold hover:bg-surface-container transition-colors flex items-center gap-1"
-                      id="contrastToggle"
-                      type="button"
-                      disabled={busy}
-                      onClick={onSettings}
-                    >
-                      <span className="w-2.5 h-2.5 rounded-full bg-primary inline-block"></span>
-                      <span>Kontras Tinggi</span>
-                    </button>
-                  </div>
-                  <button
-                    className="inline-flex items-center gap-1 text-xs text-secondary hover:text-primary font-bold px-2 py-1 rounded-lg hover:bg-surface-container-low transition-colors"
-                    type="button"
-                    disabled={busy}
-                    onClick={() => onSpeak()}
-                  >
-                    <span
-                      className="material-symbols-outlined text-[16px]"
-                      aria-hidden="true"
-                    >
-                      help
-                    </span>
-                    <span>Bantuan Visual</span>
-                  </button>
-                </div>
-              </section>
-
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                <div className="lg:col-span-8 flex flex-col space-y-6">
-                  {(selectedPart === 1
-                    ? (
-                        concept.transcript || concept.paragraphs.join("\n\n")
-                      ).split(/\n\n/)
-                    : concept.paragraphs
-                  ).map((p, i) => (
-                    <article
-                      className="bg-surface-container-low rounded-2xl p-5 shadow-sm transition-all hover:shadow-md"
-                      key={i}
-                      style={readingStyle}
-                    >
-                      <span className="text-xs font-bold text-text-secondary">
-                        Bagian {i + 1}
-                      </span>
-                      <p className="mt-3">{p}</p>
-                    </article>
-                  ))}
-                </div>
-
-                <aside className="lg:col-span-4 flex flex-col space-y-6">
-                  <div className="bg-gradient-to-br from-surface to-surface-container-low rounded-3xl p-6 shadow-sm relative overflow-hidden">
-                    <div className="flex items-start justify-between gap-2 mb-4">
-                      <span className="px-2.5 py-1 rounded-full bg-butter text-warning font-extrabold text-xs inline-flex items-center gap-1">
-                        <span
-                          className="material-symbols-outlined text-[14px]"
-                          style={{ fontVariationSettings: "'FILL' 1" }}
-                          aria-hidden="true"
-                        >
-                          lightbulb
-                        </span>
-                        Mimo Eureka!
-                      </span>
-                      <span className="text-[11px] font-semibold text-muted-gray">
-                        Teman Belajar 2D
-                      </span>
-                    </div>
-
-                    <div className="relative bg-surface p-4 rounded-2xl shadow-sm text-sm sm:text-base font-semibold text-primary leading-snug mb-3">
-                      “Keren Manda! Dengan melihat luas perseginya, rumus{" "}
-                      <span className="font-extrabold text-secondary">
-                        a² + b² = c²
-                      </span>{" "}
-                      jadi kelihatan masuk akal banget kan?”
-                      <div className="absolute -bottom-2 right-12 w-4 h-4 bg-surface transform rotate-45"></div>
-                    </div>
-
-                    <div className="flex justify-end pr-4 pt-2">
-                      <div className="w-36 h-36 relative flex-shrink-0 transition-transform hover:scale-105 duration-300">
-                        <Image
-                          alt="Mimo Si Bunglon Lucu pose Eureka merayakan penemuan konsep visual teorema pythagoras"
-                          className="w-full h-full object-contain filter drop-shadow-sm rounded-2xl"
-                          src="/design/mimo-5.png"
-                          width={1024}
-                          height={1024}
-                        ></Image>
-                      </div>
-                    </div>
-                    <div className="mt-2 pt-3 bg-surface-container/50 rounded-xl p-3 flex items-center justify-between text-xs text-text-secondary">
-                      <span>Apakah penjelasan visual ini pas?</span>
-                      <div className="flex items-center gap-1">
-                        <button
-                          aria-label="Bagus"
-                          className="w-7 h-7 rounded-lg bg-surface hover:bg-secondary-container text-on-surface flex items-center justify-center transition-colors"
-                          type="button"
-                          disabled={busy}
-                          onClick={() => onSpeak()}
-                        >
-                          👍
-                        </button>
-                        <button
-                          aria-label="Terlalu cepat"
-                          className="w-7 h-7 rounded-lg bg-surface hover:bg-surface-container text-on-surface flex items-center justify-center transition-colors"
-                          type="button"
-                          disabled={busy}
-                          onClick={() => onSpeak()}
-                        >
-                          🤔
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-surface rounded-2xl p-5 shadow-xs space-y-3">
-                    <h4 className="text-sm font-bold text-primary flex items-center gap-2">
-                      <span
-                        className="material-symbols-outlined text-[18px] text-secondary"
-                        aria-hidden="true"
-                      >
-                        bookmark_border
-                      </span>
-                      Ringkasan Cepat Langkah Ini
-                    </h4>
-                    <ul className="text-xs text-on-surface-variant space-y-2 leading-relaxed">
-                      <li className="flex items-start gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-peach mt-1.5 flex-shrink-0"></span>
-                        <span>
-                          <strong>a² (Peach):</strong> Persegi dari tinggi
-                          segitiga = 9 satuan.
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-tertiary-fixed mt-1.5 flex-shrink-0"></span>
-                        <span>
-                          <strong>b² (Lavender):</strong> Persegi dari alas
-                          segitiga = 16 satuan.
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-secondary-container mt-1.5 flex-shrink-0"></span>
-                        <span>
-                          <strong>c² (Soft Mint):</strong> Persegi hipotenusa =
-                          9 + 16 = 25 satuan.
-                        </span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div className="pt-2 flex flex-col gap-3">
-                    <button
-                      className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl bg-primary hover:bg-primary-hover text-surface font-bold text-sm sm:text-base shadow-sm transition-all transform hover:-translate-y-0.5 active:translate-y-0"
-                      type="button"
-                      onClick={onPractice}
-                      disabled={busy}
-                    >
-                      <span>Lanjut ke Latihan Santai (2 Soal)</span>
+                      <span>{concept.title}</span>
                       <span
                         className="material-symbols-outlined text-[20px]"
                         aria-hidden="true"
@@ -1573,479 +1185,395 @@ export function ReaderDesign({
                         arrow_forward
                       </span>
                     </button>
-                    <button
-                      className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-surface hover:bg-surface-container text-text-secondary hover:text-primary font-semibold text-xs sm:text-sm transition-colors"
-                      id="replayBtn"
-                      type="button"
-                      disabled={busy}
-                      onClick={() => onSpeak()}
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        ) : null}
+        {session.mode === "transcript" ? (
+          <div className="final-design final-screen-16 w-full pt-20 bg-canvas flex-1 final-reader">
+            <div className="flex flex-col w-full">
+              <section className="w-full bg-surface-container-low px-margin py-space-sm">
+                <div className="max-w-[1200px] mx-auto flex flex-wrap items-center justify-between gap-space-md">
+                  <div className="flex items-center flex-wrap gap-space-sm">
+                    <a
+                      className="inline-flex items-center gap-space-xs text-primary font-label text-label hover:text-primary-hover transition-colors px-space-xs py-1 rounded-lg"
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onBack();
+                      }}
                     >
                       <span
                         className="material-symbols-outlined text-[18px]"
                         aria-hidden="true"
                       >
-                        replay
+                        arrow_back
                       </span>
-                      <span>{"Bacakan penjelasan konsep"}</span>
-                    </button>
+                      <span>Ganti Cara Belajar</span>
+                    </a>
+                    <span className="text-outline-variant">•</span>
+                    <div className="inline-flex items-center gap-space-xs bg-peach-tint px-space-sm py-1 rounded-full">
+                      <span
+                        className="material-symbols-outlined text-primary text-[16px]"
+                        aria-hidden="true"
+                      >
+                        palette
+                      </span>
+                      <span className="font-label text-[13px] text-primary font-bold">
+                        Mode Teks &amp; Visual
+                      </span>
+                    </div>
                   </div>
-                </aside>
+
+                  <div className="flex items-center flex-wrap gap-space-md">
+                    <div className="flex items-center gap-space-xs bg-surface px-space-md py-1.5 rounded-full shadow-sm">
+                      <span className="font-label text-label text-on-surface-variant font-semibold">{`${index + 1} / ${material.concepts.length} konsep`}</span>
+                      <span className="font-label text-label text-primary font-bold">
+                        {concept.title}
+                      </span>
+                      <div className="flex items-center gap-1 ml-space-xs">
+                        <span className="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+                        <span className="w-2.5 h-2.5 rounded-full bg-surface-container-highest"></span>
+                        <span className="w-2.5 h-2.5 rounded-full bg-surface-container-highest"></span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-space-xs">
+                      <button
+                        className="inline-flex items-center gap-space-xs px-space-md py-2 rounded-xl bg-surface hover:bg-surface-container text-primary font-label text-label transition-colors"
+                        type="button"
+                        onClick={pause}
+                        disabled={busy}
+                      >
+                        <span
+                          className="material-symbols-outlined text-[18px]"
+                          aria-hidden="true"
+                        >
+                          pause_circle
+                        </span>
+                        <span>Jeda Belajar</span>
+                      </button>
+                      <button
+                        className="inline-flex items-center gap-space-xs px-space-lg py-2 rounded-xl bg-primary hover:bg-primary-hover text-on-primary font-label text-label font-bold transition-colors shadow-sm"
+                        type="button"
+                        onClick={next}
+                        disabled={busy}
+                      >
+                        <span
+                          className="material-symbols-outlined text-[18px]"
+                          aria-hidden="true"
+                        >
+                          task_alt
+                        </span>
+                        <span>Tandai Selesai</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <div className="w-full max-w-[1200px] mx-auto px-margin py-space-lg">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+                  <main className="lg:col-span-8 flex flex-col gap-space-lg">
+                    <section className="bg-surface rounded-2xl p-space-md shadow-sm flex flex-wrap items-center justify-between gap-space-md">
+                      <div className="flex items-center flex-wrap gap-space-md">
+                        <label className="inline-flex items-center gap-space-xs cursor-pointer select-none">
+                          <input
+                            checked={preferences.captions}
+                            className="sr-only peer"
+                            id="toggle-caption"
+                            type="checkbox"
+                            onChange={(e) =>
+                              onPreferences?.({ captions: e.target.checked })
+                            }
+                          />
+                          <div className="w-10 h-6 bg-surface-container-highest peer-checked:bg-secondary rounded-full transition-colors relative after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-surface after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-4"></div>
+                          <span className="font-label text-label text-primary font-bold">
+                            Caption Diagram
+                          </span>
+                        </label>
+
+                        <label className="inline-flex items-center gap-space-xs cursor-pointer select-none">
+                          <input
+                            checked={preferences.captions}
+                            className="sr-only peer"
+                            id="toggle-transcript"
+                            type="checkbox"
+                            onChange={(e) =>
+                              onPreferences?.({ captions: e.target.checked })
+                            }
+                          />
+                          <div className="w-10 h-6 bg-surface-container-highest peer-checked:bg-secondary rounded-full transition-colors relative after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-surface after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-4"></div>
+                          <span className="font-label text-label text-on-surface-variant font-medium">
+                            Baca Mandiri
+                          </span>
+                        </label>
+                      </div>
+                      <div className="flex items-center gap-space-sm">
+                        <span className="font-metadata text-[13px] text-outline">
+                          Ukuran Teks:
+                        </span>
+                        <div className="inline-flex bg-surface-container p-0.5 rounded-lg">
+                          <button
+                            className="px-space-sm py-1 rounded-md bg-surface text-primary font-label text-[13px] font-bold shadow-sm"
+                            id="btn-text-std"
+                            type="button"
+                            onClick={() =>
+                              onPreferences?.({
+                                font_size: Math.max(
+                                  14,
+                                  preferences.font_size - 2,
+                                ),
+                              })
+                            }
+                            disabled={busy}
+                          >
+                            Standar
+                          </button>
+                          <button
+                            className="px-space-sm py-1 rounded-md text-on-surface-variant font-label text-[13px] hover:text-primary"
+                            id="btn-text-lg"
+                            type="button"
+                            onClick={() =>
+                              onPreferences?.({
+                                font_size: Math.min(
+                                  32,
+                                  preferences.font_size + 2,
+                                ),
+                              })
+                            }
+                            disabled={busy}
+                          >
+                            Lebih Besar
+                          </button>
+                        </div>
+                      </div>
+                    </section>
+
+                    <article className="bg-surface rounded-3xl p-space-lg shadow-sm flex flex-col gap-space-md">
+                      <h1 className="text-2xl font-bold">{concept.title}</h1>
+                      <p className="text-sm text-text-secondary">
+                        Kartu konsep dari sumber materi
+                      </p>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {concept.paragraphs.map((p, j) => (
+                          <section
+                            key={j}
+                            className="bg-peach-tint p-5 rounded-2xl"
+                          >
+                            <span className="font-bold">{j + 1}</span>
+                            <p style={readingStyle}>{p}</p>
+                          </section>
+                        ))}
+                      </div>
+                    </article>
+
+                    <section className="flex flex-col gap-space-md">
+                      <h2 className="font-bold text-xl">
+                        Intisari Konsep Penting
+                      </h2>
+                      <p className="whitespace-pre-wrap" style={readingStyle}>
+                        {concept.diagram_description || concept.paragraphs[0]}
+                      </p>
+                    </section>
+
+                    <section
+                      className="bg-surface rounded-3xl p-space-lg shadow-sm flex flex-col gap-space-md"
+                      id="independent-transcript-container"
+                      hidden={!preferences.captions}
+                    >
+                      <h2 className="font-bold text-xl">Transkrip Mandiri</h2>
+                      <p
+                        className="whitespace-pre-wrap reference-reading"
+                        style={readingStyle}
+                      >
+                        {concept.transcript || concept.paragraphs.join("\n\n")}
+                      </p>
+                    </section>
+                  </main>
+
+                  <aside className="lg:col-span-4 flex flex-col gap-space-lg">
+                    <div
+                      hidden={zen || !preferences.show_mimo}
+                      className="bg-mint-tint border border-divider rounded-2xl p-6"
+                    >
+                      <Image
+                        src="/design/mimo-final.png"
+                        alt=""
+                        width={1408}
+                        height={1120}
+                        className="w-40 h-auto object-contain mx-auto"
+                      />
+                      <h2 className="font-display font-bold text-lg mt-3">
+                        Mimo Menemanimu
+                      </h2>
+                      <p className="mt-3">
+                        {displayName}, pelajari satu bagian dulu. Kamu bebas
+                        mengganti cara belajar.
+                      </p>
+                    </div>
+                    <div className="bg-surface border border-divider rounded-2xl p-6 space-y-4">
+                      <label className="block font-bold">
+                        Format belajar
+                        <select
+                          aria-label="Format belajar"
+                          ref={modeSelect}
+                          value={session.mode}
+                          disabled={busy}
+                          onChange={(e) =>
+                            update({
+                              mode: e.target.value as LearningSession["mode"],
+                            })
+                          }
+                          className="block w-full mt-2"
+                        >
+                          {(
+                            [
+                              ["reading", "Teman Baca"],
+                              ["focus", "Selangkah demi Selangkah"],
+                              ["explore", "Dengarkan dan Jelajahi"],
+                              ["transcript", "Teks dan Visual"],
+                              ["standard", "Belajar Biasa"],
+                            ] as const
+                          ).map(([v, t]) => (
+                            <option
+                              key={v}
+                              value={v}
+                              disabled={
+                                (v === "explore" &&
+                                  !concept.diagram_description) ||
+                                (v === "transcript" && !concept.transcript)
+                              }
+                            >
+                              {t}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                      <button onClick={onSettings} className="block">
+                        Atur aksesibilitas →
+                      </button>
+                      <button
+                        onClick={() => sourcesDialog.current?.showModal()}
+                        className="block"
+                      >
+                        Lihat sumber asli →
+                      </button>
+                      <button onClick={copyText} className="block">
+                        Salin bacaan
+                      </button>
+                      <button
+                        onClick={() => setZen(!zen)}
+                        aria-pressed={zen}
+                        className="block"
+                      >
+                        Mode fokus penuh
+                      </button>
+                    </div>
+                    <div className="bg-surface border border-divider rounded-2xl p-6 space-y-4">
+                      <label className="block font-bold">
+                        Catatan sesi
+                        <textarea
+                          className="block w-full mt-2"
+                          value={draft}
+                          maxLength={3000}
+                          rows={5}
+                          onChange={(e) => setDraft(e.target.value)}
+                        />
+                      </label>
+                      <button
+                        disabled={busy}
+                        onClick={() => update({})}
+                        className="w-full bg-primary text-white px-4 py-3 rounded-xl"
+                      >
+                        Simpan posisi dan catatan
+                      </button>
+                      <button
+                        disabled={busy}
+                        onClick={onPractice}
+                        className="w-full bg-mint-tint px-4 py-3 rounded-xl"
+                      >
+                        Latihan pemahaman
+                      </button>
+                      {(feedback || note) && (
+                        <p role="status">{feedback || note}</p>
+                      )}
+                    </div>
+                  </aside>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-      )}
-      {session.mode === "standard" && (
-        <div className="revamp-reader-body">
-          <div className="flex flex-col w-full">
-            <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
-              <div className="bg-surface rounded-2xl shadow-sm p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-secondary-container flex items-center justify-center text-primary">
+
+              <nav className="w-full bg-surface py-space-md border-t border-divider mt-space-lg">
+                <div className="max-w-[1200px] mx-auto px-margin flex flex-col sm:flex-row items-center justify-between gap-space-md">
+                  <a
+                    className="inline-flex items-center gap-space-xs text-on-surface-variant hover:text-primary font-label text-label font-bold transition-colors"
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onBack();
+                    }}
+                  >
                     <span
                       className="material-symbols-outlined text-[20px]"
                       aria-hidden="true"
                     >
-                      tune
+                      arrow_back
                     </span>
-                  </div>
-                  <div>
-                    <span className="text-xs uppercase tracking-wider font-bold text-text-secondary block">
-                      Alat Baca Santai
-                    </span>
-                    <span className="text-xs font-semibold text-primary">
-                      Kenyamanan membaca ramah fokus
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2">
-                  <div className="flex items-center bg-surface-container-low rounded-xl p-1 gap-1">
+                    <span>Kembali ke Ringkasan Bab</span>
+                  </a>
+                  <div className="flex items-center gap-space-sm w-full sm:w-auto">
                     <button
-                      aria-label="Kecilkan ukuran teks"
-                      className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs text-on-surface-variant hover:bg-surface hover:text-primary transition-all"
-                      id="btn-font-dec"
+                      className="flex-1 sm:flex-none inline-flex items-center justify-center gap-space-xs px-space-lg py-3 rounded-2xl bg-canvas hover:bg-surface-container text-primary font-label text-label font-bold transition-colors"
                       type="button"
-                      disabled={busy}
-                      onClick={() =>
-                        onPreferences?.({
-                          font_size: Math.max(14, preferences.font_size - 2),
-                        })
-                      }
-                    >
-                      A-
-                    </button>
-                    <span
-                      className="text-xs font-bold px-2 text-primary"
-                      id="font-size-label"
-                    >
-                      18px
-                    </span>
-                    <button
-                      aria-label="Besarkan ukuran teks"
-                      className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs text-on-surface-variant hover:bg-surface hover:text-primary transition-all"
-                      id="btn-font-inc"
-                      type="button"
-                      disabled={busy}
-                      onClick={() =>
-                        onPreferences?.({
-                          font_size: Math.min(32, preferences.font_size + 2),
-                        })
-                      }
-                    >
-                      A+
-                    </button>
-                  </div>
-
-                  <button
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-container-low hover:bg-surface text-xs font-bold text-on-surface-variant hover:text-primary transition-all"
-                    id="btn-spacing-toggle"
-                    type="button"
-                    disabled={busy}
-                    onClick={() =>
-                      onPreferences?.({
-                        line_height: preferences.line_height === 1.7 ? 2 : 1.7,
-                      })
-                    }
-                  >
-                    <span
-                      className="material-symbols-outlined text-[17px] text-secondary"
-                      aria-hidden="true"
-                    >
-                      format_line_spacing
-                    </span>
-                    <span id="spacing-label">Spasi: 1.7x</span>
-                  </button>
-
-                  <button
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-secondary-container text-on-secondary-container text-xs font-bold transition-all shadow-xs"
-                    id="btn-ruler-toggle"
-                    type="button"
-                    disabled={busy}
-                    onClick={() =>
-                      onPreferences?.({
-                        reading_ruler: !preferences.reading_ruler,
-                      })
-                    }
-                    aria-pressed={preferences.reading_ruler}
-                  >
-                    <span
-                      className="material-symbols-outlined text-[17px] text-primary"
-                      aria-hidden="true"
-                    >
-                      rule
-                    </span>
-                    <span>Sorot Fokus: Nyala</span>
-                  </button>
-
-                  <button
-                    className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-primary text-on-primary hover:bg-primary-hover text-xs font-bold transition-all shadow-sm"
-                    id="btn-audio-speak"
-                    type="button"
-                    disabled={busy}
-                    onClick={() => onSpeak()}
-                  >
-                    <span
-                      className="material-symbols-outlined text-[17px] animate-pulse"
-                      aria-hidden="true"
-                    >
-                      volume_up
-                    </span>
-                    <span>Dengarkan Paragraf Ini</span>
-                  </button>
-                </div>
-              </div>
-            </section>
-
-            <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                <article className="lg:col-span-8 flex flex-col gap-6">
-                  <div className="bg-surface rounded-3xl p-6 sm:p-8 lg:p-10 shadow-sm relative overflow-hidden">
-                    <div className="absolute -top-24 -right-24 w-64 h-64 bg-secondary-container/30 rounded-full blur-3xl pointer-events-none"></div>
-                    <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
-                      <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-secondary-container text-primary font-bold text-xs tracking-wide">
-                        <span className="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
-                        <span>{`Konsep ${index + 1} dari ${material.concepts.length}`}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-xs text-text-secondary font-medium">
-                        <span
-                          className="material-symbols-outlined text-[16px] text-secondary"
-                          aria-hidden="true"
-                        >
-                          auto_stories
-                        </span>
-                        <span>Waktu baca santai: ~2 menit</span>
-                      </div>
-                    </div>
-
-                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary tracking-tight leading-snug mb-4">
-                      {concept.title}
-                    </h1>
-                    <p className="text-sm sm:text-base text-text-secondary mb-8 leading-relaxed max-w-xl">
-                      {
-                        concept.paragraphs[
-                          Math.min(
-                            session.paragraph,
-                            concept.paragraphs.length - 1,
-                          )
-                        ]
-                      }
-                    </p>
-
-                    <div
-                      className={
-                        "reference-reading space-y-6 " +
-                        (preferences.reading_ruler ? "reference-ruler" : "")
-                      }
-                      id="reading-content-pane"
-                      style={readingStyle}
-                    >
-                      {concept.paragraphs.map((p, i) => (
-                        <p key={i} tabIndex={0}>
-                          {p}
-                        </p>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="bg-surface rounded-2xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 shadow-sm">
-                    <div className="flex items-center gap-3">
-                      <span
-                        className="material-symbols-outlined text-secondary text-[24px]"
-                        aria-hidden="true"
-                      >
-                        sentiment_satisfied
-                      </span>
-                      <div>
-                        <span className="text-xs font-bold text-primary block">{`${displayName}, ambil satu langkah kecil sesuai ritmemu.`}</span>
-                        <span className="text-xs text-text-secondary">
-                          Kamu bisa menandai bagian ini atau membacanya lagi
-                          santai.
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button
-                        className="px-3.5 py-1.5 rounded-xl bg-surface-container-low hover:bg-surface-container text-xs font-bold text-primary transition-colors flex items-center gap-1.5"
-                        type="button"
-                        disabled={busy}
-                        onClick={() => update({})}
-                      >
-                        <span
-                          className="material-symbols-outlined text-[16px] text-secondary"
-                          aria-hidden="true"
-                        >
-                          bookmark_border
-                        </span>{" "}
-                        Simpan Catatan
-                      </button>
-                      <button
-                        className="px-3.5 py-1.5 rounded-xl bg-secondary-container hover:bg-secondary-fixed text-xs font-bold text-on-secondary-container transition-colors flex items-center gap-1.5"
-                        type="button"
-                        disabled={busy}
-                        onClick={next}
-                      >
-                        {"Langkah berikutnya"}
-                      </button>
-                    </div>
-                  </div>
-                </article>
-
-                <aside className="lg:col-span-4 flex flex-col gap-6 lg:sticky lg:top-24">
-                  <div className="bg-surface rounded-3xl p-6 shadow-sm flex flex-col items-center text-center relative overflow-hidden">
-                    <div className="absolute -bottom-12 -left-12 w-44 h-44 bg-peach/20 rounded-full blur-2xl pointer-events-none"></div>
-
-                    <div className="w-36 h-36 sm:w-40 sm:h-40 relative mb-4 rounded-2xl overflow-hidden flex items-center justify-center">
-                      <Image
-                        src="/design/mimo-5.png"
-                        alt="Mimo membaca ramah"
-                        className="w-full h-full object-contain filter drop-shadow-md rounded-2xl"
-                        width={1024}
-                        height={1024}
-                      ></Image>
-                    </div>
-
-                    <div className="bg-surface-container-low rounded-2xl p-4 w-full relative mb-4">
-                      <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-surface-container-low rotate-45"></div>
-                      <p className="font-mimo-voice text-xs sm:text-sm text-primary leading-relaxed relative z-10 font-bold">{`${displayName}, ambil satu langkah kecil sesuai ritmemu.`}</p>
-                    </div>
-
-                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-container/60 text-secondary text-xs font-bold">
-                      <span className="w-2 h-2 rounded-full bg-secondary"></span>
-                      <span>Mimo sedang menemanimu belajar</span>
-                    </div>
-                  </div>
-
-                  <div className="bg-surface rounded-3xl p-6 shadow-sm flex flex-col gap-4">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-sm font-bold text-primary flex items-center gap-2">
-                        <span
-                          className="material-symbols-outlined text-[18px] text-secondary"
-                          aria-hidden="true"
-                        >
-                          checklist
-                        </span>
-                        Checklist Pemahaman
-                      </h3>
-                      <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-surface-container-high text-primary">
-                        2 / 2 Terbaca
-                      </span>
-                    </div>
-                    <div className="flex flex-col gap-3">
-                      <div className="flex items-start gap-3 p-3 rounded-2xl bg-surface-container-low">
-                        <div className="w-5 h-5 rounded-full bg-secondary-container flex items-center justify-center flex-shrink-0 mt-0.5 text-primary">
-                          <span
-                            className="material-symbols-outlined text-[14px]"
-                            aria-hidden="true"
-                          >
-                            check
-                          </span>
-                        </div>
-                        <div className="text-xs text-primary leading-snug">
-                          <span className="font-bold block mb-0.5">
-                            {concept.title}
-                          </span>
-                          Selalu tepat berhadapan di depan sudut siku-siku 90°.
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-3 p-3 rounded-2xl bg-surface-container-low">
-                        <div className="w-5 h-5 rounded-full bg-secondary-container flex items-center justify-center flex-shrink-0 mt-0.5 text-primary">
-                          <span
-                            className="material-symbols-outlined text-[14px]"
-                            aria-hidden="true"
-                          >
-                            check
-                          </span>
-                        </div>
-                        <div className="text-xs text-primary leading-snug">
-                          <span className="font-bold block mb-0.5">
-                            Sisi Terpanjang
-                          </span>
-                          Karena sudut 90° adalah bukaan terbesar pada segitiga
-                          siku-siku.
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-surface rounded-3xl p-6 shadow-sm flex flex-col gap-3">
-                    <span className="text-xs font-bold uppercase tracking-wider text-text-secondary">
-                      Langkah Selanjutnya
-                    </span>
-                    <p className="text-xs text-primary leading-relaxed">
-                      Yuk uji santai pemahaman barusan lewat kuis ringan 2 soal!
-                    </p>
-                    <button
-                      className="w-full py-3.5 px-4 rounded-2xl bg-primary hover:bg-primary-hover text-on-primary font-bold text-xs sm:text-sm text-center flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg"
-                      data-path="quiz-check-1"
-                      type="button"
-                      onClick={() => onSpeak()}
+                      onClick={onPractice}
                       disabled={busy}
                     >
-                      <span>Lanjut ke Cek Pemahaman Santai (2 Soal)</span>
                       <span
                         className="material-symbols-outlined text-[18px]"
+                        aria-hidden="true"
+                      >
+                        quiz
+                      </span>
+                      <span>Coba Kuis Ringkas</span>
+                    </button>
+                    <button
+                      className="flex-1 sm:flex-none inline-flex items-center justify-center gap-space-xs px-space-xl py-3 rounded-2xl bg-primary hover:bg-primary-hover text-on-primary font-label text-label font-bold transition-all shadow-sm"
+                      type="button"
+                      onClick={next}
+                      disabled={busy}
+                    >
+                      <span>{concept.title}</span>
+                      <span
+                        className="material-symbols-outlined text-[20px]"
                         aria-hidden="true"
                       >
                         arrow_forward
                       </span>
                     </button>
-                    <button
-                      className="w-full py-2.5 px-4 rounded-xl hover:bg-surface-container text-text-secondary hover:text-primary font-semibold text-xs text-center transition-colors"
-                      data-path="learning-hub"
-                      type="button"
-                      onClick={() => onSpeak()}
-                      disabled={busy}
-                    >
-                      Simpan &amp; Lanjutkan Nanti
-                    </button>
                   </div>
-                </aside>
-              </div>
-            </section>
+                </div>
+              </nav>
+            </div>
           </div>
-        </div>
-      )}
-      <section className="max-w-6xl mx-auto p-6 space-y-4">
-        <div className="flex flex-wrap gap-3 items-center">
-          <label className="flex gap-2 items-center">
-            Format belajar
-            <select
-              aria-label="Format belajar"
-              ref={modeSelect}
-              value={session.mode}
-              disabled={busy}
-              onChange={(e) =>
-                update({ mode: e.target.value as LearningSession["mode"] })
-              }
-            >
-              {[
-                ["standard", "Teks & Visual"],
-                ["reading", "Teman Baca"],
-                ["focus", "Langkah demi Langkah"],
-                ["explore", "Jelajahi Diagram"],
-                ["transcript", "Audio & Transkrip"],
-              ].map(([v, t]) => (
-                <option
-                  key={v}
-                  value={v}
-                  disabled={
-                    (v === "explore" && !concept.diagram_description) ||
-                    (v === "transcript" && !concept.transcript)
-                  }
-                >
-                  {t}
-                </option>
-              ))}
-            </select>
-          </label>
-          <button onClick={() => setZen(!zen)} aria-pressed={zen}>
-            Mode fokus penuh
-          </button>
-          <button onClick={copyText}>Salin bacaan</button>
-          <button onClick={() => sourcesDialog.current?.showModal()}>
-            Lihat sumber
-          </button>
-          <button onClick={() => onSpeak()}>
-            {speaking ? "Hentikan bacaan" : "Bacakan konsep"}
-          </button>
-        </div>
-        <label className="block">
-          Catatan sesi
-          <textarea
-            value={draft}
-            maxLength={3000}
-            onChange={(e) => setDraft(e.target.value)}
-          />
-        </label>
-        <div className="flex flex-wrap gap-3">
-          <button
-            disabled={busy}
-            onClick={onBack}
-            className="min-h-[44px] px-4 rounded-xl bg-surface border border-divider"
-          >
-            Kembali ke materi
-          </button>
-          <button
-            disabled={busy}
-            onClick={onSettings}
-            className="min-h-[44px] px-4 rounded-xl bg-surface border border-divider"
-          >
-            Pengaturan
-          </button>
-          <button
-            disabled={busy}
-            onClick={() => update({})}
-            className="min-h-[44px] px-4 rounded-xl bg-surface border border-divider"
-          >
-            Simpan posisi dan catatan
-          </button>
-          <button
-            disabled={busy}
-            onClick={pause}
-            className="min-h-[44px] px-4 rounded-xl bg-surface border border-divider"
-          >
-            Jeda dulu
-          </button>
-          <button
-            disabled={busy}
-            onClick={onPractice}
-            className="min-h-[44px] px-4 rounded-xl bg-surface border border-divider"
-          >
-            Latihan pemahaman
-          </button>
-          <button
-            disabled={busy}
-            onClick={previous}
-            className="min-h-[44px] px-4 rounded-xl bg-surface border border-divider"
-          >
-            Sebelumnya
-          </button>
-          <button
-            disabled={busy}
-            onClick={next}
-            className="min-h-[44px] px-4 rounded-xl bg-surface border border-divider"
-          >
-            Berikutnya
-          </button>{" "}
-        </div>
-        {(feedback || note) && <p role="status">{feedback || note}</p>}
-      </section>
+        ) : null}
+      </div>
       <dialog ref={pauseDialog} className="stitch-reason">
-        <Image
-          src="/design/mimo-3.png"
-          width={200}
-          height={200}
-          alt="Mimo menemani istirahat"
-        />
         <h2>Ambil jeda sebentar</h2>
         <p>Posisi dan catatan yang berhasil disimpan bisa dilanjutkan nanti.</p>
-        <button onClick={() => pauseDialog.current?.close()}>
+        <button
+          onClick={() => {
+            update({
+              status: session.status === "completed" ? "completed" : "active",
+            });
+            pauseDialog.current?.close();
+          }}
+        >
           Lanjutkan belajar
         </button>
       </dialog>
       <dialog ref={sourcesDialog} className="stitch-reason">
+        <h2>Sumber materi</h2>
         {sources.map((s) => (
           <article key={s.id}>
             <h3>{s.label}</h3>
@@ -2056,6 +1584,6 @@ export function ReaderDesign({
           Tutup sumber
         </button>
       </dialog>
-    </div>
+    </>
   );
 }

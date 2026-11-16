@@ -29,108 +29,13 @@ export function Landing({
               className="flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-focus rounded-xl p-1 -ml-1 transition-transform hover:scale-[1.01]"
               href="#main-content"
             >
-              <svg
-                aria-label="Logo TemanBelajar"
-                className="h-11 w-auto"
-                role="img"
-                viewBox="0 0 520 120"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect
-                  fill="#C8E8CE"
-                  height="100"
-                  rx="26"
-                  width="100"
-                  x="8"
-                  y="10"
-                ></rect>
-                <path
-                  d="M16 36 C24 20, 40 18, 60 18 C80 18, 94 24, 100 36"
-                  opacity="0.6"
-                  stroke="#FFFFFF"
-                  strokeLinecap="round"
-                  strokeWidth="3"
-                ></path>
-
-                <path
-                  d="M58 40 C46 36 32 38 26 44 V77 C32 72 46 70 58 74 Z"
-                  fill="#FFFFFF"
-                  stroke="#273B35"
-                  strokeLinejoin="round"
-                  strokeWidth="4.5"
-                ></path>
-                <path
-                  d="M58 40 C70 36 84 38 90 44 V77 C84 72 70 70 58 74 Z"
-                  fill="#FFFFFF"
-                  stroke="#273B35"
-                  strokeLinejoin="round"
-                  strokeWidth="4.5"
-                ></path>
-                <line
-                  stroke="#273B35"
-                  strokeLinecap="round"
-                  strokeWidth="4.5"
-                  x1="58"
-                  x2="58"
-                  y1="40"
-                  y2="76"
-                ></line>
-
-                <path
-                  d="M33 60 C42 52, 54 52, 62 46 C70 40, 78 35, 84 30"
-                  fill="none"
-                  stroke="#273B35"
-                  strokeLinecap="round"
-                  strokeWidth="4.5"
-                ></path>
-                <circle
-                  cx="85"
-                  cy="29"
-                  fill="#FFE7A3"
-                  r="4.5"
-                  stroke="#273B35"
-                  strokeWidth="2.5"
-                ></circle>
-                <path
-                  d="M34 50 C40 48, 47 48, 52 50"
-                  stroke="#C8E8CE"
-                  strokeLinecap="round"
-                  strokeWidth="2.5"
-                ></path>
-                <path
-                  d="M64 57 C71 56, 78 57, 83 60"
-                  stroke="#C8E8CE"
-                  strokeLinecap="round"
-                  strokeWidth="2.5"
-                ></path>
-
-                <text
-                  fill="#273B35"
-                  fontFamily="'Nunito', 'Plus Jakarta Sans', sans-serif"
-                  fontSize="44"
-                  fontWeight="900"
-                  letterSpacing="-0.5"
-                  x="130"
-                  y="66"
-                >
-                  Teman
-                  <tspan fill="#273B35" fontWeight="800">
-                    Belajar
-                  </tspan>
-                </text>
-                <text
-                  fill="#505C55"
-                  fontFamily="'Plus Jakarta Sans', sans-serif"
-                  fontSize="15"
-                  fontWeight="600"
-                  letterSpacing="0.2"
-                  x="132"
-                  y="93"
-                >
-                  Belajar dengan caramu.
-                </text>
-                <circle cx="316" cy="89" fill="#FFCA9D" r="4"></circle>
-              </svg>
+              <Image
+                src="/design/logo-final.png"
+                width={1024}
+                height={280}
+                alt="TemanBelajar"
+                className="h-11 w-auto object-contain"
+              />
 
               <span className="hidden xl:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-mint-tint border border-mint text-xs font-bold text-primary">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary/70"></span>
@@ -911,7 +816,7 @@ export function Landing({
               <div className="flex flex-col items-start">
                 <span className="text-2xl mb-2">👁️</span>
                 <h4 className="font-nunito font-extrabold text-base text-primary mb-1">
-                  Target WCAG 2.2 AA Sesuai
+                  Target Target aksesibilitas Target WCAG 2.2 AA
                 </h4>
                 <p className="text-xs text-text-secondary">
                   Kontras tinggi teruji, navigasi keyboard penuh, dan fokus

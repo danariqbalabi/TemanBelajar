@@ -399,23 +399,19 @@ export default function Home() {
           onPlanner={() => setPage("Rencana Belajar")}
         />
       ) : (
-        <section>
-          <h1>Mulai dengan satu langkah kecil</h1>
-          <p>Pilih materi dan format yang nyaman.</p>
-          <div className="material-grid">
-            {materials.map((m) => (
-              <button
-                className="material-card"
-                key={m.id}
-                onClick={() => start(m)}
-              >
-                <small>{m.subject}</small>
-                <h2>{m.title}</h2>
-                <span>Mulai belajar →</span>
-              </button>
-            ))}
-          </div>
-        </section>
+        <Materials
+          sessions={sessions}
+          onSettings={() => setPage("Pengaturan")}
+          onPlan={() => setPage("Rencana Belajar")}
+          onDefaultMode={(mode) =>
+            saveProfile({ ...profile, preferences: { ...prefs, mode } })
+          }
+          materials={materials}
+          run={run}
+          busy={busy}
+          refresh={refresh}
+          start={start}
+        />
       )}
     </DesignShell>
   );
