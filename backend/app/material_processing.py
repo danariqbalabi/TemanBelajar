@@ -1,6 +1,7 @@
 import asyncio
 import hashlib
 import json
+import ssl
 from datetime import UTC, datetime, timedelta
 from io import BytesIO
 from typing import Annotated
@@ -205,9 +206,10 @@ async def generate_material(job: dict) -> Material:
                 503, "layanan AI belum berhasil memproses materi, coba lagi"
             )
         result = response.json()
-        text = "".join(
-            p.get("text", "") for p in result["candidates"][0]["content"]["parts"]
-        )
+        candidate = result["candidates"][0]
+        if candidate.get("finishReason", "STOP") != "STOP":
+            raise ValueError("generasi belum selesai")
+        text = "".join(p.get("text", "") for p in candidate["content"]["parts"])
         material = Material.model_validate_json(text)
         # The server owns sources, provenance and model skill assignments.
         material.sources = [Source.model_validate(source) for source in job["sources"]]
@@ -223,6 +225,8 @@ async def generate_material(job: dict) -> Material:
         raise
     except (
         httpx.RequestError,
+        ssl.SSLError,
+        AttributeError,
         KeyError,
         IndexError,
         TypeError,

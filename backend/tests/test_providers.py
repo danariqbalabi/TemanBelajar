@@ -157,3 +157,34 @@ def test_gemini_checks_sources_and_removes_unreviewed_skill_mapping(monkeypatch)
     with pytest.raises(HTTPException) as exc:
         asyncio.run(material_processing.generate_material(job))
     assert exc.value.status_code == 502
+
+
+@pytest.mark.parametrize("failure", ["tls", "truncated", "malformed"])
+def test_gemini_failure_releases_job_and_preserves_source(client, monkeypatch, failure):
+    from test_processing import upload
+
+    job = upload(client)
+    monkeypatch.setattr(
+        material_processing, "settings", lambda: Settings(gemini_api_key="test-key")
+    )
+
+    def handler(request):
+        if failure == "tls":
+            raise ssl.SSLError("private transport details")
+        candidate = (
+            None
+            if failure == "malformed"
+            else {
+                "finishReason": "MAX_TOKENS",
+                "content": {"parts": [{"text": FOTOSINTESIS.model_dump_json()}]},
+            }
+        )
+        return httpx.Response(200, json={"candidates": [candidate]})
+
+    install_transport(monkeypatch, handler)
+    url = f"/v1/jobs/{job['id']}"
+    response = client.post(url + "/process")
+    assert response.status_code == 502
+    assert "private" not in response.text
+    assert client.get(url).json()["status"] == "failed"
+    assert client.get(url + "/source").json()["sources"]

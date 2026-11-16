@@ -138,3 +138,30 @@ def test_recommendation_matches_answer_and_time_budget(client):
         ][0]["mastery"]
         is None
     )
+
+
+def test_partial_correct_practice_is_not_reported_as_finished(client, store):
+    session = client.post(
+        "/v1/sessions", json={"request_id": rid(), "material_id": "demo-pythagoras"}
+    ).json()
+    material = client.get("/v1/materials/demo-pythagoras").json()
+    concept = material["concepts"][0]["id"]
+    store.snapshot.data["sessions"][session["id"]]["completed_concepts"] = [concept]
+    attempt = client.post(
+        "/v1/attempts", json={"request_id": rid(), "session_id": session["id"]}
+    ).json()
+    response = client.post(
+        f"/v1/attempts/{attempt['id']}/answers",
+        json={
+            "request_id": rid(),
+            "expected_version": 1,
+            "question_id": "pythagoras-1",
+            "selected_index": 0,
+        },
+    )
+    assert response.status_code == 200
+    recommendation = client.get(
+        "/v1/recommendations", params={"material_id": "demo-pythagoras"}
+    ).json()
+    assert recommendation["action"] == "PRACTICE"
+    assert "belum dijawab" in recommendation["reason"]
