@@ -1,6 +1,6 @@
 "use client";
-import { useState, type ReactNode } from "react";
 import Image from "next/image";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { Material, LearningSession, Job } from "@/lib/types";
 export function Catalog({
   materials,
@@ -29,471 +29,376 @@ export function Catalog({
 }) {
   const [subject, setSubject] = useState("Semua Topik"),
     [status, setStatus] = useState("all"),
-    [list, setList] = useState(false);
+    [list, setList] = useState(false),
+    [sort, setSort] = useState("recent");
+  const search = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    function focusSearch(event: KeyboardEvent) {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        search.current?.focus();
+      }
+    }
+    window.addEventListener("keydown", focusSearch);
+    return () => window.removeEventListener("keydown", focusSearch);
+  }, []);
   const completed = (id: string) =>
     new Set(
       sessions
         .filter((s) => s.material_id === id)
         .flatMap((s) => s.completed_concepts),
     ).size;
-  const filtered = materials.filter(
-    (m) =>
-      (m.title + " " + m.subject).toLowerCase().includes(query.toLowerCase()) &&
-      (subject === "Semua Topik" || m.subject === subject) &&
-      (status === "all" ||
-        (status === "learning" &&
-          sessions.some(
-            (s) => s.material_id === m.id && s.status !== "completed",
-          )) ||
-        (status === "ready" && !sessions.some((s) => s.material_id === m.id))),
-  );
+  const latest = (id: string) =>
+    sessions
+      .filter((session) => session.material_id === id)
+      .reduce(
+        (value, session) =>
+          Math.max(value, Date.parse(session.updated_at) || 0),
+        0,
+      );
+  const filtered = materials
+    .filter((material) => {
+      const text = [
+        material.title,
+        material.subject,
+        ...material.concepts.map((concept) => concept.title),
+      ]
+        .join(" ")
+        .toLocaleLowerCase("id-ID");
+      const started = sessions.some(
+        (session) => session.material_id === material.id,
+      );
+      const finished =
+        material.concepts.length > 0 &&
+        completed(material.id) >= material.concepts.length;
+      return (
+        text.includes(query.trim().toLocaleLowerCase("id-ID")) &&
+        (subject === "Semua Topik" || material.subject === subject) &&
+        (status === "all" ||
+          (status === "learning" && started && !finished) ||
+          (status === "ready" && !started) ||
+          (status === "completed" && finished))
+      );
+    })
+    .toSorted((a, b) =>
+      sort === "title"
+        ? a.title.localeCompare(b.title, "id")
+        : latest(b.id) - latest(a.id),
+    );
   return (
-    <div className="stitch-screen">
-      {errorsPanel}
-      {uploadPanel}
-      <div className="flex flex-col w-full gap-space-lg">
-        <section className="flex flex-col gap-space-xs">
-          <div className="flex items-center gap-space-xs text-text-secondary font-metadata text-metadata">
-            <span>Pustaka Belajar Mandiri</span>
-            <span>•</span>
-            <span className="inline-flex items-center gap-1 font-label text-secondary">
-              <span
-                className="material-symbols-outlined text-[16px]"
-                aria-hidden="true"
-              >
-                school
-              </span>
-              SMP Kelas 8
-            </span>
-          </div>
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
-            <div className="space-y-1">
-              <h1 className="font-page-title text-page-title text-primary tracking-tight">
-                Materi Saya
-              </h1>
-              <p className="font-body text-body text-text-secondary max-w-2xl">
-                Semua catatan, ringkasan zine, dan bahan belajarmu tersusun rapi
-                dan siap dipelajari dengan caramu tanpa batasan waktu.
-              </p>
-            </div>
-            <div className="flex items-center gap-space-sm self-start md:self-auto shrink-0">
-              <button
-                className="inline-flex items-center justify-center gap-space-xs h-11 px-space-md rounded-xl bg-primary text-on-primary font-label text-label hover:bg-primary-hover active:bg-primary-pressed shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-focus focus:ring-offset-2"
-                type="button"
-                onClick={onUpload}
-                aria-label="+ Tambah materi"
-              >
-                <span
-                  className="material-symbols-outlined text-[20px]"
-                  aria-hidden="true"
-                >
-                  add_circle
-                </span>
-                <span>Tambah Materi Baru</span>
-              </button>
-            </div>
-          </div>
-        </section>
-
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-space-md items-stretch">
-          <div className="lg:col-span-8 bg-surface rounded-2xl p-space-md md:p-space-lg shadow-sm flex flex-col sm:flex-row items-center gap-space-md relative overflow-hidden">
-            <div className="absolute -right-12 -top-12 w-48 h-48 bg-secondary-container/40 rounded-full blur-2xl pointer-events-none"></div>
-
-            <div className="relative shrink-0 flex items-center justify-center w-28 h-28 rounded-2xl bg-surface-container-low p-2">
-              <Image
-                className="w-full h-full object-contain select-none"
-                data-alt="Warm storybook illustration of Mimo the friendly chameleon in soft sage green with coral blushing cheeks, perched cheerfully atop a neat stack of pastel study books, waving one hand in an encouraging manner, styled after modern editorial children books on an ivory canvas"
-                src="/design/mimo.png"
-                width={1024}
-                height={1024}
-                alt="Mimo, teman belajarmu"
-              />
-            </div>
-
-            <div className="flex flex-col gap-space-xs flex-1 z-10 text-center sm:text-left">
-              <div className="inline-flex items-center gap-1.5 self-center sm:self-start px-2.5 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-metadata text-[12px]">
-                <span className="w-2 h-2 rounded-full bg-secondary"></span>
-                <span>Sapaan Mimo</span>
-              </div>
-              <p className="font-mimo-voice text-mimo-voice text-primary leading-snug">
-                “Semua materi di sini sudah disesuaikan dengan format ramah
-                bacaanmu. Mau lanjut baca{" "}
-                <span className="text-secondary font-bold underline decoration-secondary/40 underline-offset-4">
-                  Fotosintesis
-                </span>{" "}
-                atau coba materi matematika baru?”
-              </p>
-              <p className="font-metadata text-metadata text-text-secondary">
-                Kamu memiliki kendali penuh atas ritme belajar hari ini. Tidak
-                ada tenggat skor ataupun pengurangan nilai.
-              </p>
-            </div>
-          </div>
-
-          <div className="lg:col-span-4 bg-surface rounded-2xl p-space-md md:p-space-lg shadow-sm flex flex-col justify-between gap-space-md">
-            <div className="flex items-center justify-between">
-              <span className="font-label text-label text-text-secondary uppercase tracking-wider text-[12px]">
-                Status Koleksimu
-              </span>
-              <span
-                className="material-symbols-outlined text-secondary text-[20px]"
-                aria-hidden="true"
-              >
-                library_books
-              </span>
-            </div>
-            <div className="grid grid-cols-3 gap-2">
-              <div className="bg-surface-container-low rounded-xl p-space-sm flex flex-col text-center">
-                <span className="font-display text-[24px] text-primary font-bold leading-tight">
-                  {materials.length}
-                </span>
-                <span className="font-metadata text-[12px] text-text-secondary leading-tight mt-0.5">
-                  Siap Baca
-                </span>
-              </div>
-              <div className="bg-tertiary-fixed/30 rounded-xl p-space-sm flex flex-col text-center">
-                <span className="font-display text-[24px] text-tertiary font-bold leading-tight">
-                  {jobs.filter((j) => j.status !== "ready").length}
-                </span>
-                <span className="font-metadata text-[12px] text-tertiary leading-tight mt-0.5">
-                  Diproses
-                </span>
-              </div>
-              <div className="bg-secondary-container/40 rounded-xl p-space-sm flex flex-col text-center">
-                <span className="font-display text-[24px] text-secondary font-bold leading-tight">
-                  {materials.filter((m) => m.is_demo).length}
-                </span>
-                <span className="font-metadata text-[12px] text-text-secondary leading-tight mt-0.5">
-                  Demo
-                </span>
-              </div>
-            </div>
-            <div className="flex items-center justify-between text-text-secondary pt-2">
-              <span className="font-metadata text-[13px] flex items-center gap-1">
-                <span
-                  className="material-symbols-outlined text-[16px] text-success"
-                  aria-hidden="true"
-                >
-                  check_circle
-                </span>
-                Format Zine Adaptif Aktif
-              </span>
-              <a
-                className="font-label text-[13px] text-secondary hover:underline flex items-center gap-0.5"
-                href="#koleksi-materi"
-              >
-                Lihat Semua
-                <span
-                  className="material-symbols-outlined text-[16px]"
-                  aria-hidden="true"
-                >
-                  arrow_downward
-                </span>
-              </a>
-            </div>
-          </div>
-        </section>
-
-        {jobsPanel}
-
-        <section
-          className="flex flex-col gap-space-sm pt-2"
-          id="koleksi-materi"
-        >
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-space-sm">
-            <div className="relative w-full lg:w-96">
-              <span
-                className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-gray text-[20px] pointer-events-none"
-                aria-hidden="true"
-              >
-                search
-              </span>
-              <input
-                aria-label="Cari materi pembelajaran"
-                className="w-full h-11 pl-11 pr-4 bg-surface rounded-xl text-primary font-body text-body placeholder:text-muted-gray shadow-sm focus:outline-none focus:ring-2 focus:ring-focus transition-all"
-                id="material-search"
-                placeholder="Cari materi, bab, atau kata kunci..."
-                type="search"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-            </div>
-
-            <div className="flex flex-wrap items-center gap-space-xs sm:gap-space-sm">
-              <label className="sr-only" htmlFor="status-filter">
-                Filter Status Materi
-              </label>
-              <div className="relative">
-                <select
-                  className="h-11 pl-3.5 pr-8 bg-surface rounded-xl font-label text-label text-primary shadow-sm appearance-none focus:outline-none focus:ring-2 focus:ring-focus cursor-pointer"
-                  id="status-filter"
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value)}
-                >
-                  <option value="all">Semua materi</option>
-                  <option value="learning">Sedang dipelajari</option>
-                  <option value="ready">Belum dimulai</option>
-                  <option value="processing">Dalam proses</option>
-                </select>
-                <span
-                  className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-gray text-[18px] pointer-events-none"
-                  aria-hidden="true"
-                >
-                  expand_more
-                </span>
-              </div>
-              <button
-                className="h-11 px-space-md rounded-xl bg-surface text-primary font-label text-label hover:bg-surface-container shadow-sm flex items-center gap-space-xs transition-colors focus:outline-none focus:ring-2 focus:ring-focus"
-                type="button"
-                onClick={onSettings}
-              >
-                <span
-                  className="material-symbols-outlined text-[18px]"
-                  aria-hidden="true"
-                >
-                  tune
-                </span>
-                <span>Format Bacaan</span>
-              </button>
-              <div className="h-6 w-px bg-divider hidden sm:block mx-1"></div>
-              <button
-                aria-label="Tampilan Kisi"
-                className="w-11 h-11 rounded-xl bg-secondary-container text-on-secondary-container flex items-center justify-center shadow-sm"
-                title="Tampilan Kisi"
-                type="button"
-                onClick={() => setList(false)}
-                aria-pressed={!list}
-              >
-                <span
-                  className="material-symbols-outlined text-[20px]"
-                  aria-hidden="true"
-                >
-                  grid_view
-                </span>
-              </button>
-              <button
-                aria-label="Tampilan Daftar"
-                className="w-11 h-11 rounded-xl bg-surface text-muted-gray hover:text-primary flex items-center justify-center shadow-sm transition-colors"
-                title="Tampilan Daftar"
-                type="button"
-                onClick={() => setList(true)}
-                aria-pressed={list}
-              >
-                <span
-                  className="material-symbols-outlined text-[20px]"
-                  aria-hidden="true"
-                >
-                  view_list
-                </span>
-              </button>
-            </div>
-          </div>
-
-          <div
-            aria-label="Filter Mata Pelajaran"
-            className="flex items-center gap-2 overflow-x-auto pb-1 pt-1 scrollbar-none"
-            role="tablist"
-          >
-            {["Semua Topik", ...new Set(materials.map((m) => m.subject))].map(
-              (s) => (
-                <button
-                  key={s}
-                  role="tab"
-                  aria-selected={subject === s}
-                  onClick={() => setSubject(s)}
-                  className={
-                    "h-9 px-4 rounded-full font-label text-label flex items-center gap-1.5 shrink-0 shadow-sm " +
-                    (subject === s
-                      ? "bg-secondary-container text-primary"
-                      : "bg-surface text-text-secondary")
-                  }
-                >
-                  {s}
-                  <span className="text-[12px]">
-                    {s === "Semua Topik"
-                      ? materials.length
-                      : materials.filter((m) => m.subject === s).length}
+    <>
+      <div className="final-design final-screen-8 w-full bg-canvas flex-1 screen-page">
+        <button onClick={onSettings} className="sr-only focus:not-sr-only">
+          Aksesibilitas
+        </button>
+        {errorsPanel}
+        {uploadPanel}
+        <div className="flex flex-col w-full">
+          <div className="max-w-[1200px] w-full mx-auto px-margin py-space-xl flex flex-col gap-space-xl ui-container">
+            <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg">
+              <div className="flex flex-col gap-space-xs max-w-2xl">
+                <div className="flex items-center gap-space-sm">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-primary font-label text-label">
+                    <span className="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                    Katalog Belajar Pribadi
                   </span>
-                </button>
-              ),
-            )}
-          </div>
-        </section>
-
-        <section
-          className={
-            list
-              ? "grid grid-cols-1 gap-space-md items-start"
-              : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md items-start"
-          }
-        >
-          {filtered.map((m) => (
-            <article
-              className="bg-surface rounded-2xl p-space-md md:p-space-lg shadow-sm flex flex-col justify-between gap-space-md relative overflow-hidden group hover:shadow-md transition-shadow"
-              key={m.id}
-            >
-              <div className="flex items-center justify-between gap-2">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label text-[12px]">{`${m.subject} • ${m.is_demo ? "Materi contoh" : "Materi kamu"}`}</span>
-                <span className="font-metadata text-[13px] text-text-secondary flex items-center gap-1">{`~${m.concepts.reduce((n, c) => n + c.estimated_minutes, 0)} Menit`}</span>
-              </div>
-
-              <div className="w-full h-40 rounded-xl overflow-hidden relative bg-surface-container-low">
-                <Image
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  data-alt="Editorial close-up diagram of a plant leaf cell and sunlight absorption in soft pastel shades of olive, sage green, and warm cream, with gentle textured paper grain and clear labels for chlorophyll"
-                  width={1024}
-                  height={1024}
-                  src={
-                    m.subject === "Matematika"
-                      ? "/design/subject-math.png"
-                      : "/design/subject-science.png"
-                  }
-                  alt={`Ilustrasi ${m.subject}`}
-                />
-                <div className="absolute bottom-2 left-2 bg-surface/90 backdrop-blur-sm px-2.5 py-1 rounded-lg text-primary font-metadata text-[12px] flex items-center gap-1 shadow-sm">
-                  {m.sources[0]?.label || "Sumber materi"}
+                  <span className="text-on-surface-variant font-metadata text-metadata">{`${materials.length} materi · ${jobs.filter((j) => j.status !== "ready").length} unggahan belum siap`}</span>
                 </div>
-              </div>
-
-              <div className="flex flex-col gap-space-xs">
-                <h2 className="font-card-title text-card-title text-primary group-hover:text-secondary transition-colors">
-                  {m.title}
-                </h2>
-                <p className="font-body text-metadata text-text-secondary line-clamp-2">
-                  {m.concepts[0]?.paragraphs[0] ||
-                    "Materi siap untuk dipelajari sesuai ritmemu."}
+                <h1 className="font-display text-page-title text-primary tracking-tight ui-page-title">
+                  Materi Saya
+                </h1>
+                <p className="font-body text-body text-on-surface-variant">
+                  Kumpulan modul, rangkuman, dan catatan belajarmu yang sudah
+                  disesuaikan agar nyaman dibaca dan dipahami tanpa rasa cemas.
                 </p>
               </div>
 
-              <div className="flex flex-wrap gap-1.5 pt-1">
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-surface-container text-text-secondary font-metadata text-[12px]">
-                  <span
-                    aria-hidden="true"
-                    className="material-symbols-outlined text-[14px]"
-                  >
-                    auto_stories
-                  </span>
-                  Membaca
-                </span>
-                {m.concepts.every((c) => c.transcript) && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-surface-container text-text-secondary font-metadata text-[12px]">
-                    <span
-                      aria-hidden="true"
-                      className="material-symbols-outlined text-[14px]"
-                    >
-                      headphones
-                    </span>
-                    Transkrip & Audio
-                  </span>
-                )}
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-surface-container text-text-secondary font-metadata text-[12px]">
-                  <span
-                    aria-hidden="true"
-                    className="material-symbols-outlined text-[14px]"
-                  >
-                    quiz
-                  </span>
-                  {m.question_count} Soal
-                </span>
-              </div>
-
-              <div className="space-y-1.5 pt-1">
-                <div className="flex justify-between items-center font-metadata text-[13px]">
-                  <span className="text-text-secondary flex items-center gap-1 font-label">{`${completed(m.id)} / ${m.concepts.length} konsep dibaca`}</span>
-                  <span className="text-secondary font-semibold">
-                    {completed(m.id)
-                      ? "Lanjut sesuai ritmemu"
-                      : "Siap dipelajari"}
-                  </span>
-                </div>
-                <div className="w-full bg-surface-container h-2 rounded-full overflow-hidden">
-                  <div
-                    className="bg-secondary h-full rounded-full"
-                    style={{
-                      width: `${(completed(m.id) / m.concepts.length) * 100}%`,
-                    }}
-                  ></div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-space-xs pt-2">
+              <div className="flex flex-wrap items-center gap-space-sm shrink-0">
                 <button
-                  className="flex-1 h-11 inline-flex items-center justify-center gap-space-xs rounded-xl bg-primary text-on-primary font-label text-label hover:bg-primary-hover active:bg-primary-pressed transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-focus"
-                  onClick={() => onDetail(m)}
-                >
-                  <span>Buka Ringkasan</span>
-                  <span
-                    className="material-symbols-outlined text-[18px]"
-                    aria-hidden="true"
-                  >
-                    arrow_forward
-                  </span>
-                </button>
-                <button
-                  aria-label={`Buka ${m.title}`}
-                  className="w-11 h-11 inline-flex items-center justify-center rounded-xl bg-surface-container text-primary hover:bg-surface-container-high transition-colors focus:outline-none focus:ring-2 focus:ring-focus"
+                  className="inline-flex items-center justify-center gap-space-xs px-5 py-3 rounded-xl bg-surface text-primary font-label text-label hover:bg-canvas transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-tertiary"
                   type="button"
-                  onClick={() => onDetail(m)}
+                  disabled={!materials.some((material) => material.is_demo)}
+                  onClick={() => {
+                    const m = materials.find((m) => m.is_demo);
+                    if (m) onDetail(m);
+                  }}
                 >
                   <span
                     className="material-symbols-outlined text-[20px]"
                     aria-hidden="true"
                   >
-                    picture_as_pdf
+                    lightbulb
                   </span>
+                  Coba Materi Contoh
+                </button>
+                <button
+                  className="inline-flex items-center justify-center gap-space-xs px-6 py-3 rounded-xl bg-primary text-on-primary font-label text-label hover:bg-primary-hover active:bg-primary-pressed transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-tertiary focus:ring-offset-2"
+                  type="button"
+                  onClick={onUpload}
+                >
+                  <span
+                    className="material-symbols-outlined text-[20px]"
+                    aria-hidden="true"
+                  >
+                    add_circle
+                  </span>
+                  + Tambah Materi Baru
                 </button>
               </div>
-            </article>
-          ))}
-        </section>
+            </header>
 
-        <section className="bg-surface rounded-2xl p-space-md md:p-space-lg shadow-sm flex flex-col md:flex-row items-center justify-between gap-space-md mt-2">
-          <div className="flex items-start sm:items-center gap-space-md">
-            <div className="w-12 h-12 rounded-xl bg-secondary-container flex items-center justify-center shrink-0 text-secondary">
-              <span
-                className="material-symbols-outlined text-[26px]"
-                aria-hidden="true"
+            {jobs.length > 0 && (
+              <section
+                aria-label="Status Pemrosesan Berjalan"
+                className="w-full bg-butter-tint rounded-2xl p-space-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md shadow-sm"
               >
-                spa
-              </span>
-            </div>
-            <div className="space-y-0.5">
-              <h3 className="font-label text-label text-primary font-bold">
-                Standar Belajar Bebas Tekanan TemanBelajar
-              </h3>
-              <p className="font-metadata text-metadata text-text-secondary max-w-2xl">
-                Setiap materi dapat dipelajari dengan kecepatanmu sendiri tanpa
-                pengatur waktu mundur (timer) atau sanksi keterlambatan. Jika
-                merasa lelah, gunakan jeda bernapas kapan saja.
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-space-xs shrink-0 self-stretch sm:self-auto justify-end">
-            <button
-              className="h-10 px-space-md rounded-xl bg-surface-container text-primary font-label text-[13px] hover:bg-surface-container-high transition-colors focus:outline-none focus:ring-2 focus:ring-focus"
-              type="button"
+                {jobsPanel}
+              </section>
+            )}
+
+            <section
+              aria-label="Pencarian dan Filter Materi"
+              className="flex flex-col gap-space-md"
             >
-              Jelajahi Pustaka Umum
-            </button>
-            <button
-              className="h-10 px-space-md rounded-xl bg-secondary-fixed text-on-secondary-fixed-variant font-label text-[13px] hover:bg-secondary-fixed-dim transition-colors focus:outline-none focus:ring-2 focus:ring-focus"
-              type="button"
+              <div className="relative w-full">
+                <span className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-outline">
+                  <span
+                    className="material-symbols-outlined text-[22px]"
+                    aria-hidden="true"
+                  >
+                    search
+                  </span>
+                </span>
+                <input
+                  className="w-full pl-12 pr-28 py-3.5 rounded-xl bg-surface text-primary placeholder-outline font-body text-body shadow-sm focus:outline-none focus:ring-2 focus:ring-tertiary"
+                  placeholder="Cari judul materi, bab, kata kunci, atau mata pelajaran..."
+                  ref={search}
+                  type="search"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  aria-label="Cari materi atau topik konsep"
+                />
+                <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none">
+                  <kbd className="hidden sm:inline-block px-2.5 py-1 bg-surface-container rounded-lg font-metadata text-metadata text-on-surface-variant text-xs font-semibold">
+                    Ctrl + K
+                  </kbd>
+                </div>
+              </div>
+
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+                <div className="flex items-center gap-space-xs overflow-x-auto pb-1 -mx-margin px-margin lg:mx-0 lg:px-0">
+                  {[
+                    "Semua Topik",
+                    ...new Set(materials.map((m) => m.subject)),
+                  ].map((s) => (
+                    <button
+                      key={s}
+                      onClick={() => setSubject(s)}
+                      aria-pressed={subject === s}
+                      className="px-4 py-2 rounded-full bg-surface border border-divider"
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="flex items-center gap-space-sm shrink-0 flex-wrap">
+                  <div className="relative inline-block text-left">
+                    <select
+                      aria-label="Filter status belajar"
+                      value={status}
+                      onChange={(event) => setStatus(event.target.value)}
+                      className="appearance-none bg-surface text-primary font-label text-label pl-3.5 pr-8 py-2 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-tertiary cursor-pointer"
+                    >
+                      <option value="all">Semua Status</option>
+                      <option value="learning">Sedang Dipelajari</option>
+                      <option value="ready">Belum Mulai</option>
+                      <option value="completed">Selesai</option>
+                    </select>
+                    <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-outline">
+                      <span
+                        className="material-symbols-outlined text-[18px]"
+                        aria-hidden="true"
+                      >
+                        expand_more
+                      </span>
+                    </span>
+                  </div>
+                  <div className="relative inline-block text-left">
+                    <select
+                      aria-label="Urutkan materi"
+                      value={sort}
+                      onChange={(event) => setSort(event.target.value)}
+                      className="appearance-none bg-surface text-primary font-label text-label pl-3.5 pr-8 py-2 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-tertiary cursor-pointer"
+                    >
+                      <option value="recent">Terakhir Dipelajari</option>
+                      <option value="title">A-Z Judul</option>
+                    </select>
+                    <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-outline">
+                      <span
+                        className="material-symbols-outlined text-[18px]"
+                        aria-hidden="true"
+                      >
+                        sort
+                      </span>
+                    </span>
+                  </div>
+                  <div className="flex items-center bg-surface p-1 rounded-xl shadow-sm">
+                    <button
+                      aria-label="Tampilan kartu"
+                      className="p-1.5 rounded-lg bg-surface-container text-primary"
+                      type="button"
+                      onClick={() => setList(false)}
+                      aria-pressed={!list}
+                    >
+                      <span
+                        className="material-symbols-outlined text-[18px]"
+                        aria-hidden="true"
+                      >
+                        grid_view
+                      </span>
+                    </button>
+                    <button
+                      aria-label="Tampilan daftar"
+                      className="p-1.5 rounded-lg text-outline hover:text-primary transition-colors"
+                      type="button"
+                      onClick={() => setList(true)}
+                      aria-pressed={list}
+                    >
+                      <span
+                        className="material-symbols-outlined text-[18px]"
+                        aria-hidden="true"
+                      >
+                        format_list_bulleted
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section
+              aria-label="Daftar Modul Belajar"
+              className={
+                "grid gap-6 " +
+                (list
+                  ? "grid-cols-1"
+                  : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3")
+              }
             >
-              Atur Mode Tampilan
-            </button>
+              {filtered.map((item) => (
+                <article
+                  className="flex flex-col justify-between bg-surface rounded-3xl p-space-lg shadow-sm hover:shadow-md transition-shadow relative"
+                  key={item.id}
+                >
+                  <div className="flex justify-between text-sm">
+                    <span>{item.subject}</span>
+                    <span>
+                      {item.is_demo ? "Materi contoh" : "Materi kamu"}
+                    </span>
+                  </div>
+                  <div className="my-5 p-5 rounded-2xl bg-mint-tint border border-divider">
+                    <span
+                      className="material-symbols-outlined text-4xl"
+                      aria-hidden="true"
+                    >
+                      menu_book
+                    </span>
+                    <p className="mt-3 text-sm">
+                      {item.concepts.length} konsep · {item.question_count} soal
+                    </p>
+                  </div>
+                  <h2 className="text-xl font-bold ui-section-title">
+                    {item.title}
+                  </h2>
+                  <p className="text-sm mt-3">
+                    {completed(item.id)} / {item.concepts.length} konsep dibaca
+                  </p>
+                  <div className="h-2 rounded-full bg-mint-tint my-4">
+                    <div
+                      className="h-full bg-primary rounded-full"
+                      style={{
+                        width: `${item.concepts.length ? Math.min(100, (completed(item.id) / item.concepts.length) * 100) : 0}%`,
+                      }}
+                    />
+                  </div>
+                  <button
+                    onClick={() => onDetail(item)}
+                    className="bg-primary text-white rounded-xl px-5 py-3 font-bold"
+                  >
+                    Buka Ringkasan →
+                  </button>
+                </article>
+              ))}
+              {!filtered.length && (
+                <div className="col-span-full text-center bg-mint-tint rounded-3xl p-12">
+                  <h2 className="text-2xl font-bold ui-section-title">
+                    {materials.length
+                      ? "Belum ada materi yang cocok"
+                      : "Belum ada materi tersimpan"}
+                  </h2>
+                  <p className="mt-3">
+                    {materials.length
+                      ? "Coba kata kunci atau filter lain."
+                      : "Tambahkan PDF atau tempel catatanmu untuk mulai belajar."}
+                  </p>
+                  <button
+                    className="mt-6 bg-primary text-white px-5 py-3 rounded-xl"
+                    onClick={() => {
+                      if (materials.length) {
+                        setQuery("");
+                        setSubject("Semua Topik");
+                        setStatus("all");
+                      } else onUpload();
+                    }}
+                  >
+                    {materials.length ? "Hapus filter" : "Tambah materi"}
+                  </button>
+                </div>
+              )}
+            </section>
+
+            <section
+              aria-label="Catatan Pendamping dari Mimo"
+              className="w-full bg-surface rounded-3xl p-space-lg lg:p-space-xl shadow-sm flex flex-col md:flex-row items-center gap-space-lg"
+            >
+              <div className="w-28 h-28 shrink-0 flex items-center justify-center bg-mint-tint rounded-2xl p-2 relative">
+                <Image
+                  src="/design/mimo-final.png"
+                  alt=""
+                  width={1408}
+                  height={1120}
+                  className="w-32 h-auto object-contain"
+                />
+              </div>
+              <div className="flex flex-col gap-space-xs text-center md:text-left">
+                <div className="inline-flex items-center justify-center md:justify-start gap-1.5 text-secondary font-label text-label">
+                  <span
+                    className="material-symbols-outlined text-[18px]"
+                    aria-hidden="true"
+                  >
+                    verified
+                  </span>
+                  Catatan Sahabat Belajar dari Mimo
+                </div>
+                <blockquote className="font-mimo-voice text-mimo-voice text-primary max-w-3xl">
+                  “Semua materi yang kamu unggah bakal otomatis disesuaikan
+                  dengan preferensi bacamu (font ramah disleksia, pemenggal suku
+                  kata, dan pemecah durasi 15 menit). Belajar jadi tenang tanpa
+                  pusing!”
+                </blockquote>
+                <div className="flex items-center justify-center md:justify-start gap-space-sm mt-1 text-on-surface-variant font-metadata text-metadata">
+                  <span>✓ Otomatis simpan posisi baca</span>
+                  <span>•</span>
+                  <span>✓ Mode bebas distraksi aktif</span>
+                  <span>•</span>
+                  <span>✓ Sesuai standar kurikulum nasional</span>
+                </div>
+              </div>
+            </section>
           </div>
-        </section>
-      </div>
-      {filtered.length === 0 && (
-        <div className="bg-surface rounded-2xl p-space-lg">
-          <h2 className="font-section-title text-section-title text-primary">
-            Belum ada materi yang cocok
-          </h2>
-          <p className="font-body text-body text-text-secondary">
-            Coba filter lain, lihat antrean, atau tambahkan materi sekolahmu.
-          </p>
         </div>
-      )}
-    </div>
+      </div>
+    </>
   );
 }

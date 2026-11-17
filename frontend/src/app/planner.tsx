@@ -42,15 +42,59 @@ export function Planner({
     [title, setTitle] = useState(""),
     [duration, setDuration] = useState(10),
     [message, setMessage] = useState("");
-  const plan = detail || plans.find((p) => p.id === selected) || plans[0];
+  const plan =
+    selected === ""
+      ? undefined
+      : detail || plans.find((p) => p.id === selected) || plans[0];
+  function validStart() {
+    if (!date || !Number.isFinite(new Date(date).getTime())) {
+      setMessage("Pilih tanggal dan waktu mulai terlebih dahulu.");
+      return false;
+    }
+    return true;
+  }
+  function validDraft() {
+    if (!activities?.length) {
+      setMessage("Tambahkan atau susun kegiatan sebelum menyimpan rencana.");
+      return false;
+    }
+    if (
+      activities.some(
+        (activity) =>
+          !activity.title.trim() ||
+          activity.title.length > 160 ||
+          !Number.isInteger(activity.duration_minutes) ||
+          activity.duration_minutes < 1 ||
+          activity.duration_minutes > 240 ||
+          !Number.isFinite(Date.parse(activity.start_at)),
+      )
+    ) {
+      setMessage(
+        "Periksa judul, waktu mulai, dan durasi kegiatan (1?240 menit).",
+      );
+      return false;
+    }
+    return true;
+  }
   async function load(id: string) {
     setSelected(id);
+    if (!id) {
+      setDetail(null);
+      setActivities(null);
+      setProposal(null);
+      setMessage("Rencana baru. Tambahkan kegiatan lalu simpan.");
+      return;
+    }
     setDetail(await api<Plan>(`/plans/${id}`));
     setActivities(null);
     setProposal(null);
   }
   function suggest() {
-    if (!date || !material) return;
+    if (!validStart()) return;
+    if (!material) {
+      setMessage("Pilih materi terlebih dahulu.");
+      return;
+    }
     run(async () => {
       const d = await api<{ activities: Activity[] }>("/plans/suggest", {
         material_id: material,
@@ -62,6 +106,7 @@ export function Planner({
     });
   }
   function create() {
+    if (!validDraft()) return;
     const save = mutation<Plan>("/plans", {
       timezone: profile.timezone,
       daily_minutes: profile.daily_minutes,
@@ -75,7 +120,7 @@ export function Planner({
     });
   }
   function propose() {
-    if (!plan || !activities) return;
+    if (!plan || !activities || !validDraft()) return;
     const send = mutation<Proposal>(`/plans/${plan.id}/proposals`, {
       expected_version: plan.version,
       activities,
@@ -115,7 +160,11 @@ export function Planner({
     });
   }
   function recompute() {
-    if (!plan || !date || !material) return;
+    if (!plan || !validStart()) return;
+    if (!material) {
+      setMessage("Pilih materi terlebih dahulu.");
+      return;
+    }
     const send = mutation<Proposal>(`/plans/${plan.id}/recompute`, {
       expected_version: plan.version,
       material_id: material,
@@ -127,7 +176,15 @@ export function Planner({
     });
   }
   function addManual() {
-    if (!date || !title.trim()) return;
+    if (!validStart()) return;
+    if (!title.trim() || title.trim().length > 160) {
+      setMessage("Isi judul kegiatan (maksimal 160 karakter).");
+      return;
+    }
+    if (!Number.isInteger(duration) || duration < 1 || duration > 240) {
+      setMessage("Durasi harus berupa bilangan bulat 1?240 menit.");
+      return;
+    }
     setActivities([
       ...(activities || plan?.activities || []),
       {
@@ -306,12 +363,8 @@ export function Planner({
     );
   return (
     <>
-      {message && (
-        <p role="status" className="success">
-          {message}
-        </p>
-      )}
       <PlanDesign
+        message={message}
         key={plan?.id || "new"}
         plans={plans}
         plan={plan}

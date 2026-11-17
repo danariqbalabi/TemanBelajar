@@ -28,554 +28,394 @@ export function RecommendationDesign({
 }) {
   const [showReason, setShowReason] = useState(true);
   return (
-    <div className="stitch-screen">
-      <div className="flex flex-col w-full">
-        <div className="max-w-7xl mx-auto px-margin py-space-lg w-full flex flex-col gap-space-xl">
-          <header className="flex flex-col gap-space-sm pt-space-xs">
-            <nav
-              aria-label="Breadcrumb"
-              className="flex items-center flex-wrap gap-space-xs text-metadata font-metadata text-text-secondary"
+    <>
+      <div className="final-design final-screen-19 w-full bg-canvas flex-1 screen-page">
+        <div className="flex flex-col w-full">
+          <div className="max-w-[1200px] w-full mx-auto px-margin-mobile sm:px-margin-tablet lg:px-margin py-space-lg flex flex-col gap-space-xl ui-container">
+            <div className="flex flex-wrap items-center justify-between gap-space-md">
+              <div className="flex items-center gap-space-sm flex-wrap">
+                <a
+                  className="inline-flex items-center gap-1.5 text-primary hover:text-primary-hover font-label text-label transition-colors"
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onBack();
+                  }}
+                >
+                  <span
+                    className="material-symbols-outlined text-[18px]"
+                    aria-hidden="true"
+                  >
+                    arrow_back
+                  </span>
+                  <span>Kembali ke materi</span>
+                </a>
+                <span className="text-outline text-metadata">•</span>
+                <a
+                  className="text-on-surface-variant hover:text-primary font-metadata text-metadata transition-colors"
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onBack();
+                  }}
+                >
+                  Kembali ke materi
+                </a>
+              </div>
+              <div className="flex items-center gap-space-sm">
+                <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 bg-mint-tint text-success rounded-full font-label text-label">
+                  <span
+                    className="material-symbols-outlined text-[16px]"
+                    aria-hidden="true"
+                  >
+                    psychology
+                  </span>
+                  <span>Rekomendasi Personal Berbasis Pemahaman Terbaru</span>
+                </div>
+                <div className="flex items-center gap-1 bg-surface rounded-lg p-0.5 shadow-sm">
+                  <button
+                    type="button"
+                    onClick={onSettings}
+                    className="px-3 py-2 text-sm rounded-lg"
+                  >
+                    Atur tampilan
+                  </button>
+                  <button
+                    className="flex items-center gap-1.5 px-2.5 py-1 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded font-label text-label transition-colors"
+                    id="ttsBtn"
+                    type="button"
+                    onClick={() => onSpeak(recommendation.reason)}
+                  >
+                    <span
+                      className="material-symbols-outlined text-[18px]"
+                      aria-hidden="true"
+                    >
+                      volume_up
+                    </span>
+                    <span className="hidden md:inline">Bacakan Halaman</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className="relative rounded-[28px] p-space-lg sm:p-space-xl overflow-hidden shadow-sm border-2 border-[#BCE8C6]"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgb(232, 248, 236) 0%, rgb(216, 242, 225) 50%, rgb(229, 246, 235) 100%)",
+              }}
             >
-              <button
-                className="hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-focus rounded"
-                data-path="beranda"
-                disabled={busy}
-                onClick={onBack}
-              >
-                Beranda
-              </button>
-              <span className="text-outline select-none">/</span>
-              <button
-                className="hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-focus rounded"
-                data-path="materi-saya"
-                disabled={busy}
-                onClick={onBack}
-              >
-                {material.title}
-              </button>
-              <span className="text-outline select-none">/</span>
-              <span className="text-primary font-label text-label flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-secondary inline-block"></span>
-                Rekomendasi Adaptif Mimo
-              </span>
-            </nav>
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-space-md mt-space-xs">
-              <div className="max-w-3xl">
-                <div className="inline-flex items-center gap-space-xs px-space-sm py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label text-metadata mb-space-xs">
-                  <span
-                    className="material-symbols-outlined text-[16px]"
-                    aria-hidden="true"
-                  >
-                    psychology_alt
-                  </span>
-                  <span>Analisis Bukti Belajar Selesai</span>
-                </div>
-                <h1 className="font-page-title text-page-title text-primary tracking-tight">
-                  Langkah Belajar Berikutnya Buat Kamu
-                </h1>
-                <p className="font-body text-body text-text-secondary mt-space-xs">
-                  Rekomendasi belajar personal yang disesuaikan secara
-                  transparan dari bukti latihanmu hari ini. Tanpa tebak-tebakan,
-                  kamu selalu memegang kendali penuh.
-                </p>
-              </div>
-
-              <div className="bg-surface rounded-xl p-space-md shadow-sm flex items-center gap-space-md shrink-0">
-                <div className="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-primary font-label">
-                  NB
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-label text-label text-primary">{`${displayName}, kamu bebas memilih langkah yang nyaman.`}</span>
-                  <span className="font-metadata text-metadata text-text-secondary">
-                    SMP Kelas 8 • Mode Visual
-                  </span>
-                </div>
-              </div>
-            </div>
-          </header>
-
-          <section
-            aria-labelledby="rekomendasi-utama"
-            className="relative overflow-hidden rounded-2xl bg-secondary-container text-primary p-space-lg lg:p-space-xl shadow-md"
-          >
-            <div className="absolute -right-12 -top-12 w-64 h-64 rounded-full bg-white/20 pointer-events-none blur-2xl"></div>
-            <div className="absolute right-24 bottom-0 opacity-10 pointer-events-none hidden lg:block">
-              <svg
-                fill="currentColor"
-                height="180"
-                viewBox="0 0 220 180"
-                width="220"
-              >
-                <rect height="60" rx="8" width="60" x="10" y="70"></rect>
-                <rect height="80" rx="8" width="80" x="80" y="70"></rect>
-                <polygon points="70,130 80,130 80,70"></polygon>
-              </svg>
-            </div>
-            <div className="relative z-10 flex flex-col gap-space-md">
-              <div className="flex flex-wrap items-center gap-space-xs text-metadata font-label">
-                <span className="px-space-sm py-1 rounded-full bg-primary text-on-primary inline-flex items-center gap-1">
-                  <span
-                    className="material-symbols-outlined text-[16px] text-butter"
-                    aria-hidden="true"
-                  >
-                    auto_awesome
-                  </span>
-                  Rekomendasi Utama Terpilih
-                </span>
-                <span className="px-space-sm py-1 rounded-full bg-white/70 text-primary inline-flex items-center gap-1">
-                  <span
-                    className="material-symbols-outlined text-[16px]"
-                    aria-hidden="true"
-                  >
-                    schedule
-                  </span>
-                  Est. ~{`${recommendation.estimated_minutes} Menit`}
-                </span>
-                <span className="px-space-sm py-1 rounded-full bg-white/70 text-success inline-flex items-center gap-1">
-                  <span
-                    className="material-symbols-outlined text-[16px]"
-                    aria-hidden="true"
-                  >
-                    verified
-                  </span>
-                  Tingkat Keyakinan Model: Tinggi (92%)
-                </span>
-              </div>
-
-              <div className="flex flex-col gap-space-xs max-w-3xl">
-                <h2
-                  className="font-section-title text-section-title text-primary tracking-tight"
-                  id="rekomendasi-utama"
-                >
-                  {recommendation.title ||
-                    material.concepts.find(
-                      (c) => c.id === recommendation.concept_id,
-                    )?.title ||
-                    "Langkah berikutnya"}
-                </h2>
-                <p className="font-body text-body text-on-secondary-container">
-                  Meninjau kenapa{" "}
-                  <span className="font-label bg-white/60 px-1.5 py-0.5 rounded text-primary">
-                    6² + 8² ≠ 11²
-                  </span>{" "}
-                  menggunakan pembuktian kotak ubin warna-warni di Mode Visual
-                  &amp; Caption, agar perbedaan jumlah kuadrat dan jumlah linier
-                  terlihat gamblang.
-                </p>
-              </div>
-
-              <div className="rounded-xl bg-white p-space-md lg:p-space-lg text-primary shadow-sm mt-space-xs">
-                <button
-                  aria-controls="reason-content"
-                  aria-expanded={showReason}
-                  className="w-full flex items-center justify-between text-left focus:outline-none focus:ring-2 focus:ring-focus rounded-lg py-1"
-                  id="toggle-reason-btn"
-                  type="button"
-                  disabled={busy}
-                  onClick={() => setShowReason(!showReason)}
-                >
-                  <div className="flex items-center gap-space-sm">
-                    <span className="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-primary">
+              <div className="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-white/40 blur-2xl pointer-events-none"></div>
+              <div className="absolute -bottom-8 -left-8 w-40 h-40 rounded-full bg-butter/30 blur-xl pointer-events-none"></div>
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg lg:gap-space-xl items-center relative z-10">
+                <div className="lg:col-span-7 flex flex-col gap-space-md">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-primary text-on-primary font-label text-label shadow-sm">
+                      <span
+                        className="material-symbols-outlined text-[16px] text-butter"
+                        aria-hidden="true"
+                      >
+                        auto_awesome
+                      </span>
+                      <span>Rekomendasi Utama</span>
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-butter-tint text-warning font-label text-label border border-butter/50 shadow-sm">
+                      <span
+                        className="material-symbols-outlined text-[16px]"
+                        aria-hidden="true"
+                      >
+                        timer
+                      </span>
+                      <span>{recommendation.estimated_minutes} menit</span>
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 text-success font-metadata text-metadata border border-secondary/20 shadow-sm">
+                      <span
+                        className="material-symbols-outlined text-[16px]"
+                        aria-hidden="true"
+                      >
+                        sentiment_satisfied
+                      </span>
+                      <span>Bebas Cemas &amp; Ringan</span>
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm">{material.title}</p>
+                    <h1 className="font-display font-black text-page-title text-primary tracking-tight leading-tight ui-page-title">
+                      {recommendation.title || "Rekomendasi buat kamu"}
+                    </h1>
+                    <p className="font-reading text-reading text-primary-container leading-relaxed">
+                      {recommendation.reason}
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+                    <div className="bg-white/90 backdrop-blur-sm px-3.5 py-2.5 rounded-2xl border border-secondary/20 flex items-center gap-2.5 shadow-sm">
+                      <span
+                        className="material-symbols-outlined text-[20px] text-secondary shrink-0"
+                        aria-hidden="true"
+                      >
+                        menu_book
+                      </span>
+                      <div className="leading-tight min-w-0">
+                        <div className="text-[11px] font-metadata text-on-surface-variant">
+                          Materi
+                        </div>
+                        <div className="font-label text-[13px] text-primary truncate font-bold">
+                          {material.subject}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="bg-white/90 backdrop-blur-sm px-3.5 py-2.5 rounded-2xl border border-secondary/20 flex items-center gap-2.5 shadow-sm">
+                      <span
+                        className="material-symbols-outlined text-[20px] text-secondary shrink-0"
+                        aria-hidden="true"
+                      >
+                        trending_up
+                      </span>
+                      <div className="leading-tight min-w-0">
+                        <div className="text-[11px] font-metadata text-on-surface-variant">
+                          Penguasaan konsep
+                        </div>
+                        <div className="font-label text-[13px] text-primary font-bold">
+                          {recommendation.estimate?.mastery == null
+                            ? "Belum ada estimasi"
+                            : `${Math.round(recommendation.estimate.mastery * 100)}% (estimasi)`}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="bg-white/90 backdrop-blur-sm px-3.5 py-2.5 rounded-2xl border border-secondary/20 flex items-center gap-2.5 shadow-sm">
+                      <span
+                        className="material-symbols-outlined text-[20px] text-secondary shrink-0"
+                        aria-hidden="true"
+                      >
+                        schedule
+                      </span>
+                      <div className="leading-tight min-w-0">
+                        <div className="text-[11px] font-metadata text-on-surface-variant">
+                          Durasi Ringkas
+                        </div>
+                        <div className="font-label text-[13px] text-primary font-bold">
+                          {recommendation.estimated_minutes} menit
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-3 pt-2">
+                    <a
+                      className="inline-flex items-center justify-center gap-2 min-h-[48px] px-6 py-3 rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label shadow-md transition-all hover:scale-[1.02]"
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onFollow();
+                      }}
+                    >
+                      <span className="font-bold">
+                        Mulai Rekomendasi Sekarang
+                      </span>
                       <span
                         className="material-symbols-outlined text-[20px]"
                         aria-hidden="true"
                       >
-                        lightbulb
+                        arrow_forward
                       </span>
-                    </span>
-                    <span className="font-card-title text-card-title text-primary">
-                      Kenapa ini disarankan Mimo?
-                    </span>
-                  </div>
-                  <span
-                    className="material-symbols-outlined text-primary text-[24px] transition-transform duration-200 rotate-180"
-                    id="reason-icon"
-                    aria-hidden="true"
-                  >
-                    expand_more
-                  </span>
-                </button>
-                <div
-                  className="mt-space-md flex flex-col gap-space-md pt-space-sm"
-                  id="reason-content"
-                  hidden={!showReason}
-                >
-                  <p className="font-reading text-reading text-primary">
-                    {recommendation.reason}
-                  </p>
-                  <p className="font-metadata text-metadata text-text-secondary mt-space-md">
-                    {recommendation.estimate?.mastery != null
-                      ? `Estimasi model: ${Math.round(recommendation.estimate.mastery * 100)}%. Ini berbeda dari jumlah jawaban tepat.`
-                      : "Estimasi penguasaan belum tersedia atau belum cukup data. Saran tetap memakai hasil latihan yang diamati."}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-sm pt-space-xs">
-                <button
-                  className="h-11 px-space-lg rounded-xl bg-primary text-on-primary font-label text-label flex items-center justify-center gap-2 hover:bg-primary-hover active:bg-primary-pressed shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-focus focus:ring-offset-2"
-                  data-path="mulai-belajar"
-                  disabled={busy}
-                  onClick={onFollow}
-                >{`Ikuti Saran Ini (${recommendation.estimated_minutes} Menit)`}</button>
-                <button
-                  className="h-11 px-space-md rounded-xl bg-surface text-primary font-label text-label flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-focus"
-                  id="schedule-btn"
-                  type="button"
-                  disabled={busy}
-                  onClick={onPlanner}
-                >
-                  {
-                    <>
+                    </a>
+                    <a
+                      className="inline-flex items-center justify-center gap-2 min-h-[48px] px-5 py-3 rounded-xl bg-white hover:bg-canvas text-primary font-label text-label border border-secondary/20 shadow-sm transition-all"
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowReason(!showReason);
+                      }}
+                    >
                       <span
+                        className="material-symbols-outlined text-[18px] text-secondary"
                         aria-hidden="true"
-                        className="material-symbols-outlined text-[18px]"
                       >
-                        calendar_today
+                        info
                       </span>
-                      Tinjau Rencana Belajar
-                    </>
-                  }
-                </button>
-                <button
-                  className="h-11 px-space-md rounded-xl text-primary font-label text-label flex items-center justify-center gap-2 hover:bg-black/5 transition-colors focus:outline-none focus:ring-2 focus:ring-focus"
-                  type="button"
-                  disabled={busy}
-                  onClick={onBack}
-                >
-                  {"Lewati dulu (tanpa penalti)"}
-                </button>
-              </div>
-            </div>
-          </section>
-
-          <section
-            aria-labelledby="pilihan-mandiri-title"
-            className="flex flex-col gap-space-md"
-          >
-            <div className="flex flex-col gap-space-xs">
-              <h2
-                className="font-section-title text-section-title text-primary tracking-tight"
-                id="pilihan-mandiri-title"
-              >
-                Pilihan Alternatif Mandiri
-              </h2>
-              <p className="font-body text-body text-text-secondary">
-                Lebih nyaman dengan pendekatan lain? Kamu yang paling tahu
-                kapasitas pikiranmu saat ini. Pilih format yang paling pas:
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-space-md">
-              {recommendation.alternatives.map((a) => (
-                <article
-                  className="bg-surface rounded-2xl p-space-lg shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative"
-                  key={a.mode}
-                >
-                  <div className="flex flex-col gap-space-sm">
-                    <div className="flex items-center justify-between">
-                      <span className="px-2.5 py-0.5 rounded-full bg-butter text-warning font-label text-metadata inline-flex items-center gap-1">
-                        <span
-                          className="material-symbols-outlined text-[14px]"
-                          aria-hidden="true"
-                        >
-                          quiz
-                        </span>
-                        Latihan Singkat
-                      </span>
-                      <span className="text-metadata font-metadata text-muted-gray flex items-center gap-1">
-                        <span
-                          className="material-symbols-outlined text-[16px]"
-                          aria-hidden="true"
-                        >
-                          timer
-                        </span>{" "}
-                        ~4 mnt
+                      <span>Lihat Detail Alasannya</span>
+                    </a>
+                    <a
+                      className="inline-flex items-center justify-center px-4 py-3 text-on-surface-variant hover:text-primary font-label text-label transition-colors"
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onBack();
+                      }}
+                    >
+                      <span>Lewati dulu (kembali ke materi)</span>
+                    </a>
+                  </div>
+                </div>
+                <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
+                  <div className="relative bg-white text-primary p-space-md rounded-[22px] shadow-sm mb-3 max-w-[340px] text-left border border-secondary/20 ring-4 ring-white/60">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <span className="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+                      <span className="font-label text-[12px] font-bold text-success uppercase tracking-wider">
+                        Pesan Sahabat Mimo
                       </span>
                     </div>
-                    <h3 className="font-card-title text-card-title text-primary mt-space-xs">
-                      {modeNames[a.mode]}
-                    </h3>
-                    <p className="font-metadata text-metadata text-text-secondary leading-relaxed">
-                      {a.reason}
+                    <p className="font-mimo-voice text-mimo-voice text-primary leading-snug">
+                      {displayName}
                     </p>
-                    <div className="p-space-sm rounded-lg bg-surface-container-low text-metadata font-metadata text-text-secondary flex items-center gap-2 mt-space-xs">
-                      <span
-                        className="material-symbols-outlined text-secondary text-[18px]"
-                        aria-hidden="true"
+                    <div className="absolute -bottom-2 left-12 w-4 h-4 bg-white border-b border-r border-secondary/20 transform rotate-45"></div>
+                  </div>
+                  <div className="w-56 h-56 sm:w-64 sm:h-64 flex items-center justify-center transition-transform hover:scale-105 duration-300 drop-shadow-md">
+                    <Image
+                      alt=""
+                      className="w-full h-full object-contain object-contain"
+                      src="/design/mimo-final.png"
+                      width={1408}
+                      height={1120}
+                    ></Image>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-space-md">
+              <div>
+                <h2 className="font-section-title text-section-title text-primary ui-section-title">
+                  Coba Cara Belajar Lainnya
+                </h2>
+                <div className="grid md:grid-cols-3 gap-4 mt-5">
+                  {recommendation.alternatives.map((alt, i) => (
+                    <article
+                      key={i}
+                      className="bg-surface border border-divider rounded-2xl p-5"
+                    >
+                      <h3 className="font-bold ui-card-title">
+                        {modeNames[alt.mode]}
+                      </h3>
+                      <p className="my-3 text-sm">{alt.reason}</p>
+                      <button
+                        disabled={busy}
+                        onClick={() => onOpen(alt.mode)}
+                        className="bg-primary text-white px-4 py-3 rounded-xl"
                       >
-                        track_changes
-                      </span>
-                      <span>Fokus: Ketelitian kuadrat linier</span>
-                    </div>
-                  </div>
-                  <div className="pt-space-md mt-space-md">
-                    <button
-                      className="w-full h-11 rounded-xl bg-surface-container text-primary font-label text-label flex items-center justify-center gap-2 hover:bg-secondary-container hover:text-on-secondary-container transition-colors focus:outline-none focus:ring-2 focus:ring-focus"
-                      data-path="mulai-belajar"
-                      onClick={() => onOpen(a.mode)}
-                    >{`Pilih ${modeNames[a.mode]}`}</button>
-                  </div>
-                </article>
-              ))}
+                        Pilih format ini →
+                      </button>
+                    </article>
+                  ))}
+                </div>
+              </div>
             </div>
-          </section>
 
-          <section
-            aria-labelledby="transparansi-title"
-            className="rounded-2xl bg-surface p-space-lg lg:p-space-xl shadow-sm"
-          >
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-space-md pb-space-md">
-              <div className="flex items-center gap-space-sm">
-                <div className="w-10 h-10 rounded-xl bg-secondary-container flex items-center justify-center text-primary">
+            <div
+              className="bg-surface rounded-2xl p-space-lg sm:p-space-xl shadow-sm flex flex-col gap-space-lg"
+              id="penjelasan-ai"
+            >
+              <div>
+                <h2 className="font-section-title text-section-title text-primary ui-section-title">
+                  Kenapa Rekomendasi Ini Muncul?
+                </h2>
+                <button
+                  onClick={() => setShowReason(!showReason)}
+                  aria-expanded={showReason}
+                  className="mt-3 underline"
+                >
+                  {showReason ? "Sembunyikan alasan" : "Lihat alasannya"}
+                </button>
+                {showReason && <p className="mt-4">{recommendation.reason}</p>}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-md">
+              <div
+                className="lg:col-span-8 rounded-2xl p-space-lg shadow-sm flex flex-col sm:flex-row items-center gap-space-md border-2 border-butter/50"
+                style={{
+                  background:
+                    "linear-gradient(135deg, #FFFDF5 0%, #FFF8E6 100%)",
+                }}
+              >
+                <div className="w-14 h-14 rounded-2xl bg-white border border-butter/60 flex items-center justify-center text-warning shrink-0 shadow-xs">
                   <span
-                    className="material-symbols-outlined text-[22px]"
+                    className="material-symbols-outlined text-[32px]"
                     aria-hidden="true"
                   >
-                    account_tree
+                    calendar_today
                   </span>
                 </div>
-                <div>
-                  <h2
-                    className="font-section-title text-section-title text-primary tracking-tight"
-                    id="transparansi-title"
-                  >
-                    Bagaimana TemanBelajar Membuat Saran Ini?
-                  </h2>
-                  <p className="font-metadata text-metadata text-text-secondary">
-                    Mesin rekomendasi tanpa kotak hitam (zero-mystery
-                    recommendation engine)
+                <div className="flex flex-col gap-1 flex-1 text-center sm:text-left">
+                  <span className="font-label text-label text-secondary font-bold">
+                    Pengaruh ke Rencana Belajarmu Hari Ini
+                  </span>
+                  <p className="font-reading text-reading text-primary">
+                    Aktivitas ini diperkirakan{" "}
+                    {recommendation.estimated_minutes} menit.
+                    {recommendation.action === "RESCHEDULE"
+                      ? " Tinjau rencana belajar sebelum mengubah jadwalmu."
+                      : " Kamu dapat memilih waktu yang nyaman untuk memulainya."}
                   </p>
-                </div>
-              </div>
-              <div className="inline-flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-surface-container text-secondary font-label text-metadata shrink-0">
-                <span
-                  className="material-symbols-outlined text-[16px] text-success"
-                  aria-hidden="true"
-                >
-                  lock_open
-                </span>
-                <span>{"Dasar saran dijelaskan dari data belajarmu"}</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-space-md mt-space-md">
-              <div className="flex flex-col gap-space-xs p-space-md rounded-xl bg-surface-container-low">
-                <div className="flex items-center justify-between text-metadata font-label text-secondary">
-                  <span>Langkah 1: Observasi Riil</span>
-                  <span className="w-6 h-6 rounded-full bg-secondary-fixed text-primary flex items-center justify-center text-[12px] font-bold">
-                    1
-                  </span>
-                </div>
-                <h4 className="font-card-title text-card-title text-primary mt-1">
-                  Bukti Jawaban Latihan
-                </h4>
-                <p className="font-metadata text-metadata text-text-secondary leading-relaxed">
-                  {recommendation.reason}
-                </p>
-              </div>
-              <div className="flex flex-col gap-space-xs p-space-md rounded-xl bg-surface-container-low">
-                <div className="flex items-center justify-between text-metadata font-label text-secondary">
-                  <span>Langkah 2: Profil &amp; Waktu</span>
-                  <span className="w-6 h-6 rounded-full bg-secondary-fixed text-primary flex items-center justify-center text-[12px] font-bold">
-                    2
-                  </span>
-                </div>
-                <h4 className="font-card-title text-card-title text-primary mt-1">
-                  Kebutuhan Waktu &amp; Energi
-                </h4>
-                <p className="font-metadata text-metadata text-text-secondary leading-relaxed">{`Durasi usulan ini ${recommendation.estimated_minutes} menit. Kamu bisa menyesuaikan waktunya di rencana belajar.`}</p>
-              </div>
-              <div className="flex flex-col gap-space-xs p-space-md rounded-xl bg-surface-container-low">
-                <div className="flex items-center justify-between text-metadata font-label text-secondary">
-                  <span>Langkah 3: Jalur Adaptif</span>
-                  <span className="w-6 h-6 rounded-full bg-secondary-fixed text-primary flex items-center justify-center text-[12px] font-bold">
-                    3
-                  </span>
-                </div>
-                <h4 className="font-card-title text-card-title text-primary mt-1">
-                  Solusi Bebas Tekanan
-                </h4>
-                <p className="font-metadata text-metadata text-text-secondary leading-relaxed">
-                  Saran bisa diikuti, diganti formatnya, atau dilewati tanpa
-                  pengurangan nilai.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-space-lg p-space-md rounded-xl bg-surface-container flex flex-wrap items-center justify-between gap-space-sm">
-              <div className="flex items-center gap-space-sm text-metadata font-metadata text-text-secondary">
-                <span
-                  className="material-symbols-outlined text-secondary text-[20px]"
-                  aria-hidden="true"
-                >
-                  verified_user
-                </span>
-                <span>
-                  <strong>Privasi Terjaga:</strong> Rekomendasi dihitung di
-                  perangkatmu. Tidak ada data perangkingan kompetitif atau label
-                  kegagalan.
-                </span>
-              </div>
-              <button
-                className="text-primary hover:underline font-label text-metadata focus:outline-none focus:ring-2 focus:ring-focus rounded"
-                type="button"
-                disabled={busy}
-                onClick={onSettings}
-              >
-                {"Sesuaikan preferensi belajar"}
-              </button>
-            </div>
-          </section>
-
-          <section className="rounded-2xl bg-surface-container-lowest p-space-lg lg:p-space-xl shadow-sm flex flex-col md:flex-row items-center gap-space-lg">
-            <div className="w-36 h-36 lg:w-44 lg:h-44 shrink-0 flex items-center justify-center">
-              <Image
-                alt="Mimo, teman belajarmu"
-                className="w-full h-full object-contain filter drop-shadow-sm"
-                src="/design/mimo.png"
-                width={1024}
-                height={1024}
-              />
-            </div>
-            <div className="flex flex-col gap-space-sm flex-1">
-              <div className="relative bg-secondary-container text-primary p-space-md lg:p-space-lg rounded-2xl rounded-tl-sm shadow-sm">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="font-card-title text-card-title text-primary">
-                    Mimo
-                  </span>
-                  <span className="text-metadata text-on-secondary-container font-metadata">
-                    • Teman Belajarmu
-                  </span>
-                </div>
-                <p className="font-mimo-voice text-mimo-voice leading-relaxed">{`${displayName}, kamu bebas memilih langkah yang nyaman.`}</p>
-              </div>
-              <div className="flex flex-wrap items-center gap-space-sm mt-space-xs">
-                <button
-                  className="h-10 px-space-md rounded-xl bg-surface text-primary font-label text-metadata flex items-center gap-1.5 shadow-sm hover:bg-surface-container transition-colors focus:outline-none focus:ring-2 focus:ring-focus"
-                  data-path="rencana-belajar"
-                  disabled={busy}
-                  onClick={onPlanner}
-                >
-                  <span
-                    className="material-symbols-outlined text-[18px]"
-                    aria-hidden="true"
+                  <a
+                    className="font-label text-label text-primary hover:text-primary-hover inline-flex items-center gap-1 mt-1 justify-center sm:justify-start transition-colors"
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onPlanner();
+                    }}
                   >
-                    calendar_month
-                  </span>
-                  <span>Lihat Rencana Belajar Hari Ini</span>
-                </button>
-                <button
-                  className="h-10 px-space-md rounded-xl text-primary font-label text-metadata flex items-center gap-1.5 hover:bg-surface-container transition-colors focus:outline-none focus:ring-2 focus:ring-focus"
-                  data-path="materi-saya"
-                  disabled={busy}
-                  onClick={onBack}
-                >
-                  <span
-                    className="material-symbols-outlined text-[18px]"
-                    aria-hidden="true"
-                  >
-                    menu_book
-                  </span>
-                  <span>Kembali ke Daftar Materi Bab 4</span>
-                </button>
-              </div>
-            </div>
-          </section>
-
-          <div
-            className="fixed bottom-20 right-6 z-40 hidden max-w-md bg-primary text-on-primary p-space-md rounded-xl shadow-xl flex items-center gap-space-sm transition-all duration-300 transform translate-y-4 opacity-0"
-            id="toast-notification"
-          >
-            <span
-              className="material-symbols-outlined text-butter text-[24px]"
-              aria-hidden="true"
-            >
-              task_alt
-            </span>
-            <div className="flex flex-col flex-1">
-              <span className="font-label text-label">
-                Tersimpan ke Rencana Belajar!
-              </span>
-              <span className="font-metadata text-metadata text-on-primary-container">
-                Modul Ubin Visual dijadwalkan besok pukul 16:00 WIB.
-              </span>
-            </div>
-            <button
-              className="text-on-primary-container hover:text-white p-1"
-              id="close-toast-btn"
-              type="button"
-              disabled={busy}
-              onClick={onBack}
-            >
-              <span
-                className="material-symbols-outlined text-[18px]"
-                aria-hidden="true"
-              >
-                close
-              </span>
-            </button>
-          </div>
-
-          <aside
-            aria-label="Ringkasan Waktu Belajar"
-            className="w-full bg-surface rounded-xl p-space-md shadow-sm flex flex-col md:flex-row items-center justify-between gap-space-md"
-          >
-            <div className="flex items-center gap-space-md w-full md:w-auto">
-              <div className="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-secondary shrink-0">
-                <span
-                  className="material-symbols-outlined text-[20px]"
-                  aria-hidden="true"
-                >
-                  hourglass_top
-                </span>
-              </div>
-              <div className="flex flex-col flex-1 md:flex-none">
-                <div className="flex items-center gap-2">
-                  <span className="font-label text-label text-primary">
-                    Target Belajar Hari Ini: 15 Menit
-                  </span>
-                  <span className="text-metadata font-metadata text-muted-gray">
-                    • Terpakai: 9 Menit
-                  </span>
+                    <span>Lihat Penyesuaian di Rencana Belajar</span>
+                    <span
+                      className="material-symbols-outlined text-[16px]"
+                      aria-hidden="true"
+                    >
+                      arrow_forward
+                    </span>
+                  </a>
                 </div>
-                <div className="flex items-center gap-space-sm mt-1">
-                  <div className="w-48 max-w-full h-2 rounded-full bg-surface-container overflow-hidden">
-                    <div
-                      className="h-full bg-secondary rounded-full"
-                      style={{ width: "60%" }}
-                    ></div>
+              </div>
+              <div
+                className="lg:col-span-4 rounded-2xl p-space-lg shadow-sm flex flex-col justify-between border-2 border-lavender/50"
+                style={{
+                  background:
+                    "linear-gradient(135deg, #F5F2FE 0%, #EFEAFC 100%)",
+                }}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-tertiary-container shadow-xs">
+                    <span
+                      className="material-symbols-outlined text-[20px]"
+                      aria-hidden="true"
+                    >
+                      chat_bubble
+                    </span>
                   </div>
-                  <span className="text-metadata font-metadata text-secondary font-semibold">
-                    Durasi fleksibel
-                  </span>
+                  <div>
+                    <h4 className="font-card-title text-card-title text-primary ui-label-title">
+                      Tanya Mimo
+                    </h4>
+                    <p className="font-metadata text-metadata text-on-surface-variant">
+                      Masih bingung mau mulai dari mana?
+                    </p>
+                  </div>
                 </div>
+                <p className="font-body text-body text-primary my-space-sm">
+                  Mimo bisa bantu jelaskan bagian yang kamu ragu langsung dalam
+                  obrolan santai.
+                </p>
+                <button
+                  className="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-tertiary-container hover:text-on-tertiary text-primary font-label text-label transition-colors shadow-sm border border-lavender/40"
+                  type="button"
+                  onClick={() => setShowReason(!showReason)}
+                >
+                  Lihat alasan rekomendasi
+                </button>
               </div>
             </div>
-            <div className="flex items-center gap-space-md w-full md:w-auto justify-end">
-              <button
-                className="h-10 px-space-md rounded-xl bg-secondary-container text-on-secondary-container font-label text-label flex items-center gap-2 hover:bg-secondary-fixed transition-colors focus:outline-none focus:ring-2 focus:ring-focus"
-                data-path="rencana-belajar"
-                disabled={busy}
-                onClick={onPlanner}
-              >
-                <span>Ke Rencana Belajar Harian</span>
-                <span
-                  className="material-symbols-outlined text-[18px]"
-                  aria-hidden="true"
-                >
-                  chevron_right
-                </span>
-              </button>
-            </div>
-          </aside>
+          </div>
         </div>
+        <div className="max-w-6xl mx-auto px-6 py-6 flex gap-4 ui-container">
+          <button
+            disabled={busy}
+            onClick={onFollow}
+            className="bg-primary text-white px-6 py-3 rounded-xl"
+          >
+            Ikuti rekomendasi
+          </button>
+          <button onClick={onBack}>Lewati dulu</button>
+        </div>
+        <button onClick={onPlanner}>Susun rencana belajar</button>
       </div>
-      <button
-        onClick={() => onSpeak(recommendation.reason)}
-        className="h-11 px-space-lg rounded-xl bg-surface text-primary font-label text-label"
-      >
-        Bacakan alasan
-      </button>
-    </div>
+    </>
   );
 }

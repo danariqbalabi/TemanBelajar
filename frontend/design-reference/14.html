@@ -1,0 +1,602 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="web_standard" name="shell-type">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-low": "#eaf7ed",
+            "tertiary-fixed-dim": "#b9c3ff",
+            "surface-dim": "#d0ddd4",
+            "lavender": "#A8B7F5",
+            "secondary": "#496550",
+            "butter": "#FFE7A3",
+            "control-border": "#68756C",
+            "on-surface-variant": "#424846",
+            "contrast-ink": "#101A16",
+            "error-container": "#ffdad6",
+            "surface-bright": "#f0fdf3",
+            "secondary-fixed": "#caead0",
+            "tertiary": "#001766",
+            "surface-variant": "#d9e6dc",
+            "inverse-surface": "#28332d",
+            "outline": "#727875",
+            "on-error-container": "#93000a",
+            "on-tertiary-fixed-variant": "#2f408f",
+            "on-primary-fixed-variant": "#374b44",
+            "inverse-primary": "#b5cbc3",
+            "on-primary": "#ffffff",
+            "on-secondary-fixed": "#052011",
+            "on-surface": "#131e18",
+            "peach-tint": "#FFF0E6",
+            "error-surface": "#FAE7E5",
+            "on-primary-fixed": "#0b1f1a",
+            "background": "#f0fdf3",
+            "on-secondary": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "lavender-tint": "#F0EDFC",
+            "canvas": "#F8F7F2",
+            "secondary-container": "#c8e8ce",
+            "butter-tint": "#FFF5D6",
+            "primary-container": "#273b35",
+            "primary-fixed": "#d1e8df",
+            "warning": "#61450E",
+            "surface-tint": "#4e635c",
+            "tertiary-fixed": "#dde1ff",
+            "on-tertiary": "#ffffff",
+            "on-secondary-container": "#4d6954",
+            "surface-container": "#e4f1e8",
+            "outline-variant": "#c2c8c4",
+            "on-tertiary-fixed": "#001257",
+            "surface-container-highest": "#d9e6dc",
+            "divider": "#E5E8E1",
+            "on-primary-container": "#8fa59d",
+            "on-tertiary-container": "#8a9bf0",
+            "primary-hover": "#1B3029",
+            "primary-pressed": "#13251F",
+            "primary-fixed-dim": "#b5cbc3",
+            "peach": "#FFCA9D",
+            "on-error": "#ffffff",
+            "on-background": "#131e18",
+            "surface-container-high": "#deebe2",
+            "mint-tint": "#EAF6EB",
+            "secondary-fixed-dim": "#afceb5",
+            "inverse-on-surface": "#e7f4eb",
+            "tertiary-container": "#1d2f7e",
+            "surface": "#FFFFFF",
+            "on-secondary-fixed-variant": "#314d3a",
+            "success": "#28583E",
+            "error": "#892E32",
+            "primary": "#112520"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "margin": "2rem",
+            "margin-tablet": "1.5rem",
+            "margin-mobile": "1rem"
+          },
+          fontFamily: {
+            "card-title": ["Plus Jakarta Sans"],
+            "label": ["Plus Jakarta Sans"],
+            "section-title": ["Plus Jakarta Sans"],
+            "body": ["Plus Jakarta Sans"],
+            "page-title": ["Plus Jakarta Sans"],
+            "display": ["Nunito"],
+            "reading": ["Plus Jakarta Sans"],
+            "mimo-voice": ["Nunito"],
+            "page-title-mobile": ["Plus Jakarta Sans"],
+            "metadata": ["Plus Jakarta Sans"],
+            "display-mobile": ["Nunito"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-canvas font-body text-on-surface antialiased min-h-screen flex flex-col justify-between">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface/95 backdrop-blur-md border-b border-divider">
+<div class="h-20 max-w-[1200px] mx-auto px-margin flex items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-lg">
+<a class="flex items-center gap-space-sm" data-path="beranda" href="#">
+<img alt="Logo TemanBelajar" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrC9WRFa0OUQ_-pgcRatJM4G8Z2t3PUshKHDwWT2rr2YD7AaeVspslzqgNxHufC8CljRMd-Gj63vCZP_rw1QKIJWO4VQ5Pczr7EiHIcss88wFWVkcQHWRLrtuTbp8NaTx2RHC9RhKEB-inLD6k2JJ4MGYYfY2tYGKmSPyCZRBoAxUYiHxROKOVoHt1jplTYiRqZphBEXBxLLDG5BtgBmofqfpXVteVPdUWYxxKCX03E">
+<span class="font-display font-black text-card-title text-primary tracking-tight hidden sm:inline">TemanBelajar</span>
+</a>
+<div class="hidden md:flex items-center gap-space-xs pl-space-xs pr-space-sm py-1 bg-mint-tint rounded-full border border-secondary/20">
+<span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+<span class="text-[12px] font-label font-bold text-success">Sesi Aktif</span>
+<span class="text-[12px] font-metadata text-on-surface-variant">• IPA: Sistem Ekskresi Ginjal</span>
+</div>
+<nav class="hidden xl:flex items-center gap-space-xs" data-active-classes="bg-secondary-container text-on-secondary-fixed font-bold">
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="beranda" href="#">Beranda</a>
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="rencana-belajar" href="#">Rencana Belajar</a>
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="materi-saya" href="#">Materi Saya</a>
+<a class="px-space-md py-space-sm rounded-lg bg-secondary-container text-on-secondary-fixed font-label text-label" data-path="mulai-belajar" href="#">Mulai Belajar</a>
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="progres" href="#">Progres</a>
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="pengaturan" href="#">Pengaturan</a>
+</nav>
+</div>
+<div class="flex items-center gap-space-sm">
+<button aria-label="Mode Aksesibilitas dan Kontras" class="flex items-center gap-space-xs px-space-md py-space-xs rounded-full border border-divider bg-surface hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors text-label font-label" type="button">
+<span class="material-symbols-outlined text-[18px]">accessibility_new</span>
+<span class="hidden md:inline text-metadata font-metadata">Aksesibilitas</span>
+</button>
+<button aria-label="Status Sesi Tenang" class="relative p-space-xs rounded-full hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-secondary-fixed ring-2 ring-surface"></span>
+</button>
+<div class="h-6 w-[1px] bg-divider mx-space-xs hidden sm:block"></div>
+<div class="flex items-center gap-space-sm pl-space-xs">
+<div class="text-right hidden sm:block leading-tight">
+<p class="font-label text-label text-primary font-bold">Cece Manda</p>
+<p class="text-metadata font-metadata text-outline text-[12px]">SMP Kelas 8</p>
+</div>
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="w-full pt-20 bg-canvas flex-1"><div class="flex flex-col w-full">
+<!-- Sticky Sub-Navigation Bar / Session Toolbar -->
+<section class="sticky top-20 z-40 bg-surface/95 backdrop-blur-sm border-b border-divider px-margin py-3">
+<div class="max-w-[1200px] mx-auto flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+<!-- Left: Navigation Back & Mode Chip -->
+<div class="flex items-center gap-space-sm flex-wrap">
+<a class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-primary hover:bg-surface-container transition-colors font-label text-label group" href="#">
+<span class="material-symbols-outlined text-[18px] transition-transform group-hover:-translate-x-1">arrow_back</span>
+<span>Ganti Cara Belajar</span>
+</a>
+<div class="hidden sm:inline-block h-4 w-[1px] bg-divider"></div>
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-butter-tint text-primary font-label text-[13px] border border-butter">
+<span class="material-symbols-outlined text-[16px] text-warning">splitscreen</span>
+<span class="font-bold">Mode: Selangkah demi Selangkah</span>
+<span class="text-on-surface-variant font-normal hidden lg:inline">(Focus Navigator)</span>
+</div>
+</div>
+<!-- Center & Right: Progress Indicator, Gentle Timer, Session Controls -->
+<div class="flex items-center justify-between md:justify-end gap-space-md flex-wrap">
+<!-- Progress Pills -->
+<div class="flex items-center gap-2">
+<span class="text-on-surface-variant font-metadata text-[13px] font-medium hidden sm:inline">Langkah 2 dari 4</span>
+<div aria-label="Progres langkah 2 dari 4" class="flex items-center gap-1.5">
+<span class="w-6 h-2 rounded-full bg-secondary"></span>
+<span class="w-8 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="w-2 h-2 rounded-full bg-surface-container-high"></span>
+<span class="w-2 h-2 rounded-full bg-surface-container-high"></span>
+</div>
+</div>
+<!-- Gentle Timer Widget -->
+<div class="flex items-center gap-1.5 bg-mint-tint px-3 py-1 rounded-full text-secondary font-metadata text-[13px] border border-secondary-container">
+<span class="material-symbols-outlined text-[17px] text-success">timer</span>
+<span class="font-bold text-primary font-mono" id="gentle-timer">03:19</span>
+<span class="text-[11px] text-on-surface-variant uppercase tracking-wider">santai</span>
+<button class="ml-1 text-[12px] font-label text-secondary hover:text-primary underline cursor-pointer" id="toggle-timer-btn" onclick="toggleTimer()" type="button">Jeda</button>
+</div>
+<!-- Pause Study Session -->
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 rounded-lg border border-control-border text-primary hover:bg-canvas font-label text-label transition-colors" type="button">
+            Jeda Belajar
+          </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Focus Navigator Body: Warm Paper Desk -->
+<main class="w-full max-w-[1200px] mx-auto px-margin py-8 md:py-12">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- CENTER STAGE CARD (Primary Focus Workspace - 8 Cols) -->
+<div class="lg:col-span-8 flex flex-col items-center">
+<article class="w-full max-w-[720px] bg-surface rounded-3xl p-6 sm:p-10 border border-divider shadow-[0_3px_0_rgba(39,59,53,0.06)] flex flex-col gap-6">
+<!-- Step Metadata Header -->
+<header class="flex flex-col gap-3">
+<div class="flex items-center justify-between gap-3">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-butter-tint text-on-primary-fixed-variant font-label text-[12px] font-bold tracking-wide uppercase border border-butter/60">
+<span class="w-1.5 h-1.5 rounded-full bg-warning"></span>
+                Langkah 2 dari 4 · Konsep Inti
+              </span>
+<span class="text-on-surface-variant font-metadata text-[13px] flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-outline">schedule</span>
+                ~3 menit baca
+              </span>
+</div>
+<h1 class="font-section-title text-section-title sm:text-page-title text-primary tracking-tight leading-tight">
+              Bagaimana Glomerulus Menyaring Darahmu?
+            </h1>
+<p class="font-metadata text-metadata text-on-surface-variant">Materi: IPA Terpadu Kelas 8 SMP · Bab 4: Sistem Ekskresi Manusia</p>
+</header>
+<!-- Micro-Diagram Sederhana (Clean Pastel Schematic) -->
+<div class="w-full bg-surface-container-low rounded-2xl p-4 sm:p-5 border border-secondary/15 flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="text-[12px] font-label font-bold text-secondary uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">schema</span>
+                Skema Alur Filtrasi Ginjal
+              </span>
+<span class="text-[11px] font-metadata text-on-surface-variant bg-surface px-2 py-0.5 rounded-full border border-divider">Nefron Bagian 1</span>
+</div>
+<!-- Flow Chart Micro Diagram -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+<!-- Node 1 -->
+<div class="bg-surface rounded-xl p-3 border border-divider flex flex-col gap-1 items-start relative">
+<span class="w-6 h-6 rounded-full bg-error-surface text-error flex items-center justify-center font-bold text-[12px]">1</span>
+<p class="font-card-title text-[13px] text-primary font-bold">Darah Kotor Masuk</p>
+<p class="text-[11px] font-metadata text-on-surface-variant">Membawa urea, glukosa, garam &amp; sel darah via Arteri Ginjal.</p>
+</div>
+<!-- Node 2 (Highlighted Active) -->
+<div class="bg-butter-tint rounded-xl p-3 border-2 border-primary flex flex-col gap-1 items-start relative shadow-sm">
+<div class="flex items-center justify-between w-full">
+<span class="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-[12px]">2</span>
+<span class="text-[10px] font-label font-bold text-on-primary-fixed-variant bg-butter px-1.5 py-0.5 rounded">FOKUS KITA</span>
+</div>
+<p class="font-card-title text-[13px] text-primary font-bold">Glomerulus &amp; Kapsula</p>
+<p class="text-[11px] font-metadata text-on-surface-variant">Saringan bertekanan tinggi menahan molekul besar.</p>
+</div>
+<!-- Node 3 -->
+<div class="bg-surface rounded-xl p-3 border border-divider flex flex-col gap-1 items-start relative">
+<span class="w-6 h-6 rounded-full bg-mint-tint text-success flex items-center justify-center font-bold text-[12px]">3</span>
+<p class="font-card-title text-[13px] text-primary font-bold">Urine Primer Tersaring</p>
+<p class="text-[11px] font-metadata text-on-surface-variant">Cairan bening bebas protein siap masuk ke tubulus ginjal.</p>
+</div>
+</div>
+</div>
+<!-- Penjelasan Inti (Hanya 2 Paragraf Ringkas & Lapang) -->
+<div class="flex flex-col gap-4 text-primary font-reading text-reading leading-relaxed">
+<p>
+              Bayangkan kamu sedang menyeduh <strong>teh tubruk dengan saringan halus di dapur</strong>. Daun teh yang besar akan tertahan di atas saringan, sedangkan air teh yang harum meluncur deras ke cangkir. Hal serupa terjadi di dalam ginjalmu: sel-sel darah merah dan molekul protein berukuran besar akan tertahan di pembuluh darah, tidak boleh bocor keluar.
+            </p>
+<p>
+              Penyaringan bertekanan tinggi ini berlangsung di <strong>Glomerulus</strong> (anyaman pembuluh kapiler darah yang sangat rapat). Cairan hasil saringan yang lolos akan ditampung oleh wadah khusus bernama <strong>Kapsula Bowman</strong>. Hasil saringan tahap pertama inilah yang kita sebut sebagai <em>Urine Primer</em> atau filtrat glomerulus.
+            </p>
+</div>
+<!-- Kotak Intisari Langkah Ini (Butter / Mint Paper Note) -->
+<div class="rounded-2xl p-4 sm:p-5 bg-butter-tint/80 border border-butter flex items-start gap-3.5">
+<span class="material-symbols-outlined text-[24px] text-warning shrink-0 mt-0.5">lightbulb</span>
+<div class="flex flex-col gap-1 text-[13px] leading-normal">
+<span class="font-label font-bold text-primary">Intisari Langkah Ini:</span>
+<p class="text-on-surface-variant font-body">
+                Di tahap filtrasi ini, sekitar <strong>99% cairan masih akan diserap kembali</strong> oleh tubuh pada langkah berikutnya (reabsorpsi). Jadi jangan khawatir tubuhmu kehilangan semua cairan ya!
+              </p>
+</div>
+</div>
+<!-- Pertanyaan Verifikasi Santai (Mikro Checkpoint) -->
+<div class="bg-surface-container-low rounded-2xl p-5 border border-secondary/20 flex flex-col gap-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-success">quiz</span>
+<h2 class="font-label text-card-title text-primary font-bold">Cek Pemahaman Santai</h2>
+</div>
+<p class="font-body text-[14px] text-on-surface">
+              Apa yang terjadi pada <strong>sel-sel darah merah</strong> saat melewati saringan glomerulus?
+            </p>
+<form class="flex flex-col gap-2.5" id="quiz-form" onsubmit="event.preventDefault();">
+<!-- Option A (Correct) -->
+<label class="flex items-center gap-3 p-3.5 rounded-xl border-2 border-divider bg-surface hover:border-primary/40 cursor-pointer transition-all" id="label-opt-a">
+<input class="w-5 h-5 text-primary border-control-border focus:ring-secondary" id="opt-a" name="step-checkpoint" onchange="checkAnswer(this)" type="radio" value="correct">
+<span class="text-[14px] font-body text-primary">Tertahan di saringan dan tetap mengalir di pembuluh darah</span>
+</label>
+<!-- Option B -->
+<label class="flex items-center gap-3 p-3.5 rounded-xl border-2 border-divider bg-surface hover:border-primary/40 cursor-pointer transition-all" id="label-opt-b">
+<input class="w-5 h-5 text-primary border-control-border focus:ring-secondary" id="opt-b" name="step-checkpoint" onchange="checkAnswer(this)" type="radio" value="wrong">
+<span class="text-[14px] font-body text-primary">Ikut lolos keluar bersama cairan urine primer</span>
+</label>
+</form>
+<!-- Inline Feedback Prompt -->
+<div class="hidden p-3 rounded-xl font-body text-[13px] flex items-center gap-2 transition-all" id="quiz-feedback">
+<span class="material-symbols-outlined text-[18px]" id="quiz-feedback-icon"></span>
+<span id="quiz-feedback-text"></span>
+</div>
+</div>
+<!-- Bottom Navigation Step Actions -->
+<div class="pt-4 border-t border-divider flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+<a class="px-5 py-3 rounded-xl border border-control-border bg-surface text-primary hover:bg-canvas font-label text-label flex items-center justify-center gap-2 transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+              Langkah 1: Mengenal Ginjal
+            </a>
+<a class="px-6 py-3.5 rounded-xl bg-primary text-on-primary hover:bg-primary-hover active:bg-primary-pressed font-label text-label font-bold flex items-center justify-center gap-2 shadow-sm transition-all hover:translate-y-[-1px]" href="#" id="btn-next-step">
+<span>Lanjut ke Langkah 3: Reabsorpsi</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</article>
+</div>
+<!-- SIDEBAR MINIMALIS (Friendly Companion & Structure - 4 Cols) -->
+<aside class="lg:col-span-4 flex flex-col gap-6">
+<!-- Mimo Encouraging Study Buddy Card -->
+<div class="bg-surface rounded-3xl p-6 border border-divider shadow-sm flex flex-col gap-4 relative overflow-hidden">
+<div class="flex items-center gap-4">
+<!-- Mimo Chameleon Mascot -->
+<div class="w-20 h-20 rounded-2xl bg-mint-tint flex items-center justify-center shrink-0 p-1">
+<img alt="Mimo si bunglon sahabat belajar memakai ikat kepala biru penyemangat" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrBNw3q5HhW2i9N4U6x-w4v5y1J1rK7J3E3u7_8B">
+</div>
+<div>
+<span class="inline-block px-2.5 py-0.5 rounded-full bg-secondary-container text-success font-label text-[11px] font-bold uppercase tracking-wider mb-1">Teman Belajar</span>
+<h3 class="font-card-title text-card-title text-primary leading-tight">Mimo si Bunglon</h3>
+<p class="text-on-surface-variant font-metadata text-[12px]">Menemanimu langkah demi langkah</p>
+</div>
+</div>
+<!-- Mimo Speech Bubble (Tactile paper bubble) -->
+<div class="bg-lavender-tint rounded-2xl p-4 border border-lavender/40 relative">
+<span class="font-mimo-voice text-mimo-voice text-primary text-[14px] leading-snug">“Keren, Cece! Satu per satu konsepnya kita kuasai. Gak perlu buru-buru, timer di atas cuma patokan santai kamu kok!”</span>
+</div>
+<div class="flex items-center justify-between text-[12px] font-metadata text-on-surface-variant pt-1 border-t border-divider">
+<span>Fokus Sesi Hari Ini</span>
+<span class="font-bold text-success flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-success"></span>
+              Kondisi Tenang Aktif
+            </span>
+</div>
+</div>
+<!-- Step Map: Sesi Ini (Progress Navigation Spine) -->
+<div class="bg-surface rounded-3xl p-6 border border-divider shadow-sm flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h3 class="font-card-title text-card-title text-primary font-bold">Peta Langkah Belajar</h3>
+<span class="text-[12px] font-label font-bold text-secondary bg-surface-container px-2 py-0.5 rounded-md">2 / 4</span>
+</div>
+<ol class="flex flex-col gap-3 font-metadata text-[13px]">
+<!-- Step 1: Completed -->
+<li class="flex items-start gap-3 p-2.5 rounded-xl bg-surface-container-low text-on-surface-variant">
+<span class="material-symbols-outlined text-success text-[20px] shrink-0">check_circle</span>
+<div class="flex flex-col">
+<span class="line-through text-outline">Langkah 1: Mengenal Ginjal &amp; Nefron</span>
+<span class="text-[11px] text-success font-medium">Selesai dipelajari (3 mnt)</span>
+</div>
+</li>
+<!-- Step 2: Currently Active -->
+<li class="flex items-start gap-3 p-2.5 rounded-xl bg-butter-tint/70 border border-primary/20 text-primary">
+<span class="material-symbols-outlined text-primary text-[20px] shrink-0" style="font-variation-settings: 'FILL' 1;">radio_button_checked</span>
+<div class="flex flex-col">
+<span class="font-bold text-primary">Langkah 2: Filtrasi di Glomerulus</span>
+<span class="text-[11px] text-secondary font-medium">Sedang aktif dipelajari</span>
+</div>
+</li>
+<!-- Step 3: Upcoming -->
+<li class="flex items-start gap-3 p-2.5 rounded-xl bg-surface text-outline">
+<span class="material-symbols-outlined text-outline-variant text-[20px] shrink-0">radio_button_unchecked</span>
+<div class="flex flex-col">
+<span>Langkah 3: Reabsorpsi Zat Bergizi</span>
+<span class="text-[11px] text-outline">Perkiraan 4 menit</span>
+</div>
+</li>
+<!-- Step 4: Upcoming -->
+<li class="flex items-start gap-3 p-2.5 rounded-xl bg-surface text-outline">
+<span class="material-symbols-outlined text-outline-variant text-[20px] shrink-0">radio_button_unchecked</span>
+<div class="flex flex-col">
+<span>Langkah 4: Augmentasi &amp; Urine Sejati</span>
+<span class="text-[11px] text-outline">Perkiraan 3 menit</span>
+</div>
+</li>
+</ol>
+</div>
+<!-- Quick Help & Glossary Drawer Launcher -->
+<div class="bg-surface rounded-2xl p-4 border border-divider flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px] text-secondary">menu_book</span>
+<div>
+<p class="font-label text-[13px] font-bold text-primary">Glosarium &amp; Bantuan</p>
+<p class="font-metadata text-[11px] text-on-surface-variant">Arti istilah tanpa keluar halaman</p>
+</div>
+</div>
+<button class="px-3 py-1 rounded-lg bg-surface-container hover:bg-surface-variant text-primary font-label text-[12px] transition-colors" onclick="toggleGlossaryModal()" type="button">
+            Buka
+          </button>
+</div>
+<!-- Curriculum Reference Badge -->
+<footer class="p-3 text-center text-outline font-metadata text-[11px] leading-relaxed">
+          Mengacu pada <strong>Buku IPA SMP Kelas 8</strong><br>
+          Kurikulum Merdeka · Kemendikbudristek RI
+        </footer>
+</aside>
+</div>
+</main>
+<!-- Glosarium Modal (Accessible & Non-distracting sheet) -->
+<dialog class="fixed inset-0 bg-contrast-ink/40 w-full h-full p-4 flex items-center justify-center z-50 backdrop:bg-contrast-ink/30 border-none open:flex hidden" id="glossary-modal">
+<div class="bg-surface rounded-3xl p-6 max-w-md w-full border border-divider shadow-xl flex flex-col gap-4">
+<div class="flex items-center justify-between border-b border-divider pb-3">
+<h4 class="font-card-title text-card-title text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">menu_book</span>
+          Glosarium Langkah 2
+        </h4>
+<button aria-label="Tutup Glosarium" class="p-1 rounded-full hover:bg-surface-container text-on-surface-variant" onclick="toggleGlossaryModal()" type="button">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex flex-col gap-3 font-body text-[13px] max-h-72 overflow-y-auto pr-1">
+<div class="p-3 rounded-xl bg-canvas">
+<p class="font-bold text-primary">Glomerulus</p>
+<p class="text-on-surface-variant text-[12px] mt-0.5">Untaian pembuluh kapiler darah berdinding tipis tempat proses penyaringan darah berlangsung.</p>
+</div>
+<div class="p-3 rounded-xl bg-canvas">
+<p class="font-bold text-primary">Kapsula Bowman</p>
+<p class="text-on-surface-variant text-[12px] mt-0.5">Kantung berbentuk cangkir ganda yang membungkus glomerulus untuk menampung cairan filtrat.</p>
+</div>
+<div class="p-3 rounded-xl bg-canvas">
+<p class="font-bold text-primary">Urine Primer</p>
+<p class="text-on-surface-variant text-[12px] mt-0.5">Cairan hasil saringan pertama yang bebas sel darah dan protein, namun masih mengandung glukosa dan asam amino.</p>
+</div>
+</div>
+<button class="w-full py-2.5 rounded-xl bg-primary text-on-primary font-label text-label" onclick="toggleGlossaryModal()" type="button">
+        Tutup &amp; Kembali Belajar
+      </button>
+</div>
+</dialog>
+<!-- Interactive Logic for Timer, Step Validation, & Modal -->
+<script>
+    // Gentle Timer Implementation (Count up or Count down calmly)
+    let timerSeconds = 255; // 04:15
+    let isTimerRunning = true;
+    const timerEl = document.getElementById('gentle-timer');
+    const timerBtn = document.getElementById('toggle-timer-btn');
+
+    setInterval(() => {
+      if (isTimerRunning && timerSeconds > 0) {
+        timerSeconds--;
+        const mins = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
+        const secs = String(timerSeconds % 60).padStart(2, '0');
+        if (timerEl) timerEl.textContent = `${mins}:${secs}`;
+      }
+    }, 1000);
+
+    function toggleTimer() {
+      isTimerRunning = !isTimerRunning;
+      if (timerBtn) {
+        timerBtn.textContent = isTimerRunning ? 'Jeda' : 'Lanjut';
+      }
+    }
+
+    // Micro Checkpoint Validation
+    function checkAnswer(radioInput) {
+      const feedback = document.getElementById('quiz-feedback');
+      const icon = document.getElementById('quiz-feedback-icon');
+      const text = document.getElementById('quiz-feedback-text');
+      const labelA = document.getElementById('label-opt-a');
+      const labelB = document.getElementById('label-opt-b');
+
+      feedback.classList.remove('hidden', 'bg-mint-tint', 'text-success', 'border', 'border-success', 'bg-peach-tint', 'text-error', 'border-error');
+
+      if (radioInput.value === 'correct') {
+        feedback.classList.add('bg-mint-tint', 'text-success', 'border', 'border-success/30');
+        icon.textContent = 'check_circle';
+        text.innerHTML = '<strong>Tepat sekali!</strong> Sel darah berukuran besar sehingga tidak bisa menembus dinding saringan dan tetap aman di aliran darah.';
+        
+        labelA.classList.remove('border-divider');
+        labelA.classList.add('border-success', 'bg-mint-tint/50');
+        labelB.classList.remove('border-primary/40', 'border-error');
+        labelB.classList.add('border-divider');
+      } else {
+        feedback.classList.add('bg-peach-tint', 'text-on-surface', 'border', 'border-peach');
+        icon.textContent = 'info';
+        text.innerHTML = '<em>Kurang pas nih.</em> Ingat analogi saringan teh: sel darah itu seperti daun teh berukuran besar, jadi tertahan dan tidak keluar.';
+        
+        labelB.classList.remove('border-divider');
+        labelB.classList.add('border-outline');
+      }
+    }
+
+    // Modal Glosarium Drawer
+    function toggleGlossaryModal() {
+      const modal = document.getElementById('glossary-modal');
+      if (modal.classList.contains('hidden')) {
+        modal.classList.remove('hidden');
+        modal.setAttribute('open', '');
+      } else {
+        modal.classList.add('hidden');
+        modal.removeAttribute('open');
+      }
+    }
+  </script>
+</div></main>
+<!-- Interactive Radio & Highlight Sync -->
+<script>
+    const modesConfig = {
+      'mode-1': {
+        title: 'Teman Baca',
+        icon: 'menu_book',
+        bgClass: 'bg-mint-tint',
+        borderClass: 'border-primary'
+      },
+      'mode-2': {
+        title: 'Selangkah demi Selangkah',
+        icon: 'splitscreen',
+        bgClass: 'bg-butter-tint/70',
+        borderClass: 'border-primary'
+      },
+      'mode-3': {
+        title: 'Dengarkan & Jelajahi',
+        icon: 'headphones',
+        bgClass: 'bg-lavender-tint',
+        borderClass: 'border-primary'
+      },
+      'mode-4': {
+        title: 'Teks & Visual',
+        icon: 'palette',
+        bgClass: 'bg-peach-tint',
+        borderClass: 'border-primary'
+      },
+      'mode-5': {
+        title: 'Belajar Biasa',
+        icon: 'import_contacts',
+        bgClass: 'bg-surface-container-low',
+        borderClass: 'border-primary'
+      }
+    };
+
+    function selectMode(cardId) {
+      document.querySelectorAll('input[name="learning-mode"]').forEach(r => r.checked = false);
+      const targetRadio = document.getElementById(cardId);
+      if (targetRadio) targetRadio.checked = true;
+
+      // Reset all cards styling
+      ['mode-1', 'mode-2', 'mode-3', 'mode-4'].forEach(id => {
+        const el = document.getElementById('mode-card-' + id.split('-')[1]);
+        if (el) {
+          el.className = 'mode-card cursor-pointer rounded-2xl p-5 border-2 border-divider hover:border-outline bg-surface shadow-sm transition-all hover:translate-y-[-2px] flex flex-col justify-between group';
+        }
+      });
+      const card5 = document.getElementById('mode-card-5');
+      if (card5) {
+        card5.className = 'mode-card cursor-pointer rounded-2xl p-5 border-2 border-divider hover:border-outline bg-surface shadow-sm transition-all hover:translate-y-[-2px] flex flex-col md:flex-row md:items-center justify-between gap-4 md:col-span-2 group';
+      }
+
+      // Highlight selected
+      const num = cardId.split('-')[1];
+      const activeCard = document.getElementById('mode-card-' + num);
+      const config = modesConfig[cardId];
+      if (activeCard && config) {
+        if (num === '5') {
+          activeCard.className = 'mode-card cursor-pointer rounded-2xl p-5 border-2 ' + config.borderClass + ' ' + config.bgClass + ' shadow-sm transition-all hover:translate-y-[-2px] flex flex-col md:flex-row md:items-center justify-between gap-4 md:col-span-2 group';
+        } else {
+          activeCard.className = 'mode-card cursor-pointer rounded-2xl p-5 border-2 ' + config.borderClass + ' ' + config.bgClass + ' shadow-sm transition-all hover:translate-y-[-2px] flex flex-col justify-between group';
+        }
+        document.getElementById('selected-mode-label').textContent = config.title;
+        document.getElementById('selected-mode-icon').textContent = config.icon;
+      }
+    }
+  </script>
+<!-- Clean Footer -->
+<footer class="w-full bg-surface border-t border-divider py-space-md">
+<div class="max-w-[1200px] mx-auto px-margin flex flex-col md:flex-row items-center justify-between gap-2 text-metadata font-metadata text-[13px] text-on-surface-variant">
+<div>© 2024 TemanBelajar • Pendamping belajar adaptif &amp; inklusif</div>
+<div class="flex items-center gap-4">
+<a class="hover:text-primary transition-colors" href="#">Pusat Bantuan</a>
+<span>•</span>
+<a class="hover:text-primary transition-colors" href="#">Panduan Aksesibilitas</a>
+<span>•</span>
+<a class="hover:text-primary transition-colors" href="#">Privasi</a>
+</div>
+</div>
+</footer>
+
+
+</body></html>

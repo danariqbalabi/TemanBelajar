@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+
+<html lang="id"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><title>TemanBelajar - Onboarding Siswa</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800&amp;family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"secondary":"#496550","surface-tint":"#4e635c","on-surface-variant":"#424846","on-tertiary-container":"#8a9bf0","success":"#28583E","surface-container-lowest":"#ffffff","on-secondary-fixed":"#052011","surface-container-high":"#deebe2","on-background":"#131e18","tertiary-fixed-dim":"#b9c3ff","error":"#892E32","surface-container":"#e4f1e8","mint-tint":"#EAF6EB","error-container":"#ffdad6","on-primary-container":"#8fa59d","background":"#f0fdf3","tertiary-fixed":"#dde1ff","inverse-surface":"#28332d","primary-container":"#273b35","primary-hover":"#1B3029","on-secondary-container":"#4d6954","divider":"#E5E8E1","on-secondary-fixed-variant":"#314d3a","peach":"#FFCA9D","primary-fixed-dim":"#b5cbc3","secondary-container":"#c8e8ce","lavender-tint":"#F0EDFC","tertiary-container":"#1d2f7e","butter":"#FFE7A3","tertiary":"#001766","primary-fixed":"#d1e8df","error-surface":"#FAE7E5","secondary-fixed":"#caead0","inverse-on-surface":"#e7f4eb","surface-container-highest":"#d9e6dc","on-surface":"#131e18","surface-container-low":"#eaf7ed","butter-tint":"#FFF5D6","on-primary":"#ffffff","surface-dim":"#d0ddd4","on-tertiary":"#ffffff","primary":"#112520","warning":"#61450E","contrast-ink":"#101A16","on-secondary":"#ffffff","peach-tint":"#FFF0E6","on-primary-fixed-variant":"#374b44","on-tertiary-fixed-variant":"#2f408f","on-primary-fixed":"#0b1f1a","outline-variant":"#c2c8c4","surface-variant":"#d9e6dc","lavender":"#A8B7F5","outline":"#727875","secondary-fixed-dim":"#afceb5","canvas":"#F8F7F2","primary-pressed":"#13251F","control-border":"#68756C","surface-bright":"#f0fdf3","on-error":"#ffffff","inverse-primary":"#b5cbc3","on-error-container":"#93000a","surface":"#FFFFFF","on-tertiary-fixed":"#001257"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"gutter-mobile":"0.75rem","gutter-tablet":"1rem","space-xs":"0.25rem","space-xl":"2rem","space-md":"1rem","margin-tablet":"1.5rem","space-lg":"1.5rem","margin":"2rem","margin-mobile":"1rem","gutter":"1.5rem","space-sm":"0.5rem"},fontFamily:{"mimo-voice":["Nunito"],"body":["Plus Jakarta Sans"],"page-title-mobile":["Plus Jakarta Sans"],"section-title":["Plus Jakarta Sans"],"label":["Plus Jakarta Sans"],"display-mobile":["Nunito"],"display":["Nunito"],"card-title":["Plus Jakarta Sans"],"reading":["Plus Jakarta Sans"],"metadata":["Plus Jakarta Sans"],"page-title":["Plus Jakarta Sans"]},fontSize:{"mimo-voice":["1.125rem",{"lineHeight":"1.45","fontWeight":"700"}],"body":["1rem",{"lineHeight":"1.6","fontWeight":"400"}],"page-title-mobile":["1.625rem",{"lineHeight":"1.3","fontWeight":"700"}],"section-title":["1.375rem",{"lineHeight":"1.35","fontWeight":"700"}],"label":["0.875rem",{"lineHeight":"1.5","fontWeight":"600"}],"display-mobile":["2.25rem",{"lineHeight":"1.15","fontWeight":"800"}],"display":["3.5rem",{"lineHeight":"1.08","fontWeight":"800"}],"card-title":["1.125rem",{"lineHeight":"1.4","fontWeight":"700"}],"reading":["1.125rem",{"lineHeight":"1.7","fontWeight":"400"}],"metadata":["0.875rem",{"lineHeight":"1.5","fontWeight":"400"}],"page-title":["2rem",{"lineHeight":"1.25","fontWeight":"700"}]}}}}</script></head><body class="bg-canvas font-body text-on-surface min-h-screen"><header class="fixed top-0 left-0 right-0 w-full z-50 bg-canvas/90 backdrop-blur-md shadow-[0_1px_8px_rgba(39,59,53,0.04)]"><div class="h-20 max-w-7xl mx-auto px-gutter flex items-center justify-between gap-gutter"><a class="flex items-center gap-2.5 group cursor-pointer focus:outline-none" href="/"><div class="w-9 h-9 rounded-xl bg-secondary-container flex items-center justify-center border border-secondary/20 shadow-sm transition-transform group-hover:scale-105"><span class="material-symbols-outlined text-primary text-[22px]">auto_stories</span></div><div class="flex flex-col"><div class="flex items-center gap-1.5"><span class="font-card-title text-[1.125rem] font-extrabold text-primary tracking-tight">TemanBelajar</span><span class="px-1.5 py-0.5 rounded-full bg-butter text-warning font-metadata text-[10px] font-bold">BETA</span></div><span class="font-metadata text-[11px] text-secondary -mt-0.5 hidden sm:inline">Belajar dengan caramu.</span></div></a><div class="flex-1 max-w-md hidden md:flex flex-col items-center gap-space-xs"><div class="flex items-center justify-between w-full"><span class="font-label text-label text-primary">Langkah 1 dari 4 · Kebutuhan Belajar</span><span class="font-metadata text-metadata text-secondary font-semibold">25% Selesai</span></div><div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden"><div class="h-full bg-secondary-container transition-all duration-300 rounded-full" style="width: 25%"></div></div></div><div class="flex items-center gap-space-sm"><button class="inline-flex items-center gap-space-xs px-space-md py-space-sm rounded-xl font-label text-label text-primary hover:bg-mint-tint hover:text-primary-hover transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">accessibility_new</span><span class="hidden lg:inline">Aksesibilitas</span></button><button class="inline-flex items-center gap-space-xs px-space-md py-space-sm rounded-xl font-label text-label text-secondary hover:bg-surface-container-low hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">logout</span><span class="hidden sm:inline">Simpan &amp; Keluar</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div><div class="md:hidden w-full px-gutter-mobile pb-space-sm"><div class="flex items-center justify-between pb-space-xs"><span class="font-label text-label text-primary">Langkah 1/4 · Kebutuhan Belajar</span><span class="font-metadata text-metadata text-secondary font-semibold">25%</span></div><div class="w-full h-1.5 rounded-full bg-surface-container-high overflow-hidden"><div class="h-full bg-secondary-container transition-all rounded-full" style="width: 25%"></div></div></div></header><main class="w-full pt-20 bg-canvas min-h-screen"><div class="flex flex-col w-full">
+<div class="w-full max-w-6xl mx-auto px-gutter-mobile sm:px-gutter-tablet md:px-gutter py-space-md sm:py-space-xl">
+<!-- Top Step Bar & Navigation Breadcrumb -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md mb-space-lg">
+<div class="flex items-center gap-space-sm">
+<a aria-label="Kembali ke layar sebelumnya" class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-surface hover:bg-mint-tint text-primary border border-divider transition-all shadow-sm group" href="/masuk">
+<span class="material-symbols-outlined text-[20px] transition-transform group-hover:-translate-x-0.5">arrow_back</span>
+</a>
+<div class="flex items-center gap-space-xs">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-primary font-label text-label">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+            Langkah 1 dari 4
+          </span>
+<span class="text-on-surface-variant font-metadata text-metadata hidden sm:inline">· Kebutuhan Belajar</span>
+</div>
+</div>
+<!-- Step Progression Track -->
+<nav aria-label="Alur Onboarding" class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-mint-tint border border-secondary text-primary font-label text-[0.8125rem]">
+<span class="w-5 h-5 rounded-full bg-primary text-on-primary flex items-center justify-center text-[11px] font-bold">1</span>
+<span>Kebutuhan</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[16px]">chevron_right</span>
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface border border-divider text-on-surface-variant font-label text-[0.8125rem]">
+<span class="w-5 h-5 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center text-[11px] font-bold">2</span>
+<span>Aksesibilitas</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[16px] hidden sm:inline">chevron_right</span>
+<div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface border border-divider text-on-surface-variant font-label text-[0.8125rem]">
+<span class="w-5 h-5 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center text-[11px] font-bold">3</span>
+<span>Tujuan</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[16px] hidden md:inline">chevron_right</span>
+<div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface border border-divider text-on-surface-variant font-label text-[0.8125rem]">
+<span class="w-5 h-5 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center text-[11px] font-bold">4</span>
+<span>Rencana Siap</span>
+</div>
+</nav>
+</div>
+<!-- Editorial Header & Mimo Chameleon Speech -->
+<div class="relative bg-surface rounded-2xl sm:rounded-3xl p-space-md sm:p-space-xl border border-divider shadow-[0_3px_0_rgba(39,59,53,0.06)] mb-space-xl overflow-hidden">
+<!-- Washi Tape Zine Decor -->
+<div class="absolute -top-3 left-10 w-28 h-7 bg-butter/70 rotate-[-2deg] rounded-sm pointer-events-none mix-blend-multiply opacity-80 border-t border-b border-butter"></div>
+<div class="absolute -top-3 right-16 w-24 h-6 bg-lavender/40 rotate-[3deg] rounded-sm pointer-events-none mix-blend-multiply opacity-80 border-t border-b border-lavender"></div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-center relative z-10">
+<div class="lg:col-span-8 flex flex-col gap-space-xs">
+<div class="inline-flex items-center gap-2 text-secondary font-label text-label uppercase tracking-wider">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+            Personalisasi Ruang Belajar
+          </div>
+<h1 class="font-display text-[1.85rem] sm:text-display-mobile lg:text-[2.65rem] text-primary leading-tight font-extrabold tracking-tight">
+            Biar belajarnya makin nyaman, kamu butuh bantuan apa?
+          </h1>
+<p class="font-reading text-reading text-on-surface-variant max-w-2xl mt-1">
+            Pilih semua yang kamu rasa paling cocok. Nggak ada tes medis, nggak ada label kaku—semua pilihan bisa kamu ubah kapan aja di profilmu.
+          </p>
+</div>
+<!-- Mimo Voice Dialogue Box -->
+<div class="lg:col-span-4 flex items-center gap-space-sm bg-lavender-tint border border-lavender/50 rounded-2xl p-space-md shadow-sm relative">
+<!-- Mini Mimo SVG Mascot Avatar -->
+<div class="w-16 h-16 sm:w-20 sm:h-20 shrink-0 relative flex items-center justify-center bg-secondary-container rounded-2xl">
+<!-- Inline SVG: Mimo the Chameleon with Headband -->
+<svg class="w-14 h-14" fill="none" viewbox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+<path d="M22 56C22 41 33 30 48 30C63 30 70 41 70 56C70 65 60 70 48 70C34 70 22 65 22 56Z" fill="#C8E8CE"></path>
+<ellipse cx="56" cy="46" fill="#FFFFFF" rx="9" ry="10"></ellipse>
+<circle cx="58" cy="46" fill="#112520" r="5"></circle>
+<circle cx="60" cy="44" fill="#FFFFFF" r="1.5"></circle>
+<!-- Headband in vivid blue -->
+<path d="M26 38C34 33 52 33 66 38" stroke="#3B4C9B" stroke-linecap="round" stroke-width="5"></path>
+<path d="M24 38L18 35M24 38L19 41" stroke="#3B4C9B" stroke-linecap="round" stroke-width="3"></path>
+<!-- Smile -->
+<path d="M50 58C54 61 60 60 62 57" stroke="#112520" stroke-linecap="round" stroke-width="2.5"></path>
+<!-- Cheerful blush -->
+<circle cx="46" cy="55" fill="#FFCA9D" r="3.5"></circle>
+<!-- Chameleon tail curl -->
+<path d="M23 60C17 60 12 55 12 49C12 43 17 39 21 42" stroke="#496550" stroke-linecap="round" stroke-width="3.5"></path>
+</svg>
+<span class="absolute -bottom-1 -right-1 px-1.5 py-0.5 rounded-full bg-primary text-on-primary text-[9px] font-bold font-label uppercase">Mimo</span>
+</div>
+<div class="flex flex-col">
+<span class="font-card-title text-label text-primary flex items-center gap-1 font-bold">
+              Kata Mimo
+              <span class="material-symbols-outlined text-[16px] text-primary">forum</span>
+</span>
+<p class="font-mimo-voice text-[0.95rem] text-primary leading-snug mt-0.5">
+              “Hai! Pilih yang bikin kepalamu enteng ya. Kamu bisa pilih lebih dari satu, atau pilih belajar seperti biasa!”
+            </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Selection Grid: 6 Distinct Cards -->
+<fieldset aria-describedby="helper-text" class="w-full mb-space-lg">
+<legend class="sr-only">Pilihan Kebutuhan &amp; Bantuan Belajar</legend>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md sm:gap-space-lg" id="needs-grid"><!-- Card 1: Bantuan Membaca (Active / Selected) -->
+<label class="need-card group relative flex flex-col justify-between p-space-lg rounded-2xl bg-surface border-2 border-primary shadow-[0_4px_0_rgba(17,37,32,0.12)] cursor-pointer transition-all hover:-translate-y-1 focus-within:ring-2 focus-within:ring-tertiary" for="need-reading">
+<!-- Zine Sticker Tape -->
+<div class="absolute -top-3 left-6 px-2.5 py-0.5 rounded-full bg-mint-tint border border-secondary text-primary font-metadata text-[11px] font-bold shadow-sm flex items-center gap-1 z-10 rotate-[-1deg]">
+<span class="material-symbols-outlined text-[13px] text-secondary">stars</span> PILIHAN POPULER ✨
+  </div>
+<input checked="" class="need-checkbox sr-only" id="need-reading" name="study_need" type="checkbox" value="reading"/>
+<div>
+<div class="flex items-center justify-between gap-space-sm mb-3 mt-1">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-secondary-container text-primary font-label text-label font-bold border border-secondary/20">
+<span class="material-symbols-outlined text-[18px]">menu_book</span>
+<span>Reading Companion</span>
+</div>
+<div class="custom-indicator w-6 h-6 rounded-lg bg-primary text-on-primary flex items-center justify-center transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+</div>
+<h2 class="font-card-title text-card-title text-primary group-hover:text-primary-hover mb-1.5 font-bold">
+      Aku butuh bantuan membaca
+    </h2>
+<p class="font-body text-label text-on-surface-variant leading-relaxed">
+      Penggaris fokus baris, font ramah disleksia, jarak teks ekstra lega, dan pemenggalan suku kata otomatis.
+    </p>
+<!-- Micro-Widget Preview: Focus Ruler & Dyslexic text snippet -->
+<div class="mt-3.5 p-2.5 rounded-xl bg-mint-tint/80 border border-secondary/20 flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="font-metadata text-[10px] font-bold text-secondary uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">view_day</span> Pratinjau Penggaris Fokus
+        </span>
+<span class="px-1.5 py-0.2 rounded bg-surface border border-secondary/30 text-[10px] font-mono text-primary font-bold">OpenDyslexic</span>
+</div>
+<div class="relative px-2 py-1.5 bg-butter-tint rounded-lg border-l-4 border-primary text-primary font-mono text-[12px] flex items-center justify-between shadow-xs">
+<span class="font-semibold">» Fo-kus pa-da ba-ris in-i sa-ja «</span>
+<span class="material-symbols-outlined text-[14px] text-secondary">line_weight</span>
+</div>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm border-t border-divider flex items-center gap-1.5 flex-wrap">
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-container text-primary font-metadata text-[11px] font-semibold">Penggaris Baris</span>
+<span class="px-2.5 py-0.5 rounded-full bg-mint-tint text-secondary font-metadata text-[11px] font-semibold">Atur Spasi</span>
+<span class="px-2.5 py-0.5 rounded-full bg-mint-tint text-secondary font-metadata text-[11px] font-semibold">Suku Kata Otomatis</span>
+</div>
+</label>
+<!-- Card 2: Kehilangan Fokus (Active / Selected) -->
+<label class="need-card group relative flex flex-col justify-between p-space-lg rounded-2xl bg-surface border-2 border-primary shadow-[0_4px_0_rgba(17,37,32,0.12)] cursor-pointer transition-all hover:-translate-y-1 focus-within:ring-2 focus-within:ring-tertiary" for="need-focus">
+<!-- Zine Sticker Tape -->
+<div class="absolute -top-3 left-6 px-2.5 py-0.5 rounded-full bg-lavender-tint border border-lavender text-tertiary-container font-metadata text-[11px] font-bold shadow-sm flex items-center gap-1 z-10 rotate-[1deg]">
+<span class="material-symbols-outlined text-[13px] text-tertiary-container">sentiment_satisfied</span> REKOMENDASI MIMO 🦎
+  </div>
+<input checked="" class="need-checkbox sr-only" id="need-focus" name="study_need" type="checkbox" value="focus"/>
+<div>
+<div class="flex items-center justify-between gap-space-sm mb-3 mt-1">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-lavender text-tertiary-container font-label text-label font-bold border border-lavender/50">
+<span class="material-symbols-outlined text-[18px]">timer</span>
+<span>Focus Navigator</span>
+</div>
+<div class="custom-indicator w-6 h-6 rounded-lg bg-primary text-on-primary flex items-center justify-center transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+</div>
+<h2 class="font-card-title text-card-title text-primary group-hover:text-primary-hover mb-1.5 font-bold">
+      Aku gampang kehilangan fokus
+    </h2>
+<p class="font-body text-label text-on-surface-variant leading-relaxed">
+      Materi dipecah gigitan kecil (chunking), timer tanpa alarm panik, jeda teratur, dan minim gangguan visual.
+    </p>
+<!-- Micro-Widget Preview: Chunking steps & Zen Timer -->
+<div class="mt-3.5 p-2.5 rounded-xl bg-lavender-tint/80 border border-lavender/50 flex flex-col gap-1.5">
+<div class="flex items-center justify-between text-[11px] text-tertiary-container font-bold">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">pace</span> 15 Menit · Jeda Lembut</span>
+<span class="px-1.5 py-0.2 rounded bg-surface text-[10px] text-tertiary-container border border-lavender">Zen Mode</span>
+</div>
+<div class="flex items-center gap-1.5 w-full mt-0.5">
+<div class="flex-1 h-2 rounded-full bg-tertiary-container"></div>
+<div class="flex-1 h-2 rounded-full bg-lavender"></div>
+<div class="flex-1 h-2 rounded-full bg-surface-container-high"></div>
+</div>
+<span class="font-metadata text-[10px] text-on-surface-variant">Satu bab dipecah jadi 3 bagian ringan tanpa rasa kewalahan.</span>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm border-t border-divider flex items-center gap-1.5 flex-wrap">
+<span class="px-2.5 py-0.5 rounded-full bg-lavender-tint text-tertiary-container font-metadata text-[11px] font-semibold">Chunking 15m</span>
+<span class="px-2.5 py-0.5 rounded-full bg-lavender-tint text-tertiary-container font-metadata text-[11px] font-semibold">Zen Mode</span>
+<span class="px-2.5 py-0.5 rounded-full bg-lavender-tint text-tertiary-container font-metadata text-[11px] font-semibold">Alarm Lembut</span>
+</div>
+</label>
+<!-- Card 3: Nyaman Mendengarkan (Audio Explorer) -->
+<label class="need-card group relative flex flex-col justify-between p-space-lg rounded-2xl bg-surface border border-divider shadow-sm cursor-pointer transition-all hover:-translate-y-1 hover:border-primary/40 focus-within:ring-2 focus-within:ring-tertiary" for="need-audio">
+<input class="need-checkbox sr-only" id="need-audio" name="study_need" type="checkbox" value="audio"/>
+<div>
+<div class="flex items-center justify-between gap-space-sm mb-3 mt-1">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-peach text-primary font-label text-label font-bold">
+<span class="material-symbols-outlined text-[18px]">headphones</span>
+<span>Audio Explorer</span>
+</div>
+<div class="custom-indicator w-6 h-6 rounded-lg border-2 border-outline-variant bg-surface flex items-center justify-center transition-colors shadow-xs group-hover:border-primary">
+<span class="material-symbols-outlined text-[18px] opacity-0 text-on-primary">check</span>
+</div>
+</div>
+<h2 class="font-card-title text-card-title text-primary group-hover:text-primary-hover mb-1.5 font-bold">
+      Aku lebih nyaman mendengarkan
+    </h2>
+<p class="font-body text-label text-on-surface-variant leading-relaxed">
+      Narasi suara jernih manusiawi, atur kecepatan baca 0.75x–1.5x, dan alternatif audio lengkap untuk grafik sains.
+    </p>
+<!-- Micro-Widget Preview: Soundwave & Speed pill -->
+<div class="mt-3.5 p-2.5 rounded-xl bg-peach-tint/80 border border-peach/50 flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1">
+<span class="w-1 h-3 bg-primary rounded-full animate-pulse"></span>
+<span class="w-1 h-5 bg-primary rounded-full"></span>
+<span class="w-1 h-2 bg-primary rounded-full"></span>
+<span class="w-1 h-4 bg-primary rounded-full"></span>
+<span class="w-1 h-6 bg-primary rounded-full"></span>
+<span class="w-1 h-3 bg-primary rounded-full"></span>
+<span class="font-metadata text-[11px] font-bold text-primary ml-1.5">Suara Alami Bu Ayu</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface text-primary border border-peach text-[10px] font-bold">1.0x</span>
+</div>
+<span class="font-metadata text-[10px] text-on-surface-variant">Didukung audio diagram untuk grafik dan peta konsep.</span>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm border-t border-divider flex items-center gap-1.5 flex-wrap">
+<span class="px-2.5 py-0.5 rounded-full bg-peach-tint text-primary font-metadata text-[11px] font-semibold">Suara Alami</span>
+<span class="px-2.5 py-0.5 rounded-full bg-peach-tint text-primary font-metadata text-[11px] font-semibold">Speed 0.75x-1.5x</span>
+<span class="px-2.5 py-0.5 rounded-full bg-peach-tint text-primary font-metadata text-[11px] font-semibold">Audio Diagram</span>
+</div>
+</label>
+<!-- Card 4: Butuh Deskripsi Gambar (Diagram Describer) -->
+<label class="need-card group relative flex flex-col justify-between p-space-lg rounded-2xl bg-surface border border-divider shadow-sm cursor-pointer transition-all hover:-translate-y-1 hover:border-primary/40 focus-within:ring-2 focus-within:ring-tertiary" for="need-diagram">
+<input class="need-checkbox sr-only" id="need-diagram" name="study_need" type="checkbox" value="diagram"/>
+<div>
+<div class="flex items-center justify-between gap-space-sm mb-3 mt-1">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-butter text-warning font-label text-label font-bold">
+<span class="material-symbols-outlined text-[18px]">image_search</span>
+<span>Diagram Describer</span>
+</div>
+<div class="custom-indicator w-6 h-6 rounded-lg border-2 border-outline-variant bg-surface flex items-center justify-center transition-colors shadow-xs group-hover:border-primary">
+<span class="material-symbols-outlined text-[18px] opacity-0 text-on-primary">check</span>
+</div>
+</div>
+<h2 class="font-card-title text-card-title text-primary group-hover:text-primary-hover mb-1.5 font-bold">
+      Aku butuh deskripsi gambar
+    </h2>
+<p class="font-body text-label text-on-surface-variant leading-relaxed">
+      Penjelasan terstruktur untuk setiap bagan, kurva koordinat, dan ilustrasi biologi agar mudah dibayangkan.
+    </p>
+<!-- Micro-Widget Preview: Structured Schematic & Formula Breakdown -->
+<div class="mt-3.5 p-2.5 rounded-xl bg-butter-tint/80 border border-butter/70 flex flex-col gap-1.5">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded bg-surface border border-butter flex items-center justify-center text-warning shrink-0">
+<span class="material-symbols-outlined text-[16px]">schema</span>
+</div>
+<div class="flex flex-col">
+<span class="font-metadata text-[11px] font-bold text-warning">Alt-Teks Sains Bertingkat</span>
+<span class="font-metadata text-[10px] text-on-surface-variant">Tabel nilai titik sumbu &amp; formula terbaca.</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm border-t border-divider flex items-center gap-1.5 flex-wrap">
+<span class="px-2.5 py-0.5 rounded-full bg-butter-tint text-warning font-metadata text-[11px] font-semibold">Alt Teks Lengkap</span>
+<span class="px-2.5 py-0.5 rounded-full bg-butter-tint text-warning font-metadata text-[11px] font-semibold">Rincian Formula</span>
+<span class="px-2.5 py-0.5 rounded-full bg-butter-tint text-warning font-metadata text-[11px] font-semibold">Tabel Sederhana</span>
+</div>
+</label>
+<!-- Card 5: Teks dan Visual (Visual & Caption) -->
+<label class="need-card group relative flex flex-col justify-between p-space-lg rounded-2xl bg-surface border border-divider shadow-sm cursor-pointer transition-all hover:-translate-y-1 hover:border-primary/40 focus-within:ring-2 focus-within:ring-tertiary" for="need-visual">
+<input class="need-checkbox sr-only" id="need-visual" name="study_need" type="checkbox" value="visual"/>
+<div>
+<div class="flex items-center justify-between gap-space-sm mb-3 mt-1">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-mint-tint text-secondary font-label text-label font-bold border border-secondary/20">
+<span class="material-symbols-outlined text-[18px]">subtitles</span>
+<span>Visual &amp; Caption</span>
+</div>
+<div class="custom-indicator w-6 h-6 rounded-lg border-2 border-outline-variant bg-surface flex items-center justify-center transition-colors shadow-xs group-hover:border-primary">
+<span class="material-symbols-outlined text-[18px] opacity-0 text-on-primary">check</span>
+</div>
+</div>
+<h2 class="font-card-title text-card-title text-primary group-hover:text-primary-hover mb-1.5 font-bold">
+      Aku lebih nyaman dengan teks dan visual
+    </h2>
+<p class="font-body text-label text-on-surface-variant leading-relaxed">
+      Transkrip teks sinkron real-time, kartu rangkuman visual berwarna, dan ringkasan konsep infografik.
+    </p>
+<!-- Micro-Widget Preview: Video Captions & Mindmap Pill -->
+<div class="mt-3.5 p-2.5 rounded-xl bg-surface-container-low border border-divider flex flex-col gap-1.5">
+<div class="flex items-center justify-between text-[11px] text-secondary font-bold">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">closed_caption</span> Subtitle Sinkron Video</span>
+<span class="px-1.5 py-0.2 rounded bg-surface border border-divider text-[10px] text-primary">Peta Konsep</span>
+</div>
+<div class="px-2 py-1 rounded bg-surface text-primary font-metadata text-[11px] border border-divider flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>"...fotosintesis mengubah cahaya jadi energi..."</span>
+</div>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm border-t border-divider flex items-center gap-1.5 flex-wrap">
+<span class="px-2.5 py-0.5 rounded-full bg-mint-tint text-secondary font-metadata text-[11px] font-semibold">Peta Konsep</span>
+<span class="px-2.5 py-0.5 rounded-full bg-mint-tint text-secondary font-metadata text-[11px] font-semibold">Subtitle Otomatis</span>
+<span class="px-2.5 py-0.5 rounded-full bg-mint-tint text-secondary font-metadata text-[11px] font-semibold">Infografik</span>
+</div>
+</label>
+<!-- Card 6: Belajar Seperti Biasa (Exclusive Single Option) -->
+<label class="need-card group relative flex flex-col justify-between p-space-lg rounded-2xl bg-canvas border-2 border-dashed border-divider shadow-sm cursor-pointer transition-all hover:-translate-y-1 hover:border-primary/40 focus-within:ring-2 focus-within:ring-tertiary" for="need-standard">
+<!-- Zine Tape Tag -->
+<div class="absolute -top-3 left-6 px-2.5 py-0.5 rounded-full bg-surface border border-divider text-on-surface-variant font-metadata text-[11px] font-bold shadow-sm flex items-center gap-1 z-10">
+<span class="material-symbols-outlined text-[13px]">flag</span> FLEKSIBEL
+  </div>
+<input class="need-checkbox sr-only" id="need-standard" name="study_need" type="checkbox" value="standard"/>
+<div>
+<div class="flex items-center justify-between gap-space-sm mb-3 mt-1">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-surface-container-high text-on-surface-variant font-label text-label font-bold border border-divider">
+<span class="material-symbols-outlined text-[18px]">edit_note</span>
+<span>Standard Learning</span>
+</div>
+<div class="custom-indicator w-6 h-6 rounded-lg border-2 border-outline-variant bg-surface flex items-center justify-center transition-colors shadow-xs group-hover:border-primary">
+<span class="material-symbols-outlined text-[18px] opacity-0 text-on-primary">check</span>
+</div>
+</div>
+<h2 class="font-card-title text-card-title text-primary group-hover:text-primary-hover mb-1.5 font-bold">
+      Aku mau belajar seperti biasa
+    </h2>
+<p class="font-body text-label text-on-surface-variant leading-relaxed">
+      Format materi artikel rapi standar sekolah. Fitur alat bantu tetap siap sedia di pojok layar jika sewaktu-waktu kamu inginkan.
+    </p>
+<!-- Micro-Widget Preview: Simple clean document outline -->
+<div class="mt-3.5 p-2.5 rounded-xl bg-surface border border-divider flex flex-col gap-1">
+<div class="flex items-center justify-between text-[11px] text-on-surface-variant font-semibold">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">article</span> Tampilan Standar Bersih</span>
+<span class="text-[10px] text-secondary font-bold">Alat Tetap Sedia</span>
+</div>
+<div class="space-y-1 mt-0.5 opacity-60">
+<div class="h-1.5 bg-surface-container-high rounded w-4/5"></div>
+<div class="h-1.5 bg-surface-container-high rounded w-3/4"></div>
+</div>
+</div>
+</div>
+<!-- Small warning note explaining exclusive behavior -->
+<div class="mt-space-md pt-space-sm border-t border-divider flex items-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-[16px]">info</span>
+<span class="font-metadata text-[11px] italic">Otomatis melepas centang kartu lain jika opsi ini dipilih.</span>
+</div>
+</label></div>
+</fieldset>
+<!-- Accessibility Guarantee & Keyboard Hint Banner -->
+<div class="w-full bg-surface-container-low rounded-2xl p-space-md sm:p-space-lg border border-divider flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-md mb-space-xl">
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-[24px] mt-0.5">lightbulb</span>
+<div class="flex flex-col">
+<p class="font-label text-label text-primary font-semibold" id="helper-text">
+            Pilihan ini opsional dan bisa kamu ubah kapan saja di menu Pengaturan.
+          </p>
+<p class="font-metadata text-metadata text-on-surface-variant">
+            Semua penyesuaian akan langsung diterapkan pada materi pelajaran, kuis interaktif, dan lembar catatanmu.
+          </p>
+</div>
+</div>
+<div class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface border border-divider text-on-surface-variant font-metadata text-[12px] shrink-0">
+<span class="material-symbols-outlined text-[16px]">keyboard</span>
+<span>Navigasi: <kbd class="px-1.5 py-0.5 rounded bg-surface-container font-mono text-[11px] font-bold">Tab</kbd> &amp; <kbd class="px-1.5 py-0.5 rounded bg-surface-container font-mono text-[11px] font-bold">Spasi</kbd></span>
+</div>
+</div>
+<!-- Bottom Action Bar / Sticky on Mobile -->
+<div class="sticky bottom-4 z-40 bg-surface/95 backdrop-blur-md rounded-2xl border border-divider p-space-md shadow-[0_4px_20px_rgba(39,59,53,0.1)] flex flex-col sm:flex-row items-center justify-between gap-space-md">
+<!-- Selection Counter Status -->
+<div class="flex items-center gap-2 self-start sm:self-center">
+<span class="material-symbols-outlined text-secondary text-[20px]">check_circle</span>
+<span class="font-label text-label text-primary" id="selected-summary">
+<strong class="font-bold text-primary" id="selected-count">2</strong> bantuan belajar dipilih
+        </span>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center gap-space-sm w-full sm:w-auto justify-end">
+<a class="inline-flex items-center justify-center px-space-md py-2.5 rounded-xl text-primary font-label text-label hover:bg-surface-container-low transition-colors" href="/onboarding/aksesibilitas">
+          Lewati dulu
+        </a>
+<a class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label shadow-sm transition-all group" href="/onboarding/aksesibilitas" id="btn-submit">
+<span>Simpan &amp; Lanjut ke Aksesibilitas</span>
+<span class="material-symbols-outlined text-[18px] transition-transform group-hover:translate-x-1">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<script>
+  (function initLearningNeeds() {
+    const checkboxes = document.querySelectorAll('.need-checkbox');
+    const standardCheckbox = document.getElementById('need-standard');
+    const countDisplay = document.getElementById('selected-count');
+    const summaryDisplay = document.getElementById('selected-summary');
+
+    function updateCardVisuals() {
+      let activeCount = 0;
+
+      checkboxes.forEach(cb => {
+        const card = cb.closest('.need-card');
+        const indicator = card.querySelector('.custom-indicator');
+        const checkIcon = indicator.querySelector('.material-symbols-outlined');
+
+        if (cb.checked) {
+          activeCount++;
+          card.classList.remove('border-divider', 'shadow-sm');
+          card.classList.add('border-primary', 'shadow-[0_3px_0_rgba(39,59,53,0.12)]', 'border-2');
+          
+          indicator.classList.remove('border-2', 'border-outline-variant', 'bg-surface');
+          indicator.classList.add('bg-primary', 'text-on-primary');
+          checkIcon.classList.remove('opacity-0');
+        } else {
+          card.classList.remove('border-primary', 'shadow-[0_3px_0_rgba(39,59,53,0.12)]', 'border-2');
+          card.classList.add('border-divider', 'shadow-sm');
+          
+          indicator.classList.remove('bg-primary', 'text-on-primary');
+          indicator.classList.add('border-2', 'border-outline-variant', 'bg-surface');
+          checkIcon.classList.add('opacity-0');
+        }
+      });
+
+      if (countDisplay) {
+        countDisplay.textContent = activeCount;
+      }
+
+      if (summaryDisplay) {
+        if (standardCheckbox && standardCheckbox.checked) {
+          summaryDisplay.innerHTML = '<strong class="font-bold text-primary">Mode Standar</strong> dipilih';
+        } else if (activeCount === 0) {
+          summaryDisplay.innerHTML = '<span class="text-on-surface-variant">Belum ada bantuan dipilih (Mode standar)</span>';
+        } else {
+          summaryDisplay.innerHTML = `<strong class="font-bold text-primary">${activeCount}</strong> bantuan belajar dipilih`;
+        }
+      }
+    }
+
+    checkboxes.forEach(cb => {
+      cb.addEventListener('change', (e) => {
+        if (e.target === standardCheckbox && standardCheckbox.checked) {
+          // If 'Belajar seperti biasa' is checked, uncheck all others
+          checkboxes.forEach(other => {
+            if (other !== standardCheckbox) other.checked = false;
+          });
+        } else if (e.target.checked && standardCheckbox.checked) {
+          // If any specific need is checked, uncheck standard
+          standardCheckbox.checked = false;
+        }
+        updateCardVisuals();
+      });
+    });
+
+    // Run on init to sync initial markup state
+    updateCardVisuals();
+  })();
+</script></main><footer class="w-full bg-canvas py-space-lg"><div class="max-w-7xl mx-auto px-gutter text-center font-metadata text-metadata text-on-surface-variant"><p>TemanBelajar © 2024 · Sahabat belajar tenang, inklusif, dan adaptif untuk siswa Indonesia.</p></div></footer></body></html>

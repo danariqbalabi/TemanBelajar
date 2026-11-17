@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { ProgressDesign } from "./design-progress";
+import { userMessage } from "@/lib/errors";
 import { api } from "@/lib/api";
 import type {
   LearningSession,
@@ -13,13 +14,13 @@ import type { Run } from "./page";
 export function ProgressView({
   materials,
   sessions,
-  run,
   start,
   onPlan,
   onSettings,
   onBack,
   displayName,
   timezone,
+  availableMinutes = 15,
 }: {
   materials: Material[];
   sessions: LearningSession[];
@@ -29,19 +30,26 @@ export function ProgressView({
   onBack: () => void;
   displayName: string;
   timezone: string;
-  start: (m: Material, mode?: Mode, conceptId?: string) => void;
+  availableMinutes?: number;
+  start: (
+    m: Material,
+    mode?: Mode,
+    conceptId?: string,
+    practice?: boolean,
+  ) => void;
 }) {
   const [selected, setSelected] = useState(materials[0]?.id || ""),
     [progress, setProgress] = useState<Progress | null>(null),
     [rec, setRec] = useState<Recommendation | null>(null),
-    [error, setError] = useState("");
+    [error, setError] = useState(""),
+    [revision, setRevision] = useState(0);
   useEffect(() => {
     let alive = true;
     if (!selected) return;
     Promise.all([
       api<Progress>(`/progress?material_id=${encodeURIComponent(selected)}`),
       api<Recommendation>(
-        `/recommendations?material_id=${encodeURIComponent(selected)}&available_minutes=15`,
+        `/recommendations?material_id=${encodeURIComponent(selected)}&available_minutes=${availableMinutes}`,
       ),
     ])
       .then(([p, r]) => {
@@ -52,12 +60,12 @@ export function ProgressView({
         }
       })
       .catch((e) => {
-        if (alive) setError(e.message);
+        if (alive) setError(userMessage(e));
       });
     return () => {
       alive = false;
     };
-  }, [selected]);
+  }, [selected, revision, availableMinutes]);
   return (
     <ProgressDesign
       materials={materials}
@@ -78,14 +86,10 @@ export function ProgressView({
       onPlan={onPlan}
       onSettings={onSettings}
       onBack={onBack}
-      onRefresh={() =>
-        run(async () => {
-          const p = await api<Progress>(
-            `/progress?material_id=${encodeURIComponent(selected)}`,
-          );
-          setProgress(p);
-        })
-      }
+      onRefresh={() => {
+        setError("");
+        setRevision((value) => value + 1);
+      }}
     />
   );
 }

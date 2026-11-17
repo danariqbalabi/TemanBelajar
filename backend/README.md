@@ -47,7 +47,7 @@ materi demo fotosintesis dan pythagoras ditulis di `app/demo.py`, termasuk
 rujukan, deskripsi diagram, transkrip, dan soal. audio dapat dibuat frontend
 melalui baca nyaring atas teks tersebut.
 
-unggahan mendukung pdf berbasis teks maksimal 10 mb, 50 halaman, dan total
+unggahan mendukung pdf berbasis teks maksimal 4 mb, 50 halaman, dan total
 100.000 karakter, atau teks tempel. sumber tersimpan sebagai teks per halaman
 atau bagian. berkas pdf biner asli tidak disimpan pada tahap ini. pdf pindai
 memerlukan teks tempel atau versi dengan teks yang dapat diekstrak.
@@ -63,7 +63,7 @@ parameter, dan batas evaluasi. artefak `models/bkt.json` memuat metrik lengkap.
 data mentah berada di `data/raw` dan diabaikan git.
 
 ```powershell
-uv run python -m training.train_bkt --download
+uv run --group training python -m training.train_bkt --download
 ```
 
 ## pengujian
@@ -95,13 +95,45 @@ pengujian antarmuka mengikuti tahap frontend dan integrasi.
 
 ## keputusan penyimpanan
 
-aktivitas mvp disimpan sebagai satu dokumen jsonb per pengguna dengan revision
-dan compare-and-swap. hasil tindakan dan receipt idempotensi tersimpan dalam
-transaksi yang sama. dua penulis pada revision sama menghasilkan satu
-keberhasilan dan satu konflik. api mengembalikan `409` agar frontend memuat
-ulang sebelum mengirim perubahan baru.
+Aktivitas disimpan per record sejak migrasi 007, lalu dibaca sebagai snapshot
+per pengguna dengan revision dan compare-and-swap. Hasil tindakan dan receipt
+idempotensi tersimpan dalam transaksi yang sama. Dua penulis pada revision
+sama menghasilkan satu keberhasilan dan satu konflik. API mengembalikan `409`
+agar frontend memuat ulang sebelum mengirim perubahan baru. Riwayat dan receipt
+masih ikut snapshot penuh; pagination dan arsip tetap diperlukan untuk skala besar.
 
-pendekatan ini menjaga konsistensi lintas sesi, jawaban, dan rencana untuk mvp.
-riwayat dan receipt masih tumbuh bersama dokumen. penggunaan jangka panjang
-dengan banyak materi membutuhkan pemisahan tabel, pagination, dan kebijakan
-arsip setelah kebutuhan nyata diukur.
+
+## persiapan vercel
+
+Buat proyek backend dengan Root Directory `backend` dan framework FastAPI.
+`vercel.json` mengatur entrypoint `app/main.py`, durasi 120 detik, dan artefak
+BKT. Training memakai dependency group terpisah; runtime tidak memerlukan
+NumPy atau SciPy. Konfigurasi ini belum dibuktikan lewat deploy Vercel.
+
+Isi variabel Supabase dan Gemini serta CORS_ORIGINS dengan origin frontend
+produksi. DATABASE_URL hanya diperlukan saat migrasi; jangan masukkan ke
+frontend. AI_DAILY_GLOBAL_LIMIT default 100 percobaan per hari UTC di seluruh
+akun. Migrasi harus diterapkan sebelum backend versi ini dipakai.
+
+Pengujian live terbaru mencakup konflik revisi profil serta upload sampai
+Gemini menghasilkan materi. Kuota global diuji di PostgreSQL; pembatasan
+pembuatan akun anonim di provider masih perlu dikonfigurasi sebelum publik.
+
+
+## penyimpanan aktivitas
+
+Migrasi 007 memindahkan isi snapshot ke `learning_records`, satu record per
+item koleksi, dan `learning_revisions` untuk serialisasi transaksi per akun.
+RPC menyimpan perubahan record saja; view `learning_states` mempertahankan
+kontrak pembacaan backend. Tabel `learning_states_backup` menyimpan salinan
+sebelum migrasi dan bukan sumber data aktif. Jangan menggunakannya sebagai
+rollback setelah ada aktivitas baru tanpa rekonsiliasi data.
+
+Pembacaan masih menggabungkan snapshot penuh dan konflik masih di tingkat
+akun. Pagination dan pembacaan per koleksi merupakan pekerjaan lanjutan;
+perubahan ini belum menyelesaikan batas pertumbuhan riwayat/receipts.
+
+Migrasi 008 menyatukan klaim job dan reservasi kuota AI global dalam satu
+transaksi. Konflik revision tidak menghabiskan kuota; penolakan kuota membatalkan
+perubahan status job dan pemakaian per akun. Terapkan migrasi sebelum menjalankan
+backend ini. [Audit backend dan training](AUDIT.md) mencatat pemeriksaan terbaru.

@@ -81,16 +81,24 @@ export function Materials({
   }
   function submit() {
     setValidation("");
-    if (!title.trim()) {
-      setValidation("Beri judul materi terlebih dahulu.");
+    if (!title.trim() || title.trim().length > 200) {
+      setValidation("Isi judul materi sepanjang 1?200 karakter.");
       return;
     }
-    if (file && file.size > 10 * 1024 * 1024) {
-      setValidation("Ukuran PDF maksimal 10 MB.");
+    if (file && !file.name.toLowerCase().endsWith(".pdf")) {
+      setValidation("Pilih dokumen PDF. Foto dan format lain belum didukung.");
+      return;
+    }
+    if (file && file.size > 4 * 1024 * 1024) {
+      setValidation("Ukuran PDF maksimal 4 MB.");
       return;
     }
     if (!file && !text.trim()) {
       setValidation("Pilih PDF atau tempel teks materi.");
+      return;
+    }
+    if (!file && (text.trim().length < 30 || text.length > 100000)) {
+      setValidation("Teks materi harus sepanjang 30–100.000 karakter.");
       return;
     }
     let request: () => Promise<Job>;
@@ -106,6 +114,7 @@ export function Materials({
       const job = await request();
       setJobs((items) => [job, ...items.filter((x) => x.id !== job.id)]);
       setUpload(false);
+      setActiveJob(job);
       setTitle("");
       setText("");
       setFile(null);

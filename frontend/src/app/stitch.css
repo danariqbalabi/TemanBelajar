@@ -26,8 +26,8 @@
     "opsz" 24;
 }
 .stitch-shell {
-  background: #faf9f4;
-  color: #112520;
+  background: #f8f7f2;
+  color: #273b35;
   font-family: "Plus Jakarta Sans", sans-serif;
   font-size: 16px;
   line-height: 26px;
@@ -99,7 +99,7 @@
   border-radius: 20px;
   max-width: 520px;
   background: #fff;
-  color: #112520;
+  color: #273b35;
   box-shadow: 0 20px 80px #11252033;
 }
 .stitch-reason::backdrop {
@@ -439,4 +439,100 @@
   .stitch-screen section {
     break-inside: avoid;
   }
+}
+
+.revamp-landing h1 {
+  font-family: Nunito, sans-serif !important;
+  font-weight: 800 !important;
+  font-size: clamp(36px, 4vw, 56px) !important;
+  line-height: 1.15 !important;
+}
+
+.revamp-workspace {
+  padding-left: 224px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.revamp-main {
+  flex: 1;
+  min-width: 0;
+}
+.revamp-shell .revamp-topbar {
+  position: static;
+}
+.revamp-shell .revamp-sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.revamp-shell .revamp-sidebar img {
+  max-height: 48px;
+  width: auto;
+  object-fit: contain;
+}
+@media (max-width: 1023px) {
+  .revamp-workspace {
+    padding-left: 0;
+  }
+  .revamp-shell > .revamp-sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+  .revamp-shell .revamp-sidebar nav {
+    flex-direction: row;
+    overflow: auto;
+  }
+  .revamp-shell .revamp-sidebar nav button {
+    width: auto;
+    white-space: nowrap;
+  }
+  .revamp-shell .revamp-sidebar > div:last-child {
+    display: none;
+  }
+  .revamp-shell .revamp-topbar {
+    padding: 16px;
+  }
+}
+
+.revamp-shell:has(.stitch-reader, .stitch-quiz, .stitch-results)
+  > .revamp-sidebar {
+  display: none;
+}
+.revamp-shell:has(.stitch-reader, .stitch-quiz, .stitch-results)
+  > .revamp-workspace {
+  padding-left: 0;
+}
+.revamp-shell:has(.stitch-reader, .stitch-quiz, .stitch-results)
+  .revamp-topbar {
+  display: none;
+}
+.revamp-shell .stitch-screen :where(button, a, input, select, textarea) {
+  font-family: inherit;
+}
+.revamp-onboarding button[aria-checked="true"],
+.revamp-onboarding button[aria-pressed="true"],
+.stitch-settings button[aria-pressed="true"] {
+  box-shadow: inset 0 0 0 2px #273b35;
+  background-color: #c8e8ce;
+}
+.revamp-onboarding button[aria-checked="false"],
+.revamp-onboarding button[aria-pressed="false"] {
+  box-shadow: none;
+  background-color: #fff;
+}
+.revamp-shell :is(button, a, input, select, textarea):focus-visible {
+  outline: 2px solid #3b4c9b;
+  outline-offset: 2px;
+}
+.revamp-shell .stitch-screen :where(button) {
+  min-height: 44px;
+}
+.stitch-reader .reference-reading {
+  max-width: var(--reader-width, 68ch);
+}
+.stitch-reader .reference-reading p {
+  font-size: inherit !important;
+  line-height: inherit !important;
 }

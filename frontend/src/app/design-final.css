@@ -1,0 +1,485 @@
+/* Scoped reset: source utilities own the final design, not legacy application styles. */
+.stitch-shell.final-design,
+.stitch-shell .final-design {
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  color: #273b35;
+  line-height: 1.6;
+}
+.final-design
+  :where(
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    p,
+    figure,
+    blockquote,
+    ul,
+    ol,
+    section,
+    article,
+    aside,
+    header,
+    footer,
+    nav
+  ) {
+  margin: 0;
+  padding: 0;
+  border: 0 solid;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+  color: inherit;
+}
+.final-design :where(h1, h2, h3, h4, h5) {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+}
+.final-design :where(button, a, input, select, textarea, label) {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  margin: 0;
+  box-shadow: none;
+}
+.final-design :where(button, a) {
+  padding: 0;
+  border: 0 solid;
+  border-radius: 0;
+  background: transparent;
+  text-decoration: none;
+}
+.final-design :where(button:hover, a:hover) {
+  background: transparent;
+}
+.final-design :where(input, select, textarea) {
+  width: auto;
+  background: white;
+  border: 1px solid #68756c;
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+.final-design :where(input[type="checkbox"], input[type="radio"]) {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  accent-color: #273b35;
+}
+.final-design :where(label) {
+  display: block;
+  align-items: normal;
+  justify-content: flex-start;
+  padding: 0;
+  background: transparent;
+  border: 0 solid;
+  border-radius: 0;
+}
+.final-design :where(img) {
+  height: auto;
+  object-fit: contain;
+}
+.final-design :where(svg) {
+  flex-shrink: 0;
+}
+.final-design :where(button, a, input, select, textarea):focus-visible {
+  outline: 2px solid #3b4c9b;
+  outline-offset: 3px;
+}
+.final-design :where(button[aria-pressed="true"], button[aria-checked="true"]) {
+  outline: 2px solid #273b35;
+  outline-offset: -2px;
+}
+.final-design :where([hidden]) {
+  display: none !important;
+}
+.final-design :where(button:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.final-design .material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+}
+
+.final-screen-1 {
+  background-color: #f8f7f2;
+  color: #273b35;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+.final-screen-1 :focus-visible {
+  outline: 2px solid #3b4c9b;
+  outline-offset: 3px;
+}
+/* Subtle dot grid pattern for study zine feel */
+.final-screen-1 .bg-dot-pattern {
+  background-image: radial-gradient(#273b35 0.75px, transparent 0.75px);
+  background-size: 24px 24px;
+  opacity: 0.04;
+}
+.final-screen-1 .washi-tape {
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 231, 163, 0.7),
+    rgba(255, 231, 163, 0.7) 10px,
+    rgba(255, 245, 214, 0.7) 10px,
+    rgba(255, 245, 214, 0.7) 20px
+  );
+}
+
+.final-screen-23 .theme-preview-cream {
+  background-color: #f8f7f2;
+  color: #112520;
+}
+.final-screen-23 .theme-preview-white {
+  background-color: #ffffff;
+  color: #112520;
+}
+.final-screen-23 .theme-preview-high-contrast {
+  background-color: #101a16;
+  color: #ffe7a3;
+}
+.final-screen-23 .theme-preview-dimmed {
+  background-color: #273b35;
+  color: #eaf7ed;
+}
+
+.final-screen-23 .font-preview-default {
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+.final-screen-23 .font-preview-lexend {
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  letter-spacing: 0.03em;
+}
+.final-screen-23 .font-preview-nunito {
+  font-family: "Nunito", sans-serif;
+}
+.final-screen-23 .font-preview-system {
+  font-family: ui-monospace, SFMono-Regular, monospace;
+}
+
+.final-screen-23 .line-ruler-mint {
+  background: linear-gradient(
+    to bottom,
+    rgba(200, 232, 206, 0.45) 0%,
+    rgba(200, 232, 206, 0.45) 100%
+  );
+}
+.final-screen-23 .line-ruler-butter {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 231, 163, 0.45) 0%,
+    rgba(255, 231, 163, 0.45) 100%
+  );
+}
+.final-screen-23 .line-ruler-lavender {
+  background: linear-gradient(
+    to bottom,
+    rgba(168, 183, 245, 0.35) 0%,
+    rgba(168, 183, 245, 0.35) 100%
+  );
+}
+
+/* Custom Switch & Range inputs */
+.final-screen-23 input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #112520;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(17, 37, 32, 0.25);
+}
+
+.final-app .app-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #fff;
+  border-bottom: 1px solid #e5e8e1;
+}
+.final-app .app-header-inner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 20px;
+  max-width: 1200px;
+  min-height: 80px;
+  margin: 0 auto;
+  padding: 12px 32px;
+}
+.final-app .app-brand {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.final-app .app-brand img {
+  display: block;
+  width: 144px;
+  height: auto;
+}
+.final-app .app-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 0;
+  margin: 0;
+}
+.final-app .app-navigation a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.final-app .app-navigation a:hover,
+.final-app .app-accessibility:hover {
+  background: #eaf6eb;
+}
+.final-app .app-navigation a[aria-current="page"] {
+  background: #c8e8ce;
+  font-weight: 700;
+}
+.final-app .app-header-tools,
+.final-app .app-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.final-app .app-accessibility {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+.final-app .app-accessibility .material-symbols-outlined {
+  font-size: 20px;
+}
+.final-app .app-profile-name {
+  text-align: right;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.final-app .app-profile-name p:first-child {
+  font-size: 14px;
+  font-weight: 700;
+}
+.final-app .app-profile-name p:last-child {
+  color: #59665d;
+}
+.final-app .app-avatar {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #273b35;
+  color: white;
+}
+.final-app .app-avatar .material-symbols-outlined {
+  font-size: 20px;
+}
+@media (max-width: 1199px) {
+  .final-app .app-header-inner {
+    grid-template-columns: 1fr auto;
+    gap: 8px 16px;
+    padding: 12px 24px 8px;
+  }
+  .final-app .app-navigation {
+    grid-row: 2;
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .final-app .app-header-tools {
+    grid-row: 1;
+    grid-column: 2;
+  }
+}
+@media (max-width: 639px) {
+  .final-app .app-header-inner {
+    padding-inline: 16px;
+  }
+  .final-app .app-brand img {
+    width: 132px;
+  }
+  .final-app .app-profile-name,
+  .final-app .app-accessibility-label {
+    display: none;
+  }
+}
+/* Export shells use the full canvas; legacy main/header sizing must not constrain them. */
+.final-design :where(main) {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+.final-design :where(header) {
+  height: auto;
+  display: block;
+  align-items: normal;
+  gap: 0;
+}
+.final-design :where(nav) {
+  margin: 0;
+  padding: 0;
+}
+.final-app > header {
+  position: sticky;
+  top: 0;
+}
+.final-app #main {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.final-app #main > .final-design,
+.final-app #main .stitch-reader > .final-design,
+.final-app #main .final-settings > .final-design {
+  padding-top: 24px;
+}
+.final-app #main > .stitch-screen {
+  max-width: 1136px;
+  margin: 24px auto 0;
+  width: calc(100% - 48px);
+}
+.final-design :where(.grid, .flex) > * {
+  min-width: 0;
+}
+.final-app #main > :is(.notice, .success, .working) {
+  max-width: 1136px;
+  margin: 16px auto;
+  width: calc(100% - 48px);
+}
+@media (max-width: 639px) {
+  .final-app #main > :is(.stitch-screen, .notice, .success, .working) {
+    width: calc(100% - 32px);
+  }
+}
+.final-settings-tabs {
+  padding-top: 24px;
+}
+.final-design .plan-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.final-design .plan-fields :is(input, select) {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+}
+@media (max-width: 639px) {
+  .final-design .plan-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.final-design :where(input[type="range"]) {
+  padding: 0;
+}
+.final-design :where(input:disabled, select:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.final-design :where(a, button) {
+  touch-action: manipulation;
+}
+.final-design :where(button:not([class])) {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #68756c;
+}
+.final-design :where(img[src*="mimo-final"]) {
+  object-fit: contain;
+  filter: none;
+  transform: none;
+}
+.final-app.high-contrast {
+  background: #fff;
+  color: #101a16;
+}
+.final-app.high-contrast .final-design {
+  color: #101a16;
+}
+.final-app.high-contrast :is(p, h1, h2, h3, span, label, button, a) {
+  text-shadow: none;
+}
+.final-app.high-contrast :is(section, article, aside) {
+  box-shadow: none;
+  border-color: #101a16;
+}
+.final-app.high-contrast
+  .final-design
+  :is(.text-text-secondary, .text-on-surface-variant) {
+  color: #101a16 !important;
+}
+@media (max-width: 767px) {
+  .final-design :where(.px-margin) {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .final-design :where(.fixed.bottom-0) {
+    position: sticky;
+  }
+  .final-design :where(input, select, textarea) {
+    max-width: 100%;
+  }
+  .final-design :where(h1) {
+    overflow-wrap: break-word;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .final-design *,
+  .final-design *::before,
+  .final-design *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+@media print {
+  .final-app > header,
+  .final-settings-tabs,
+  .final-design :is(button, nav) {
+    display: none !important;
+  }
+  .final-design :is(main, section, article) {
+    break-inside: avoid;
+  }
+  .final-app #main > .final-design {
+    padding-top: 0 !important;
+  }
+}
+.final-onboarding button[aria-pressed="false"],
+.final-settings button[aria-pressed="false"] {
+  background-color: white;
+  box-shadow: none;
+}
+.final-onboarding button[aria-pressed="true"],
+.final-settings button[aria-pressed="true"] {
+  background-color: #c8e8ce;
+  outline: 2px solid #273b35;
+  outline-offset: -2px;
+}
+.final-screen-12 [data-selected="true"] {
+  outline: 2px solid #273b35;
+  outline-offset: -2px;
+}
+.final-screen-12 [data-selected="false"] {
+  outline: none;
+}

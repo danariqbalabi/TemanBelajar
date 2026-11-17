@@ -41,6 +41,7 @@ export function Account({
 }
 export function Onboarding(props: {
   initial: Profile;
+  onBack?: () => void;
   onSave: (p: Profile) => void;
   busy: boolean;
   error: string;

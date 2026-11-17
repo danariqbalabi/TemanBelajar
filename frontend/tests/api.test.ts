@@ -69,3 +69,9 @@ it("keeps conflict status and server explanation available to the UI", async () 
     expect(error).toMatchObject({ status: 409, message: "versi berubah" });
   }
 });
+
+it("accepts a valid null response for an absent active attempt", async () => {
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValue(Response.json(null)));
+  const { api } = await import("../src/lib/api");
+  await expect(api("/sessions/test/attempts/active")).resolves.toBeNull();
+});

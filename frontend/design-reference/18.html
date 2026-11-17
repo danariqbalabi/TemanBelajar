@@ -1,0 +1,700 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="web_standard" name="shell-type">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "divider": "#E5E8E1",
+            "on-tertiary-fixed-variant": "#2f408f",
+            "tertiary-fixed-dim": "#b9c3ff",
+            "on-surface": "#131e18",
+            "success": "#28583E",
+            "on-secondary-fixed": "#052011",
+            "secondary-fixed-dim": "#afceb5",
+            "on-surface-variant": "#424846",
+            "secondary-container": "#c8e8ce",
+            "warning": "#61450E",
+            "on-secondary": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "on-primary-container": "#8fa59d",
+            "secondary-fixed": "#caead0",
+            "primary-container": "#273b35",
+            "on-primary-fixed": "#0b1f1a",
+            "lavender-tint": "#F0EDFC",
+            "canvas": "#F8F7F2",
+            "surface-container-high": "#deebe2",
+            "inverse-surface": "#28332d",
+            "mint-tint": "#EAF6EB",
+            "on-error-container": "#93000a",
+            "surface": "#FFFFFF",
+            "on-primary-fixed-variant": "#374b44",
+            "on-background": "#131e18",
+            "butter": "#FFE7A3",
+            "surface-container-lowest": "#ffffff",
+            "on-secondary-container": "#4d6954",
+            "error-container": "#ffdad6",
+            "on-tertiary-container": "#8a9bf0",
+            "lavender": "#A8B7F5",
+            "on-secondary-fixed-variant": "#314d3a",
+            "surface-container-low": "#eaf7ed",
+            "primary-fixed": "#d1e8df",
+            "surface-variant": "#d9e6dc",
+            "primary": "#112520",
+            "surface-dim": "#d0ddd4",
+            "surface-container-highest": "#d9e6dc",
+            "control-border": "#68756C",
+            "on-error": "#ffffff",
+            "error": "#892E32",
+            "butter-tint": "#FFF5D6",
+            "tertiary-fixed": "#dde1ff",
+            "surface-bright": "#f0fdf3",
+            "background": "#f0fdf3",
+            "primary-hover": "#1B3029",
+            "surface-tint": "#4e635c",
+            "secondary": "#496550",
+            "on-tertiary-fixed": "#001257",
+            "primary-pressed": "#13251F",
+            "contrast-ink": "#101A16",
+            "inverse-on-surface": "#e7f4eb",
+            "outline": "#727875",
+            "tertiary-container": "#1d2f7e",
+            "peach-tint": "#FFF0E6",
+            "error-surface": "#FAE7E5",
+            "surface-container": "#e4f1e8",
+            "inverse-primary": "#b5cbc3",
+            "on-primary": "#ffffff",
+            "primary-fixed-dim": "#b5cbc3",
+            "tertiary": "#001766",
+            "outline-variant": "#c2c8c4",
+            "peach": "#FFCA9D"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "margin": "2rem",
+            "gutter-mobile": "0.75rem",
+            "space-xl": "2rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "gutter-tablet": "1rem",
+            "space-xs": "0.25rem",
+            "margin-tablet": "1.5rem",
+            "margin-mobile": "1rem"
+          },
+          fontFamily: {
+            "mimo-voice": ["Nunito"],
+            "section-title": ["Plus Jakarta Sans"],
+            "reading": ["Plus Jakarta Sans"],
+            "metadata": ["Plus Jakarta Sans"],
+            "card-title": ["Plus Jakarta Sans"],
+            "body": ["Plus Jakarta Sans"],
+            "page-title": ["Plus Jakarta Sans"],
+            "display-mobile": ["Nunito"],
+            "display": ["Nunito"],
+            "label": ["Plus Jakarta Sans"],
+            "page-title-mobile": ["Plus Jakarta Sans"]
+          },
+          fontSize: {
+            "mimo-voice": ["1.125rem", { "lineHeight": "1.45", "fontWeight": "700" }],
+            "section-title": ["1.375rem", { "lineHeight": "1.35", "fontWeight": "700" }],
+            "reading": ["1.125rem", { "lineHeight": "1.7", "fontWeight": "400" }],
+            "metadata": ["0.875rem", { "lineHeight": "1.5", "fontWeight": "400" }],
+            "card-title": ["1.125rem", { "lineHeight": "1.4", "fontWeight": "700" }],
+            "body": ["1rem", { "lineHeight": "1.6", "fontWeight": "400" }],
+            "page-title": ["2rem", { "lineHeight": "1.25", "fontWeight": "700" }],
+            "display-mobile": ["2.25rem", { "lineHeight": "1.15", "fontWeight": "800" }],
+            "display": ["3.5rem", { "lineHeight": "1.08", "fontWeight": "800" }],
+            "label": ["0.875rem", { "lineHeight": "1.5", "fontWeight": "600" }],
+            "page-title-mobile": ["1.625rem", { "lineHeight": "1.3", "fontWeight": "700" }]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-canvas font-body text-on-surface antialiased min-h-screen flex flex-col justify-between">
+<!-- Top Navigation Bar & Sub-Header -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface/95 backdrop-blur-md border-b border-divider">
+<div class="h-20 max-w-[1200px] mx-auto px-margin flex items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-lg">
+<a class="flex items-center gap-space-sm" data-path="beranda" href="#">
+<img alt="Logo TemanBelajar" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrC9WRFa0OUQ_-pgcRatJM4G8Z2t3PUshKHDwWT2rr2YD7AaeVspslzqgNxHufC8CljRMd-Gj63vCZP_rw1QKIJWO4VQ5Pczr7EiHIcss88wFWVkcQHWRLrtuTbp8NaTx2RHC9RhKEB-inLD6k2JJ4MGYYfY2tYGKmSPyCZRBoAxUYiHxROKOVoHt1jplTYiRqZphBEXBxLLDG5BtgBmofqfpXVteVPdUWYxxKCX03E">
+<span class="font-display font-black text-card-title text-primary tracking-tight hidden sm:inline">TemanBelajar</span>
+</a>
+<div class="hidden md:flex items-center gap-space-xs pl-space-xs pr-space-sm py-1 bg-mint-tint rounded-full border border-secondary/20">
+<span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+<span class="text-[12px] font-label font-bold text-success">Sesi Aktif</span>
+<span class="text-[12px] font-metadata text-on-surface-variant">• IPA: Sistem Ekskresi</span>
+</div>
+<nav class="hidden xl:flex items-center gap-space-xs" data-active-classes="bg-secondary-container text-on-secondary-fixed font-bold">
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="beranda" href="#">Beranda</a>
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="rencana-belajar" href="#">Rencana Belajar</a>
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="materi-saya" href="#">Materi Saya</a>
+<a class="px-space-md py-space-sm rounded-lg bg-secondary-container text-on-secondary-fixed font-label text-label font-bold" data-path="mulai-belajar" href="#">Mulai Belajar</a>
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="progres" href="#">Progres</a>
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="pengaturan" href="#">Pengaturan</a>
+</nav>
+</div>
+<div class="flex items-center gap-space-sm">
+<button aria-label="Mode Aksesibilitas dan Kontras" class="flex items-center gap-space-xs px-space-md py-space-xs rounded-full border border-divider bg-surface hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors text-label font-label" type="button">
+<span class="material-symbols-outlined text-[18px]">accessibility_new</span>
+<span class="hidden md:inline text-metadata font-metadata">Aksesibilitas</span>
+</button>
+<button aria-label="Status Sesi Tenang" class="relative p-space-xs rounded-full hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-secondary-fixed ring-2 ring-surface"></span>
+</button>
+<div class="h-6 w-[1px] bg-divider mx-space-xs hidden sm:block"></div>
+<div class="flex items-center gap-space-sm pl-space-xs">
+<div class="text-right hidden sm:block leading-tight">
+<p class="font-label text-label text-primary font-bold">Cece Manda</p>
+<p class="text-metadata font-metadata text-outline text-[12px]">SMP Kelas 8</p>
+</div>
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[18px]">person</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Sub-header Sesi Belajar / Hasil Adaptif -->
+<div class="bg-surface-container-low/60 border-t border-divider py-2">
+<div class="max-w-[1200px] mx-auto px-margin flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<span class="w-2.5 h-2.5 rounded-full bg-success"></span>
+<span class="font-label text-label text-primary font-bold">Hasil Latihan:</span>
+<span class="font-metadata text-metadata text-on-surface-variant">IPA SMP Kelas 8 Bab 4 (Sistem Ekskresi)</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="px-space-md py-1.5 rounded-lg border border-divider bg-surface hover:bg-surface-container text-primary font-label text-label transition-colors" type="button">
+Kembali ke Materi
+</button>
+<button class="px-space-md py-1.5 rounded-lg bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label transition-colors" type="button">
+Simpan Hasil
+</button>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="w-full pt-[8.25rem] bg-canvas flex-1"><div class="flex flex-col w-full">
+<!-- Interactive Feedback & Accessibility Notification Bar -->
+<div class="w-full bg-mint-tint/80 border-b border-divider py-space-sm px-margin">
+<div class="max-w-[1200px] mx-auto flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<a class="inline-flex items-center gap-space-xs font-label text-label text-primary hover:text-primary-hover transition-colors font-bold group" href="#">
+<span class="material-symbols-outlined text-[18px] group-hover:-translate-x-0.5 transition-transform">arrow_back</span>
+<span>Kembali ke Materi Bab 4</span>
+</a>
+<span class="text-divider hidden sm:inline">•</span>
+<span class="hidden md:inline font-metadata text-metadata text-on-surface-variant">Rute Sesi: /belajar/ipa-ekskresi/hasil</span>
+</div>
+<div class="flex items-center gap-space-xs sm:gap-space-sm">
+<button class="inline-flex items-center gap-1 px-space-sm py-1 rounded-lg bg-surface border border-divider text-on-surface font-label text-label hover:bg-surface-container transition-colors min-h-[36px]" id="btn-font-toggle" title="Sesuaikan Ukuran Teks" type="button">
+<span class="material-symbols-outlined text-[16px]">format_size</span>
+<span class="text-[12px] font-bold">A- / A+</span>
+</button>
+<button class="inline-flex items-center gap-space-xs px-space-md py-1 rounded-lg bg-surface border border-divider text-primary font-label text-label hover:bg-surface-container transition-colors min-h-[36px]" onclick="window.print()" type="button">
+<span class="material-symbols-outlined text-[18px]">print</span>
+<span class="hidden sm:inline">Cetak / Simpan PDF</span>
+</button>
+</div>
+</div>
+</div>
+<div class="max-w-[1200px] w-full mx-auto px-margin py-space-lg flex flex-col gap-space-xl">
+<!-- Hero Banner & Mimo Mascot Appreciation Card -->
+<section class="w-full rounded-2xl bg-mint-tint border border-secondary/20 p-space-lg md:p-space-xl relative overflow-hidden">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-center">
+<!-- Left: Cognitive Feedback & Warm Statistics -->
+<div class="lg:col-span-8 flex flex-col gap-space-md z-10">
+<div class="inline-flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-surface/90 border border-success/30 text-success self-start font-label text-[13px] font-bold">
+<span class="material-symbols-outlined text-[16px]">celebration</span>
+<span>Latihan Selesai Tanpa Terburu-buru</span>
+</div>
+<div class="space-y-space-xs">
+<h1 class="font-display text-page-title md:text-[2.25rem] text-primary leading-tight font-extrabold">Keren banget usahamu hari ini, Cece!</h1>
+<p class="font-reading text-reading text-on-surface-variant max-w-2xl">
+              Kamu berhasil menuntaskan 5 soal eksploratif seputar <span class="font-bold text-primary">Filtrasi &amp; Glomerulus</span>. Di TemanBelajar, belajar itu proses memahami pola dan cara kerja alam, bukan sekadar mengejar angka!
+            </p>
+</div>
+<!-- 3 Gentle Metric Pill Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-sm pt-space-xs">
+<div class="bg-surface rounded-xl p-space-md border border-divider flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-success shrink-0">
+<span class="material-symbols-outlined text-[22px]">task_alt</span>
+</div>
+<div class="leading-tight">
+<div class="font-label text-card-title text-primary font-bold">4 / 5 Soal</div>
+<div class="font-metadata text-metadata text-on-surface-variant">Tepat Terkonfirmasi (80%)</div>
+</div>
+</div>
+<div class="bg-surface rounded-xl p-space-md border border-divider flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-butter-tint flex items-center justify-center text-warning shrink-0">
+<span class="material-symbols-outlined text-[22px]">schedule</span>
+</div>
+<div class="leading-tight">
+<div class="font-label text-card-title text-primary font-bold">6m 15d</div>
+<div class="font-metadata text-metadata text-on-surface-variant">Irama Pikir Santai</div>
+</div>
+</div>
+<div class="bg-surface rounded-xl p-space-md border border-divider flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-lavender-tint flex items-center justify-center text-on-tertiary-fixed-variant shrink-0">
+<span class="material-symbols-outlined text-[22px]">trending_up</span>
+</div>
+<div class="leading-tight">
+<div class="font-label text-card-title text-primary font-bold">BKT 0.82</div>
+<div class="font-metadata text-metadata text-on-surface-variant">Penguasaan Berkembang</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Real Mascot Visual & Voice Bubble -->
+<div class="lg:col-span-4 flex flex-col items-center lg:items-end justify-center relative">
+<!-- Speech Bubble with Subtle Pointer -->
+<div class="bg-surface rounded-2xl p-space-md border border-divider shadow-sm relative max-w-sm mb-space-sm">
+<div class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-success text-[20px] shrink-0 mt-0.5">chat</span>
+<p class="font-mimo-voice text-on-surface text-[14px] leading-snug">"Belum pas di nomor 4? Gapapa banget, Cece! Konsep reabsorpsi emang butuh dibayangin pelan-pelan. Mimo udah siapin cara seru buat mengulanginya!"</p>
+</div>
+<!-- Bubble tail arrow -->
+<div class="absolute -bottom-2 right-12 w-4 h-4 bg-surface border-b border-r border-divider transform rotate-45"></div>
+</div>
+<!-- Mascot Image: Mimo Waving Mint Chameleon (no boxy frames, purely resting on pastel surface) -->
+<div class="w-48 h-40 sm:w-56 sm:h-44 flex items-center justify-center">
+<img alt="Maskot Mimo si Bunglon Hijau melambaikan tangan menyemangati" class="max-h-full max-w-full object-contain select-none pointer-events-none drop-shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTBzqEFGEWOkoBURQJU7D8lHgLij1KrXgwcJdQNMgHPCsxvqnkWBGrKjtxHu6MN6QFNFSudwFHawt5P9KX5Eib1nP3lEclhVDmyyqrxvoGt55jEc_sJVS3imq0TGE1Lp_7aah6vaPYEEAYF3sqRVtUQQSwh3EGMAfEYGrIasYeFgHUjjSdwb9BdIItonpVQeCzh7UUZ5HKmeU3Kuh3MOJnwC6-VSmKYDstRRakd-5F4ZWVLjgdqLhy">
+</div>
+</div>
+</div>
+</section>
+<!-- Main Content Workspace (8 Columns Review + 4 Columns Recommendations) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- LEFT COLUMN: Explainable Review & Interactive Questions (8 Columns) -->
+<section class="lg:col-span-8 flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs pb-space-xs border-b border-divider">
+<div>
+<h2 class="font-section-title text-section-title text-primary font-bold">Evaluasi Konsep &amp; Pembahasan Terbuka</h2>
+<p class="font-reading text-metadata text-on-surface-variant">Pahami penalaran sains di balik tiap opsi secara mendalam tanpa tekanan.</p>
+</div>
+<span class="inline-flex items-center gap-1 text-[13px] font-label text-success bg-mint-tint px-space-sm py-1 rounded-full self-start sm:self-auto">
+<span class="material-symbols-outlined text-[16px]">visibility</span> Mode Ulasan Penuh
+          </span>
+</div>
+<!-- Question Cards Stack -->
+<div class="flex flex-col gap-space-md">
+<!-- Soal 1: Tepat -->
+<article class="bg-surface rounded-xl border border-divider p-space-md transition-shadow hover:shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs pb-space-xs border-b border-divider/60 mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="px-space-sm py-0.5 rounded-full bg-mint-tint text-success font-label text-[12px] font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Soal 1 • Tepat
+                </span>
+<span class="font-metadata text-metadata text-outline">Struktur Anatomi Nefron</span>
+</div>
+<span class="font-metadata text-[12px] text-on-surface-variant">Waktu: 42 dtk</span>
+</div>
+<h3 class="font-card-title text-card-title text-primary font-bold mb-space-xs">
+              Bagian nefron yang berfungsi menyaring darah pertama kali adalah...
+            </h3>
+<div class="p-space-sm bg-mint-tint/50 rounded-lg border border-secondary/20 flex items-start gap-space-xs mb-space-sm">
+<span class="material-symbols-outlined text-success text-[18px] shrink-0 mt-0.5">check</span>
+<div class="text-[14px]">
+<span class="font-metadata text-on-surface-variant">Jawaban kamu:</span>
+<span class="font-label text-primary font-bold"> Glomerulus dan Kapsula Bowman</span>
+</div>
+</div>
+<div class="text-[14px] font-reading text-on-surface bg-canvas/70 p-space-sm rounded-lg border border-divider">
+<span class="font-bold text-success">Alasan Ilmiah:</span> Tepat sekali! Darah bertekanan tinggi masuk melalui arteriol aferen ke anyaman kapiler glomerulus. Cairan bersama molekul terlarut tersaring melewati membran dasar menuju ruang kapsula Bowman.
+            </div>
+</article>
+<!-- Soal 2: Tepat (Soal Layar 17) -->
+<article class="bg-surface rounded-xl border border-divider p-space-md transition-shadow hover:shadow-sm ring-1 ring-secondary/20">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs pb-space-xs border-b border-divider/60 mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="px-space-sm py-0.5 rounded-full bg-mint-tint text-success font-label text-[12px] font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Soal 2 • Tepat
+                </span>
+<span class="font-metadata text-metadata text-outline">Karakteristik Filtrat Glomerulus</span>
+</div>
+<span class="font-metadata text-[12px] text-on-surface-variant">Waktu: 1 m 10 dtk</span>
+</div>
+<h3 class="font-card-title text-card-title text-primary font-bold mb-space-xs">
+              Zat yang seharusnya TIDAK ditemukan dalam urine primer pada orang dengan kondisi ginjal sehat adalah...
+            </h3>
+<div class="p-space-sm bg-mint-tint/50 rounded-lg border border-secondary/20 flex items-start gap-space-xs mb-space-sm">
+<span class="material-symbols-outlined text-success text-[18px] shrink-0 mt-0.5">check</span>
+<div class="text-[14px]">
+<span class="font-metadata text-on-surface-variant">Jawaban kamu:</span>
+<span class="font-label text-primary font-bold"> Sel darah merah (eritrosit) dan protein albumin</span>
+</div>
+</div>
+<div class="text-[14px] font-reading text-on-surface bg-canvas/70 p-space-sm rounded-lg border border-divider">
+<span class="font-bold text-success">Ulasan Terperinci:</span> Mantap! Dinding kapiler glomerulus memiliki pori-pori filtrasi (podocyt fenestrations) yang sangat rapat (berukuran nanometer) dan bermuatan negatif. Molekul bermassa besar seperti protein albumin dan keping sel darah tertahan, tidak tembus ke dalam filtrat glomerulus (urine primer).
+            </div>
+</article>
+<!-- Soal 3: Tepat -->
+<article class="bg-surface rounded-xl border border-divider p-space-md transition-shadow hover:shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs pb-space-xs border-b border-divider/60 mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="px-space-sm py-0.5 rounded-full bg-mint-tint text-success font-label text-[12px] font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Soal 3 • Tepat
+                </span>
+<span class="font-metadata text-metadata text-outline">Komposisi Nutrisi Urine Primer</span>
+</div>
+<span class="font-metadata text-[12px] text-on-surface-variant">Waktu: 38 dtk</span>
+</div>
+<h3 class="font-card-title text-card-title text-primary font-bold mb-space-xs">
+              Kandungan nutrisi bermanfaat yang masih ada di dalam urine primer dan perlu diserap kembali meliputi...
+            </h3>
+<div class="p-space-sm bg-mint-tint/50 rounded-lg border border-secondary/20 flex items-start gap-space-xs mb-space-sm">
+<span class="material-symbols-outlined text-success text-[18px] shrink-0 mt-0.5">check</span>
+<div class="text-[14px]">
+<span class="font-metadata text-on-surface-variant">Jawaban kamu:</span>
+<span class="font-label text-primary font-bold"> Air, glukosa murni, dan asam amino</span>
+</div>
+</div>
+<div class="text-[14px] font-reading text-on-surface bg-canvas/70 p-space-sm rounded-lg border border-divider">
+<span class="font-bold text-success">Alasan Ilmiah:</span> Benar! Glukosa dan asam amino lolos saringan awal karena ukurannya kecil. Tubuh kemudian menyerap kembali 100% nutrisi ini agar tidak terbuang sia-sia bersama urine akhir.
+            </div>
+</article>
+<!-- Soal 4: Belum Tepat (Presented Supportively with Peach & Butter Tints, No Punitive Red) -->
+<article class="bg-surface rounded-xl border-2 border-peach/50 p-space-md transition-shadow hover:shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs pb-space-xs border-b border-peach/30 mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="px-space-sm py-0.5 rounded-full bg-peach-tint text-primary font-label text-[12px] font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-warning">lightbulb</span> Soal 4 • Perlu Sedikit Diulang
+                </span>
+<span class="font-metadata text-metadata text-on-surface-variant">Penyerapan Tubulus (Reabsorpsi)</span>
+</div>
+<span class="font-metadata text-[12px] text-on-surface-variant">Waktu: 1 m 45 dtk</span>
+</div>
+<h3 class="font-card-title text-card-title text-primary font-bold mb-space-xs">
+              Lokasi utama terjadinya penyerapan kembali zat berguna (seperti glukosa dan asam amino) adalah di...
+            </h3>
+<!-- Dual Option Comparison Box -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-xs mb-space-sm">
+<div class="p-space-sm bg-peach-tint/60 rounded-lg border border-peach flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-warning text-[18px] shrink-0 mt-0.5">change_circle</span>
+<div class="text-[13px]">
+<span class="font-metadata text-on-surface-variant block">Jawaban yang kamu pilih:</span>
+<span class="font-label text-primary font-bold">Tubulus Kontortus Distal (TKD)</span>
+</div>
+</div>
+<div class="p-space-sm bg-mint-tint rounded-lg border border-secondary/30 flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-success text-[18px] shrink-0 mt-0.5">check_circle</span>
+<div class="text-[13px]">
+<span class="font-metadata text-on-surface-variant block">Alternatif yang tepat:</span>
+<span class="font-label text-primary font-bold">Tubulus Kontortus Proksimal (TKP)</span>
+</div>
+</div>
+</div>
+<!-- Mimo Butter Tint Supportive Note -->
+<div class="bg-butter-tint/80 border border-butter rounded-xl p-space-md mb-space-sm flex flex-col sm:flex-row items-start gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-butter flex items-center justify-center text-warning shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">psychology</span>
+</div>
+<div class="flex-1 text-[14px]">
+<span class="font-bold text-primary block mb-0.5">Penjelasan Ramah TemanBelajar:</span>
+<p class="font-reading text-on-surface leading-relaxed">
+                  Belum pas? Gapapa banget, kita pelajari polanya! Penyerapan kembali (reabsorpsi) glukosa dan asam amino sebagian besar (hampir 99%) berlangsung di pipa awal yang langsung menyambung dari kapsula bowman, yaitu <span class="font-bold text-primary">Tubulus Proksimal</span>. Sementara itu, <span class="italic">Tubulus Distal</span> lebih aktif dalam proses penambahan zat buangan sisa (augmentasi) dan regulasi garam air.
+                </p>
+</div>
+</div>
+<!-- Action Button for Visual Diagram -->
+<div class="flex flex-wrap items-center justify-between gap-space-xs pt-space-xs">
+<button class="inline-flex items-center gap-space-xs px-space-md py-2 rounded-lg bg-surface border border-divider text-primary font-label text-[13px] hover:bg-canvas transition-colors min-h-[44px]" id="btn-toggle-diagram" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary">image</span>
+<span>Lihat Diagram Alur Nefron (15 dtk)</span>
+</button>
+<span class="font-metadata text-metadata text-outline italic">Rekomendasi adaptif telah disiapkan untuk topik ini →</span>
+</div>
+<!-- Hidden / Expandable Diagram Container -->
+<div class="hidden mt-space-md p-space-md bg-canvas rounded-xl border border-divider flex flex-col items-center gap-space-sm text-center" id="diagram-view">
+<div class="w-full bg-surface p-space-md rounded-lg border border-divider flex flex-col items-center">
+<!-- SVG Diagram Schema of Nephron -->
+<svg class="w-full max-w-md h-36" fill="none" viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+<!-- Glomerulus & Bowman -->
+<circle cx="50" cy="60" fill="#EAF6EB" r="28" stroke="#28583E" stroke-width="2"></circle>
+<circle cx="50" cy="60" fill="#C8E8CE" r="14" stroke="#273B35" stroke-dasharray="3 3" stroke-width="2"></circle>
+<text fill="#112520" font-family="Plus Jakarta Sans" font-size="10" font-weight="bold" text-anchor="middle" x="50" y="64">Filtrasi</text>
+<text fill="#424846" font-family="Plus Jakarta Sans" font-size="10" text-anchor="middle" x="50" y="105">Glomerulus</text>
+<!-- Arrow 1 -->
+<path d="M85 60 H 130" marker-end="url(#arrow)" stroke="#727875" stroke-dasharray="4 4" stroke-width="2"></path>
+<!-- TKP (Reabsorpsi) Highlighted -->
+<rect fill="#FFF5D6" height="48" rx="8" stroke="#FFE7A3" stroke-width="2" width="90" x="135" y="36"></rect>
+<text fill="#61450E" font-family="Plus Jakarta Sans" font-size="11" font-weight="bold" text-anchor="middle" x="180" y="58">TKP (Proksimal)</text>
+<text fill="#61450E" font-family="Plus Jakarta Sans" font-size="9" text-anchor="middle" x="180" y="74">Reabsorpsi Nutrisi ★</text>
+<text fill="#28583E" font-family="Plus Jakarta Sans" font-size="10" font-weight="bold" text-anchor="middle" x="180" y="105">Lokasi Soal 4</text>
+<!-- Arrow 2 -->
+<path d="M230 60 H 275" stroke="#727875" stroke-dasharray="4 4" stroke-width="2"></path>
+<!-- TKD (Augmentasi) -->
+<rect fill="#F0EDFC" height="48" rx="8" stroke="#A8B7F5" stroke-width="1.5" width="85" x="280" y="36"></rect>
+<text fill="#001766" font-family="Plus Jakarta Sans" font-size="11" font-weight="bold" text-anchor="middle" x="322" y="58">TKD (Distal)</text>
+<text fill="#424846" font-family="Plus Jakarta Sans" font-size="9" text-anchor="middle" x="322" y="74">Augmentasi Sisa</text>
+<text fill="#424846" font-family="Plus Jakarta Sans" font-size="10" text-anchor="middle" x="322" y="105">Tahap Lanjut</text>
+</svg>
+<p class="font-metadata text-[12px] text-on-surface-variant mt-2">
+<span class="font-bold text-warning">Tips Ingat:</span> P = Proksimal = Pertama / Penyerapan nutrisi primer. D = Distal = Di ujung / Dibuang zat tambahan.
+                </p>
+</div>
+</div>
+</article>
+<!-- Soal 5: Tepat -->
+<article class="bg-surface rounded-xl border border-divider p-space-md transition-shadow hover:shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs pb-space-xs border-b border-divider/60 mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="px-space-sm py-0.5 rounded-full bg-mint-tint text-success font-label text-[12px] font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Soal 5 • Tepat
+                </span>
+<span class="font-metadata text-metadata text-outline">Analogi Mekanisme Sains</span>
+</div>
+<span class="font-metadata text-[12px] text-on-surface-variant">Waktu: 50 dtk</span>
+</div>
+<h3 class="font-card-title text-card-title text-primary font-bold mb-space-xs">
+              Pada analogi saringan teh tubruk, ampas daun teh yang tertinggal di saringan setara dengan komponen apa di ginjal?
+            </h3>
+<div class="p-space-sm bg-mint-tint/50 rounded-lg border border-secondary/20 flex items-start gap-space-xs mb-space-sm">
+<span class="material-symbols-outlined text-success text-[18px] shrink-0 mt-0.5">check</span>
+<div class="text-[14px]">
+<span class="font-metadata text-on-surface-variant">Jawaban kamu:</span>
+<span class="font-label text-primary font-bold"> Partikel teh tertahan = sel darah &amp; protein; cairan teh = urine primer</span>
+</div>
+</div>
+<div class="text-[14px] font-reading text-on-surface bg-canvas/70 p-space-sm rounded-lg border border-divider">
+<span class="font-bold text-success">Alasan Ilmiah:</span> Analogi yang sangat akurat! Saringan bertindak seperti membran kapiler glomerulus, di mana substansi berukuran lebih besar dari pori-pori akan selalu tertahan di aliran sirkulasi tubuh.
+            </div>
+</article>
+</div>
+</section>
+<!-- RIGHT COLUMN: Adaptive Recommendations & Visual Masteries (4 Columns) -->
+<aside class="lg:col-span-4 flex flex-col gap-space-md">
+<!-- Card 1: Intelligent Next Step Decision Engine -->
+<div class="bg-butter-tint rounded-2xl border-2 border-butter p-space-lg flex flex-col gap-space-sm shadow-sm relative">
+<div class="flex items-center justify-between">
+<span class="px-space-sm py-0.5 rounded-full bg-butter text-warning font-label text-[12px] font-bold inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">auto_awesome</span> Saran Langkah Berikutnya
+            </span>
+<span class="font-metadata text-[12px] text-warning font-semibold inline-flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">timer</span> ~4 Menit
+            </span>
+</div>
+<div class="space-y-1">
+<h3 class="font-section-title text-card-title text-primary font-bold">
+              Ulangi Segmen Reabsorpsi Tubulus
+            </h3>
+<p class="font-reading text-[13px] text-on-surface-variant leading-relaxed">
+              Di nomor 4, konsep letak penyerapan tubulus distal dan proksimal sedikit tertukar. Dengan mengulang segmen 2 lewat <span class="font-semibold text-primary">audio ringkas atau diagram interaktif</span>, konsep ini dijamin makin nempel!
+            </p>
+</div>
+<!-- Primary Recommendation Action Button -->
+<a class="w-full min-h-[46px] rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label font-bold flex items-center justify-center gap-space-xs transition-colors px-space-md text-center shadow-sm" href="#">
+<span>Mulai Rekomendasi Sekarang</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+<!-- Secondary Choice -->
+<div class="flex items-center justify-between pt-space-xs border-t border-butter/60">
+<button class="text-[13px] font-label text-primary hover:text-primary-hover font-semibold inline-flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px]">tune</span> Coba Cara Belajar Lain
+            </button>
+<a class="text-[12px] font-metadata text-on-surface-variant hover:text-primary underline" href="#">
+              Lewati sesi ini
+            </a>
+</div>
+</div>
+<!-- Card 2: Bayesian Knowledge Tracing (BKT) Visualizer -->
+<div class="bg-surface rounded-2xl border border-divider p-space-lg flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<h3 class="font-section-title text-card-title text-primary font-bold">Peta Penguasaan Materi</h3>
+<span class="px-2 py-0.5 rounded bg-mint-tint text-success text-[11px] font-bold">Model BKT</span>
+</div>
+<!-- Progress Bars for Subtopics -->
+<div class="flex flex-col gap-space-md">
+<!-- Topic 1 -->
+<div class="space-y-1">
+<div class="flex justify-between text-[13px] font-label">
+<span class="text-primary font-semibold">1. Anatomi &amp; Letak Nefron</span>
+<span class="text-success font-bold">100% (Mantap)</span>
+</div>
+<div class="w-full h-2 rounded-full bg-divider overflow-hidden">
+<div class="h-full bg-success rounded-full transition-all duration-500" style="width: 100%;"></div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="space-y-1">
+<div class="flex justify-between text-[13px] font-label">
+<span class="text-primary font-semibold">2. Filtrasi di Glomerulus</span>
+<span class="text-success font-bold">100% (Dikuasai)</span>
+</div>
+<div class="w-full h-2 rounded-full bg-divider overflow-hidden">
+<div class="h-full bg-success rounded-full transition-all duration-500" style="width: 100%;"></div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="space-y-1">
+<div class="flex justify-between text-[13px] font-label">
+<span class="text-primary font-semibold">3. Reabsorpsi Tubulus</span>
+<span class="text-warning font-bold">65% (Sedang Berkembang)</span>
+</div>
+<div class="w-full h-2 rounded-full bg-divider overflow-hidden">
+<div class="h-full bg-peach rounded-full transition-all duration-500" style="width: 65%;"></div>
+</div>
+</div>
+</div>
+<div class="p-space-sm bg-canvas rounded-xl border border-divider text-[12px] font-reading text-on-surface-variant leading-relaxed">
+<span class="font-bold text-primary">Catatan Empatis:</span> Perhitungan estimasi otomatis disesuaikan dari pola jawaban latihanmu tanpa menghakimi atau memberi label.
+          </div>
+</div>
+<!-- Card 3: Ask Mimo Help Box -->
+<div class="bg-lavender-tint rounded-2xl border border-lavender p-space-lg flex flex-col gap-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="w-8 h-8 rounded-full bg-surface flex items-center justify-center text-on-tertiary-fixed-variant shrink-0">
+<span class="material-symbols-outlined text-[18px]">forum</span>
+</span>
+<span class="font-label text-card-title text-primary font-bold">Bantuan Ramah Mimo</span>
+</div>
+<p class="font-reading text-[13px] text-on-surface-variant leading-relaxed">
+            Masih bingung kenapa jawaban nomor 4 begitu? Atau pengen analogi lain yang lebih simpel? Tanya langsung ke Mimo!
+          </p>
+<button class="w-full min-h-[44px] rounded-xl bg-surface border border-lavender hover:bg-surface-container text-primary font-label text-label font-bold flex items-center justify-center gap-space-xs transition-colors" id="btn-ask-mimo" type="button">
+<span class="material-symbols-outlined text-[18px] text-on-tertiary-fixed-variant">chat_bubble</span>
+<span>Tanya Mimo tentang Soal Ini</span>
+</button>
+</div>
+<!-- Card 4: Study Note Reminder Widget -->
+<div class="bg-surface rounded-2xl border border-divider p-space-md flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-mint-tint flex items-center justify-center text-success shrink-0">
+<span class="material-symbols-outlined text-[20px]">sticky_note_2</span>
+</div>
+<div class="flex-1 text-[13px]">
+<p class="font-label text-primary font-bold">Catatan Belajar Otomatis</p>
+<p class="font-metadata text-on-surface-variant text-[12px]">Poin kunci filtrasi telah disalin ke buku catatan digitalmu.</p>
+</div>
+<button class="p-2 text-outline hover:text-primary transition-colors" title="Buka Catatan" type="button">
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+</div>
+</aside>
+</div>
+<!-- Sticky / Bottom Floating Action Bar -->
+<div class="w-full bg-surface rounded-2xl border border-divider p-space-md mt-space-md shadow-sm">
+<div class="flex flex-col sm:flex-row items-center justify-between gap-space-md">
+<a class="inline-flex items-center gap-space-xs font-label text-label text-on-surface-variant hover:text-primary transition-colors py-2" href="#">
+<span class="material-symbols-outlined text-[18px]">keyboard_backspace</span>
+<span>Kembali ke Rangkuman Bab 4</span>
+</a>
+<div class="flex flex-wrap items-center gap-space-sm w-full sm:w-auto justify-end">
+<button class="flex-1 sm:flex-initial min-h-[44px] px-space-md py-2 rounded-xl bg-surface border border-divider hover:bg-canvas text-primary font-label text-label font-semibold transition-colors flex items-center justify-center gap-space-xs" id="btn-save-progress" type="button">
+<span class="material-symbols-outlined text-[18px]">bookmark_add</span>
+<span>Simpan ke Riwayat Progres</span>
+</button>
+<a class="flex-1 sm:flex-initial min-h-[44px] px-space-lg py-2.5 rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label font-bold transition-colors flex items-center justify-center gap-space-xs text-center shadow-sm" href="#">
+<span>Lanjut ke Rekomendasi Belajar (Layar 19)</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Micro-interaction: Diagram Toggle on Question 4
+  const toggleBtn = document.getElementById('btn-toggle-diagram');
+  const diagramView = document.getElementById('diagram-view');
+  
+  if (toggleBtn && diagramView) {
+    toggleBtn.addEventListener('click', () => {
+      const isHidden = diagramView.classList.contains('hidden');
+      if (isHidden) {
+        diagramView.classList.remove('hidden');
+        toggleBtn.innerHTML = '<span class="material-symbols-outlined text-[18px] text-secondary">visibility_off</span><span>Tutup Diagram Penjelasan</span>';
+      } else {
+        diagramView.classList.add('hidden');
+        toggleBtn.innerHTML = '<span class="material-symbols-outlined text-[18px] text-secondary">image</span><span>Lihat Diagram Alur Nefron (15 dtk)</span>';
+      }
+    });
+  }
+
+  // Micro-interaction: Font Size Toggle for Accessibility
+  const fontBtn = document.getElementById('btn-font-toggle');
+  let isEnlarged = false;
+  if (fontBtn) {
+    fontBtn.addEventListener('click', () => {
+      isEnlarged = !isEnlarged;
+      const readingTexts = document.querySelectorAll('.font-reading');
+      readingTexts.forEach(el => {
+        if (isEnlarged) {
+          el.style.fontSize = '1.18rem';
+          el.style.lineHeight = '1.8';
+        } else {
+          el.style.fontSize = '';
+          el.style.lineHeight = '';
+        }
+      });
+      fontBtn.classList.toggle('bg-mint-tint', isEnlarged);
+    });
+  }
+
+  // Micro-interaction: Save Progress Feedback
+  const saveBtn = document.getElementById('btn-save-progress');
+  if (saveBtn) {
+    saveBtn.addEventListener('click', () => {
+      saveBtn.innerHTML = '<span class="material-symbols-outlined text-[18px] text-success">check</span><span>Tersimpan!</span>';
+      saveBtn.classList.add('bg-mint-tint', 'border-success');
+      setTimeout(() => {
+        saveBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">bookmark_add</span><span>Simpan ke Riwayat Progres</span>';
+        saveBtn.classList.remove('bg-mint-tint', 'border-success');
+      }, 2500);
+    });
+  }
+
+  // Micro-interaction: Ask Mimo Quick Prompt
+  const askMimoBtn = document.getElementById('btn-ask-mimo');
+  if (askMimoBtn) {
+    askMimoBtn.addEventListener('click', () => {
+      askMimoBtn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">refresh</span><span>Menghubungi Mimo...</span>';
+      setTimeout(() => {
+        alert('Mimo: "Halo Rian! Ingat prinsip sederhana ini: Saring di awal (Glomerulus), Ambil kembali yang enak-enak di dekatnya (Proksimal), lalu Buang sisanya di ujung (Distal). Gampang kan?"');
+        askMimoBtn.innerHTML = '<span class="material-symbols-outlined text-[18px] text-on-tertiary-fixed-variant">chat_bubble</span><span>Tanya Mimo tentang Soal Ini</span>';
+      }, 600);
+    });
+  }
+</script></main>
+<!-- Clean Footer -->
+<footer class="w-full bg-surface border-t border-divider py-space-md">
+<div class="max-w-[1200px] mx-auto px-margin flex flex-col md:flex-row items-center justify-between gap-2 text-metadata font-metadata text-[13px] text-on-surface-variant">
+<div>© 2024 TemanBelajar • Pendamping belajar adaptif &amp; inklusif</div>
+<div class="flex items-center gap-4">
+<a class="hover:text-primary transition-colors" href="#">Pusat Bantuan</a>
+<span>•</span>
+<a class="hover:text-primary transition-colors" href="#">Panduan Aksesibilitas</a>
+<span>•</span>
+<a class="hover:text-primary transition-colors" href="#">Privasi</a>
+</div>
+</div>
+</footer>
+
+
+</body></html>

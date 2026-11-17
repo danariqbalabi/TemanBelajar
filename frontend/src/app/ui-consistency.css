@@ -1,0 +1,264 @@
+/* Shared visual roles across the 24 screens and their dialogs. */
+.stitch-shell {
+  --ui-font: "Plus Jakarta Sans", system-ui, sans-serif;
+  --ui-heading-font: "Nunito", system-ui, sans-serif;
+  --ui-ink: #273b35;
+  --ui-divider: #e5e8e1;
+  --ui-header-height: var(--app-header-height, 80px);
+  font-family: var(--ui-font);
+  font-size: 16px;
+  line-height: 1.6;
+}
+.final-design
+  :is(
+    .ui-page-title,
+    .ui-hero-title,
+    .ui-section-title,
+    .ui-card-title,
+    .ui-label-title
+  ),
+.final-design .stitch-reason :is(h2, h3) {
+  font-family: var(--ui-heading-font);
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+.final-design .ui-page-title {
+  font-size: clamp(1.625rem, 2.5vw, 2rem);
+}
+.final-design .ui-section-title,
+.final-design .stitch-reason h2 {
+  font-size: 1.375rem;
+}
+.final-design .ui-card-title,
+.final-design .stitch-reason h3 {
+  font-size: 1.125rem;
+}
+.final-design .ui-label-title {
+  font-size: 1rem;
+}
+.final-design .ui-hero-title {
+  font-size: clamp(2.25rem, 4.4vw, 3.5rem);
+  line-height: 1.12;
+  font-weight: 900;
+}
+.final-screen-1 .ui-section-title {
+  font-size: clamp(1.625rem, 3vw, 2.25rem);
+}
+.final-design :is(button, input, select, textarea) {
+  font-family: var(--ui-font);
+}
+/* The text preview and reading surface retain their chosen font and spacing. */
+.final-design :is(.reference-reading, [data-reading-preview]) {
+  overflow-wrap: anywhere;
+}
+.final-design .font-preview-system {
+  font-family: system-ui, sans-serif;
+}
+.final-design .brand-logo {
+  display: block;
+  width: 144px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.final-design .ui-container {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 32px;
+}
+.final-design .ui-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  font-size: 13px;
+}
+.final-design .ui-breadcrumb > * {
+  flex-shrink: 0;
+  max-width: 100%;
+}
+.final-app #main .screen-page {
+  padding-top: 24px;
+}
+.final-design .screen-page > div > .ui-container:first-child {
+  padding-top: 0;
+}
+.final-design :is(.app-brand, .standalone-brand) {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  min-height: 44px;
+}
+.final-design .standalone-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: auto;
+  background: white;
+  border-bottom: 1px solid var(--ui-divider);
+}
+.final-design .standalone-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  max-width: 1200px;
+  min-height: 80px;
+  margin: 0 auto;
+  padding: 12px 32px;
+}
+.final-design .standalone-header-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 14px;
+}
+.final-design .standalone-header-actions button {
+  min-height: 44px;
+  padding: 8px 12px;
+  border-radius: 12px;
+}
+.final-design .standalone-header-actions button:hover {
+  background: #eaf6eb;
+}
+.onboarding-shell > .final-onboarding {
+  padding-top: 24px;
+}
+.onboarding-shell > [role="alert"] {
+  padding: 16px 24px 0;
+  max-width: 1200px;
+  margin: auto;
+}
+.final-app .reader-toolbar {
+  top: var(--ui-header-height);
+  z-index: 30;
+  background: white;
+}
+.final-app .reader-toolbar button[aria-pressed="false"] {
+  background: transparent;
+}
+.final-app .reader-toolbar button[aria-pressed="true"] {
+  background: #c8e8ce;
+}
+.final-app .reader-sidebar {
+  position: static;
+}
+@media (min-width: 768px) {
+  .final-app .reader-toolbar > .ui-container,
+  .final-app .reader-toolbar > .ui-container > div {
+    min-width: 0;
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+}
+.final-app:has(.stitch-reader[data-zen="true"]) {
+  --ui-header-height: 0px;
+}
+.final-app:has(.stitch-reader[data-zen="true"]) > .app-header {
+  display: none;
+}
+.final-app .stitch-reader[data-zen="true"] .reader-content-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+.final-app .stitch-reader[data-zen="true"] .reader-content-grid > article {
+  grid-column: 1 / -1;
+}
+.final-design .screen-action-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  background: white;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+}
+.final-app #main > .working {
+  position: static;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #fff5d6;
+  font-size: 14px;
+}
+.final-design .stitch-reason {
+  position: fixed;
+  inset: 0;
+  width: min(560px, calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 48px);
+  margin: auto;
+  padding: 24px;
+  overflow-y: auto;
+  border: 1px solid var(--ui-divider);
+  border-radius: 20px;
+  background: white;
+  color: var(--ui-ink);
+  font-family: var(--ui-font);
+  font-size: 16px;
+  line-height: 1.6;
+  box-shadow: 0 20px 80px #11252033;
+}
+.final-design .stitch-reason :is(h2, h3) {
+  margin-bottom: 12px;
+}
+.final-design .stitch-reason :is(p, article) {
+  margin-bottom: 16px;
+}
+.final-design .stitch-reason button {
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--ui-ink);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+}
+@media (max-width: 1199px) {
+  .final-app .app-header-inner {
+    grid-template-rows: 44px 52px;
+    row-gap: 0;
+  }
+  .final-design .standalone-header-inner {
+    padding-inline: 24px;
+  }
+  .final-design .ui-container {
+    padding-inline: 24px;
+  }
+}
+@media (max-width: 767px) {
+  .final-app .reader-sidebar {
+    position: static;
+  }
+}
+@media (max-width: 639px) {
+  .final-design .screen-action-bar {
+    position: static;
+  }
+  .final-design .standalone-header-inner {
+    padding-inline: 16px;
+  }
+  .final-design .brand-logo,
+  .final-design .app-brand .brand-logo {
+    width: 132px;
+  }
+  .final-design .ui-section-title {
+    font-size: 1.25rem;
+  }
+  .final-design .standalone-header-actions {
+    gap: 8px;
+    font-size: 12px;
+  }
+  .final-design .standalone-header-actions button {
+    padding-inline: 8px;
+  }
+  .stitch-shell .px-margin {
+    padding-inline: 16px;
+  }
+  .final-design .ui-container {
+    padding-inline: 16px;
+  }
+}

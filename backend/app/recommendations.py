@@ -28,6 +28,12 @@ def observations(data: dict, material_id: str) -> dict:
 def recommend(data: dict, material_id: str, available_minutes: int) -> dict:
     material = get_material(data, material_id)
     evidence = observations(data, material_id)
+    answered_questions = {
+        qid
+        for attempt in data["attempts"].values()
+        if attempt["material_id"] == material_id
+        for qid in attempt["answers"]
+    }
     completed = set()
     for session in data["sessions"].values():
         if session["material_id"] == material_id:
@@ -42,9 +48,13 @@ def recommend(data: dict, material_id: str, available_minutes: int) -> dict:
         elif mastery["mastery"] is not None and mastery["mastery"] < 0.5:
             action = "REVIEW"
             reason = "Estimasi penguasaan dari riwayat latihan masih rendah. Kamu bisa meninjau contoh lagi."
-        elif concept.id in completed and not answers:
+        elif concept.id in completed and any(
+            q.id not in answered_questions
+            for q in material.questions
+            if q.concept_id == concept.id
+        ):
             action = "PRACTICE"
-            reason = "Kamu sudah menyelesaikan bacaan ini. Latihan dapat membantu mengecek pemahaman."
+            reason = "Bacaan ini sudah selesai, tetapi masih ada soal yang belum dijawab. Lanjutkan latihan untuk mengecek pemahaman."
         elif concept.id not in completed and set(concept.prerequisites) <= completed:
             action = "ADVANCE"
             reason = "Konsep ini sesuai urutan materi dan prasyarat bacaannya sudah terpenuhi."

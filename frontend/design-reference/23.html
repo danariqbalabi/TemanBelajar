@@ -1,0 +1,1042 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="web_standard" name="shell-type">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "divider": "#E5E8E1",
+            "on-tertiary-fixed-variant": "#2f408f",
+            "tertiary-fixed-dim": "#b9c3ff",
+            "on-surface": "#131e18",
+            "success": "#28583E",
+            "on-secondary-fixed": "#052011",
+            "secondary-fixed-dim": "#afceb5",
+            "on-surface-variant": "#424846",
+            "secondary-container": "#c8e8ce",
+            "warning": "#61450E",
+            "on-secondary": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "on-primary-container": "#8fa59d",
+            "secondary-fixed": "#caead0",
+            "primary-container": "#273b35",
+            "on-primary-fixed": "#0b1f1a",
+            "lavender-tint": "#F0EDFC",
+            "canvas": "#F8F7F2",
+            "surface-container-high": "#deebe2",
+            "inverse-surface": "#28332d",
+            "mint-tint": "#EAF6EB",
+            "on-error-container": "#93000a",
+            "surface": "#FFFFFF",
+            "on-primary-fixed-variant": "#374b44",
+            "on-background": "#131e18",
+            "butter": "#FFE7A3",
+            "surface-container-lowest": "#ffffff",
+            "on-secondary-container": "#4d6954",
+            "error-container": "#ffdad6",
+            "on-tertiary-container": "#8a9bf0",
+            "lavender": "#A8B7F5",
+            "on-secondary-fixed-variant": "#314d3a",
+            "surface-container-low": "#eaf7ed",
+            "primary-fixed": "#d1e8df",
+            "surface-variant": "#d9e6dc",
+            "primary": "#112520",
+            "surface-dim": "#d0ddd4",
+            "surface-container-highest": "#d9e6dc",
+            "control-border": "#68756C",
+            "on-error": "#ffffff",
+            "error": "#892E32",
+            "butter-tint": "#FFF5D6",
+            "tertiary-fixed": "#dde1ff",
+            "surface-bright": "#f0fdf3",
+            "background": "#f0fdf3",
+            "primary-hover": "#1B3029",
+            "surface-tint": "#4e635c",
+            "secondary": "#496550",
+            "on-tertiary-fixed": "#001257",
+            "primary-pressed": "#13251F",
+            "contrast-ink": "#101A16",
+            "inverse-on-surface": "#e7f4eb",
+            "outline": "#727875",
+            "tertiary-container": "#1d2f7e",
+            "peach-tint": "#FFF0E6",
+            "error-surface": "#FAE7E5",
+            "surface-container": "#e4f1e8",
+            "inverse-primary": "#b5cbc3",
+            "on-primary": "#ffffff",
+            "primary-fixed-dim": "#b5cbc3",
+            "tertiary": "#001766",
+            "outline-variant": "#c2c8c4",
+            "peach": "#FFCA9D"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "margin": "2rem",
+            "gutter-mobile": "0.75rem",
+            "space-xl": "2rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "gutter-tablet": "1rem",
+            "space-xs": "0.25rem",
+            "margin-tablet": "1.5rem",
+            "margin-mobile": "1rem"
+          },
+          fontFamily: {
+            "mimo-voice": ["Nunito"],
+            "section-title": ["Plus Jakarta Sans"],
+            "reading": ["Plus Jakarta Sans"],
+            "metadata": ["Plus Jakarta Sans"],
+            "card-title": ["Plus Jakarta Sans"],
+            "body": ["Plus Jakarta Sans"],
+            "page-title": ["Plus Jakarta Sans"],
+            "display-mobile": ["Nunito"],
+            "display": ["Nunito"],
+            "label": ["Plus Jakarta Sans"],
+            "page-title-mobile": ["Plus Jakarta Sans"]
+          },
+          fontSize: {
+            "mimo-voice": ["1.125rem", { "lineHeight": "1.45", "fontWeight": "700" }],
+            "section-title": ["1.375rem", { "lineHeight": "1.35", "fontWeight": "700" }],
+            "reading": ["1.125rem", { "lineHeight": "1.7", "fontWeight": "400" }],
+            "metadata": ["0.875rem", { "lineHeight": "1.5", "fontWeight": "400" }],
+            "card-title": ["1.125rem", { "lineHeight": "1.4", "fontWeight": "700" }],
+            "body": ["1rem", { "lineHeight": "1.6", "fontWeight": "400" }],
+            "page-title": ["2rem", { "lineHeight": "1.25", "fontWeight": "700" }],
+            "display-mobile": ["2.25rem", { "lineHeight": "1.15", "fontWeight": "800" }],
+            "display": ["3.5rem", { "lineHeight": "1.08", "fontWeight": "800" }],
+            "label": ["0.875rem", { "lineHeight": "1.5", "fontWeight": "600" }],
+            "page-title-mobile": ["1.625rem", { "lineHeight": "1.3", "fontWeight": "700" }]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-canvas font-body text-on-surface antialiased min-h-screen flex flex-col justify-between">
+<!-- Top Navigation Bar & Sub-Header -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface/95 backdrop-blur-md border-b border-divider">
+<div class="h-20 max-w-[1200px] mx-auto px-margin flex items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-lg">
+<a class="flex items-center gap-space-sm" data-path="beranda" href="#">
+<img alt="Logo TemanBelajar" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrC9WRFa0OUQ_-pgcRatJM4G8Z2t3PUshKHDwWT2rr2YD7AaeVspslzqgNxHufC8CljRMd-Gj63vCZP_rw1QKIJWO4VQ5Pczr7EiHIcss88wFWVkcQHWRLrtuTbp8NaTx2RHC9RhKEB-inLD6k2JJ4MGYYfY2tYGKmSPyCZRBoAxUYiHxROKOVoHt1jplTYiRqZphBEXBxLLDG5BtgBmofqfpXVteVPdUWYxxKCX03E">
+<span class="font-display font-black text-card-title text-primary tracking-tight hidden sm:inline">TemanBelajar</span>
+</a>
+<div class="hidden md:flex items-center gap-space-xs pl-space-xs pr-space-sm py-1 bg-mint-tint rounded-full border border-secondary/20">
+<span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+<span class="text-[12px] font-label font-bold text-success">Sesi Aktif</span>
+<span class="text-[12px] font-metadata text-on-surface-variant">• IPA: Sistem Ekskresi</span>
+</div>
+<nav class="hidden xl:flex items-center gap-space-xs" data-active-classes="bg-secondary-container text-on-secondary-fixed font-bold">
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="beranda" href="#">Beranda</a>
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="rencana-belajar" href="#">Rencana Belajar</a>
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="materi-saya" href="#">Materi Saya</a>
+<a class="px-space-md py-space-sm rounded-lg bg-secondary-container text-on-secondary-fixed font-label text-label font-bold" data-path="mulai-belajar" href="#">Mulai Belajar</a>
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="progres" href="#">Progres</a>
+<a class="px-space-md py-space-sm rounded-lg text-on-surface-variant font-label text-label hover:bg-surface-container hover:text-on-surface transition-colors" data-path="pengaturan" href="#">Pengaturan</a>
+</nav>
+</div>
+<div class="flex items-center gap-space-sm">
+<button aria-label="Mode Aksesibilitas dan Kontras" class="flex items-center gap-space-xs px-space-md py-space-xs rounded-full border border-divider bg-surface hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors text-label font-label" type="button">
+<span class="material-symbols-outlined text-[18px]">accessibility_new</span>
+<span class="hidden md:inline text-metadata font-metadata">Aksesibilitas</span>
+</button>
+<button aria-label="Status Sesi Tenang" class="relative p-space-xs rounded-full hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-secondary-fixed ring-2 ring-surface"></span>
+</button>
+<div class="h-6 w-[1px] bg-divider mx-space-xs hidden sm:block"></div>
+<div class="flex items-center gap-space-sm pl-space-xs">
+<div class="text-right hidden sm:block leading-tight">
+<p class="font-label text-label text-primary font-bold">Cece Manda</p>
+<p class="text-metadata font-metadata text-outline text-[12px]">SMP Kelas 8</p>
+</div>
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[18px]">person</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Sub-header Sesi Belajar / Hasil Adaptif -->
+<div class="bg-surface-container-low/60 border-t border-divider py-2">
+<div class="max-w-[1200px] mx-auto px-margin flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<span class="w-2.5 h-2.5 rounded-full bg-success"></span>
+<span class="font-label text-label text-primary font-bold">Hasil Latihan:</span>
+<span class="font-metadata text-metadata text-on-surface-variant">IPA SMP Kelas 8 Bab 4 (Sistem Ekskresi)</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="px-space-md py-1.5 rounded-lg border border-divider bg-surface hover:bg-surface-container text-primary font-label text-label transition-colors" type="button">
+Kembali ke Materi
+</button>
+<button class="px-space-md py-1.5 rounded-lg bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label transition-colors" type="button">
+Simpan Hasil
+</button>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="w-full pt-[8.25rem] bg-canvas flex-1"><div class="flex flex-col w-full">
+<!-- Interactive Style Injector for Live Preview & Toggle Interactions -->
+<style>
+    .theme-preview-cream { background-color: #F8F7F2; color: #112520; }
+    .theme-preview-white { background-color: #FFFFFF; color: #112520; }
+    .theme-preview-high-contrast { background-color: #101A16; color: #FFE7A3; }
+    .theme-preview-dimmed { background-color: #273B35; color: #EAF7ED; }
+    
+    .font-preview-default { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-preview-lexend { font-family: system-ui, -apple-system, sans-serif; letter-spacing: 0.03em; }
+    .font-preview-nunito { font-family: 'Nunito', sans-serif; }
+    .font-preview-system { font-family: ui-monospace, SFMono-Regular, monospace; }
+
+    .line-ruler-mint { background: linear-gradient(to bottom, rgba(200, 232, 206, 0.45) 0%, rgba(200, 232, 206, 0.45) 100%); }
+    .line-ruler-butter { background: linear-gradient(to bottom, rgba(255, 231, 163, 0.45) 0%, rgba(255, 231, 163, 0.45) 100%); }
+    .line-ruler-lavender { background: linear-gradient(to bottom, rgba(168, 183, 245, 0.35) 0%, rgba(168, 183, 245, 0.35) 100%); }
+
+    /* Custom Switch & Range inputs */
+    input[type=range]::-webkit-slider-thumb {
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #112520;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(17, 37, 32, 0.25);
+    }
+  </style>
+<!-- Top Hero Header Section -->
+<section class="max-w-[1200px] w-full mx-auto px-margin pt-space-lg pb-space-md">
+<!-- Breadcrumb & Status Pill -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm mb-space-sm">
+<nav class="flex items-center gap-space-xs text-metadata font-metadata text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#">Beranda</a>
+<span>›</span>
+<a class="hover:text-primary transition-colors" href="#">Pengaturan</a>
+<span>›</span>
+<span class="font-label text-primary font-semibold">Aksesibilitas &amp; Kenyamanan Belajar</span>
+</nav>
+<div class="flex items-center gap-space-xs px-3 py-1 rounded-full bg-secondary-container text-on-secondary-fixed text-[12px] font-label font-bold">
+<span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Tersimpan Otomatis di Perangkat Ini</span>
+</div>
+</div>
+<!-- Page Title & Top Action Bar -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md pb-space-md border-b border-divider">
+<div class="max-w-2xl">
+<div class="flex items-center gap-space-xs mb-1">
+<span class="px-2.5 py-0.5 rounded-full bg-mint-tint text-success font-label text-[11px] uppercase tracking-wider font-extrabold">Alat Inklusif &amp; Kognitif</span>
+<span class="px-2.5 py-0.5 rounded-full bg-butter-tint text-warning font-label text-[11px] uppercase tracking-wider font-extrabold">WCAG 2.2 Level AA</span>
+</div>
+<h1 class="font-page-title text-page-title text-primary tracking-tight">Pengaturan Aksesibilitas</h1>
+<p class="font-body text-body text-on-surface-variant mt-1.5 leading-relaxed">
+          Atur tampilan dan alat bantu belajar yang paling pas buat energimu. Bebas dari label rumit—semua perubahan langsung terlihat di kotak pratinjau bacaan di bawah!
+        </p>
+</div>
+<div class="flex items-center gap-space-sm shrink-0">
+<button class="px-space-md py-2.5 rounded-xl border border-control-border bg-surface hover:bg-canvas text-primary font-label text-label flex items-center gap-1.5 transition-all active:scale-95 shadow-sm" id="btn-reset-defaults" type="button">
+<span class="material-symbols-outlined text-[18px]">restart_alt</span>
+<span>Kembalikan Default</span>
+</button>
+<button class="px-space-lg py-2.5 rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label flex items-center gap-1.5 transition-all shadow-sm" id="btn-save-settings" type="button">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">bookmark_check</span>
+<span>Simpan Preferensi</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Main Workstation Layout: 12 Col Desktop Grid -->
+<div class="max-w-[1200px] w-full mx-auto px-margin pb-20">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT / TOP COLUMN: Sticky Live Reading Preview Box (5 cols) -->
+<aside class="lg:col-span-5 lg:sticky lg:top-[9rem] flex flex-col gap-space-md order-1 lg:order-2">
+<!-- Interactive Live Sandbox Card -->
+<div class="bg-surface rounded-2xl p-space-md border border-divider shadow-sm relative overflow-hidden">
+<!-- Box Header -->
+<div class="flex items-center justify-between pb-space-sm mb-space-sm border-b border-divider">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[20px]" style="font-variation-settings: 'FILL' 1;">visibility</span>
+<span class="font-card-title text-card-title text-primary font-bold">Pratinjau Teks Nyata</span>
+</div>
+<span class="text-[12px] font-metadata text-on-surface-variant bg-canvas px-2 py-0.5 rounded-md">Live Preview</span>
+</div>
+<!-- The Live Article Reading Surface -->
+<div class="theme-preview-cream font-preview-default rounded-xl p-space-md transition-all duration-200 border border-divider/60 min-h-[310px] flex flex-col justify-between" id="preview-stage" style="font-size: 18px; line-height: 1.7; letter-spacing: 0em;">
+<div class="space-y-space-sm max-w-[65ch]" id="preview-text-container">
+<!-- Badge context inside reading -->
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-primary/10 text-primary uppercase">IPA SMP Kelas 8</span>
+<span class="text-[12px] opacity-75">Bab 4 • Sistem Ekskresi</span>
+</div>
+<!-- Main Heading in preview -->
+<h2 class="font-bold text-[1.25em] leading-snug" id="preview-title">Proses Filtrasi Darah pada Ginjal</h2>
+<!-- Paragraph with glossaries and line highlighter ruler applied -->
+<p class="transition-all relative" id="preview-paragraph">
+                Darah yang mengalir dari aorta masuk ke arteriola aferen menuju 
+                <span class="glossary-term underline decoration-dotted decoration-secondary decoration-2 font-semibold cursor-pointer text-secondary px-0.5 rounded hover:bg-secondary-container/40" title="Klik untuk penjelasan: Gumpalan kapiler tempat penyaringan darah">glomerulus</span>.
+                Tekanan darah yang tinggi mendorong cairan dan molekul kecil menyaring melalui dinding membran berpori.
+                <span class="line-ruler-mint rounded px-1 transition-colors" id="preview-highlight-sentence">
+                  Hasil saringan awal ini kemudian ditampung di dalam kapsul Bowman sebagai urin primer.
+                </span>
+                Zat bermanfaat seperti glukosa dan asam amino selanjutnya akan diserap kembali di saluran nefron.
+              </p>
+</div>
+<!-- Mini Reading Interactive Controls & Playback Preview -->
+<div class="mt-space-md pt-space-sm border-t border-divider/40 flex flex-wrap items-center justify-between gap-2">
+<button class="px-3 py-1.5 rounded-lg bg-primary text-on-primary text-metadata font-label flex items-center gap-1.5 hover:bg-primary-hover active:scale-95 transition-transform text-xs" id="preview-speak-btn" type="button">
+<span class="material-symbols-outlined text-[16px]">volume_up</span>
+<span id="speak-btn-label">Coba Bacakan Kalimat Ini</span>
+</button>
+<div class="flex items-center gap-1 text-[12px] text-on-surface-variant font-metadata">
+<span class="material-symbols-outlined text-[16px] text-success">straighten</span>
+<span id="preview-ruler-state">Penggaris Mint Aktif</span>
+</div>
+</div>
+</div>
+<!-- Micro Hint -->
+<p class="font-metadata text-metadata text-outline mt-space-xs text-[12px] flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">info</span>
+            Ubah opsi di sisi kiri untuk melihat langsung perbedaannya pada teks di atas.
+          </p>
+</div>
+<!-- Mimo Support Companion Card -->
+<div class="bg-mint-tint rounded-2xl p-space-md border border-secondary-container/80 relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="z-10 max-w-[70%]">
+<div class="flex items-center gap-1.5 mb-1 text-success font-label text-[12px] font-bold">
+<span class="material-symbols-outlined text-[16px]">psychology_alt</span>
+<span>Pesan dari Mimo</span>
+</div>
+<p class="font-mimo-voice text-mimo-voice text-primary text-[15px] leading-snug">"Atur sesukamu ya, Cece Manda! Belajar itu bukan soal cepat-cepatan, tapi soal nemu ritme yang bikin kepalamu adem dan fokus."</p>
+<div class="mt-space-sm inline-flex items-center gap-1 bg-surface/80 px-2.5 py-1 rounded-full text-[11px] font-metadata text-on-surface font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-success"></span>
+<span>Ramah Kognitif &amp; Tanpa Tekanan</span>
+</div>
+</div>
+<!-- Authentic Mimo Mascot without synthetic gray boxes -->
+<div class="shrink-0 w-28 -mr-2 -mb-4 self-end">
+<img alt="Mimo sang bunglon mint melambaikan tangan dengan ramah" class="w-full h-auto object-contain pointer-events-none transform translate-y-1" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAbWT2DemVmbic7vfKTGlVM1djmd-_nLHa2Op7Xe-Q2ILV9E512arG5YYUWvu5cd9hHy-1_kXZ_weYIyCvKxKfiH-3x-mQEEAzBIEjX_CMCJFPYfi8zASFwANB-zKnmA81mCmG5ixemn3gSIbFGOXQPjWcGjYR8cersA6o7fIcfBGjePTZBg_qvzjnezJ9fz5mHRpTPDOTPyyDYQ_p7mmI9zvNVELwnC36MjlzX8CA4JQWvPfawPNu">
+</div>
+</div>
+</div>
+<!-- Quick Accessibility Presets Card -->
+<div class="bg-surface rounded-2xl p-space-md border border-divider">
+<h2 class="font-card-title text-card-title text-primary font-bold mb-1">Preset Cepat Ramah Belajar</h2>
+<p class="font-metadata text-metadata text-on-surface-variant mb-space-sm text-[13px]">Pilih profil instan sesuai kebutuhan belajarmu hari ini:</p>
+<div class="grid grid-cols-2 gap-space-xs">
+<button class="p-2.5 rounded-xl border border-divider hover:border-secondary bg-surface-container-low/40 text-left transition-all hover:bg-mint-tint/50" id="preset-dyslexia" type="button">
+<span class="font-label text-label text-primary font-bold block text-xs">📖 Ramah Disleksia</span>
+<span class="font-metadata text-metadata text-on-surface-variant text-[11px]">Font Lexend + Renggang</span>
+</button>
+<button class="p-2.5 rounded-xl border border-divider hover:border-secondary bg-surface-container-low/40 text-left transition-all hover:bg-mint-tint/50" id="preset-focus" type="button">
+<span class="font-label text-label text-primary font-bold block text-xs">🎯 Fokus Tenang</span>
+<span class="font-metadata text-metadata text-on-surface-variant text-[11px]">Penggaris + Redup Gangguan</span>
+</button>
+<button class="p-2.5 rounded-xl border border-divider hover:border-secondary bg-surface-container-low/40 text-left transition-all hover:bg-mint-tint/50" id="preset-low-vision" type="button">
+<span class="font-label text-label text-primary font-bold block text-xs">🔍 Huruf Ekstra Besar</span>
+<span class="font-metadata text-metadata text-on-surface-variant text-[11px]">Teks 22px + Spasi Lapang</span>
+</button>
+<button class="p-2.5 rounded-xl border border-divider hover:border-secondary bg-surface-container-low/40 text-left transition-all hover:bg-mint-tint/50" id="preset-night" type="button">
+<span class="font-label text-label text-primary font-bold block text-xs">🌙 Redup Malam</span>
+<span class="font-metadata text-metadata text-on-surface-variant text-[11px]">Kontras Lembut Mata Lelah</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- RIGHT / MAIN COLUMN: Deep Accessibility Controls & Options (7 cols) -->
+<main class="lg:col-span-7 flex flex-col gap-space-lg order-2 lg:order-1">
+<!-- KELOMPOK 1: Tampilan Teks & Bacaan -->
+<section aria-labelledby="section-typography" class="bg-surface rounded-2xl p-space-lg border border-divider shadow-sm">
+<div class="flex items-center gap-space-sm mb-space-md pb-space-xs border-b border-divider">
+<div class="w-9 h-9 rounded-xl bg-mint-tint text-success flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">format_size</span>
+</div>
+<div>
+<h2 class="font-section-title text-section-title text-primary" id="section-typography">1. Tampilan Teks &amp; Bacaan</h2>
+<p class="font-metadata text-metadata text-on-surface-variant">Sesuaikan jenis huruf, ukuran, dan jarak baris agar mata tidak cepat lelah.</p>
+</div>
+</div>
+<div class="space-y-space-lg">
+<!-- Jenis Font (Font Selection) -->
+<div>
+<label class="block font-label text-label text-primary mb-space-xs font-bold">Jenis Huruf (Font)</label>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-xs" id="font-family-selector">
+<button class="font-option-btn p-3 rounded-xl border-2 border-primary bg-secondary-container/40 text-left flex items-start justify-between" data-font="default" type="button">
+<div>
+<span class="font-bold text-primary block text-[15px]">Plus Jakarta Sans</span>
+<span class="text-xs font-metadata text-on-surface-variant">Standar jernih ramah mata (Default)</span>
+</div>
+<span class="material-symbols-outlined text-primary text-[18px] check-indicator">check_circle</span>
+</button>
+<button class="font-option-btn p-3 rounded-xl border border-divider bg-surface hover:bg-surface-container-low text-left flex items-start justify-between" data-font="lexend" type="button">
+<div>
+<span class="font-bold text-primary block text-[15px] tracking-wide">Lexend / Dyslexic</span>
+<span class="text-xs font-metadata text-on-surface-variant">Bentuk huruf mudah dibedakan</span>
+</div>
+<span class="material-symbols-outlined text-transparent text-[18px] check-indicator">check_circle</span>
+</button>
+<button class="font-option-btn p-3 rounded-xl border border-divider bg-surface hover:bg-surface-container-low text-left flex items-start justify-between" data-font="nunito" type="button">
+<div>
+<span class="font-bold text-primary block text-[15px] font-sans">Nunito (Bulat Lembut)</span>
+<span class="text-xs font-metadata text-on-surface-variant">Karakter ramah bersahabat</span>
+</div>
+<span class="material-symbols-outlined text-transparent text-[18px] check-indicator">check_circle</span>
+</button>
+<button class="font-option-btn p-3 rounded-xl border border-divider bg-surface hover:bg-surface-container-low text-left flex items-start justify-between" data-font="system" type="button">
+<div>
+<span class="font-bold text-primary block text-[15px] font-mono">Sistem Bersih (Monospace)</span>
+<span class="text-xs font-metadata text-on-surface-variant">Spasi teratur tanpa distraksi</span>
+</div>
+<span class="material-symbols-outlined text-transparent text-[18px] check-indicator">check_circle</span>
+</button>
+</div>
+</div>
+<!-- Ukuran Huruf Slider & Stepper -->
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<label class="font-label text-label text-primary font-bold" for="font-size-slider">Ukuran Huruf</label>
+<span class="font-label text-label font-bold text-primary px-2.5 py-0.5 rounded-full bg-surface-container" id="font-size-display">18px (Sedang • Default)</span>
+</div>
+<div class="flex items-center gap-space-md">
+<button aria-label="Kecilkan Huruf" class="w-10 h-10 rounded-xl border border-divider bg-surface hover:bg-canvas text-primary font-bold flex items-center justify-center active:scale-95 transition-transform" id="font-size-minus">
+<span class="material-symbols-outlined text-[20px]">remove</span>
+</button>
+<input aria-valuemax="26" aria-valuemin="14" aria-valuenow="18" class="w-full accent-primary bg-surface-container h-2 rounded-lg cursor-pointer" id="font-size-slider" max="26" min="14" step="2" type="range" value="18">
+<button aria-label="Besarkan Huruf" class="w-10 h-10 rounded-xl border border-divider bg-surface hover:bg-canvas text-primary font-bold flex items-center justify-center active:scale-95 transition-transform" id="font-size-plus">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+<div class="flex justify-between text-[11px] font-metadata text-outline mt-1 px-1">
+<span>Kecil (14px)</span>
+<span>Standar (18px)</span>
+<span>Besar (22px)</span>
+<span>Ekstra (26px)</span>
+</div>
+</div>
+<!-- Jarak Baris & Spasi Huruf (Dual Grid) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+<!-- Line Height -->
+<div>
+<label class="block font-label text-label text-primary mb-space-xs font-bold">Jarak Antar Baris (Line Height)</label>
+<div class="flex items-center gap-1.5 p-1 bg-surface-container rounded-xl">
+<button class="lh-btn flex-1 py-1.5 rounded-lg text-xs font-label text-on-surface-variant hover:text-primary transition-all" data-lh="1.5" type="button">Santai 1.5x</button>
+<button class="lh-btn flex-1 py-1.5 rounded-lg text-xs font-label bg-surface font-bold text-primary shadow-sm transition-all" data-lh="1.8" type="button">Lapang 1.8x</button>
+<button class="lh-btn flex-1 py-1.5 rounded-lg text-xs font-label text-on-surface-variant hover:text-primary transition-all" data-lh="2.1" type="button">Ekstra 2.1x</button>
+</div>
+</div>
+<!-- Letter Spacing -->
+<div>
+<label class="block font-label text-label text-primary mb-space-xs font-bold">Spasi Antar Huruf (Tracking)</label>
+<div class="flex items-center gap-1.5 p-1 bg-surface-container rounded-xl">
+<button class="ls-btn flex-1 py-1.5 rounded-lg text-xs font-label bg-surface font-bold text-primary shadow-sm transition-all" data-ls="0em" type="button">Normal</button>
+<button class="ls-btn flex-1 py-1.5 rounded-lg text-xs font-label text-on-surface-variant hover:text-primary transition-all" data-ls="0.06em" type="button">+0.06 Renggang</button>
+<button class="ls-btn flex-1 py-1.5 rounded-lg text-xs font-label text-on-surface-variant hover:text-primary transition-all" data-ls="0.12em" type="button">+0.12 Ekstra</button>
+</div>
+</div>
+</div>
+<!-- Lebar Kolom Baca -->
+<div>
+<label class="block font-label text-label text-primary mb-space-xs font-bold">Lebar Kolom Paragraf</label>
+<div class="grid grid-cols-3 gap-space-xs">
+<button class="cw-btn p-2.5 rounded-xl border border-divider text-center hover:bg-canvas transition-colors" data-width="48ch" type="button">
+<span class="block text-xs font-bold text-primary">Sempit (~50 char)</span>
+<span class="text-[11px] text-outline font-metadata">Fokus Tinggi</span>
+</button>
+<button class="cw-btn p-2.5 rounded-xl border-2 border-primary bg-secondary-container/30 text-center transition-colors" data-width="65ch" type="button">
+<span class="block text-xs font-bold text-primary">Sedang (~65 char)</span>
+<span class="text-[11px] text-outline font-metadata">Rekomendasi Nyaman</span>
+</button>
+<button class="cw-btn p-2.5 rounded-xl border border-divider text-center hover:bg-canvas transition-colors" data-width="100%" type="button">
+<span class="block text-xs font-bold text-primary">Lebar Penuh</span>
+<span class="text-[11px] text-outline font-metadata">Layar Penuh</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- KELOMPOK 2: Kontras & Warna Tampilan -->
+<section aria-labelledby="section-contrast" class="bg-surface rounded-2xl p-space-lg border border-divider shadow-sm">
+<div class="flex items-center gap-space-sm mb-space-md pb-space-xs border-b border-divider">
+<div class="w-9 h-9 rounded-xl bg-butter-tint text-warning flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">contrast</span>
+</div>
+<div>
+<h2 class="font-section-title text-section-title text-primary" id="section-contrast">2. Kontras &amp; Tema Visual Kanvas</h2>
+<p class="font-metadata text-metadata text-on-surface-variant">Pilih palet kanvas yang paling ramah untuk kondisi pencahayaan dan kelelahan visualmu.</p>
+</div>
+</div>
+<div class="space-y-space-md">
+<!-- Theme Cards Selection -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-space-xs" id="theme-selector">
+<!-- Cream -->
+<button class="theme-card-btn p-3 rounded-xl border-2 border-primary bg-canvas text-left flex flex-col justify-between h-28 relative" data-theme="cream" type="button">
+<span class="w-5 h-5 rounded-full bg-[#112520] border border-white"></span>
+<div>
+<span class="text-xs font-bold text-primary block">Krem Hangat</span>
+<span class="text-[10px] text-on-surface-variant">Default TemanBelajar</span>
+</div>
+<span class="material-symbols-outlined text-primary text-[16px] absolute top-2 right-2 check-indicator">check_circle</span>
+</button>
+<!-- Clean White -->
+<button class="theme-card-btn p-3 rounded-xl border border-divider bg-surface text-left flex flex-col justify-between h-28 relative hover:border-secondary" data-theme="white" type="button">
+<span class="w-5 h-5 rounded-full bg-white border border-gray-400"></span>
+<div>
+<span class="text-xs font-bold text-primary block">Putih Bersih</span>
+<span class="text-[10px] text-on-surface-variant">Kontras Tajam Terang</span>
+</div>
+<span class="material-symbols-outlined text-transparent text-[16px] absolute top-2 right-2 check-indicator">check_circle</span>
+</button>
+<!-- High Contrast -->
+<button class="theme-card-btn p-3 rounded-xl border border-divider bg-[#101A16] text-left flex flex-col justify-between h-28 relative hover:border-secondary" data-theme="high-contrast" type="button">
+<span class="w-5 h-5 rounded-full bg-[#FFE7A3] border border-black"></span>
+<div>
+<span class="text-xs font-bold text-[#FFE7A3] block">Kontras Tinggi</span>
+<span class="text-[10px] text-gray-400">Kuning di atas Hitam</span>
+</div>
+<span class="material-symbols-outlined text-transparent text-[16px] absolute top-2 right-2 check-indicator">check_circle</span>
+</button>
+<!-- Dimmed Night -->
+<button class="theme-card-btn p-3 rounded-xl border border-divider bg-[#273B35] text-left flex flex-col justify-between h-28 relative hover:border-secondary" data-theme="dimmed" type="button">
+<span class="w-5 h-5 rounded-full bg-[#EAF7ED]"></span>
+<div>
+<span class="text-xs font-bold text-[#EAF7ED] block">Redup Malam</span>
+<span class="text-[10px] text-gray-300">Nuansa Hijau Teduh</span>
+</div>
+<span class="material-symbols-outlined text-transparent text-[16px] absolute top-2 right-2 check-indicator">check_circle</span>
+</button>
+</div>
+<!-- Anti Glare Pastel Tint Switch -->
+<div class="flex items-center justify-between p-3.5 rounded-xl bg-surface-container-low/60 border border-divider">
+<div class="flex items-start gap-space-xs max-w-md">
+<span class="material-symbols-outlined text-secondary text-[20px] mt-0.5">filter_vintage</span>
+<div>
+<p class="font-label text-label font-bold text-primary">Filter Pelindung Silau (Anti-Glare Tint)</p>
+<p class="text-xs font-metadata text-on-surface-variant">Menambahkan lapisan pastel sangat halus untuk memotong pancaran cahaya biru langsung.</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0">
+<input checked="" class="sr-only peer" id="toggle-tint" type="checkbox">
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</section>
+<!-- KELOMPOK 3: Alat Bantu Membaca & Sensorik -->
+<section aria-labelledby="section-reading-tools" class="bg-surface rounded-2xl p-space-lg border border-divider shadow-sm">
+<div class="flex items-center gap-space-sm mb-space-md pb-space-xs border-b border-divider">
+<div class="w-9 h-9 rounded-xl bg-lavender-tint text-tertiary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">auto_stories</span>
+</div>
+<div>
+<h2 class="font-section-title text-section-title text-primary" id="section-reading-tools">3. Alat Bantu Membaca &amp; Sensorik</h2>
+<p class="font-metadata text-metadata text-on-surface-variant">Fitur interaktif pemandu pandangan agar baris teks tidak melompat.</p>
+</div>
+</div>
+<div class="space-y-space-md">
+<!-- Penggaris Baca (Reading Ruler) -->
+<div class="p-3.5 rounded-xl border border-divider bg-surface space-y-space-sm">
+<div class="flex items-center justify-between">
+<div>
+<p class="font-label text-label font-bold text-primary flex items-center gap-1.5">
+<span>Penggaris Fokus Baris (Reading Ruler)</span>
+<span class="text-[11px] px-2 py-0.5 rounded-full bg-mint-tint text-success font-bold">Aktif</span>
+</p>
+<p class="text-xs font-metadata text-on-surface-variant">Sorot baris yang sedang ditunjuk kursor mouse atau sentuhan jarimu.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0">
+<input checked="" class="sr-only peer" id="toggle-ruler" type="checkbox">
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Ruler customization options -->
+<div class="pt-2 border-t border-divider/60 flex flex-wrap items-center justify-between gap-space-sm text-xs">
+<div class="flex items-center gap-2">
+<span class="font-metadata text-on-surface-variant">Warna Penggaris:</span>
+<div class="flex items-center gap-1.5" id="ruler-color-options">
+<button class="w-6 h-6 rounded-full bg-secondary-container border-2 border-primary" data-ruler-color="mint" title="Mint" type="button"></button>
+<button class="w-6 h-6 rounded-full bg-butter border border-divider" data-ruler-color="butter" title="Butter" type="button"></button>
+<button class="w-6 h-6 rounded-full bg-lavender border border-divider" data-ruler-color="lavender" title="Lavender" type="button"></button>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-metadata text-on-surface-variant">Lebar Panduan:</span>
+<select class="text-xs bg-surface-container rounded-lg border-0 py-1 px-2 font-label text-primary">
+<option value="1">1 Baris Fokus</option>
+<option selected="" value="3">3 Baris (Paragraf Mini)</option>
+<option value="window">Jendela Baca Penuh</option>
+</select>
+</div>
+</div>
+</div>
+<!-- Sorot Kalimat Otomatis -->
+<div class="flex items-center justify-between p-3.5 rounded-xl border border-divider bg-surface">
+<div>
+<p class="font-label text-label font-bold text-primary">Sorot Kalimat Aktif saat Disentuh</p>
+<p class="text-xs font-metadata text-on-surface-variant">Mewarnai kalimat yang sedang diklik agar mudah kembali setelah jeda berpikir.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0">
+<input checked="" class="sr-only peer" type="checkbox">
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Glosarium Otomatis & Penjelasan Istilah -->
+<div class="flex items-center justify-between p-3.5 rounded-xl border border-divider bg-surface">
+<div>
+<p class="font-label text-label font-bold text-primary">Glosarium Otomatis Kata Sulit</p>
+<p class="text-xs font-metadata text-on-surface-variant">Beri garis titik-titik lembut pada istilah ilmiah materi (seperti <em>glomerulus</em>) untuk penjelasan instan tanpa membuka tab baru.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0">
+<input checked="" class="sr-only peer" type="checkbox">
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Bantuan Visual Konsep -->
+<div class="flex items-center justify-between p-3.5 rounded-xl border border-divider bg-surface">
+<div>
+<p class="font-label text-label font-bold text-primary">Kamus Ilustrasi &amp; Sketsa Konsep</p>
+<p class="text-xs font-metadata text-on-surface-variant">Sertakan diagram sederhana ketika menyentuh istilah konsep yang rumit.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0">
+<input checked="" class="sr-only peer" type="checkbox">
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</section>
+<!-- KELOMPOK 4: Audio & Baca Nyaring (TTS) -->
+<section aria-labelledby="section-audio" class="bg-surface rounded-2xl p-space-lg border border-divider shadow-sm">
+<div class="flex items-center gap-space-sm mb-space-md pb-space-xs border-b border-divider">
+<div class="w-9 h-9 rounded-xl bg-peach-tint text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">record_voice_over</span>
+</div>
+<div>
+<h2 class="font-section-title text-section-title text-primary" id="section-audio">4. Audio &amp; Baca Nyaring (Text-to-Speech)</h2>
+<p class="font-metadata text-metadata text-on-surface-variant">Dengarkan materi dengan intonasi ramah bahasa Indonesia.</p>
+</div>
+</div>
+<div class="space-y-space-md">
+<!-- Master TTS Toggle -->
+<div class="flex items-center justify-between p-3.5 rounded-xl bg-surface-container-low/60 border border-divider">
+<div>
+<p class="font-label text-label font-bold text-primary">Aktifkan Tombol Bacakan Teks (TTS)</p>
+<p class="text-xs font-metadata text-on-surface-variant">Tampilkan tombol mikro-suara di samping paragraf dan butir soal latihan.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0">
+<input checked="" class="sr-only peer" id="toggle-tts-master" type="checkbox">
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Voice Persona & Speed -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+<div>
+<label class="block font-label text-label text-primary mb-space-xs font-bold">Pilihan Karakter Suara</label>
+<select class="w-full bg-surface border border-control-border rounded-xl py-2 px-3 text-xs font-label text-primary focus:ring-2 focus:ring-primary">
+<option selected="">Suara Ramah Mimo (Nada Ceria &amp; Kalem)</option>
+<option>Suara Guru Pendamping (Artikulasi Lambat)</option>
+<option>Suara Netral Alami</option>
+</select>
+</div>
+<div>
+<div class="flex justify-between items-center mb-space-xs">
+<label class="font-label text-label text-primary font-bold">Kecepatan Bicara</label>
+<span class="text-xs font-bold text-primary" id="speed-indicator">1.0x (Normal)</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="speed-btn flex-1 py-1.5 rounded-lg text-xs font-label bg-surface border border-divider hover:bg-canvas" data-speed="0.8" type="button">0.8x Tenang</button>
+<button class="speed-btn flex-1 py-1.5 rounded-lg text-xs font-label bg-primary text-on-primary font-bold" data-speed="1.0" type="button">1.0x Normal</button>
+<button class="speed-btn flex-1 py-1.5 rounded-lg text-xs font-label bg-surface border border-divider hover:bg-canvas" data-speed="1.2" type="button">1.2x Cepat</button>
+</div>
+</div>
+</div>
+<!-- TTS Auxiliary Options -->
+<div class="space-y-2 pt-1">
+<label class="flex items-center gap-space-xs cursor-pointer text-xs font-metadata text-primary">
+<input checked="" class="w-4 h-4 rounded text-primary border-control-border focus:ring-primary" type="checkbox">
+<span>Otomatis sorot kata yang sedang diucapkan narator suara (Karaoke Tracking)</span>
+</label>
+<label class="flex items-center gap-space-xs cursor-pointer text-xs font-metadata text-primary">
+<input checked="" class="w-4 h-4 rounded text-primary border-control-border focus:ring-primary" type="checkbox">
+<span>Beri jeda napas 1.5 detik lebih panjang di setiap akhir tanda titik (.)</span>
+</label>
+</div>
+</div>
+</section>
+<!-- KELOMPOK 5: Fokus, Gerak & Keterangan Transkrip -->
+<section aria-labelledby="section-motion" class="bg-surface rounded-2xl p-space-lg border border-divider shadow-sm">
+<div class="flex items-center gap-space-sm mb-space-md pb-space-xs border-b border-divider">
+<div class="w-9 h-9 rounded-xl bg-surface-container text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">motion_photos_off</span>
+</div>
+<div>
+<h2 class="font-section-title text-section-title text-primary" id="section-motion">5. Fokus, Gerak, &amp; Keterangan (Captions)</h2>
+<p class="font-metadata text-metadata text-on-surface-variant">Kontrol responsif untuk kenyamanan vestibular dan konsentrasi tanpa distraksi.</p>
+</div>
+</div>
+<div class="space-y-space-sm">
+<!-- Kurangi Gerakan -->
+<div class="flex items-center justify-between p-3.5 rounded-xl border border-divider bg-surface">
+<div class="max-w-md">
+<p class="font-label text-label font-bold text-primary">Kurangi Efek Gerakan (Reduced Motion)</p>
+<p class="text-xs font-metadata text-on-surface-variant">Matikan animasi geser dan goyangan mascot. Ganti seluruh transisi dengan transisi memudar instan.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0">
+<input class="sr-only peer" type="checkbox">
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Focus Shield -->
+<div class="flex items-center justify-between p-3.5 rounded-xl border border-divider bg-surface">
+<div class="max-w-md">
+<p class="font-label text-label font-bold text-primary">Perisai Fokus Belajar (Focus Shield Mode)</p>
+<p class="text-xs font-metadata text-on-surface-variant">Sembunyikan bilah samping dan lencana progres saat kamu mulai membaca materi atau kuis.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0">
+<input checked="" class="sr-only peer" type="checkbox">
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Transkrip & Keterangan Otomatis -->
+<div class="flex items-center justify-between p-3.5 rounded-xl border border-divider bg-surface">
+<div class="max-w-md">
+<p class="font-label text-label font-bold text-primary">Transkrip Teks Otomatis pada Semua Media</p>
+<p class="text-xs font-metadata text-on-surface-variant">Selalu lampirkan teks tertulis di bawah diagram audio maupun ilustrasi bersuara.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0">
+<input checked="" class="sr-only peer" type="checkbox">
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<!-- Bottom Floating Notification / Confirmation Bar -->
+<div class="w-full bg-surface border-t border-divider py-space-sm shadow-md mt-auto">
+<div class="max-w-[1200px] mx-auto px-margin flex flex-col sm:flex-row items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs text-xs font-metadata text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-success"></span>
+<span>Semua penyesuaian langsung aktif dan dapat kamu uji pada materi belajar lainnya.</span>
+</div>
+<div class="flex items-center gap-space-sm w-full sm:w-auto justify-end">
+<a class="px-space-md py-2 rounded-xl text-primary hover:bg-canvas font-label text-label text-xs transition-colors" href="#">
+          Batal
+        </a>
+<button class="px-space-lg py-2 rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label text-xs flex items-center gap-1.5 shadow-sm transition-all" id="btn-bottom-save" type="button">
+<span class="material-symbols-outlined text-[16px]">check</span>
+<span>Terapkan &amp; Lanjut Belajar</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Toast Notification Modal (Hidden by default) -->
+<div class="fixed bottom-20 right-6 z-50 bg-primary text-on-primary px-4 py-3 rounded-xl shadow-lg border border-primary-hover flex items-center gap-2 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300" id="save-toast">
+<span class="material-symbols-outlined text-secondary-fixed text-[20px]" style="font-variation-settings: 'FILL' 1;">task_alt</span>
+<span class="font-label text-xs">Pengaturan aksesibilitas berhasil diperbarui!</span>
+</div>
+<!-- Vanilla Client-Side Interaction Controller -->
+<script>
+    (function initAccessibilityControls() {
+      // Elements
+      const stage = document.getElementById('preview-stage');
+      const textContainer = document.getElementById('preview-text-container');
+      const slider = document.getElementById('font-size-slider');
+      const sizeDisplay = document.getElementById('font-size-display');
+      const btnMinus = document.getElementById('font-size-minus');
+      const btnPlus = document.getElementById('font-size-plus');
+      const rulerSpan = document.getElementById('preview-highlight-sentence');
+      const rulerState = document.getElementById('preview-ruler-state');
+      const toggleRuler = document.getElementById('toggle-ruler');
+      const toast = document.getElementById('save-toast');
+
+      // Update Font Size
+      function updateFontSize(val) {
+        slider.value = val;
+        stage.style.fontSize = val + 'px';
+        let label = 'Sedang • Default';
+        if (val <= 14) label = 'Kecil';
+        else if (val >= 22) label = 'Ekstra Besar';
+        else if (val >= 20) label = 'Besar';
+        sizeDisplay.textContent = val + 'px (' + label + ')';
+      }
+
+      if (slider) {
+        slider.addEventListener('input', (e) => updateFontSize(e.target.value));
+      }
+      if (btnMinus) {
+        btnMinus.addEventListener('click', () => {
+          let curr = parseInt(slider.value, 10);
+          if (curr > 14) updateFontSize(curr - 2);
+        });
+      }
+      if (btnPlus) {
+        btnPlus.addEventListener('click', () => {
+          let curr = parseInt(slider.value, 10);
+          if (curr < 26) updateFontSize(curr + 2);
+        });
+      }
+
+      // Font Family Buttons
+      const fontBtns = document.querySelectorAll('.font-option-btn');
+      fontBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const font = btn.dataset.font;
+          fontBtns.forEach(b => {
+            b.classList.remove('border-2', 'border-primary', 'bg-secondary-container/40');
+            b.classList.add('border', 'border-divider', 'bg-surface');
+            const ind = b.querySelector('.check-indicator');
+            if (ind) ind.classList.replace('text-primary', 'text-transparent');
+          });
+          btn.classList.add('border-2', 'border-primary', 'bg-secondary-container/40');
+          btn.classList.remove('border-divider', 'bg-surface');
+          const myInd = btn.querySelector('.check-indicator');
+          if (myInd) myInd.classList.replace('text-transparent', 'text-primary');
+
+          stage.classList.remove('font-preview-default', 'font-preview-lexend', 'font-preview-nunito', 'font-preview-system');
+          stage.classList.add('font-preview-' + font);
+        });
+      });
+
+      // Line Height
+      const lhBtns = document.querySelectorAll('.lh-btn');
+      lhBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          lhBtns.forEach(b => {
+            b.classList.remove('bg-surface', 'font-bold', 'text-primary', 'shadow-sm');
+            b.classList.add('text-on-surface-variant');
+          });
+          btn.classList.add('bg-surface', 'font-bold', 'text-primary', 'shadow-sm');
+          btn.classList.remove('text-on-surface-variant');
+          stage.style.lineHeight = btn.dataset.lh;
+        });
+      });
+
+      // Letter Spacing
+      const lsBtns = document.querySelectorAll('.ls-btn');
+      lsBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          lsBtns.forEach(b => {
+            b.classList.remove('bg-surface', 'font-bold', 'text-primary', 'shadow-sm');
+            b.classList.add('text-on-surface-variant');
+          });
+          btn.classList.add('bg-surface', 'font-bold', 'text-primary', 'shadow-sm');
+          btn.classList.remove('text-on-surface-variant');
+          stage.style.letterSpacing = btn.dataset.ls;
+        });
+      });
+
+      // Column Width
+      const cwBtns = document.querySelectorAll('.cw-btn');
+      cwBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          cwBtns.forEach(b => {
+            b.classList.remove('border-2', 'border-primary', 'bg-secondary-container/30');
+            b.classList.add('border-divider');
+          });
+          btn.classList.add('border-2', 'border-primary', 'bg-secondary-container/30');
+          btn.classList.remove('border-divider');
+          textContainer.style.maxWidth = btn.dataset.width;
+        });
+      });
+
+      // Theme Selector
+      const themeBtns = document.querySelectorAll('.theme-card-btn');
+      themeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const theme = btn.dataset.theme;
+          themeBtns.forEach(b => {
+            b.classList.remove('border-2', 'border-primary');
+            b.classList.add('border-divider');
+            const ind = b.querySelector('.check-indicator');
+            if (ind) ind.classList.replace('text-primary', 'text-transparent');
+          });
+          btn.classList.add('border-2', 'border-primary');
+          btn.classList.remove('border-divider');
+          const myInd = btn.querySelector('.check-indicator');
+          if (myInd) myInd.classList.replace('text-transparent', 'text-primary');
+
+          stage.classList.remove('theme-preview-cream', 'theme-preview-white', 'theme-preview-high-contrast', 'theme-preview-dimmed');
+          stage.classList.add('theme-preview-' + theme);
+        });
+      });
+
+      // Ruler Toggle
+      if (toggleRuler) {
+        toggleRuler.addEventListener('change', (e) => {
+          if (e.target.checked) {
+            rulerSpan.classList.add('line-ruler-mint');
+            rulerState.textContent = 'Penggaris Mint Aktif';
+          } else {
+            rulerSpan.classList.remove('line-ruler-mint', 'line-ruler-butter', 'line-ruler-lavender');
+            rulerState.textContent = 'Penggaris Nonaktif';
+          }
+        });
+      }
+
+      // Ruler Color Selector
+      const rulerColorBtns = document.querySelectorAll('#ruler-color-options button');
+      rulerColorBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const color = btn.dataset.rulerColor;
+          rulerColorBtns.forEach(b => b.classList.replace('border-2', 'border'));
+          btn.classList.replace('border', 'border-2');
+          btn.classList.add('border-primary');
+
+          if (toggleRuler.checked) {
+            rulerSpan.classList.remove('line-ruler-mint', 'line-ruler-butter', 'line-ruler-lavender');
+            rulerSpan.classList.add('line-ruler-' + color);
+            rulerState.textContent = 'Penggaris ' + color.charAt(0).toUpperCase() + color.slice(1) + ' Aktif';
+          }
+        });
+      });
+
+      // Speech Simulator
+      const speakBtn = document.getElementById('preview-speak-btn');
+      const speakLabel = document.getElementById('speak-btn-label');
+      let isSpeaking = false;
+      if (speakBtn) {
+        speakBtn.addEventListener('click', () => {
+          isSpeaking = !isSpeaking;
+          if (isSpeaking) {
+            speakLabel.textContent = 'Sedang Membacakan...';
+            speakBtn.classList.replace('bg-primary', 'bg-success');
+            rulerSpan.classList.add('animate-pulse');
+            setTimeout(() => {
+              isSpeaking = false;
+              speakLabel.textContent = 'Coba Bacakan Kalimat Ini';
+              speakBtn.classList.replace('bg-success', 'bg-primary');
+              rulerSpan.classList.remove('animate-pulse');
+            }, 3000);
+          }
+        });
+      }
+
+      // Speech Speed Indicator
+      const speedBtns = document.querySelectorAll('.speed-btn');
+      const speedIndicator = document.getElementById('speed-indicator');
+      speedBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          speedBtns.forEach(b => {
+            b.classList.remove('bg-primary', 'text-on-primary', 'font-bold');
+            b.classList.add('bg-surface', 'border', 'border-divider');
+          });
+          btn.classList.add('bg-primary', 'text-on-primary', 'font-bold');
+          btn.classList.remove('bg-surface', 'border');
+          speedIndicator.textContent = btn.dataset.speed + 'x';
+        });
+      });
+
+      // Presets
+      const presetDyslexia = document.getElementById('preset-dyslexia');
+      if (presetDyslexia) {
+        presetDyslexia.addEventListener('click', () => {
+          document.querySelector('button[data-font="lexend"]').click();
+          document.querySelector('button[data-ls="0.06em"]').click();
+          document.querySelector('button[data-lh="1.8"]').click();
+          updateFontSize(20);
+          showToast('Preset Ramah Disleksia diterapkan!');
+        });
+      }
+
+      const presetFocus = document.getElementById('preset-focus');
+      if (presetFocus) {
+        presetFocus.addEventListener('click', () => {
+          toggleRuler.checked = true;
+          rulerSpan.classList.add('line-ruler-mint');
+          document.querySelector('button[data-width="48ch"]').click();
+          showToast('Preset Fokus Tenang diterapkan!');
+        });
+      }
+
+      const presetLowVision = document.getElementById('preset-low-vision');
+      if (presetLowVision) {
+        presetLowVision.addEventListener('click', () => {
+          updateFontSize(24);
+          document.querySelector('button[data-lh="2.1"]').click();
+          showToast('Preset Teks Ekstra Besar diterapkan!');
+        });
+      }
+
+      const presetNight = document.getElementById('preset-night');
+      if (presetNight) {
+        presetNight.addEventListener('click', () => {
+          document.querySelector('button[data-theme="dimmed"]').click();
+          showToast('Preset Redup Malam diterapkan!');
+        });
+      }
+
+      // Toast Notification Triggers
+      function showToast(msg) {
+        if (!toast) return;
+        if (msg) toast.querySelector('span:last-child').textContent = msg;
+        toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+        setTimeout(() => {
+          toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+        }, 2500);
+      }
+
+      const saveBtn = document.getElementById('btn-save-settings');
+      const bottomSaveBtn = document.getElementById('btn-bottom-save');
+      if (saveBtn) saveBtn.addEventListener('click', () => showToast('Preferensi berhasil disimpan!'));
+      if (bottomSaveBtn) bottomSaveBtn.addEventListener('click', () => showToast('Preferensi berhasil disimpan!'));
+
+      const resetBtn = document.getElementById('btn-reset-defaults');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          document.querySelector('button[data-font="default"]').click();
+          document.querySelector('button[data-theme="cream"]').click();
+          document.querySelector('button[data-lh="1.8"]').click();
+          document.querySelector('button[data-ls="0em"]').click();
+          document.querySelector('button[data-width="65ch"]').click();
+          updateFontSize(18);
+          showToast('Pengaturan dikembalikan ke awal.');
+        });
+      }
+    })();
+  </script>
+</div></main>
+<!-- Clean Footer -->
+<footer class="w-full bg-surface border-t border-divider py-space-md">
+<div class="max-w-[1200px] mx-auto px-margin flex flex-col md:flex-row items-center justify-between gap-2 text-metadata font-metadata text-[13px] text-on-surface-variant">
+<div>© 2024 TemanBelajar • Pendamping belajar adaptif &amp; inklusif</div>
+<div class="flex items-center gap-4">
+<a class="hover:text-primary transition-colors" href="#">Pusat Bantuan</a>
+<span>•</span>
+<a class="hover:text-primary transition-colors" href="#">Panduan Aksesibilitas</a>
+<span>•</span>
+<a class="hover:text-primary transition-colors" href="#">Privasi</a>
+</div>
+</div>
+</footer>
+
+
+</body></html>

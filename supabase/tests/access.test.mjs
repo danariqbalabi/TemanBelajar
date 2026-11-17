@@ -22,8 +22,15 @@ test('migrasi, akses antar akun, dan konflik versi berjalan di postgres', async 
     await db.query('insert into auth.users values ($1), ($2)', [first, second]);
     const directory = new URL('../migrations/', import.meta.url);
     for (const filename of (await readdir(directory)).filter(name => name.endsWith('.sql')).sort()) {
+      if(filename==='202611160007_learning_records.sql') {
+        await db.query('insert into auth.users values ($1)', ['00000000-0000-4000-8000-000000000003']);
+        await db.query('insert into public.learning_states(user_id,revision,data) values ($1,7,$2)', ['00000000-0000-4000-8000-000000000003',JSON.stringify({sessions:{a:{draft:'catatan lama'}},jobs:{},ai_usage:{'2026-11-16':2}})]);
+      }
       await db.exec(await readFile(new URL(filename, directory), 'utf8'));
     }
+    const migrated = await db.query('select revision,data from public.learning_states where user_id=$1',['00000000-0000-4000-8000-000000000003']);
+    assert.equal(Number(migrated.rows[0].revision),7);
+    assert.deepEqual(migrated.rows[0].data,{sessions:{a:{draft:'catatan lama'}},jobs:{},ai_usage:{'2026-11-16':2}});
     await db.exec('set role anon');
     await assert.rejects(db.query('select * from public.learner_profiles'), /permission denied/);
     await assert.rejects(db.query("select public.save_learning_state(null, 0, '{}'::jsonb)"), /permission denied/);
@@ -38,7 +45,17 @@ test('migrasi, akses antar akun, dan konflik versi berjalan di postgres', async 
     assert.equal((await db.query('select * from public.learner_profiles')).rows.length, 0);
     const changed = await db.query('update public.learner_profiles set display_name = $1 where id = $2 returning id', ['diganti', first]);
     assert.equal(changed.rows.length, 0);
+    await db.query("select set_config('request.jwt.claim.sub', $1, false)", [first]);
+    assert.equal((await db.query('select revision from public.learner_profiles where id=$1',[first])).rows[0].revision,1);
+    assert.equal((await db.query('update public.learner_profiles set display_name=$1 where id=$2 and revision=1 returning revision',['Manda baru',first])).rows[0].revision,2);
+    assert.equal((await db.query('update public.learner_profiles set display_name=$1 where id=$2 and revision=1 returning revision',['tab lama',first])).rows.length,0);
+    await assert.rejects(db.query('select public.reserve_ai_attempt(2)'), /permission denied/);
+    await assert.rejects(db.query('select public.save_learning_state_with_ai_budget($1,0,$2,2)', [first, '{}']), /permission denied/);
     await db.exec('set role service_role');
+    assert.equal((await db.query('select public.reserve_ai_attempt(2) as allowed')).rows[0].allowed,true);
+    assert.equal((await db.query('select public.reserve_ai_attempt(2) as allowed')).rows[0].allowed,true);
+    assert.equal((await db.query('select public.reserve_ai_attempt(2) as allowed')).rows[0].allowed,false);
+
     const save = (learner, version, data) => db.query(
       'select public.save_learning_state($1, $2, $3::jsonb) as revision',
       [learner, version, JSON.stringify(data)],
@@ -51,6 +68,19 @@ test('migrasi, akses antar akun, dan konflik versi berjalan di postgres', async 
     const own = await db.query('select data from public.learning_states where user_id = $1', [first]);
     assert.deepEqual(own.rows[0].data, { saved: true });
     await assert.rejects(save(null, 0, {}), /invalid state/);
+
+    const admit = (learner, revision, data, limit) => db.query(
+      'select public.save_learning_state_with_ai_budget($1,$2,$3::jsonb,$4) as revision',
+      [learner, revision, JSON.stringify(data), limit],
+    );
+    // Quota is at 2: denied admission must roll back both revision and payload.
+    assert.equal(Number((await admit(first, 2, { jobs: { a: 'processing' } }, 2)).rows[0].revision), -1);
+    assert.deepEqual((await db.query('select data from public.learning_states where user_id=$1', [first])).rows[0].data, { saved: true });
+    assert.equal(Number((await admit(first, 2, { jobs: { a: 'processing' } }, 3)).rows[0].revision), 3);
+    // A competing writer with the old revision must not consume a fourth unit.
+    assert.equal((await admit(first, 2, { lost: true }, 4)).rows[0].revision, null);
+    assert.equal((await db.query('select public.reserve_ai_attempt(4) as allowed')).rows[0].allowed, true);
+    assert.equal((await db.query('select public.reserve_ai_attempt(4) as allowed')).rows[0].allowed, false);
 
   } finally {
     await db.close();

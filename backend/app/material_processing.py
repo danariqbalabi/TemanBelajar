@@ -1,6 +1,7 @@
 import asyncio
 import hashlib
 import json
+import ssl
 from datetime import UTC, datetime, timedelta
 from io import BytesIO
 from typing import Annotated
@@ -18,7 +19,7 @@ from app.schemas import Material, Mutation, Source
 from app.store import StoreDep, commit, find_item, replay
 
 router = APIRouter(prefix="/v1", tags=["pemrosesan materi"])
-MAX_BYTES = 10 * 1024 * 1024
+MAX_BYTES = 4 * 1024 * 1024
 MAX_CHARACTERS = 100000
 
 
@@ -71,6 +72,9 @@ async def create_job(
     previous = replay(snapshot, str(request_id), "material.upload", payload)
     if previous is not None:
         return previous
+    today = now()[:10]
+    if sum(j["created_at"][:10] == today for j in snapshot.data["jobs"].values()) >= 10:
+        raise HTTPException(429, "batas 10 unggahan hari ini tercapai, coba besok")
     job = {
         "id": str(uuid4()),
         "title": title,
@@ -102,6 +106,7 @@ async def upload_text(body: TextUpload, store: StoreDep):
             text=body.text[i : i + 20000],
         )
         for i in range(0, len(body.text), 20000)
+        if body.text[i : i + 20000].strip()
     ]
     return await create_job(
         store,
@@ -119,12 +124,16 @@ async def upload_pdf(
     request_id: Annotated[UUID, Form()],
     title: Annotated[str, Form(min_length=1, max_length=200)],
 ):
+    title = title.strip()
+    if not title:
+        await file.close()
+        raise HTTPException(422, "judul materi perlu diisi")
     try:
         content = await file.read(MAX_BYTES + 1)
     finally:
         await file.close()
     if len(content) > MAX_BYTES:
-        raise HTTPException(413, "ukuran PDF maksimal 10 MB")
+        raise HTTPException(413, "ukuran PDF maksimal 4 MB")
     sources = await asyncio.to_thread(extract_pdf, content)
     return await create_job(
         store, request_id, title.strip(), sources, hashlib.sha256(content).hexdigest()
@@ -197,9 +206,10 @@ async def generate_material(job: dict) -> Material:
                 503, "layanan AI belum berhasil memproses materi, coba lagi"
             )
         result = response.json()
-        text = "".join(
-            p.get("text", "") for p in result["candidates"][0]["content"]["parts"]
-        )
+        candidate = result["candidates"][0]
+        if candidate.get("finishReason", "STOP") != "STOP":
+            raise ValueError("generasi belum selesai")
+        text = "".join(p.get("text", "") for p in candidate["content"]["parts"])
         material = Material.model_validate_json(text)
         # The server owns sources, provenance and model skill assignments.
         material.sources = [Source.model_validate(source) for source in job["sources"]]
@@ -215,6 +225,8 @@ async def generate_material(job: dict) -> Material:
         raise
     except (
         httpx.RequestError,
+        ssl.SSLError,
+        AttributeError,
         KeyError,
         IndexError,
         TypeError,
@@ -273,6 +285,18 @@ async def process_job(job_id: str, store: StoreDep):
             raise HTTPException(
                 409, "materi masih diproses, periksa status sebentar lagi"
             )
+    today = now()[:10]
+    usage = snapshot.data.setdefault("ai_usage", {})
+    if usage.get(today, 0) >= 20:
+        raise HTTPException(429, "batas 20 percobaan AI hari ini tercapai, coba besok")
+    for other in snapshot.data["jobs"].values():
+        if other["id"] != job_id and other["status"] == "processing":
+            expires = datetime.fromisoformat(other["updated_at"]) + timedelta(minutes=2)
+            if datetime.now(UTC) < expires:
+                raise HTTPException(429, "tunggu pemrosesan materi sebelumnya selesai")
+    if today not in usage:
+        usage.clear()
+    usage[today] = usage.get(today, 0) + 1
     lease = str(uuid4())
     job.update(
         status="processing",
@@ -281,12 +305,19 @@ async def process_job(job_id: str, store: StoreDep):
         updated_at=now(),
         error=None,
     )
-    await store.save(snapshot)
+    await store.save(snapshot, reserve_ai=True)
     try:
-        material = await generate_material(job)
+        async with asyncio.timeout(95):
+            material = await generate_material(job)
     except HTTPException as exc:
         await finish_job(store, job_id, lease, None, str(exc.detail))
         raise
+    except TimeoutError as exc:
+        message = (
+            "pemrosesan melewati batas waktu, sumber tersimpan dan bisa dicoba lagi"
+        )
+        await finish_job(store, job_id, lease, None, message)
+        raise HTTPException(504, message) from exc
     return await finish_job(store, job_id, lease, material, None)
 
 

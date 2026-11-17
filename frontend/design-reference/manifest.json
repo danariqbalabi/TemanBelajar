@@ -1,0 +1,101 @@
+{
+  "archive": "stitch_mascot_brand_design_system.zip",
+  "screens": {
+    "1": {
+      "folder": "01_landing_page_temanbelajar_revamped",
+      "sha256": "575a560c307718ecfc4f093f472032d9341df3c18cb6f03db00f7fbf612fb19e"
+    },
+    "2": {
+      "folder": "02_sambutan_masuk_akun_temanbelajar_polished",
+      "sha256": "84012588963721bded04ca4f525a39a4eec30b4a4d5e863b82fe46fc8a57432c"
+    },
+    "3": {
+      "folder": "03_kebutuhan_belajar_temanbelajar_polished",
+      "sha256": "b932ffa2c6bc4e84e18cba7302f04f4ee334608b2523a574e0e2806cb2b7f890"
+    },
+    "4": {
+      "folder": "04_preferensi_aksesibilitas_temanbelajar",
+      "sha256": "3d7c5c9f021a9faab9df72b48eafb721778f5fb59d3638c06ccc83dbee59e751"
+    },
+    "5": {
+      "folder": "05_tujuan_belajar_temanbelajar",
+      "sha256": "8d0c3654aba736d7c77cf6113f6c6aaebdff2469e1458be040401ed3ea85aa10"
+    },
+    "6": {
+      "folder": "06_pratinjau_personal_temanbelajar",
+      "sha256": "28a04f9c5921ff0a63e77defd41b216cc914dfbfd6e12a1567606e99cc7d90e7"
+    },
+    "7": {
+      "folder": "07_beranda_utama_temanbelajar",
+      "sha256": "7269d9af922452e1505d499a8ede5718342567e7a6e97825ac04c7a3da9c018d"
+    },
+    "8": {
+      "folder": "08_materi_saya_temanbelajar",
+      "sha256": "aca6bc12b1bc849949e1a2fe0b4d88490533402b030a1834b7d4f8cbb717a063"
+    },
+    "9": {
+      "folder": "09_unggah_materi_temanbelajar",
+      "sha256": "0a35a85cab18cd206bb5fea64eeb6af1b15537feb58cefb895ed135711a40a60"
+    },
+    "10": {
+      "folder": "10_pemrosesan_materi_temanbelajar_polished",
+      "sha256": "ed88da1d38fb147d4b79b2af5ea07ccb9ac5f974284da09362ad2213c9cf382e"
+    },
+    "11": {
+      "folder": "11_ringkasan_materi_temanbelajar",
+      "sha256": "cbaf76c299c8c7c9f3d5ded409c1aab6f1d0d57b5c5b9a41872d03a8c3c70215"
+    },
+    "12": {
+      "folder": "12_pemilih_mode_belajar_temanbelajar_visual_ringkas",
+      "sha256": "4235d92713ad447857676a02e63545873b03334bfb004910a72e4f0d5f03ab5d"
+    },
+    "13": {
+      "folder": "13_teman_baca_reading_companion",
+      "sha256": "eb0ebca7354e34964e5d3f5f75e363119859a07f7fc986cd01583172f9e8c2fd"
+    },
+    "14": {
+      "folder": "14_belajar_selangkah_demi_selangkah_focus_navigator",
+      "sha256": "40bf075a2826ca85461531a750e87a99e2b1b9b4a4ae101b313f6ae55e00b5fe"
+    },
+    "15": {
+      "folder": "15_audio_visual_explorer_dengarkan_jelajahi",
+      "sha256": "f72b0413f8f9b5db7f948aa8a759d15a36a4180fc48c67ccbf74e4fdab5771ce"
+    },
+    "16": {
+      "folder": "16_belajar_dengan_teks_dan_visual_visual_caption_learning",
+      "sha256": "5e216d449c9f5b2ef8bb8ed4fe84742c65cf551f30fbfb3bee4ca4d908cf65cc"
+    },
+    "17": {
+      "folder": "17_latihan_adaptif_temanbelajar",
+      "sha256": "fedb41afb647f2a7293161a0cb16bfec311373851e00d2c4925f15be9a7a431a"
+    },
+    "18": {
+      "folder": "layar_18_umpan_balik_latihan_hasil_belajar_adaptif",
+      "sha256": "cff21a6bbc36fe20e0c485820c3fe4126db48ae0f18528ac205a7082b0ca63a3"
+    },
+    "19": {
+      "folder": "19_rekomendasi_langkah_belajar_temanbelajar",
+      "sha256": "14d60ea87e7e65f7c6b46bf57182e53a075d9face4e4feea8a81f36da22e7ec5"
+    },
+    "20": {
+      "folder": "20_rencana_belajar_harian_temanbelajar",
+      "sha256": "5c5c05c6f6e3aa5d35ba5488e2332e0ac773692857a188f1961e914e34e11bd1"
+    },
+    "21": {
+      "folder": "21_rencana_diperbarui_temanbelajar",
+      "sha256": "61736021fcfc07b05acd3970d3231dee88bce897e6956c8399e9d7623f1d78fc"
+    },
+    "22": {
+      "folder": "22_progres_belajar_temanbelajar",
+      "sha256": "8ea0b2b93aa60646a298e0cd5cf67c9f9b9ca4ad99ab7e02396c39aecddb3767"
+    },
+    "23": {
+      "folder": "23_pengaturan_aksesibilitas_temanbelajar",
+      "sha256": "7070006209f9f4d6d2f7239e084e09a83c2b4ecc6a257c6a0b75b93fe8faca3e"
+    },
+    "24": {
+      "folder": "24_profil_dan_preferensi_temanbelajar",
+      "sha256": "31dec92126cf15c461d6672d5fcccf719b756ad68b2e427c7ba7b62cda3bf43e"
+    }
+  }
+}

@@ -31,78 +31,414 @@ export function ProposalDesign({
     .filter((v) => v < plan.version)
     .sort((a, b) => b - a)[0];
   return (
-    <div className="stitch-screen">
-      {proposal.base_version !== plan.version && (
-        <p role="alert" className="notice">
-          Rencana aktif sudah berubah. Tinjau data terbaru dan susun usulan
-          kembali sebelum menerapkan.
-        </p>
-      )}
-      <div className="flex flex-col w-full">
-        <div className="max-w-7xl mx-auto px-margin py-space-xl w-full flex flex-col gap-space-xl">
-          <header className="flex flex-col gap-space-sm">
-            <nav
-              aria-label="Jejak navigasi"
-              className="flex items-center gap-space-xs text-metadata font-metadata text-text-secondary"
-            >
-              <button
-                className="hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-focus rounded"
-                onClick={onBack}
+    <>
+      <div className="final-design final-screen-21 w-full bg-canvas flex-1 screen-page">
+        <div className="flex flex-col w-full">
+          <div className="max-w-[1200px] w-full mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin py-space-xl flex flex-col gap-space-xl ui-container">
+            <section className="flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+              <div className="flex items-center flex-wrap gap-space-xs text-metadata font-metadata text-on-surface-variant">
+                <a
+                  className="hover:text-primary transition-colors"
+                  data-path="beranda"
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onBack();
+                  }}
+                >
+                  Beranda
+                </a>
+                <span className="text-outline-variant">•</span>
+                <a
+                  className="hover:text-primary transition-colors"
+                  data-path="rencana-belajar"
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onBack();
+                  }}
+                >
+                  Rencana Belajar
+                </a>
+                <span className="text-outline-variant">•</span>
+                <span className="text-primary font-bold">
+                  {proposal.reason}
+                </span>
+              </div>
+              <div className="flex items-center gap-space-sm self-start md:self-auto">
+                <div className="inline-flex items-center bg-surface rounded-full px-space-xs py-1 shadow-sm">
+                  <button
+                    aria-label="Kecilkan ukuran teks"
+                    className="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors font-label text-label font-bold"
+                    id="font-decrease"
+                    type="button"
+                    onClick={onBack}
+                  >
+                    A-
+                  </button>
+                  <div className="h-4 w-px bg-divider"></div>
+                  <button
+                    aria-label="Besarkan ukuran teks"
+                    className="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors font-label text-label font-bold"
+                    id="font-increase"
+                    type="button"
+                    onClick={onBack}
+                  >
+                    A+
+                  </button>
+                </div>
+                <button
+                  className="inline-flex items-center gap-space-xs px-space-md py-2 rounded-full bg-surface hover:bg-surface-container text-on-surface font-label text-label shadow-sm transition-colors"
+                  type="button"
+                  onClick={onEdit}
+                >
+                  <span
+                    className="material-symbols-outlined text-[18px] text-secondary"
+                    aria-hidden="true"
+                  >
+                    tune
+                  </span>
+                  <span>Atur Preferensi Jadwal</span>
+                </button>
+              </div>
+            </section>
+
+            <section className="flex flex-col gap-space-sm">
+              <a
+                className="inline-flex items-center gap-space-xs text-secondary hover:text-primary font-label text-label font-bold transition-colors w-fit"
+                data-path="rencana-belajar"
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onBack();
+                }}
               >
-                Beranda
-              </button>
-              <span
-                className="material-symbols-outlined text-[14px]"
-                aria-hidden="true"
-              >
-                chevron_right
-              </span>
-              <button
-                className="hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-focus rounded"
-                onClick={onBack}
-              >
-                Rencana Belajar
-              </button>
-              <span
-                className="material-symbols-outlined text-[14px]"
-                aria-hidden="true"
-              >
-                chevron_right
-              </span>
-              <span className="text-primary font-label">{`Versi aktif ${plan.version} • Usulan dari versi ${proposal.base_version}`}</span>
-            </nav>
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md pt-space-xs">
-              <div className="flex flex-col gap-space-xs max-w-3xl">
-                <div className="flex items-center gap-space-xs">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label text-metadata shadow-sm">
+                <span
+                  className="material-symbols-outlined text-[20px]"
+                  aria-hidden="true"
+                >
+                  arrow_back
+                </span>
+                <span>Kembali ke Rencana Belajar Hari Ini</span>
+              </a>
+              <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md mt-space-xs">
+                <div>
+                  <div className="inline-flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-mint-tint text-success font-label text-label font-bold mb-space-xs">
                     <span
                       className="material-symbols-outlined text-[16px]"
                       aria-hidden="true"
                     >
                       auto_awesome
                     </span>
-                    Usulan Penyesuaian Otomatis Mimo • Siap Diterapkan
+                    <span>{proposal.reason}</span>
+                  </div>
+                  <h1 className="font-page-title text-page-title text-primary tracking-tight ui-page-title">
+                    {proposal.status === "accepted"
+                      ? "Rencana belajarmu sudah diperbarui"
+                      : "Ada usulan buat rencana belajarmu"}
+                  </h1>
+                  <p className="font-reading text-reading text-on-surface-variant max-w-3xl mt-space-xs">
+                    {proposal.reason}
+                  </p>
+                </div>
+                <div className="bg-surface-container-low px-space-md py-space-sm rounded-xl flex items-center gap-space-sm self-start lg:self-auto">
+                  <span
+                    className="material-symbols-outlined text-secondary text-[24px]"
+                    aria-hidden="true"
+                  >
+                    verified_user
                   </span>
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-butter/60 text-contrast-ink font-metadata text-metadata">
-                    {
-                      "Rencana mengikuti ritme belajarmu, tanpa menghapus kegiatan yang sudah selesai."
-                    }
+                  <span className="font-metadata text-metadata text-secondary font-medium">
+                    {proposal.reason}
                   </span>
                 </div>
-                <h1 className="font-page-title text-page-title text-primary tracking-tight">
-                  Rencana Belajarmu Siap Disesuaikan!
-                </h1>
-                <p className="font-reading text-reading text-text-secondary leading-relaxed">
+              </div>
+            </section>
+
+            <section className="bg-lavender-tint rounded-2xl p-space-md md:p-space-lg flex flex-col md:flex-row items-center gap-space-lg relative overflow-hidden shadow-sm">
+              <div className="relative shrink-0 flex items-center justify-center">
+                <Image
+                  alt=""
+                  className="w-28 h-28 md:w-32 md:h-32 object-contain transform hover: transition-all object-contain"
+                  src="/design/mimo-final.png"
+                  width={1408}
+                  height={1120}
+                ></Image>
+              </div>
+              <div className="flex-1 flex flex-col gap-space-xs text-center md:text-left">
+                <div className="inline-flex items-center justify-center md:justify-start gap-space-xs text-tertiary-container font-label text-label font-bold">
+                  <span
+                    className="material-symbols-outlined text-[18px]"
+                    aria-hidden="true"
+                  >
+                    chat_bubble
+                  </span>
+                  <span>Bisikan Semangat dari Mimo</span>
+                </div>
+                <p className="font-mimo-voice text-mimo-voice text-primary leading-relaxed">
                   {proposal.reason}
                 </p>
+                <span className="text-metadata font-metadata text-on-surface-variant text-[13px]">
+                  Target ritme belajar: 15–20 menit fokus berkualitas per sesi.
+                </span>
+              </div>
+              <div className="shrink-0 flex items-center">
+                <a
+                  className="px-space-md py-2.5 rounded-xl bg-surface text-primary hover:bg-surface-container font-label text-label font-bold shadow-sm transition-colors inline-flex items-center gap-space-xs"
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onBack();
+                  }}
+                >
+                  <span>Lihat Perbedaan</span>
+                  <span
+                    className="material-symbols-outlined text-[18px]"
+                    aria-hidden="true"
+                  >
+                    south
+                  </span>
+                </a>
+              </div>
+            </section>
+
+            <section className="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+              <div className="bg-mint-tint rounded-2xl p-space-lg flex flex-col justify-between gap-space-md shadow-sm">
+                <div className="flex items-center justify-between">
+                  <span className="font-label text-label font-bold text-success uppercase tracking-wider text-[11px]">
+                    Durasi Belajar
+                  </span>
+                  <div className="w-9 h-9 rounded-full bg-surface flex items-center justify-center text-success">
+                    <span
+                      className="material-symbols-outlined text-[20px]"
+                      aria-hidden="true"
+                    >
+                      timer
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-display text-section-title text-primary font-black ui-card-title">
+                    {proposal.reason}
+                  </h3>
+                  <p className="font-body text-body text-on-surface-variant mt-1">
+                    Total waktu belajar hari ini tidak berubah. Nol beban waktu
+                    tambahan untukmu.
+                  </p>
+                </div>
+                <div className="inline-flex items-center gap-space-xs font-metadata text-metadata text-success font-semibold">
+                  <span
+                    className="material-symbols-outlined text-[16px]"
+                    aria-hidden="true"
+                  >
+                    check_circle
+                  </span>
+                  <span>{proposal.reason}</span>
+                </div>
               </div>
 
-              <div className="flex items-center gap-space-sm shrink-0 self-start lg:self-center">
+              <div className="bg-butter-tint rounded-2xl p-space-lg flex flex-col justify-between gap-space-md shadow-sm">
+                <div className="flex items-center justify-between">
+                  <span className="font-label text-label font-bold text-warning uppercase tracking-wider text-[11px]">
+                    Fokus Tambahan
+                  </span>
+                  <div className="w-9 h-9 rounded-full bg-surface flex items-center justify-center text-warning">
+                    <span
+                      className="material-symbols-outlined text-[20px]"
+                      aria-hidden="true"
+                    >
+                      bolt
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-display text-section-title text-primary font-black ui-card-title">
+                    +4 Menit Review
+                  </h3>
+                  <p className="font-body text-body text-on-surface-variant mt-1">
+                    Penguatan mikro untuk materi{" "}
+                    <strong>{proposal.reason}</strong> selagi ingatan masih
+                    hangat.
+                  </p>
+                </div>
+                <div className="inline-flex items-center gap-space-xs font-metadata text-metadata text-warning font-semibold">
+                  <span
+                    className="material-symbols-outlined text-[16px]"
+                    aria-hidden="true"
+                  >
+                    trending_up
+                  </span>
+                  <span>Rekomendasi Adaptif Soal #4</span>
+                </div>
+              </div>
+
+              <div className="bg-lavender-tint rounded-2xl p-space-lg flex flex-col justify-between gap-space-md shadow-sm">
+                <div className="flex items-center justify-between">
+                  <span className="font-label text-label font-bold text-tertiary-container uppercase tracking-wider text-[11px]">
+                    Relokasi Jadwal
+                  </span>
+                  <div className="w-9 h-9 rounded-full bg-surface flex items-center justify-center text-tertiary-container">
+                    <span
+                      className="material-symbols-outlined text-[20px]"
+                      aria-hidden="true"
+                    >
+                      schedule
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-display text-section-title text-primary font-black ui-card-title">
+                    Digeser ke Besok
+                  </h3>
+                  <p className="font-body text-body text-on-surface-variant mt-1">
+                    Kuis Analogi Santai dipindah ke{" "}
+                    <strong>Besok Pagi (09.00 WIB)</strong> saat energimu
+                    optimal.
+                  </p>
+                </div>
+                <div className="inline-flex items-center gap-space-xs font-metadata text-metadata text-tertiary-container font-semibold">
+                  <span
+                    className="material-symbols-outlined text-[16px]"
+                    aria-hidden="true"
+                  >
+                    hotel
+                  </span>
+                  <span>Sore Hari Bebas Tugas</span>
+                </div>
+              </div>
+            </section>
+
+            <section
+              className="flex flex-col gap-space-lg"
+              id="komparasi-jadwal"
+            >
+              <h2 className="font-section-title text-section-title text-primary tracking-tight ui-section-title">
+                Perbandingan Jadwal: Sebelum vs Usulan Baru
+              </h2>
+              <div className="grid md:grid-cols-2 gap-6">
+                {[
+                  ["Sebelum", before],
+                  ["Usulan", proposal.activities],
+                ].map(([label, items]) => (
+                  <div
+                    key={label as string}
+                    className="bg-surface border border-divider rounded-2xl p-6"
+                  >
+                    <h3 className="font-bold text-xl mb-4 ui-card-title">
+                      {label as string}
+                    </h3>
+                    {(items as typeof before).map((a) => (
+                      <article
+                        key={a.id}
+                        className="p-4 border-b border-divider"
+                      >
+                        <h4 className="font-bold ui-label-title">{a.title}</h4>
+                        <p className="text-sm">
+                          {new Date(a.start_at).toLocaleString("id-ID")} ·{" "}
+                          {a.duration_minutes} menit
+                        </p>
+                        <p className="text-sm">
+                          {a.kind === "manual" ? "Kegiatan mandiri" : ""}{" "}
+                          {a.locked ? "· Jadwal dikunci" : ""}
+                        </p>
+                      </article>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section className="bg-surface rounded-2xl p-space-lg flex flex-col gap-space-md shadow-sm">
+              <div className="flex items-center gap-space-xs">
+                <h2 className="font-section-title text-section-title text-primary tracking-tight ui-section-title">
+                  Kenapa Jadwal Ini Diusulkan? (Transparansi Cerdas)
+                </h2>
                 <button
-                  className="px-space-md py-space-sm rounded-xl bg-surface-container-low text-text-secondary hover:text-primary hover:bg-surface-container font-label text-label transition-colors flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-focus"
+                  onClick={() => setShowReason(!showReason)}
+                  aria-expanded={showReason}
+                >
+                  Lihat alasannya
+                </button>
+                {showReason && <p>{proposal.reason}</p>}
+              </div>
+              <p className="font-body text-body text-on-surface-variant max-w-4xl">
+                TemanBelajar tidak mengubah jadwal secara sembarangan. Setiap
+                rekomendasi berdasar pada data performa latihan dan prinsip
+                pembelajaran yang menenangkan:
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-space-md mt-space-xs">
+                <div className="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-xs">
+                  <div className="flex items-center gap-space-xs text-primary font-label text-label font-bold">
+                    <span
+                      className="material-symbols-outlined text-[18px] text-secondary"
+                      aria-hidden="true"
+                    >
+                      psychology_alt
+                    </span>
+                    <span>1. Titik Mispersepsi Ditemukan</span>
+                  </div>
+                  <p className="font-metadata text-metadata text-on-surface-variant leading-relaxed">
+                    {proposal.reason}
+                  </p>
+                </div>
+
+                <div className="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-xs">
+                  <div className="flex items-center gap-space-xs text-primary font-label text-label font-bold">
+                    <span
+                      className="material-symbols-outlined text-[18px] text-secondary"
+                      aria-hidden="true"
+                    >
+                      shield
+                    </span>
+                    <span>2. Perlindungan Anti-Kelelahan</span>
+                  </div>
+                  <p className="font-metadata text-metadata text-on-surface-variant leading-relaxed">
+                    {proposal.reason}
+                  </p>
+                </div>
+
+                <div className="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-xs">
+                  <div className="flex items-center gap-space-xs text-primary font-label text-label font-bold">
+                    <span
+                      className="material-symbols-outlined text-[18px] text-secondary"
+                      aria-hidden="true"
+                    >
+                      schedule_send
+                    </span>
+                    <span>3. Waktu Luang Kamu Masih Lapang</span>
+                  </div>
+                  <p className="font-metadata text-metadata text-on-surface-variant leading-relaxed">
+                    Berdasarkan profil mingguanmu, pukul 09.25–09.35 WIB adalah
+                    jendela waktu santai sebelum jam istirahat siang, sehingga
+                    kamu tidak terburu-buru.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <section className="bg-surface rounded-2xl p-space-lg shadow-md flex flex-col md:flex-row items-center justify-between gap-space-md sticky bottom-4 z-20">
+              <div className="flex flex-col gap-0.5 text-center md:text-left">
+                <span className="font-label text-label font-bold text-primary flex items-center justify-center md:justify-start gap-1">
+                  <span
+                    className="material-symbols-outlined text-success text-[18px]"
+                    aria-hidden="true"
+                  >
+                    verified
+                  </span>
+                  Rencana v2.4 siap diaktifkan
+                </span>
+                <span className="font-metadata text-metadata text-on-surface-variant text-[13px]">
+                  Kamu bisa mengubah atau memulihkan jadwal lama kapan pun
+                  melalui Rencana Belajar.
+                </span>
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-space-sm w-full md:w-auto">
+                <button
+                  className="px-space-md py-3 rounded-xl hover:bg-surface-container text-on-surface-variant hover:text-primary font-label text-label transition-colors inline-flex items-center gap-1.5"
+                  id="btn-pulihkan"
                   type="button"
-                  disabled={busy}
-                  onClick={() => historyDialog.current?.showModal()}
+                  disabled={busy || proposal.status !== "pending"}
+                  onClick={onDismiss}
                 >
                   <span
                     className="material-symbols-outlined text-[18px]"
@@ -110,613 +446,82 @@ export function ProposalDesign({
                   >
                     history
                   </span>
-                  Riwayat Versi (2.3)
+                  <span>Tetap Pakai Jadwal Lama</span>
                 </button>
+
                 <button
-                  className="px-space-lg py-space-sm rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label shadow-sm transition-all flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus"
+                  className="px-space-md py-3 rounded-xl bg-surface hover:bg-canvas text-primary font-label text-label font-bold transition-colors inline-flex items-center gap-1.5 shadow-sm"
+                  id="btn-kustomisasi"
                   type="button"
-                  disabled={busy || proposal.base_version !== plan.version}
+                  onClick={onEdit}
+                >
+                  <span
+                    className="material-symbols-outlined text-[18px] text-secondary"
+                    aria-hidden="true"
+                  >
+                    edit_calendar
+                  </span>
+                  <span>Atur Jam Sendiri</span>
+                </button>
+
+                <button
+                  className="px-space-lg py-3 rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label font-bold transition-all shadow-md inline-flex items-center gap-2 transform active:scale-95"
+                  id="btn-terapkan"
+                  type="button"
+                  disabled={
+                    busy ||
+                    proposal.status !== "pending" ||
+                    proposal.base_version !== plan.version
+                  }
                   onClick={onAccept}
                 >
                   <span
-                    className="material-symbols-outlined text-[18px]"
+                    className="material-symbols-outlined text-[20px]"
                     aria-hidden="true"
                   >
-                    check_circle
+                    check
                   </span>
-                  Pakai Rencana Ini
+                  <span>Pakai Rencana Baru (Terapkan)</span>
                 </button>
               </div>
-            </div>
-          </header>
-
-          <section
-            aria-label="Pesan dari Mimo"
-            className="relative rounded-2xl bg-secondary-container/50 p-space-lg shadow-sm"
-          >
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-space-lg">
-              <div className="shrink-0 relative">
-                <div className="w-28 h-28 md:w-32 md:h-32 rounded-2xl bg-surface p-2 shadow-sm flex items-center justify-center overflow-hidden">
-                  <Image
-                    alt="Mimo, teman belajarmu"
-                    className="w-full h-full object-contain"
-                    data-alt="Cute friendly green chameleon mascot named Mimo wearing a tiny leaf bookmark collar, sitting happily atop three stacked pastel books (mint, soft lavender, peach) in a cozy storybook editorial illustration style, warm cream background."
-                    src="/design/mimo.png"
-                    width={1024}
-                    height={1024}
-                  />
-                </div>
-                <div className="absolute -bottom-2 -right-2 bg-peach rounded-full px-2 py-0.5 text-[11px] font-label text-contrast-ink shadow-sm">
-                  Teman Belajar
-                </div>
-              </div>
-
-              <div className="flex-1 flex flex-col gap-space-xs text-center md:text-left">
-                <div className="flex items-center justify-center md:justify-start gap-2">
-                  <span className="font-mimo-voice text-mimo-voice text-primary">
-                    Kata Mimo:
-                  </span>
-                  <span className="px-2 py-0.5 rounded-full bg-surface text-primary font-metadata text-[12px]">
-                    Hasil Sesi Teorema Pythagoras #4.1
-                  </span>
-                </div>
-                <div className="relative bg-surface rounded-2xl p-space-md text-on-surface shadow-sm">
-                  <p className="font-reading text-reading leading-relaxed text-contrast-ink">
-                    {proposal.reason}
-                  </p>
-
-                  <div className="hidden md:block absolute -left-2 top-6 w-0 h-0 border-t-[8px] border-t-transparent border-r-[10px] border-r-surface border-b-[8px] border-b-transparent"></div>
-                </div>
-                <div className="flex items-center justify-between flex-wrap gap-2 pt-1 text-metadata font-metadata text-text-secondary">
-                  <span className="flex items-center gap-1">
-                    <span
-                      className="material-symbols-outlined text-[16px] text-success"
-                      aria-hidden="true"
-                    >
-                      verified_user
-                    </span>
-                    Algoritma BKT (Bayesian Knowledge Tracing) • Kapasitas
-                    Kognitif Harian Terjaga
-                  </span>
-                  <button
-                    className="text-primary hover:underline font-label flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-focus rounded"
-                    type="button"
-                    disabled={busy}
-                    onClick={() => setShowReason(!showReason)}
-                    aria-expanded={showReason}
-                  >
-                    <span>Mengapa Mimo mengusulkan ini?</span>
-                    <span
-                      className="material-symbols-outlined text-[16px]"
-                      id="algo-icon"
-                      aria-hidden="true"
-                    >
-                      expand_more
-                    </span>
-                  </button>
-                </div>
-
-                <div
-                  className="mt-space-md font-body text-body text-text-secondary"
-                  id="algo-details"
-                  hidden={!showReason}
-                >
-                  {proposal.reason}
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section
-            aria-label="Ringkasan Dampak Waktu dan Kapasitas"
-            className="grid grid-cols-1 md:grid-cols-3 gap-space-md"
-          >
-            <article className="rounded-2xl bg-surface p-space-md shadow-sm flex flex-col justify-between gap-space-sm">
-              <p className="font-label text-label text-text-secondary">
-                Durasi dalam usulan
-              </p>
-              <p className="font-display text-page-title text-primary mt-space-md">{`${proposal.activities.filter((a) => a.status !== "skipped").reduce((n, a) => n + a.duration_minutes, 0)} Menit`}</p>
-            </article>
-
-            <article className="rounded-2xl bg-surface p-space-md shadow-sm flex flex-col justify-between gap-space-sm">
-              <p className="font-label text-label text-text-secondary">
-                Perubahan yang diusulkan
-              </p>
-              <p className="font-display text-page-title text-primary mt-space-md">
-                {String(proposal.changes.length)}
-              </p>
-            </article>
-
-            <article className="rounded-2xl bg-surface p-space-md shadow-sm flex flex-col justify-between gap-space-sm">
-              <p className="font-label text-label text-text-secondary">
-                Kegiatan terlindungi
-              </p>
-              <p className="font-display text-page-title text-primary mt-space-md">
-                {String(
-                  before.filter(
-                    (a) =>
-                      a.locked ||
-                      a.status === "completed" ||
-                      a.status === "active",
-                  ).length,
-                )}
-              </p>
-            </article>
-          </section>
-
-          <section
-            aria-label="Komparasi Jadwal Rinci"
-            className="flex flex-col gap-space-md"
-          >
-            <div className="flex items-center justify-between flex-wrap gap-space-sm">
-              <div>
-                <h2 className="font-section-title text-section-title text-primary">
-                  Perbandingan Alur Belajar
-                </h2>
-                <p className="font-metadata text-metadata text-text-secondary">
-                  {proposal.reason}
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1 text-metadata font-label text-text-secondary">
-                  <span className="w-3 h-3 rounded-full bg-surface-container"></span>{" "}
-                  Tetap / Tersimpan
-                </span>
-                <span className="inline-flex items-center gap-1 text-metadata font-label text-primary">
-                  <span className="w-3 h-3 rounded-full bg-mimo-belly"></span>{" "}
-                  Ditambahkan Baru
-                </span>
-                <span className="inline-flex items-center gap-1 text-metadata font-label text-tertiary">
-                  <span className="w-3 h-3 rounded-full bg-tertiary-fixed"></span>{" "}
-                  Dijadwalkan Ulang
-                </span>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-space-lg">
-              <div className="rounded-3xl bg-surface-container-low p-space-lg flex flex-col gap-space-md">
-                <h3 className="font-card-title text-card-title text-primary">{`Jadwal Semula (Versi ${proposal.base_version})`}</h3>
-                <div className="flex flex-col gap-space-md mt-space-md">
-                  {before.map((a) => (
-                    <div
-                      key={a.id}
-                      className="rounded-xl bg-surface-container-low p-space-md"
-                    >
-                      <div className="flex items-center justify-between gap-space-sm">
-                        <span className="font-metadata text-metadata text-secondary">
-                          {new Date(a.start_at).toLocaleString("id-ID", {
-                            timeZone: plan.timezone,
-                          })}
-                        </span>
-                        {(a.locked ||
-                          a.status === "completed" ||
-                          a.status === "active") && (
-                          <span
-                            className="material-symbols-outlined text-secondary text-[18px]"
-                            aria-label="Kegiatan terlindungi"
-                          >
-                            lock
-                          </span>
-                        )}
-                      </div>
-                      <h4 className="font-label text-label text-primary mt-space-xs">
-                        {a.title}
-                      </h4>
-                      <p className="font-metadata text-metadata text-text-secondary mt-space-xs">
-                        {a.duration_minutes} menit •{" "}
-                        {a.status === "completed"
-                          ? "Selesai"
-                          : a.status === "active"
-                            ? "Berjalan"
-                            : a.status === "skipped"
-                              ? "Dilewati"
-                              : "Siap dijalani"}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="rounded-3xl bg-secondary-container/40 p-space-lg flex flex-col gap-space-md shadow-sm">
-                <h3 className="font-card-title text-card-title text-primary">{`Usulan Jadwal Baru (setelah versi ${proposal.base_version})`}</h3>
-                <div className="flex flex-col gap-space-md mt-space-md">
-                  {proposal.activities.map((a) => (
-                    <div
-                      key={a.id}
-                      className="rounded-xl bg-surface-container-low p-space-md"
-                    >
-                      <div className="flex items-center justify-between gap-space-sm">
-                        <span className="font-metadata text-metadata text-secondary">
-                          {new Date(a.start_at).toLocaleString("id-ID", {
-                            timeZone: plan.timezone,
-                          })}
-                        </span>
-                        {(a.locked ||
-                          a.status === "completed" ||
-                          a.status === "active") && (
-                          <span
-                            className="material-symbols-outlined text-secondary text-[18px]"
-                            aria-label="Kegiatan terlindungi"
-                          >
-                            lock
-                          </span>
-                        )}
-                      </div>
-                      <h4 className="font-label text-label text-primary mt-space-xs">
-                        {a.title}
-                      </h4>
-                      <p className="font-metadata text-metadata text-text-secondary mt-space-xs">
-                        {a.duration_minutes} menit •{" "}
-                        {a.status === "completed"
-                          ? "Selesai"
-                          : a.status === "active"
-                            ? "Berjalan"
-                            : a.status === "skipped"
-                              ? "Dilewati"
-                              : "Siap dijalani"}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section
-            aria-label="Pratinjau Modul Penguatan Baru"
-            className="rounded-3xl bg-surface p-space-lg shadow-sm flex flex-col md:flex-row items-center justify-between gap-space-lg"
-          >
-            <div className="flex-1 flex flex-col gap-space-xs">
-              <div className="inline-flex items-center gap-1.5 text-metadata font-label text-secondary">
-                <span
-                  className="material-symbols-outlined text-[18px]"
-                  aria-hidden="true"
-                >
-                  extension
-                </span>
-                Bocoran Isi Modul Baru 5 Menit
-              </div>
-              <h3 className="font-card-title text-card-title text-primary">
-                {"Penyesuaian berdasarkan pilihan dan hasil belajarmu"}
-              </h3>
-              <p className="font-reading text-reading text-text-secondary">
-                {proposal.reason}
-              </p>
-              <div className="pt-2 flex items-center gap-space-md text-metadata font-metadata text-text-secondary">
-                <span className="flex items-center gap-1">
-                  <span
-                    className="material-symbols-outlined text-[16px] text-success"
-                    aria-hidden="true"
-                  >
-                    volume_up
-                  </span>{" "}
-                  Ada panduan suara Mimo
-                </span>
-                <span className="flex items-center gap-1">
-                  <span
-                    className="material-symbols-outlined text-[16px] text-success"
-                    aria-hidden="true"
-                  >
-                    touch_app
-                  </span>{" "}
-                  Interaktif geser ubin
-                </span>
-              </div>
-            </div>
-
-            <div className="w-full md:w-80 shrink-0 bg-background rounded-2xl p-space-md flex flex-col items-center justify-center gap-2 shadow-inner">
-              <svg
-                aria-hidden="true"
-                className="w-full h-auto max-w-[240px]"
-                viewBox="0 0 240 140"
-              >
-                <rect
-                  fill="#FFCA9D"
-                  height="40"
-                  rx="4"
-                  stroke="#273B35"
-                  strokeWidth="2"
-                  width="40"
-                  x="20"
-                  y="50"
-                ></rect>
-                <text
-                  fill="#273B35"
-                  fontFamily="Plus Jakarta Sans"
-                  fontSize="12"
-                  fontWeight="700"
-                  textAnchor="middle"
-                  x="40"
-                  y="74"
-                >
-                  {"Penyesuaian berdasarkan pilihan dan hasil belajarmu"}
-                </text>
-
-                <text
-                  fill="#273B35"
-                  fontFamily="Plus Jakarta Sans"
-                  fontSize="18"
-                  fontWeight="700"
-                  textAnchor="middle"
-                  x="75"
-                  y="75"
-                >
-                  +
-                </text>
-
-                <rect
-                  fill="#FFE7A3"
-                  height="50"
-                  rx="4"
-                  stroke="#273B35"
-                  strokeWidth="2"
-                  width="50"
-                  x="90"
-                  y="40"
-                ></rect>
-                <text
-                  fill="#273B35"
-                  fontFamily="Plus Jakarta Sans"
-                  fontSize="12"
-                  fontWeight="700"
-                  textAnchor="middle"
-                  x="115"
-                  y="70"
-                >
-                  8²=64
-                </text>
-
-                <text
-                  fill="#892E32"
-                  fontFamily="Plus Jakarta Sans"
-                  fontSize="18"
-                  fontWeight="700"
-                  textAnchor="middle"
-                  x="155"
-                  y="75"
-                >
-                  ≠
-                </text>
-
-                <rect
-                  fill="#C8E8CE"
-                  height="60"
-                  rx="4"
-                  stroke="#273B35"
-                  strokeDasharray="3 3"
-                  strokeWidth="2"
-                  width="60"
-                  x="170"
-                  y="30"
-                ></rect>
-                <text
-                  fill="#273B35"
-                  fontFamily="Plus Jakarta Sans"
-                  fontSize="12"
-                  fontWeight="700"
-                  textAnchor="middle"
-                  x="200"
-                  y="65"
-                >
-                  11²=121
-                </text>
-
-                <rect
-                  fill="#273B35"
-                  height="24"
-                  rx="12"
-                  width="140"
-                  x="50"
-                  y="105"
-                ></rect>
-                <text
-                  fill="#FFFFFF"
-                  fontFamily="Plus Jakarta Sans"
-                  fontSize="10"
-                  fontWeight="700"
-                  textAnchor="middle"
-                  x="120"
-                  y="121"
-                >
-                  100 &lt; 121 (Tumpul)
-                </text>
-              </svg>
-              <span className="text-[12px] font-label text-text-secondary text-center">
-                {"Penyesuaian berdasarkan pilihan dan hasil belajarmu"}
-              </span>
-            </div>
-          </section>
-
-          <section className="rounded-2xl bg-surface p-space-md shadow-sm flex flex-col sm:flex-row items-center justify-between gap-space-md">
-            <div className="flex items-center gap-space-md">
-              <div className="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary shrink-0">
-                <span
-                  className="material-symbols-outlined text-[20px]"
-                  aria-hidden="true"
-                >
-                  history_toggle_off
-                </span>
-              </div>
-              <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <span className="font-label text-label text-primary">
-                    Riwayat Perubahan Jadwal Belajar
-                  </span>
-                  <span className="px-2 py-0.5 rounded text-[11px] font-label bg-secondary-container text-on-secondary-container">{`Versi aktif ${plan.version} • Usulan dari versi ${proposal.base_version}`}</span>
-                </div>
-                <p className="font-metadata text-metadata text-text-secondary">
-                  Semua aktivitas yang telah selesai (9 menit) terkunci aman dan
-                  tidak akan terhapus jika kamu berpindah versi.
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-space-sm shrink-0">
-              <button
-                className="px-space-md py-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-label text-metadata transition-colors focus:outline-none focus:ring-2 focus:ring-focus"
-                type="button"
-                disabled={busy || !restoreTarget}
-                onClick={() => restoreTarget && onRestore(restoreTarget)}
-              >
-                {restoreTarget
-                  ? `Pulihkan ke Versi ${restoreTarget}`
-                  : "Belum ada versi sebelumnya"}
-              </button>
-            </div>
-          </section>
-
-          <section
-            aria-label="Pilihan Tindakan"
-            className="flex flex-col sm:flex-row items-center justify-between gap-space-md pt-space-sm"
-          >
-            <div className="flex items-center gap-space-sm">
-              <button
-                className="px-space-md py-space-sm rounded-xl text-text-secondary hover:text-primary hover:bg-surface-container-low font-label text-label transition-colors flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-focus"
-                onClick={onBack}
-              >
-                <span
-                  className="material-symbols-outlined text-[18px]"
-                  aria-hidden="true"
-                >
-                  arrow_back
-                </span>
-                Kembali ke Rencana Belajar
-              </button>
-            </div>
-            <div className="flex flex-wrap items-center justify-end gap-space-sm w-full sm:w-auto">
-              <button
-                className="px-space-md py-space-sm rounded-xl bg-surface hover:bg-surface-container-low text-text-secondary hover:text-primary font-label text-label transition-colors focus:outline-none focus:ring-2 focus:ring-focus"
-                type="button"
-                disabled={busy}
-                onClick={onDismiss}
-              >
-                Pertahankan Jadwal Lama (Batal)
-              </button>
-
-              <button
-                className="px-space-md py-space-sm rounded-xl bg-surface hover:bg-surface-container-low text-primary font-label text-label shadow-sm transition-colors flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-focus"
-                type="button"
-                disabled={busy}
-                onClick={onEdit}
-              >
-                <span
-                  className="material-symbols-outlined text-[18px]"
-                  aria-hidden="true"
-                >
-                  tune
-                </span>
-                Atur Jam &amp; Hari Sendiri
-              </button>
-
-              <button
-                className="px-space-lg py-space-sm rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label shadow-sm transition-all flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus"
-                type="button"
-                disabled={busy || proposal.base_version !== plan.version}
-                onClick={onAccept}
-              >
-                <span
-                  className="material-symbols-outlined text-[18px]"
-                  aria-hidden="true"
-                >
-                  done_all
-                </span>
-                Pakai Rencana Baru Ini (Terapkan)
-              </button>
-            </div>
-          </section>
+            </section>
+          </div>
         </div>
-
-        <aside
-          aria-label="Bilah Tindakan Cepat"
-          className="sticky bottom-0 z-40 w-full bg-surface/95 backdrop-blur-md shadow-[0_-4px_20px_rgba(39,59,53,0.08)] py-3 px-margin"
-        >
-          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-space-sm">
-            <div className="flex items-center gap-space-sm">
-              <span className="w-9 h-9 rounded-full bg-secondary-container flex items-center justify-center text-primary shrink-0">
-                <span
-                  className="material-symbols-outlined text-[20px]"
-                  aria-hidden="true"
-                >
-                  bolt
-                </span>
-              </span>
-              <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <span className="font-label text-label text-primary">{`Versi aktif ${plan.version} • Usulan dari versi ${proposal.base_version}`}</span>
-                  <span className="hidden md:inline px-2 py-0.2 rounded-full bg-mimo-belly/40 text-primary font-metadata text-[12px]">
-                    Total 14 Menit • 1 Perubahan Diterapkan
-                  </span>
-                </div>
-                <span className="text-metadata font-metadata text-text-secondary">
-                  Langsung lanjut ke modul 5 menit selagi ingatan konsep
-                  Pythagoras masih hangat.
-                </span>
-              </div>
-            </div>
-            <div className="flex items-center gap-space-sm shrink-0 w-full sm:w-auto justify-end">
-              <button
-                className="px-space-md py-2 rounded-xl text-text-secondary hover:text-primary font-label text-metadata transition-colors focus:outline-none focus:ring-2 focus:ring-focus"
-                type="button"
-                disabled={busy}
-                onClick={onDismiss}
-              >
-                Nanti Saja
-              </button>
-              <button
-                className="px-space-lg py-2 rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label shadow-sm flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus"
-                type="button"
-                disabled={busy || proposal.base_version !== plan.version}
-                onClick={onAccept}
-              >
-                <span>Terapkan &amp; Lanjut Belajar</span>
-                <span
-                  className="material-symbols-outlined text-[18px]"
-                  aria-hidden="true"
-                >
-                  arrow_forward
-                </span>
-              </button>
-            </div>
-          </div>
-        </aside>
-      </div>
-      <div className="flex flex-wrap gap-space-sm mt-space-md">
-        <button
-          disabled={busy}
-          onClick={onRefresh}
-          className="h-11 px-space-lg rounded-xl bg-surface text-primary font-label text-label"
-        >
-          Muat rencana terbaru
-        </button>
-        <button
-          disabled={busy}
-          onClick={onBack}
-          className="h-11 px-space-lg rounded-xl bg-surface text-primary font-label text-label"
-        >
-          Kembali meninjau jadwal
-        </button>
-      </div>
-      <dialog ref={historyDialog} className="stitch-reason">
-        <h2>Riwayat versi rencana</h2>
-        <p>
-          Pemulihan tetap melindungi kegiatan selesai, berjalan, dan terkunci.
-        </p>
-        {Object.keys(plan.history).map((v) => (
-          <div
-            key={v}
-            className="flex items-center justify-between gap-space-md mt-space-sm"
+        <div className="max-w-6xl mx-auto px-6 pb-10 space-y-3 ui-container">
+          {proposal.status === "pending" &&
+            proposal.base_version !== plan.version && (
+              <p role="alert" className="text-error">
+                Rencana telah berubah. Muat versi terbaru sebelum menerapkan
+                usulan.
+              </p>
+            )}
+          <button onClick={onRefresh}>Perbarui rencana</button>
+          <button onClick={() => historyDialog.current?.showModal()}>
+            Riwayat perubahan
+          </button>
+          <button
+            disabled={busy || restoreTarget === undefined}
+            onClick={() => onRestore(restoreTarget)}
           >
-            <span>Versi {v}</span>
-            <button
-              disabled={busy || +v === plan.version}
-              onClick={() => onRestore(+v)}
-            >
-              Pulihkan
-            </button>
-          </div>
-        ))}
-        <button onClick={() => historyDialog.current?.close()}>
-          Tutup riwayat
-        </button>
-      </dialog>
-    </div>
+            Pulihkan versi sebelumnya
+          </button>
+        </div>
+        <dialog
+          ref={historyDialog}
+          className="stitch-reason"
+          aria-label="Riwayat rencana"
+        >
+          <h2 className="ui-section-title">Riwayat rencana</h2>
+          {Object.entries(plan.history).map(([version, items]) => (
+            <p key={version}>
+              Versi {version}: {items.length} kegiatan
+            </p>
+          ))}
+          <button onClick={() => historyDialog.current?.close()}>
+            Tutup riwayat
+          </button>
+        </dialog>
+      </div>
+    </>
   );
 }

@@ -31,6 +31,7 @@ export function PlanDesign({
   editor,
   history,
   hasDraft,
+  message,
 }: {
   plans: Plan[];
   plan: Plan | undefined;
@@ -60,694 +61,447 @@ export function PlanDesign({
   editor: ReactNode;
   history: ReactNode;
   hasDraft: boolean;
+  message: string;
 }) {
+  const [controls, setControls] = useState(!plan);
+  const [proposalHidden, setProposalHidden] = useState(false);
+  function openControls() {
+    setControls(true);
+    document
+      .getElementById("plan-controls")
+      ?.scrollIntoView?.({ block: "start" });
+  }
   const zone = plan?.timezone || profile.timezone;
-  const dateKey = (d: string) =>
-    new Date(d).toLocaleDateString("en-CA", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      timeZone: zone,
-    });
-  const today = dateKey(new Date().toISOString());
-  const [selectedDay, setSelectedDay] = useState(
-      plan?.activities[0] ? dateKey(plan.activities[0].start_at) : today,
-    ),
-    [monthOffset, setMonthOffset] = useState(0),
-    [controls, setControls] = useState(!plan);
-  const dayActivities = (plan?.activities || [])
-    .filter((a) => dateKey(a.start_at) === selectedDay)
-    .toSorted((a, b) => a.start_at.localeCompare(b.start_at));
-  const tomorrowKey = new Date(
-      new Date(selectedDay + "T12:00:00Z").getTime() + 86400000,
-    )
-      .toISOString()
-      .slice(0, 10),
-    tomorrowActivities = (plan?.activities || []).filter(
-      (a) => dateKey(a.start_at) === tomorrowKey,
-    );
-  const calendarDate = new Date(selectedDay + "T12:00:00Z");
-  calendarDate.setUTCDate(1);
-  calendarDate.setUTCMonth(calendarDate.getUTCMonth() + monthOffset);
-  const blanks = (calendarDate.getUTCDay() + 6) % 7;
-  const last = new Date(
-    Date.UTC(calendarDate.getUTCFullYear(), calendarDate.getUTCMonth() + 1, 0),
-  ).getUTCDate();
-  const calendarDays = [
-    ...Array(blanks).fill(null),
-    ...Array.from({ length: last }, (_, i) =>
-      new Date(
-        Date.UTC(
-          calendarDate.getUTCFullYear(),
-          calendarDate.getUTCMonth(),
-          i + 1,
-          12,
-        ),
-      )
-        .toISOString()
-        .slice(0, 10),
-    ),
-  ] as (string | null)[];
-  const statusNames = {
-      pending: "Siap dijalani",
-      active: "Sedang berjalan",
-      completed: "Selesai",
-      skipped: "Dilewati",
-    },
-    pending = plan?.proposals?.find((p) => p.status === "pending");
+  const [dayOffset, setDayOffset] = useState(0);
+  const activities = (plan?.activities || []).toSorted((a, b) =>
+    a.start_at.localeCompare(b.start_at),
+  );
+  const pending = plan?.proposals.find((p) => p.status === "pending");
+  const activeDay = new Date();
+  activeDay.setDate(activeDay.getDate() + dayOffset);
+  const dayKey = (d: Date) => d.toLocaleDateString("en-CA", { timeZone: zone });
+  const visibleActivities = activities.filter(
+    (a) => dayKey(new Date(a.start_at)) === dayKey(activeDay),
+  );
+
   return (
-    <div className="stitch-screen stitch-plan">
-      {controls && (
-        <section className="bg-surface rounded-2xl p-space-lg mb-space-lg">
-          <h2 className="font-section-title text-section-title text-primary">
-            Sesuaikan Langkah Belajarmu
-          </h2>
-          {plans.length > 1 && (
-            <label className="font-label text-label text-primary">
-              Rencana
-              <select
-                value={plan?.id}
-                onChange={(e) => onSelectPlan(e.target.value)}
-                className="h-11 px-space-md bg-surface-container-low rounded-xl ml-space-sm"
-              >
-                {plans.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    Rencana versi {p.version} • {p.id.slice(0, 8)}
-                  </option>
-                ))}
-              </select>
-            </label>
-          )}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-space-md mt-space-md">
-            <label className="flex flex-col gap-space-sm font-label text-label text-primary">
-              Materi
-              <select
-                value={materialId}
-                onChange={(e) => setMaterialId(e.target.value)}
-                className="h-11 px-space-md rounded-xl bg-surface-container-low"
-              >
-                {materials.map((m) => (
-                  <option key={m.id} value={m.id}>
-                    {m.title}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="flex flex-col gap-space-sm font-label text-label text-primary">
-              Waktu mulai
-              <input
-                type="datetime-local"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="h-11 px-space-md rounded-xl bg-surface-container-low"
-              />
-            </label>
-          </div>
-          <p className="font-metadata text-metadata text-text-secondary mt-space-sm">
-            Batas harian {plan?.daily_minutes || profile.daily_minutes} menit.
-            Zona rencana {zone}; isian waktu mengikuti perangkatmu.
-          </p>
-          <div className="flex flex-wrap gap-space-sm mt-space-md">
-            {!plan ? (
-              <button
-                disabled={busy || !date || !materialId}
-                onClick={onSuggest}
-                className="h-11 px-space-lg rounded-xl bg-primary text-on-primary font-label text-label"
-              >
-                Susun usulan awal
-              </button>
-            ) : (
-              <button
-                disabled={busy || !date || !materialId}
-                onClick={onRecompute}
-                className="h-11 px-space-lg rounded-xl bg-primary text-on-primary font-label text-label"
-              >
-                Minta saran dari hasil belajar
-              </button>
-            )}
-            <button
-              disabled={busy}
-              onClick={onRefresh}
-              className="h-11 px-space-lg rounded-xl bg-surface-container text-primary font-label text-label"
-            >
-              Perbarui rencana
-            </button>
-          </div>
-          <details className="mt-space-md">
-            <summary className="font-label text-label text-primary">
-              Tambah kegiatan sendiri
-            </summary>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-space-md mt-space-md">
-              <label className="flex flex-col gap-space-sm font-label text-label text-primary">
-                Judul kegiatan
-                <input
-                  value={title}
-                  maxLength={160}
-                  onChange={(e) => setTitle(e.target.value)}
-                  className="h-11 px-space-md rounded-xl bg-surface-container-low"
-                />
-              </label>
-              <label className="flex flex-col gap-space-sm font-label text-label text-primary">
-                Durasi (menit)
-                <input
-                  type="number"
-                  min={1}
-                  max={240}
-                  value={duration}
-                  onChange={(e) => setDuration(+e.target.value)}
-                  className="h-11 px-space-md rounded-xl bg-surface-container-low"
-                />
-              </label>
-            </div>
-            <button
-              disabled={!date || !title.trim()}
-              onClick={onAddManual}
-              className="h-11 px-space-lg rounded-xl bg-surface-container text-primary font-label text-label mt-space-md"
-            >
-              Tambahkan ke draf
-            </button>
-          </details>
-        </section>
-      )}
-      {editor}
-      <div className="flex flex-col w-full">
-        <div className="max-w-7xl mx-auto w-full px-margin py-space-md">
-          <div className="flex flex-wrap items-center justify-between gap-space-sm mb-space-md">
-            <nav
-              aria-label="Jejak Navigasi"
-              className="flex items-center gap-space-xs font-metadata text-metadata text-text-secondary"
-            >
-              <button
-                className="hover:text-primary transition-colors flex items-center gap-1"
-                onClick={onBack}
-              >
-                <span
-                  className="material-symbols-outlined text-[18px]"
-                  aria-hidden="true"
-                >
-                  home
-                </span>
-                Beranda
-              </button>
-              <span className="text-outline-variant">/</span>
-              <span className="font-label text-label text-primary">
-                Rencana Belajar Harian
-              </span>
-              <span className="text-outline-variant">•</span>
-              <span className="bg-surface-container-high px-space-sm py-0.5 rounded-full text-on-surface font-metadata text-metadata">
-                {new Date(selectedDay + "T12:00:00Z").toLocaleDateString(
-                  "id-ID",
-                  {
-                    weekday: "long",
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                    timeZone: "UTC",
-                  },
-                )}
-              </span>
-            </nav>
-
-            <div className="flex items-center gap-space-sm bg-surface px-space-md py-1.5 rounded-full shadow-sm">
-              <span className="w-2.5 h-2.5 rounded-full bg-success"></span>
-              <span className="font-label text-label text-primary">{`${profile.display_name}, kamu bebas menyesuaikan jadwalmu.`}</span>
-              <span className="text-outline-variant">•</span>
-              <span className="font-metadata text-metadata text-text-secondary">
-                SMP Kelas 8
-              </span>
-              <span className="text-outline-variant">•</span>
-              <span className="inline-flex items-center gap-1 font-metadata text-metadata text-secondary">
-                <span
-                  className="material-symbols-outlined text-[16px]"
-                  aria-hidden="true"
-                >
-                  visibility
-                </span>
-                Mode Visual
-              </span>
-            </div>
-          </div>
-
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-space-md mb-space-lg">
-            <div className="max-w-2xl">
-              <h1 className="font-page-title text-page-title text-primary tracking-tight">
-                Rencana Belajar Harianmu
-              </h1>
-              <p className="font-reading text-reading text-text-secondary mt-1">
-                Atur jadwal belajarmu dengan santai tanpa paksaan. Waktu luangmu
-                yang menentukan ritme, bukan deadline yang bikin cemas.
-              </p>
-            </div>
-
-            <div className="flex items-center gap-space-sm">
-              <button
-                className="px-space-md py-2.5 bg-surface text-primary rounded-xl font-label text-label hover:bg-surface-container transition-all shadow-sm flex items-center gap-2 min-h-[44px]"
-                disabled={busy}
-                onClick={() => setControls(!controls)}
-              >
-                <span
-                  className="material-symbols-outlined text-[20px]"
-                  aria-hidden="true"
-                >
-                  calendar_month
-                </span>
-                Pilih Tanggal
-              </button>
-              <button
-                className="px-space-md py-2.5 bg-surface text-primary rounded-xl font-label text-label hover:bg-surface-container transition-all shadow-sm flex items-center gap-2 min-h-[44px]"
-                disabled={busy}
-                onClick={() => {
-                  onEdit();
-                  setControls(true);
-                }}
-                aria-label="Edit rencana manual"
-              >
-                <span
-                  className="material-symbols-outlined text-[20px]"
-                  aria-hidden="true"
-                >
-                  tune
-                </span>
-                Preferensi Jam
-              </button>
-            </div>
-          </div>
-
-          {pending && (
-            <section className="relative overflow-hidden bg-gradient-to-r from-butter via-secondary-container/60 to-secondary-fixed/50 rounded-2xl p-space-lg mb-space-xl">
-              <div className="flex flex-col gap-space-sm">
-                <span className="font-label text-label text-secondary">
-                  Usulan Cerdas Mimo
-                </span>
-                <h2 className="font-section-title text-section-title text-primary">
-                  Ada usulan penyesuaian untuk ditinjau
-                </h2>
-                <p className="font-body text-body text-text-secondary">
-                  {pending?.reason}
-                </p>
-                <div className="flex gap-space-sm">
-                  <button
-                    disabled={busy}
-                    onClick={() => pending && onReview(pending)}
-                    className="h-11 px-space-lg rounded-xl bg-primary text-on-primary font-label text-label"
-                  >
-                    Tinjau perubahan
-                  </button>
-                </div>
-              </div>
-            </section>
-          )}
-
-          <section
-            aria-label="Ringkasan Kapasitas Harian"
-            className="grid grid-cols-1 md:grid-cols-3 gap-space-md mb-space-xl"
-          >
-            <div className="bg-surface rounded-2xl p-space-lg shadow-sm flex flex-col justify-between">
-              <p className="font-label text-label text-text-secondary">
-                Target Harian
-              </p>
-              <p className="font-display text-page-title text-primary mt-space-sm">{`${plan?.daily_minutes || profile.daily_minutes} Menit`}</p>
-            </div>
-
-            <div className="bg-surface rounded-2xl p-space-lg shadow-sm flex flex-col justify-between">
-              <p className="font-label text-label text-text-secondary">
-                Kegiatan Selesai
-              </p>
-              <p className="font-display text-page-title text-primary mt-space-sm">
-                {String(
-                  plan?.activities.filter((a) => a.status === "completed")
-                    .length || 0,
-                )}
-              </p>
-            </div>
-
-            <div className="bg-surface rounded-2xl p-space-lg shadow-sm flex flex-col justify-between">
-              <p className="font-label text-label text-text-secondary">
-                Versi Rencana
-              </p>
-              <p className="font-display text-page-title text-primary mt-space-sm">
-                {plan ? String(plan.version) : "Belum dibuat"}
-              </p>
-            </div>
-          </section>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg mb-space-xxl">
-            <section
-              aria-labelledby="timeline-heading"
-              className="lg:col-span-8 flex flex-col gap-space-md"
-            >
-              <div className="flex items-center justify-between bg-surface px-space-lg py-space-md rounded-2xl shadow-sm">
-                <div>
-                  <h2
-                    className="font-section-title text-section-title text-primary tracking-tight"
-                    id="timeline-heading"
-                  >{`Linimasa ${new Date(selectedDay + "T12:00:00Z").toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" })}`}</h2>
-                  <p className="font-metadata text-metadata text-text-secondary">
-                    {new Date(selectedDay + "T12:00:00Z").toLocaleDateString(
-                      "id-ID",
-                      {
-                        weekday: "long",
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                        timeZone: "UTC",
-                      },
-                    )}
-                  </p>
+    <>
+      <div className="final-design final-screen-20 w-full bg-canvas flex-1 screen-page">
+        <div className="flex flex-col w-full">
+          <div className="max-w-[1200px] w-full mx-auto px-margin-mobile sm:px-margin-tablet lg:px-margin py-space-lg space-y-space-xl ui-container">
+            <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-space-md">
+              <div className="space-y-space-xs">
+                <div className="flex flex-wrap items-center gap-2 text-metadata font-metadata text-on-surface-variant">
+                  <span>Beranda</span>
+                  <span className="text-outline-variant">•</span>
+                  <span>Rencana Belajar</span>
+                  <span className="text-outline-variant">•</span>
+                  <span className="font-semibold text-primary whitespace-nowrap">{`${activeDay.toLocaleDateString("id-ID", { timeZone: zone })} · ${visibleActivities.reduce((n, a) => n + a.duration_minutes, 0)} menit`}</span>
                 </div>
                 <button
-                  className="px-space-md py-2 bg-surface-container hover:bg-surface-container-high text-primary rounded-xl font-label text-label text-xs transition-colors flex items-center gap-1 min-h-[44px]"
-                  disabled={busy}
-                  onClick={() => setControls(true)}
+                  onClick={onBack}
+                  className="inline-flex text-sm py-2 hover:underline"
+                >
+                  Kembali ke beranda
+                </button>
+                <div className="flex flex-wrap items-center gap-space-sm pt-1">
+                  <h1 className="font-page-title text-page-title text-primary tracking-tight ui-page-title">
+                    Rencana Belajar Harian
+                  </h1>
+                  <span className="px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed text-[12px] font-label font-bold">
+                    Jadwal adaptif
+                  </span>
+                </div>
+                <p className="font-body text-body text-on-surface-variant max-w-2xl">
+                  Waktu belajar ramah pikiran — atur sesuai energimu tanpa rasa
+                  cemas dan tetap selaras dengan kurikulum sekolah.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-space-xs sm:gap-space-sm">
+                <button
+                  className="flex items-center gap-1.5 px-space-md py-2 bg-surface text-primary font-label text-label rounded-xl hover:bg-surface-container shadow-sm transition-colors"
+                  type="button"
+                  aria-label="Edit rencana manual"
+                  onClick={() => {
+                    onEdit();
+                    openControls();
+                  }}
                 >
                   <span
-                    className="material-symbols-outlined text-[16px]"
+                    className="material-symbols-outlined text-[18px]"
                     aria-hidden="true"
                   >
-                    add_circle
+                    tune
                   </span>
-                  Tambah Rencana Mandiri
+                  <span>Atur Waktu</span>
+                </button>
+                <button
+                  className="flex items-center gap-1.5 px-space-md py-2 bg-surface text-primary font-label text-label rounded-xl hover:bg-surface-container shadow-sm transition-colors"
+                  type="button"
+                  onClick={() => window.print()}
+                >
+                  <span
+                    className="material-symbols-outlined text-[18px]"
+                    aria-hidden="true"
+                  >
+                    print
+                  </span>
+                  <span className="hidden sm:inline">Cetak / Ekspor</span>
                 </button>
               </div>
+            </div>
 
-              <div className="flex flex-col gap-space-md relative">
-                {dayActivities.length ? (
-                  dayActivities.map((a) => (
-                    <article
-                      className="bg-surface rounded-2xl p-space-lg shadow-sm hover:shadow-md transition-shadow relative overflow-hidden"
-                      key={a.id}
-                      data-status={a.status}
-                    >
-                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-secondary-container" />
-                      <div className="flex items-start gap-space-md">
-                        <span className="w-10 h-10 rounded-full bg-secondary-container text-primary flex items-center justify-center shrink-0">
-                          <span
-                            aria-hidden="true"
-                            className="material-symbols-outlined text-[22px]"
-                          >
-                            {a.status === "completed"
-                              ? "check"
-                              : a.kind === "practice"
-                                ? "quiz"
-                                : "menu_book"}
-                          </span>
+            {pending && !proposalHidden && (
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-mint-tint via-surface-container-low to-butter-tint p-space-md sm:p-space-lg shadow-sm">
+                <div
+                  className="flex flex-col lg:flex-row lg:items-center justify-between gap-space-lg relative z-10"
+                  hidden={!pending}
+                >
+                  <div className="flex items-start gap-space-md max-w-3xl">
+                    <div className="w-11 h-11 shrink-0 rounded-2xl bg-butter flex items-center justify-center text-primary shadow-sm mt-0.5">
+                      <span
+                        className="material-symbols-outlined text-[24px]"
+                        aria-hidden="true"
+                      >
+                        auto_fix_high
+                      </span>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-card-title text-card-title text-primary font-bold">
+                          Ada Usulan Penyesuaian Jadwal dari Hasil Latihan
+                          Terakhir!
                         </span>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex flex-wrap items-center gap-space-sm font-metadata text-metadata text-text-secondary">
-                            <span>
-                              {new Date(a.start_at).toLocaleTimeString(
-                                "id-ID",
-                                {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                  timeZone: zone,
-                                },
-                              )}{" "}
-                              • {a.duration_minutes} Menit
-                            </span>
-                            <span className="px-2 py-0.5 rounded-full bg-surface-container font-label text-[12px]">
-                              {statusNames[a.status]}
-                              {a.locked ? " • Terkunci" : ""}
-                            </span>
-                          </div>
-                          <h3 className="font-card-title text-card-title text-primary mt-space-sm">
-                            {a.title}
-                          </h3>
-                          <p className="font-body text-body text-text-secondary mt-space-xs">
-                            {a.material_id
-                              ? materials.find((m) => m.id === a.material_id)
-                                  ?.title
-                              : "Kegiatan mandiri pilihanmu"}
-                          </p>
-                          <div className="flex flex-wrap gap-space-sm mt-space-md">
-                            {a.material_id && (
-                              <button
-                                disabled={busy}
-                                onClick={() => onOpen(a)}
-                                className="h-10 px-space-md rounded-xl bg-surface-container text-primary font-label text-label"
-                              >
-                                Buka materi
-                              </button>
-                            )}
-                            {a.status === "pending" && (
-                              <>
-                                <button
-                                  disabled={busy}
-                                  onClick={() => onStatus(a, "active")}
-                                  className="h-10 px-space-md rounded-xl bg-primary text-on-primary font-label text-label"
-                                >
-                                  Mulai kegiatan
-                                </button>
-                                <button
-                                  disabled={busy}
-                                  onClick={() => onStatus(a, "skipped")}
-                                  className="h-10 px-space-md rounded-xl bg-surface-container-low text-text-secondary font-label text-label"
-                                >
-                                  Lewati
-                                </button>
-                              </>
-                            )}
-                            {a.status === "active" && (
-                              <button
-                                disabled={busy}
-                                onClick={() => onStatus(a, "completed")}
-                                className="h-10 px-space-md rounded-xl bg-primary text-on-primary font-label text-label"
-                              >
-                                Tandai selesai
-                              </button>
-                            )}
-                          </div>
-                        </div>
+                        <span className="px-2 py-0.5 rounded-full bg-butter text-warning font-label text-[11px] font-bold">
+                          Rekomendasi Cerdas
+                        </span>
                       </div>
-                    </article>
-                  ))
-                ) : (
-                  <div className="p-space-lg bg-surface rounded-2xl">
-                    <h3 className="font-card-title text-card-title text-primary">
-                      Belum ada kegiatan tersimpan untuk hari ini.
-                    </h3>
-                    <p className="font-body text-body text-text-secondary mt-space-sm">
-                      Satu langkah kecil sudah cukup untuk memulai.
-                    </p>
+                      <p className="font-body text-body text-on-surface-variant">
+                        {pending?.reason ||
+                          "Belum ada usulan baru. Atur kegiatan sesuai kebutuhanmu."}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-space-sm shrink-0 self-start lg:self-center">
                     <button
-                      onClick={() => setControls(true)}
-                      className="h-11 px-space-lg mt-space-md rounded-xl bg-primary text-on-primary font-label text-label"
+                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label font-bold shadow-md transition-all"
+                      data-path="tinjau-jadwal"
+                      data-screen="SCREEN_21"
+                      type="button"
+                      disabled={!pending || busy}
+                      onClick={() => pending && onReview(pending)}
                     >
-                      Susun rencana ringan
+                      <span>Tinjau Usulan Jadwal</span>
+                      <span
+                        className="material-symbols-outlined text-[18px]"
+                        aria-hidden="true"
+                      >
+                        arrow_forward
+                      </span>
+                    </button>
+                    <button
+                      className="px-4 py-2.5 rounded-xl bg-surface/90 hover:bg-surface text-on-surface-variant font-label text-label transition-colors"
+                      type="button"
+                      onClick={() => setProposalHidden(true)}
+                    >
+                      Tinjau nanti
                     </button>
                   </div>
-                )}
+                </div>
               </div>
-            </section>
+            )}
 
-            <aside
-              aria-label="Jadwal Mendatang dan Pendamping Mimo"
-              className="lg:col-span-4 flex flex-col gap-space-md"
-            >
-              <div className="bg-surface rounded-2xl p-space-lg shadow-sm flex flex-col gap-space-md relative">
-                <div className="flex items-center gap-space-md">
-                  <div className="w-16 h-16 rounded-2xl bg-secondary-container p-1 flex-shrink-0 flex items-center justify-center overflow-hidden shadow-inner">
-                    <Image
-                      className="w-full h-full object-contain"
-                      data-alt="Mimo si bunglon ramah bergaya ilustrasi zine indie anak-anak, berwarna hijau lumut pastel cerah dengan pipi kemerahan peach lembut, sedang duduk santai di atas tumpukan buku pelajaran pastel, tersenyum hangat menyapa dengan tangan melambai ramah, pencahayaan alami latar krem hangat."
-                      src="/design/mimo.png"
-                      width={1024}
-                      height={1024}
-                      alt="Mimo, teman belajarmu"
-                    />
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+              <section className="lg:col-span-8 flex flex-col space-y-space-md">
+                <div className="flex flex-wrap items-center justify-between gap-3 pb-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <button
+                      className={
+                        "px-3.5 py-2 rounded-full text-sm font-label whitespace-nowrap transition-colors " +
+                        (dayOffset === -1
+                          ? "bg-secondary-container text-primary font-bold"
+                          : "bg-surface text-on-surface-variant hover:bg-surface-container")
+                      }
+                      aria-pressed={dayOffset === -1}
+                      type="button"
+                      onClick={() => setDayOffset(-1)}
+                    >
+                      Kemarin
+                    </button>
+                    <button
+                      className={
+                        "px-3.5 py-2 rounded-full text-sm font-label whitespace-nowrap transition-colors " +
+                        (dayOffset === 0
+                          ? "bg-secondary-container text-primary font-bold"
+                          : "bg-surface text-on-surface-variant hover:bg-surface-container")
+                      }
+                      aria-pressed={dayOffset === 0}
+                      type="button"
+                      onClick={() => setDayOffset(0)}
+                    >
+                      Hari ini
+                    </button>
+                    <button
+                      className={
+                        "px-3.5 py-2 rounded-full text-sm font-label whitespace-nowrap transition-colors " +
+                        (dayOffset === 1
+                          ? "bg-secondary-container text-primary font-bold"
+                          : "bg-surface text-on-surface-variant hover:bg-surface-container")
+                      }
+                      aria-pressed={dayOffset === 1}
+                      type="button"
+                      onClick={() => setDayOffset(1)}
+                    >
+                      Besok
+                    </button>
+                    <button
+                      className={
+                        "px-3.5 py-2 rounded-full text-sm font-label whitespace-nowrap transition-colors " +
+                        (dayOffset === 2
+                          ? "bg-secondary-container text-primary font-bold"
+                          : "bg-surface text-on-surface-variant hover:bg-surface-container")
+                      }
+                      aria-pressed={dayOffset === 2}
+                      type="button"
+                      onClick={() => setDayOffset(2)}
+                    >
+                      Lusa
+                    </button>
                   </div>
-                  <div>
-                    <span className="font-metadata text-metadata text-secondary font-bold uppercase tracking-wider text-xs">
-                      Co-Pilot Belajarmu
-                    </span>
-                    <h3 className="font-card-title text-card-title text-primary">
-                      Mimo si Bunglon
-                    </h3>
-                    <span className="inline-flex items-center gap-1 font-metadata text-metadata text-muted-gray text-xs">
-                      <span className="w-2 h-2 rounded-full bg-success inline-block"></span>{" "}
-                      Selalu mendampingi
-                    </span>
-                  </div>
-                </div>
-
-                <div className="relative bg-secondary-container/60 rounded-2xl p-space-md text-primary">
-                  <div className="absolute -top-2 left-6 w-4 h-4 bg-secondary-container/60 transform rotate-45"></div>
-                  <p className="font-mimo-voice text-mimo-voice text-contrast-ink leading-relaxed relative z-10">{`${profile.display_name}, kamu bebas menyesuaikan jadwalmu.`}</p>
-                </div>
-                <div className="flex flex-col gap-space-xs pt-space-xs">
                   <button
-                    className="w-full py-2.5 px-space-md rounded-xl bg-surface-container hover:bg-surface-container-high text-primary font-label text-label text-xs transition-colors flex items-center justify-center gap-1.5 min-h-[44px]"
-                    disabled={busy}
-                    onClick={() => setControls(true)}
+                    className="flex items-center gap-1 text-primary hover:underline font-label text-xs font-semibold shrink-0 pl-2"
+                    type="button"
+                    onClick={openControls}
                   >
                     <span
                       className="material-symbols-outlined text-[16px]"
                       aria-hidden="true"
                     >
-                      coffee
+                      calendar_view_week
                     </span>
-                    Atur Hari Ini Sebagai Hari Santai / Libur
-                  </button>
-                  <button
-                    className="w-full py-2.5 px-space-md rounded-xl bg-transparent hover:bg-surface-container-low text-text-secondary font-label text-label text-xs transition-colors text-center min-h-[44px]"
-                    disabled={busy}
-                    onClick={onMaterials}
-                  >
-                    Tanya Mimo tentang materi hari ini
+                    <span>Atur rencana belajar</span>
                   </button>
                 </div>
-              </div>
 
-              <div className="bg-surface rounded-2xl p-space-lg shadow-sm flex flex-col gap-space-md">
-                <div className="flex items-center justify-between">
-                  <button
-                    aria-label="Bulan sebelumnya"
-                    onClick={() => setMonthOffset(monthOffset - 1)}
-                    className="w-9 h-9 rounded-xl bg-surface-container text-primary"
-                  >
-                    ‹
-                  </button>
-                  <h3 className="font-card-title text-card-title text-primary">
-                    {calendarDate.toLocaleDateString("id-ID", {
-                      month: "long",
-                      year: "numeric",
-                      timeZone: "UTC",
-                    })}
-                  </h3>
-                  <button
-                    aria-label="Bulan berikutnya"
-                    onClick={() => setMonthOffset(monthOffset + 1)}
-                    className="w-9 h-9 rounded-xl bg-surface-container text-primary"
-                  >
-                    ›
-                  </button>
-                </div>
-                <div className="grid grid-cols-7 gap-1 mt-space-md text-center">
-                  {["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"].map(
-                    (d) => (
-                      <span
-                        key={d}
-                        className="font-metadata text-[11px] text-text-secondary"
-                      >
-                        {d}
-                      </span>
-                    ),
-                  )}
-                  {calendarDays.map((day, i) =>
-                    day ? (
-                      <button
-                        key={day}
-                        onClick={() => {
-                          setSelectedDay(day);
-                          setMonthOffset(0);
-                          setDate(day + "T09:00");
-                        }}
-                        aria-pressed={day === selectedDay}
-                        className={
-                          "h-9 rounded-lg font-label text-[12px] " +
-                          (day === selectedDay
-                            ? "bg-primary text-on-primary"
-                            : "text-primary hover:bg-secondary-container")
-                        }
-                      >
-                        {+day.slice(-2)}
-                      </button>
-                    ) : (
-                      <span key={"blank" + i} />
-                    ),
-                  )}
-                </div>
-              </div>
-
-              <div className="bg-surface rounded-2xl p-space-lg shadow-sm flex flex-col gap-space-md">
-                <h3 className="font-card-title text-card-title text-primary">
-                  Rencana Besok
-                </h3>
-                {tomorrowActivities.length ? (
-                  tomorrowActivities.map((a) => (
-                    <div
+                <div className="space-y-space-md pt-2">
+                  {visibleActivities.map((a) => (
+                    <article
+                      className="p-space-md sm:p-space-lg rounded-2xl bg-surface shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex flex-col sm:flex-row gap-space-md items-start sm:items-center justify-between"
                       key={a.id}
-                      className="rounded-xl bg-surface-container-low p-space-sm mt-space-sm"
                     >
-                      <p className="font-label text-label text-primary">
-                        {a.title}
-                      </p>
-                      <p className="font-metadata text-metadata text-text-secondary">
-                        {a.duration_minutes} menit
-                      </p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="font-body text-body text-text-secondary mt-space-sm">
-                    Belum ada kegiatan tersimpan untuk besok.
-                  </p>
-                )}
-                <button
-                  onClick={() => setControls(true)}
-                  className="h-10 px-space-md rounded-xl bg-surface-container text-primary font-label text-label mt-space-sm"
-                >
-                  Tambah kegiatan
-                </button>
-              </div>
-            </aside>
-          </div>
+                      <div className="flex items-start gap-5">
+                        <div className="font-bold tabular-nums shrink-0">
+                          {new Date(a.start_at).toLocaleTimeString("id-ID", {
+                            timeZone: zone,
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                          <p className="text-sm font-normal">
+                            {a.duration_minutes} menit
+                          </p>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm">
+                            {a.status === "completed"
+                              ? "Selesai"
+                              : a.status === "skipped"
+                                ? "Dilewati"
+                                : "Terjadwal"}{" "}
+                            ·{" "}
+                            {a.kind === "custom"
+                              ? "Kegiatan mandiri"
+                              : "Saran belajar"}
+                          </p>
+                          <h2 className="text-xl font-bold my-3 ui-section-title">
+                            {a.title}
+                          </h2>
+                          <div className="flex flex-wrap gap-3">
+                            <button
+                              disabled={busy || !a.material_id}
+                              onClick={() => onOpen(a)}
+                              className="bg-primary text-white px-4 py-2 rounded-xl"
+                            >
+                              Mulai aktivitas
+                            </button>
+                            <button
+                              disabled={busy || a.status === "completed"}
+                              onClick={() => onStatus(a, "completed")}
+                              className="px-4 py-2 rounded-xl border border-divider"
+                            >
+                              Tandai selesai
+                            </button>
+                            <button
+                              disabled={busy || a.status === "skipped"}
+                              onClick={() => onStatus(a, "skipped")}
+                              className="px-4 py-2 rounded-xl border border-divider"
+                            >
+                              Lewati
+                            </button>
+                            <button
+                              onClick={() => {
+                                onEdit();
+                                openControls();
+                              }}
+                            >
+                              Ubah jadwal
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                  {!visibleActivities.length && (
+                    <p className="bg-surface border border-divider rounded-2xl p-8">
+                      Belum ada kegiatan pada tanggal ini. Tambahkan aktivitas
+                      atau pilih materi saat kamu siap.
+                    </p>
+                  )}
+                </div>
 
+                <button
+                  className="w-full py-3.5 px-space-md rounded-2xl bg-surface hover:bg-surface-container-low text-primary font-label text-label font-bold flex items-center justify-center gap-2 shadow-sm transition-colors"
+                  type="button"
+                  onClick={openControls}
+                >
+                  <span
+                    className="material-symbols-outlined text-[20px]"
+                    aria-hidden="true"
+                  >
+                    add_circle
+                  </span>
+                  <span>Tambah aktivitas atau istirahat</span>
+                </button>
+              </section>
+
+              <aside className="lg:col-span-4 flex flex-col space-y-space-md">
+                <div className="bg-mint-tint rounded-2xl p-6 border border-divider">
+                  <Image
+                    src="/design/mimo-final.png"
+                    width={1408}
+                    height={1120}
+                    alt=""
+                    className="w-36 h-auto object-contain mx-auto"
+                  />
+                  <h2 className="font-display font-bold text-xl mt-3 ui-section-title">
+                    Sesuai ritmemu, {profile.display_name}
+                  </h2>
+                  <p className="mt-3">
+                    {visibleActivities.reduce(
+                      (n, a) => n + a.duration_minutes,
+                      0,
+                    )}{" "}
+                    menit terjadwal. Jadwal bisa diubah tanpa mengurangi hasil
+                    belajarmu.
+                  </p>
+                  <p className="mt-3 text-sm">Zona waktu: {zone}</p>
+                  <button onClick={onMaterials} className="mt-4">
+                    Pilih materi →
+                  </button>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
+        <div className="max-w-[1200px] mx-auto px-margin-mobile sm:px-margin-tablet lg:px-margin pb-10 ui-container">
+          {" "}
           <section
-            aria-label="Bilah Aksi Penyesuaian Jadwal"
-            className="sticky bottom-4 z-40 w-full bg-surface/95 backdrop-blur-md rounded-2xl p-space-md shadow-xl flex flex-col sm:flex-row items-center justify-between gap-space-md mb-space-lg"
+            id="plan-controls"
+            className="mt-6 p-6 rounded-2xl bg-surface space-y-4"
+            style={{ scrollMarginTop: "calc(var(--ui-header-height) + 16px)" }}
           >
-            <div className="flex items-center gap-space-md w-full sm:w-auto">
-              <button
-                className="px-space-md py-2.5 rounded-xl text-text-secondary hover:text-primary hover:bg-surface-container transition-colors font-label text-label flex items-center gap-2 min-h-[44px]"
-                onClick={onBack}
-              >
-                <span
-                  className="material-symbols-outlined text-[20px]"
-                  aria-hidden="true"
-                >
-                  arrow_back
-                </span>
-                Kembali ke Beranda
+            {message && (
+              <p role="status" className="p-3 rounded-xl bg-butter-tint">
+                {message}
+              </p>
+            )}
+            <div className="flex flex-wrap gap-3">
+              <button onClick={() => setControls(!controls)}>
+                Atur rencana
               </button>
-              <button
-                className="hidden md:flex px-space-md py-2.5 rounded-xl text-primary hover:bg-surface-container transition-colors font-label text-label items-center gap-2 min-h-[44px]"
-                disabled={busy}
-                onClick={onMaterials}
-              >
-                <span
-                  className="material-symbols-outlined text-[20px]"
-                  aria-hidden="true"
-                >
-                  library_add
-                </span>
-                + Tambah Materi dari Koleksi
+              <button disabled={busy} onClick={onRefresh}>
+                Perbarui rencana
               </button>
+              <button onClick={onMaterials}>Pilih materi</button>
             </div>
-            <div className="flex items-center gap-space-sm w-full sm:w-auto justify-end">
-              <button
-                className="flex-1 sm:flex-none px-space-md py-3 rounded-xl bg-surface-container hover:bg-surface-container-high text-primary font-label text-label transition-colors min-h-[44px]"
-                disabled={busy || !hasDraft}
-                onClick={onSave}
-              >
-                Simpan Perubahan Jadwal
-              </button>
-              <button
-                className="flex-1 sm:flex-none px-space-lg py-3 rounded-xl bg-primary hover:bg-primary-hover text-on-primary font-label text-label shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 min-h-[44px]"
-                onClick={onBack}
-              >
-                <span>Lanjut Belajar: Kebalikan Kuadrat (5 Mnt)</span>
-                <span
-                  className="material-symbols-outlined text-[20px]"
-                  aria-hidden="true"
-                >
-                  arrow_forward
-                </span>
-              </button>
-            </div>
+            {controls && (
+              <>
+                <div className="plan-fields">
+                  <label className="block">
+                    Rencana aktif
+                    <select
+                      value={plan?.id || ""}
+                      onChange={(e) => onSelectPlan(e.target.value)}
+                    >
+                      <option value="">Rencana baru</option>
+                      {plans.map((p) => (
+                        <option key={p.id} value={p.id}>
+                          Versi {p.version} • {p.activities.length} kegiatan
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="block">
+                    Materi
+                    <select
+                      value={materialId}
+                      onChange={(e) => setMaterialId(e.target.value)}
+                    >
+                      {materials.map((m) => (
+                        <option key={m.id} value={m.id}>
+                          {m.title}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="block">
+                    Waktu mulai (zona perangkat)
+                    <input
+                      type="datetime-local"
+                      value={date}
+                      onChange={(e) => setDate(e.target.value)}
+                    />
+                  </label>
+                  <label className="block">
+                    Judul kegiatan mandiri
+                    <input
+                      value={title}
+                      maxLength={160}
+                      onChange={(e) => setTitle(e.target.value)}
+                    />
+                  </label>
+                  <label className="block">
+                    Durasi (menit)
+                    <input
+                      type="number"
+                      min={1}
+                      max={240}
+                      value={duration}
+                      onChange={(e) => setDuration(+e.target.value)}
+                    />
+                  </label>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  <button disabled={busy} onClick={onSuggest}>
+                    Susun usulan awal
+                  </button>
+                  <button disabled={busy || !plan} onClick={onRecompute}>
+                    Sesuaikan dari hasil latihan
+                  </button>
+                  <button disabled={busy} onClick={onAddManual}>
+                    Tambah kegiatan mandiri
+                  </button>
+                  <button disabled={busy || !hasDraft} onClick={onSave}>
+                    Simpan usulan perubahan
+                  </button>
+                </div>
+                {editor}
+              </>
+            )}
+            {history}
           </section>
         </div>
       </div>
-      {history}
-    </div>
+    </>
   );
 }

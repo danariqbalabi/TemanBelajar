@@ -1,4 +1,5 @@
 import asyncio
+import ssl
 from uuid import uuid4
 
 import httpx
@@ -32,6 +33,32 @@ def install_transport(monkeypatch, handler):
         "AsyncClient",
         lambda **kwargs: original(transport=httpx.MockTransport(handler), **kwargs),
     )
+
+
+def test_raw_tls_failure_returns_retryable_service_error(monkeypatch):
+    monkeypatch.setattr(
+        profiles,
+        "settings",
+        lambda: Settings(
+            supabase_url="https://test.supabase.co", supabase_anon_key="public-key"
+        ),
+    )
+    calls = []
+
+    def fail_tls(request):
+        calls.append(request)
+        raise ssl.SSLError("upstream transport details must stay private")
+
+    install_transport(monkeypatch, fail_tls)
+    with pytest.raises(HTTPException) as exc:
+        asyncio.run(
+            profiles.request_supabase(
+                "POST", "/rest/v1/rpc/save_learning_state", "token", json={}
+            )
+        )
+    assert exc.value.status_code == 503
+    assert exc.value.detail == "layanan akun sedang tidak tersedia"
+    assert len(calls) == 1  # Do not silently replay a possibly committed mutation.
 
 
 def test_supabase_uses_server_token_and_owner_filter_without_overwriting_conflict(
@@ -130,3 +157,63 @@ def test_gemini_checks_sources_and_removes_unreviewed_skill_mapping(monkeypatch)
     with pytest.raises(HTTPException) as exc:
         asyncio.run(material_processing.generate_material(job))
     assert exc.value.status_code == 502
+
+
+@pytest.mark.parametrize("failure", ["tls", "truncated", "malformed"])
+def test_gemini_failure_releases_job_and_preserves_source(client, monkeypatch, failure):
+    from test_processing import upload
+
+    job = upload(client)
+    monkeypatch.setattr(
+        material_processing, "settings", lambda: Settings(gemini_api_key="test-key")
+    )
+
+    def handler(request):
+        if failure == "tls":
+            raise ssl.SSLError("private transport details")
+        candidate = (
+            None
+            if failure == "malformed"
+            else {
+                "finishReason": "MAX_TOKENS",
+                "content": {"parts": [{"text": FOTOSINTESIS.model_dump_json()}]},
+            }
+        )
+        return httpx.Response(200, json={"candidates": [candidate]})
+
+    install_transport(monkeypatch, handler)
+    url = f"/v1/jobs/{job['id']}"
+    response = client.post(url + "/process")
+    assert response.status_code == 502
+    assert "private" not in response.text
+    assert client.get(url).json()["status"] == "failed"
+    assert client.get(url + "/source").json()["sources"]
+
+
+def test_atomic_ai_admission_maps_quota_denial_without_extra_request(monkeypatch):
+    from app.store import Snapshot
+
+    config = Settings(
+        supabase_url="https://test.supabase.co",
+        supabase_anon_key="public",
+        supabase_service_role_key="server",
+        ai_daily_global_limit=7,
+    )
+    monkeypatch.setattr(profiles, "settings", lambda: config)
+    monkeypatch.setattr(store_module, "settings", lambda: config)
+    calls = []
+
+    def handler(request):
+        import json
+
+        calls.append(request)
+        assert request.url.path == "/rest/v1/rpc/save_learning_state_with_ai_budget"
+        assert json.loads(request.content)["daily_limit"] == 7
+        return httpx.Response(200, json=-1)
+
+    install_transport(monkeypatch, handler)
+    store = Store(Identity(id=uuid4(), token="user"))
+    with pytest.raises(HTTPException) as error:
+        asyncio.run(store.save(Snapshot(), reserve_ai=True))
+    assert error.value.status_code == 429
+    assert len(calls) == 1

@@ -14,7 +14,12 @@ const { error } = await auth.auth.setSession(credentials);
 assert.equal(error, null, "sesi pengujian harus valid");
 try {
   await api("/profile", { ...defaultProfile, onboarding_step: 4 }, "PUT");
-  assert.equal((await api("/profile")).display_name, "Manda");
+  const profile = await api("/profile");
+  assert.equal(profile.display_name, "Manda");
+  const changed = await api("/profile", {...defaultProfile, display_name:"Manda tes", expected_revision:profile.revision}, "PUT");
+  assert.equal(changed.revision, profile.revision+1);
+  await assert.rejects(api("/profile", {...defaultProfile, expected_revision:profile.revision}, "PUT"), e=>e.status===409);
+  assert.equal((await api("/profile")).display_name,"Manda tes");
   const { items } = await api("/materials");
   const material = items.find((m) => m.id === "demo-fotosintesis");
   assert.ok(material);
@@ -39,7 +44,10 @@ try {
   )();
   assert.equal(session.paragraph, 1);
   assert.equal(session.draft, "catatan smoke test");
+  assert.equal(await api(`/sessions/${session.id}/attempts/active`), null);
   let attempt = await mutation("/attempts", { session_id: session.id })();
+  assert.equal((await api(`/sessions/${session.id}/attempts/active`)).id, attempt.id);
+  assert.equal((await mutation("/attempts", { session_id: session.id })()).id, attempt.id);
   for (const question of attempt.questions) {
     const answer = mutation(`/attempts/${attempt.id}/answers`, {
       expected_version: attempt.version,
@@ -50,6 +58,7 @@ try {
     assert.deepEqual(await answer(), attempt);
   }
   assert.equal(attempt.status, "completed");
+  assert.equal(await api(`/sessions/${session.id}/attempts/active`), null);
   await api(`/progress?material_id=${material.id}`);
   await api(`/recommendations?material_id=${material.id}&available_minutes=15`);
   const start = new Date();

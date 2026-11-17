@@ -25,6 +25,7 @@ ditinjau. gunakan request id baru setelah pengguna menyetujui isi terbaru.
 | `404` | objek belum dibuat atau tidak dapat diakses akun ini |
 | `409` | versi konflik, request id berbeda isi, atau proses masih berjalan |
 | `413` | unggahan terlalu besar |
+| `429` | kuota tercapai atau proses lain masih berjalan; jangan retry otomatis |
 | `422` | isian, rujukan, kapasitas, atau jadwal perlu diperbaiki |
 | `502` | respons provider belum valid; data sebelumnya tetap tersedia |
 | `503` | konfigurasi belum lengkap atau provider belum tersedia |
@@ -39,7 +40,9 @@ yang menyimpan progres, lakukan `supabase.auth.signInAnonymously()`, kemudian
 pakai token yang diperoleh untuk endpoint privat.
 
 `GET /v1/profile` mengembalikan `404` jika belum ada profil.
-`PUT /v1/profile` menyimpan dokumen profil lengkap. field penting mencakup
+`PUT /v1/profile` menyimpan dokumen profil lengkap dengan `expected_revision`.
+Gunakan 0 untuk profil baru, atau `revision` hasil GET terakhir untuk perubahan.
+Konflik mengembalikan 409; pertahankan draf lalu tinjau profil terbaru. field penting mencakup
 `display_name`, `timezone`, `daily_minutes`, `goal`, `subjects`,
 `available_days` (senin 0 sampai minggu 6), `exam_date`, `onboarding_step`,
 dan `preferences`. baca nilai tersimpan sebelum menyimpan perubahan satu bagian.
@@ -82,8 +85,10 @@ dan `draft`. saat berganti mode, kirim posisi serta draft tersimpan. penanda
 konsep selesai bersifat kumulatif. `completed` memerlukan semua konsep selesai.
 
 `POST /v1/attempts` menerima `request_id`, `session_id`, dan opsional
-`concept_id`. setiap pengulangan latihan membuat attempt baru. ambil attempt
-dengan `GET /v1/attempts/{id}`.
+`concept_id`. Latihan aktif dengan sesi dan daftar soal yang sama dilanjutkan,
+agar perangkat lain tidak membuat duplikat. Setelah selesai, pengulangan membuat
+attempt baru. Ambil attempt dengan `GET /v1/attempts/{id}` atau pulihkan latihan
+aktif terbaru lewat `GET /v1/sessions/{id}/attempts/active` (JSON `null` jika tidak ada).
 
 `POST /v1/attempts/{id}/answers` menerima `request_id`, `expected_version`,
 `question_id`, dan `selected_index` berbasis nol. kirim sesuai urutan soal.
@@ -137,3 +142,15 @@ mempertahankan keadaan terlindungi terbaru lalu memeriksa konflik ulang.
 jadwal dengan konflik, prasyarat tidak sah, kegiatan melewati tengah malam,
 atau total harian berlebih ditolak. batas usulan otomatis 15 hari; kegiatan
 yang tidak muat memerlukan durasi atau waktu pilihan pengguna.
+
+
+## batas pemakaian pemrosesan
+
+PDF maksimal 4 MiB agar multipart tetap di bawah batas payload Vercel.
+Setiap akun dibatasi 10 unggahan baru dan 20 percobaan AI per hari UTC,
+serta satu pemrosesan AI aktif. Percobaan gagal tetap memakai kuota AI.
+Retry unggahan dengan request_id dan isi sama serta job ready tidak memakai
+kuota lagi. Kuota global default 100 percobaan AI per hari UTC berlaku untuk seluruh akun,
+termasuk anonim, dan direservasi atomik di PostgreSQL. Atur melalui
+AI_DAILY_GLOBAL_LIMIT. Reservasi yang diikuti konflik simpan tetap terhitung
+secara konservatif. Kuota ini membatasi jumlah panggilan, bukan nominal biaya.

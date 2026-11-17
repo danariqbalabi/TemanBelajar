@@ -36,16 +36,21 @@ export async function api<T>(
     if (refreshed.data.session)
       response = await send(refreshed.data.session.access_token);
   }
-  const data = await response.json().catch(() => null);
+  let data: unknown;
+  try {
+    data = await response.json();
+  } catch {
+    throw new ApiError(502, "Respons layanan belum dapat dibaca. Coba lagi.");
+  }
+  const detail =
+    data && typeof data === "object" && "detail" in data ? data.detail : null;
   if (!response.ok)
     throw new ApiError(
       response.status,
-      typeof data?.detail === "string"
-        ? data.detail
+      typeof detail === "string"
+        ? detail
         : `Permintaan belum berhasil (${response.status}). Coba lagi.`,
     );
-  if (data === null)
-    throw new ApiError(502, "Respons layanan belum dapat dibaca. Coba lagi.");
   return data as T;
 }
 export function mutation<T>(path: string, body: unknown, method = "POST") {
