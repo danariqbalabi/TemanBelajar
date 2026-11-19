@@ -4,22 +4,11 @@ from fastapi import APIRouter, Query
 
 from app.bkt import estimate
 from app.learning import get_material, latest_answers, modes_for
-from app.demo import MANDA_COURSE_ID, manda_course_history
+from app.demo import MANDA_COURSE_ID, with_course_history
 from app.responses import ProgressResponse, RecommendationResponse
 from app.store import StoreDep
 
 router = APIRouter(prefix="/v1", tags=["rekomendasi"])
-
-
-def with_course_history(data: dict, material_id: str) -> dict:
-    if material_id != MANDA_COURSE_ID:
-        return data
-    sample = manda_course_history()
-    return {
-        **data,
-        "attempts": {**sample["attempts"], **data["attempts"]},
-        "sessions": {**sample["sessions"], **data["sessions"]},
-    }
 
 
 def mistakes(data: dict, material, concept_id: str) -> list[dict]:

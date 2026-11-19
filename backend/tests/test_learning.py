@@ -147,6 +147,9 @@ def test_manda_course_contains_analysis_of_six_sample_answers(client):
     assert suggestion["action"] == "REVIEW"
     assert "sisi siku-siku" in suggestion["practice_focus"]
     assert client.get("/v1/sessions").json()["items"] == []
+    session = client.post("/v1/sessions", json={"material_id": course, "request_id": request_id(), "mode": "reading"}).json()
+    practice = client.post("/v1/attempts", json={"session_id": session["id"], "request_id": request_id()}).json()
+    assert {q["prompt"] for q in practice["questions"][:3]} == {m["prompt"] for m in concept["mistakes"]}
 
 
 def test_new_practice_prioritizes_mistakes_and_keeps_resume_order(client):

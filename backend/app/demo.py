@@ -182,3 +182,14 @@ def manda_course_history() -> dict:
 DEMO_MATERIALS[MANDA_COURSE_ID] = Material.model_validate(
     manda_course_history()["materials"][MANDA_COURSE_ID]
 )
+
+
+def with_course_history(data: dict, material_id: str) -> dict:
+    if material_id != MANDA_COURSE_ID:
+        return data
+    sample = manda_course_history()
+    return {
+        **data,
+        "attempts": {**sample["attempts"], **data["attempts"]},
+        "sessions": {**sample["sessions"], **data["sessions"]},
+    }

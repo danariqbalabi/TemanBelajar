@@ -3,7 +3,7 @@ from uuid import uuid4
 
 from fastapi import APIRouter, HTTPException
 
-from app.demo import DEMO_MATERIALS
+from app.demo import DEMO_MATERIALS, with_course_history
 from app.responses import AttemptResponse, MaterialResponse, Page, SessionResponse
 from app.schemas import (
     AnswerInput,
@@ -216,7 +216,7 @@ async def create_attempt(body: AttemptCreate, store: StoreDep):
             payload,
             public_attempt(existing, material),
         )
-    prior = latest_answers(snapshot.data, material.id, questions)
+    prior = latest_answers(with_course_history(snapshot.data, material.id), material.id, questions)
     questions.sort(key=lambda qid: (
         0 if qid in prior and not prior[qid]["correct"] else 1 if qid not in prior else 2
     ))
