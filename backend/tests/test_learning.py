@@ -115,3 +115,20 @@ def test_unfinished_attempt_resumes_across_devices_without_duplicate(client):
     assert second_device == resumed
     assert "correct_index" not in resumed["questions"][1]
     assert client.get("/v1/sessions/foreign/attempts/active").status_code == 404
+
+
+def test_create_session_at_requested_concept(client):
+    body = {
+        "request_id": request_id(),
+        "material_id": "demo-fotosintesis",
+        "concept_id": "peran-klorofil",
+        "mode": "transcript",
+    }
+    response = client.post("/v1/sessions", json=body)
+    assert response.status_code == 201, response.text
+    session = response.json()
+    assert session["concept_id"] == "peran-klorofil"
+    assert session["version"] == 1
+    assert client.post("/v1/sessions", json=body).json()["id"] == session["id"]
+    invalid = {**body, "request_id": request_id(), "mode": "explore"}
+    assert client.post("/v1/sessions", json=invalid).status_code == 422

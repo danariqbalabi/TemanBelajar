@@ -14,6 +14,10 @@ import "./design-final.css";
 import "./ui-consistency.css";
 import "./studio.css";
 import "./mimo.css";
+import "./card-motion.css";
+import "./scroll-navbar.css";
+import "./navbar.css";
+import { CardMotion } from "./card-motion";
 export const metadata: Metadata = {
   title: "TemanBelajar — belajar sesuai ritmemu",
   description: "Teman belajar adaptif untuk SMP dan SMA.",
@@ -23,7 +27,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="id">
-      <body>{children}</body>
+      <body>
+        {children}
+        <CardMotion />
+      </body>
     </html>
   );
 }

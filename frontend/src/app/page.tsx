@@ -173,23 +173,32 @@ export default function Home() {
       (s) => s.material_id === material.id && s.status !== "completed",
     );
     const preferredMode = mode || existing?.mode || profile.preferences.mode;
+    const target =
+      material.concepts.find(
+        (c) => c.id === (conceptId || existing?.concept_id),
+      ) ?? material.concepts[0];
     const supported =
       preferredMode === "transcript"
-        ? material.concepts.every((c) => c.transcript)
+        ? !!target.transcript
         : preferredMode === "explore"
-          ? material.concepts.every((c) => c.diagram_description)
+          ? !!target.diagram_description
           : true;
     const chosenMode = supported ? preferredMode : "reading";
     const create = mutation<LearningSession>("/sessions", {
       material_id: material.id,
       mode: chosenMode,
+      ...(conceptId ? { concept_id: conceptId } : {}),
     });
     let recovered = existing;
     let change: (() => Promise<LearningSession>) | undefined;
     await run(async () => {
       let s = recovered || (await create());
       recovered = s;
-      if (conceptId || s.mode !== chosenMode || s.status === "paused") {
+      if (
+        (conceptId && s.concept_id !== conceptId) ||
+        s.mode !== chosenMode ||
+        s.status === "paused"
+      ) {
         change ||= mutation<LearningSession>(
           `/sessions/${s.id}`,
           {
@@ -209,7 +218,7 @@ export default function Home() {
       setActive(s);
       setPracticeRequested(practice);
       setPage("Mulai Belajar");
-      await refresh();
+      setSessions((items) => [s, ...items.filter((item) => item.id !== s.id)]);
     });
   }
   async function saveProfile(p: Profile) {

@@ -204,10 +204,15 @@ it("saves the complete editable profile while excluding server-owned fields", as
   );
   await screen.findByRole("navigation");
   await userEvent.click(
-    within(screen.getByRole("navigation")).getByRole("link", {
+    screen.getByRole("button", { name: /Buka pengaturan/ }),
+  );
+  expect(
+    within(
+      screen.getByRole("navigation", { name: "Navigasi utama" }),
+    ).queryByRole("link", {
       name: "Pengaturan",
     }),
-  );
+  ).toBeNull();
   await userEvent.click(screen.getByRole("button", { name: "Profil" }));
   const name = await screen.findByLabelText("Nama Panggilan di Aplikasi");
   await userEvent.clear(name);

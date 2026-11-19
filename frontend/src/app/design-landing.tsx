@@ -1,5 +1,7 @@
 "use client";
 import { Brand } from "./brand";
+import { useRef } from "react";
+import { useScrollNavbar } from "./use-scroll-navbar";
 import { LandingHow } from "./landing-how";
 import { MimoMascot } from "./mimo-mascot";
 export function Landing({
@@ -9,6 +11,8 @@ export function Landing({
   onContinue: () => void;
   error: string;
 }) {
+  const header = useRef<HTMLElement>(null);
+  useScrollNavbar(header);
   return (
     <>
       <div className="final-design final-screen-1 min-h-screen bg-canvas text-primary antialiased selection:bg-mint selection:text-primary relative overflow-x-hidden stitch-shell stitch-landing">
@@ -24,7 +28,10 @@ export function Landing({
           Lompat ke konten utama
         </a>
 
-        <header className="w-full border-b border-divider bg-surface sticky top-0 z-40 transition-all">
+        <header
+          ref={header}
+          className="w-full border-b border-divider bg-surface sticky top-0 z-40 transition-all"
+        >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 min-h-20 py-3 flex flex-wrap gap-3 items-center justify-between ui-container">
             <a
               aria-label="TemanBelajar Beranda"
@@ -139,7 +146,7 @@ export function Landing({
                     onContinue();
                   }}
                 >
-                  <span>Mulai Belajar — Gratis ✨</span>
+                  <span>Mulai belajar</span>
                   <span
                     className="material-symbols-outlined text-lg"
                     aria-hidden="true"

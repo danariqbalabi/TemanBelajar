@@ -1,9 +1,10 @@
-/* Mimo is a short, opt-in interaction, never an autoplay distraction. */
+/* Click-driven mascot playground. No speech popup; controls never move. */
 .mimo-mascot {
   isolation: isolate;
   position: relative;
   font-family: "Plus Jakarta Sans", sans-serif;
   color: #273b35;
+  --mimo-jump: -52px;
 }
 .mimo-inline {
   width: min(100%, 300px);
@@ -19,7 +20,7 @@
   border-radius: 24px;
   background: transparent;
   cursor: pointer;
-  perspective: 600px;
+  perspective: 650px;
   -webkit-tap-highlight-color: transparent;
 }
 .final-design .mimo-touch:hover {
@@ -30,8 +31,8 @@
   inset: 0;
   display: block;
   transform: rotateX(var(--mimo-look-y, 0deg)) rotateY(var(--mimo-look-x, 0deg));
-  transform-origin: 50% 85%;
-  transition: transform 180ms ease-out;
+  transform-origin: 50% 80%;
+  transition: transform 140ms ease-out;
 }
 .final-design .mimo-pose {
   position: absolute;
@@ -42,7 +43,7 @@
   opacity: 0;
   pointer-events: none;
   user-select: none;
-  transition: opacity 140ms ease;
+  transition: opacity 90ms ease;
 }
 .final-design .mimo-pose[data-active="true"] {
   opacity: 1;
@@ -56,34 +57,66 @@
   border-radius: 50%;
   background: #273b3510;
   z-index: -1;
-  transition: transform 220ms ease;
 }
 .mimo-touch-hint {
   display: block;
   text-align: center;
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.02em;
   color: #496550;
   line-height: 1.5;
-  margin-top: 2px;
+  margin-top: 3px;
 }
-.mimo-touch:focus-visible {
+.mimo-touch:focus-visible,
+.mimo-control:focus-visible {
   outline: 3px solid #3b4c9b;
   outline-offset: 3px;
 }
-.mimo-stage[data-animating="true"][data-mood="cheer"] {
-  animation: mimo-hop 700ms cubic-bezier(0.22, 0.7, 0.3, 1) both;
-}
-.mimo-stage[data-animating="true"][data-mood="wave"] {
-  animation: mimo-wiggle 650ms ease-in-out both;
-}
-.mimo-stage[data-animating="true"][data-mood="reading"] {
-  animation: mimo-nod 650ms ease-in-out both;
-}
 .mimo-touch:hover .mimo-stage:not([data-animating="true"]) {
-  transform: translateY(-3px) rotateX(var(--mimo-look-y, 0deg))
+  transform: translateY(-5px) rotateX(var(--mimo-look-y, 0deg))
     rotateY(var(--mimo-look-x, 0deg));
+}
+.mimo-stage[data-animating="true"][data-intensity="playful"][data-mood="cheer"] {
+  animation: mimo-somersault 1000ms cubic-bezier(0.2, 0.75, 0.3, 1) both;
+}
+.mimo-stage[data-animating="true"][data-intensity="playful"][data-mood="wave"] {
+  animation: mimo-rubber 900ms ease-in-out both;
+}
+.mimo-stage[data-animating="true"][data-intensity="playful"][data-mood="reading"] {
+  animation: mimo-book-flip 950ms cubic-bezier(0.3, 0.7, 0.25, 1) both;
+}
+.mimo-stage[data-animating="true"][data-intensity="gentle"] {
+  animation: mimo-gentle-hop 650ms ease-out both;
+}
+.mimo-mascot[data-animating="true"][data-intensity="playful"] .mimo-floor {
+  animation: mimo-shadow 1000ms ease both;
+}
+.mimo-fx {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+.mimo-aura {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #c8e8ce80, transparent 70%);
+  opacity: 0;
+}
+.mimo-ring {
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  top: 22%;
+  bottom: 18%;
+  border: 3px solid #c8e8ce;
+  border-radius: 50%;
+  opacity: 0;
+}
+.mimo-ring-second {
+  border-color: #a8b7f5;
+  border-width: 2px;
 }
 .mimo-confetti {
   position: absolute;
@@ -92,8 +125,8 @@
 }
 .mimo-confetti i {
   position: absolute;
-  left: calc(10% + var(--particle) * 18%);
-  top: 35%;
+  left: 50%;
+  top: 45%;
   width: 7px;
   height: 10px;
   border-radius: 2px;
@@ -102,83 +135,104 @@
 }
 .mimo-confetti i:nth-child(2n) {
   background: #ffe7a3;
+  border-radius: 50%;
+  width: 7px;
+  height: 7px;
 }
 .mimo-confetti i:nth-child(3n) {
   background: #c8e8ce;
 }
-.mimo-stage[data-mood="cheer"][data-animating="true"] .mimo-confetti i {
-  animation: mimo-pop 750ms ease-out both;
-  animation-delay: calc(var(--particle) * 25ms);
+.mimo-confetti i:nth-child(4n) {
+  background: #ffca9d;
 }
-.mimo-bubble {
+.mimo-star {
   position: absolute;
-  z-index: 2;
-  width: 250px;
-  max-width: calc(100vw - 32px);
-  right: 0;
-  bottom: calc(100% + 8px);
-  padding: 14px 16px;
-  border: 1px solid #c8d8c3;
-  border-radius: 18px 18px 5px 18px;
-  background: #fffef9;
-  box-shadow: 0 8px 28px #273b351c;
+  width: 24px;
+  height: 24px;
+  background: #ffe7a3;
+  opacity: 0;
+  clip-path: polygon(
+    50% 0,
+    64% 36%,
+    100% 50%,
+    64% 64%,
+    50% 100%,
+    36% 64%,
+    0 50%,
+    36% 36%
+  );
 }
-.mimo-inline .mimo-bubble {
-  bottom: 12%;
-  right: -8px;
+.mimo-star-one {
+  left: 8%;
+  top: 22%;
 }
-.mimo-bubble-heading {
+.mimo-star-two {
+  right: 5%;
+  top: 35%;
+  background: #a8b7f5;
+  width: 18px;
+  height: 18px;
+}
+.mimo-fx[data-active="true"] .mimo-aura {
+  animation: mimo-aura-pop 800ms ease-out both;
+}
+.mimo-fx[data-active="true"] .mimo-ring {
+  animation: mimo-ring-pop 850ms ease-out both;
+}
+.mimo-fx[data-active="true"] .mimo-ring-second {
+  animation-delay: 90ms;
+}
+.mimo-fx[data-active="true"] .mimo-confetti i {
+  animation: mimo-burst 900ms ease-out both;
+  animation-delay: calc(var(--particle) * 12ms);
+}
+.mimo-fx[data-active="true"] .mimo-star {
+  animation: mimo-star-pop 750ms ease-out both;
+}
+.mimo-fx[data-active="true"] .mimo-star-two {
+  animation-delay: 160ms;
+}
+.mimo-controls {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 5px;
+  justify-content: center;
+  gap: 4px;
+  position: relative;
+  z-index: 3;
 }
-.mimo-bubble-heading strong {
-  font:
-    800 14px/1.4 "Nunito",
-    sans-serif;
-}
-.final-design .mimo-bubble-heading button {
+.final-design .mimo-control {
   display: grid;
   place-items: center;
   width: 32px;
   height: 32px;
+  border: 1px solid #dce4d6;
   padding: 0;
   border-radius: 50%;
-  font-size: 22px;
+  background: #fffef9;
+  color: #496550;
+  cursor: pointer;
+}
+.final-design .mimo-control:hover {
   background: #eaf6eb;
-  line-height: 1;
 }
-.mimo-bubble p {
-  font-size: 12px;
-  line-height: 1.7;
-  margin: 0;
+.mimo-control .material-symbols-outlined {
+  font-size: 17px;
 }
-.mimo-bubble-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 14px;
-  margin-top: 10px;
-}
-.final-design .mimo-bubble-actions button {
-  min-height: 36px;
-  font-size: 10px;
-  font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  padding: 4px 0;
-  background: transparent;
+.mimo-control[aria-pressed="false"] {
+  color: #737b75;
+  background: #f8f7f2;
 }
 .mimo-dock {
   position: fixed;
   z-index: 45;
-  width: 76px;
-  right: 20px;
-  bottom: max(18px, env(safe-area-inset-bottom));
+  width: 104px;
+  right: 16px;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  --mimo-jump: -28px;
 }
 .mimo-dock .mimo-touch {
+  width: 76px;
+  margin: 0 auto;
   border-radius: 50%;
   background: radial-gradient(
     ellipse at 50% 70%,
@@ -186,8 +240,11 @@
     transparent 46%
   );
 }
+.mimo-dock .mimo-fx {
+  transform: scale(0.65);
+}
 .final-app:has(.mimo-dock) #main {
-  padding-bottom: 90px;
+  padding-bottom: 120px;
 }
 .final-app:has(.screen-action-bar) .mimo-dock {
   bottom: 130px;
@@ -218,89 +275,170 @@
   font-size: 10px;
   font-weight: 700;
 }
-.mimo-wake > span:first-child {
+.mimo-wake .material-symbols-outlined {
   font-size: 17px;
 }
-.high-contrast .mimo-bubble,
-.high-contrast .mimo-wake {
+.high-contrast .mimo-wake,
+.high-contrast .mimo-control {
   background: white;
   color: #10251b;
   border: 2px solid #10251b;
-  box-shadow: none;
 }
 .high-contrast .mimo-touch-hint {
   color: #10251b;
 }
-@keyframes mimo-hop {
-  0%,
-  100% {
-    transform: translateY(0) scale(1);
+@keyframes mimo-somersault {
+  0% {
+    transform: scale(1) rotate(0);
   }
-  18% {
-    transform: translateY(3px) scale(1.05, 0.92);
+  15% {
+    transform: translateY(8px) scale(1.24, 0.7) rotate(-12deg);
   }
   42% {
-    transform: translateY(-16px) rotate(-5deg) scale(0.98, 1.03);
+    transform: translateY(var(--mimo-jump)) scale(0.85, 1.1) rotate(-150deg);
   }
-  67% {
-    transform: translateY(1px) rotate(3deg) scale(1.04, 0.95);
-  }
-  83% {
-    transform: translateY(-4px) rotate(-2deg);
-  }
-}
-@keyframes mimo-wiggle {
-  0%,
-  100% {
-    transform: rotate(0);
-  }
-  25% {
-    transform: rotate(-9deg);
-  }
-  55% {
-    transform: rotate(8deg) translateY(-3px);
+  68% {
+    transform: translateY(-8px) scale(1.05, 0.95) rotate(-370deg);
   }
   80% {
-    transform: rotate(-3deg);
+    transform: translateY(6px) scale(1.2, 0.78) rotate(-352deg);
+  }
+  92% {
+    transform: translateY(-7px) scale(0.95, 1.06) rotate(-363deg);
+  }
+  100% {
+    transform: scale(1) rotate(-360deg);
   }
 }
-@keyframes mimo-nod {
+@keyframes mimo-rubber {
   0%,
   100% {
-    transform: rotate(0);
+    transform: scale(1) rotate(0);
   }
-  35% {
-    transform: translateY(3px) rotate(5deg);
+  18% {
+    transform: scale(1.25, 0.77) rotate(-22deg);
   }
-  70% {
-    transform: translateY(-2px) rotate(-3deg);
+  40% {
+    transform: translateY(-22px) scale(0.79, 1.22) rotate(26deg);
+  }
+  60% {
+    transform: scale(1.13, 0.88) rotate(-17deg);
+  }
+  78% {
+    transform: translateY(-5px) scale(0.96, 1.04) rotate(9deg);
   }
 }
-@keyframes mimo-pop {
-  0% {
-    opacity: 0;
-    transform: translateY(0) rotate(0);
+@keyframes mimo-book-flip {
+  0%,
+  100% {
+    transform: rotateY(0) scale(1);
   }
   20% {
+    transform: rotateY(-35deg) rotate(-12deg) scale(0.84, 1.12);
+  }
+  48% {
+    transform: translateY(-24px) rotateY(190deg) rotate(14deg) scale(0.82);
+  }
+  76% {
+    transform: rotateY(360deg) rotate(-6deg) scale(1.16, 0.86);
+  }
+  90% {
+    transform: rotateY(360deg) rotate(3deg) scale(0.97, 1.03);
+  }
+}
+@keyframes mimo-gentle-hop {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  35% {
+    transform: translateY(-12px) rotate(-6deg);
+  }
+  70% {
+    transform: translateY(2px) rotate(3deg);
+  }
+}
+@keyframes mimo-shadow {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  42% {
+    transform: scale(0.55);
+    opacity: 0.3;
+  }
+  80% {
+    transform: scale(1.3);
+  }
+}
+@keyframes mimo-burst {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(0) scale(0.4);
+  }
+  12% {
+    opacity: 1;
+  }
+  70% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    transform: translateY(-45px) rotate(160deg);
+    transform: translate(var(--burst-x), var(--burst-y)) rotate(260deg)
+      scale(0.4);
+  }
+}
+@keyframes mimo-ring-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  15% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+@keyframes mimo-aura-pop {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+}
+@keyframes mimo-star-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.1) rotate(-40deg);
+  }
+  35% {
+    opacity: 1;
+    transform: scale(1.3) rotate(10deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.4) rotate(80deg) translateY(-25px);
   }
 }
 .mimo-mascot[data-reduced-motion="true"] .mimo-stage,
 .mimo-mascot[data-reduced-motion="true"] .mimo-pose,
-.mimo-mascot[data-reduced-motion="true"] .mimo-confetti i,
+.mimo-mascot[data-reduced-motion="true"] .mimo-floor,
 .calm .mimo-stage,
 .calm .mimo-pose,
-.calm .mimo-confetti i {
+.calm .mimo-floor {
   animation: none !important;
   transition: none !important;
   transform: none !important;
 }
-.mimo-mascot[data-reduced-motion="true"] .mimo-confetti,
-.calm .mimo-confetti {
+.mimo-mascot[data-reduced-motion="true"] .mimo-fx,
+.calm .mimo-fx {
   display: none;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -309,24 +447,24 @@
     transition: none !important;
     transform: none !important;
   }
-  .mimo-confetti {
+  .mimo-fx {
     display: none;
   }
 }
 @media (max-width: 767px) {
   .mimo-dock {
-    width: 58px;
-    right: 12px;
+    width: 96px;
+    right: 8px;
     bottom: max(12px, env(safe-area-inset-bottom));
+  }
+  .mimo-dock .mimo-touch {
+    width: 60px;
+  }
+  .mimo-dock .mimo-controls {
+    gap: 0;
   }
   .mimo-dock .mimo-touch-hint {
     font-size: 8px;
-  }
-  .mimo-bubble {
-    width: 230px;
-  }
-  .mimo-inline .mimo-bubble {
-    right: 0;
   }
   .final-app:has(.screen-action-bar) .mimo-dock {
     bottom: 150px;
@@ -336,9 +474,4 @@
   .mimo-mascot {
     display: none !important;
   }
-}
-.mimo-bubble .mimo-calm-note {
-  font-size: 10px;
-  color: #505c55;
-  margin-top: 8px;
 }

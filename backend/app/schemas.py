@@ -91,6 +91,7 @@ class Material(Input):
 
 class SessionCreate(Mutation):
     material_id: str
+    concept_id: str | None = None
     mode: Mode = "standard"
 
 

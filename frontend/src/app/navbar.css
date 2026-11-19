@@ -1,0 +1,141 @@
+/* Shared header tokens apply equally to Beranda, workspaces and the landing. */
+.final-design {
+  --nav-paper: #fffef9;
+  --nav-ink: #273b35;
+  --nav-line: #e5e8e1;
+  --nav-active: #c8e8ce;
+}
+.final-app .app-header,
+.stitch-landing > header {
+  background: var(--nav-paper);
+  color: var(--nav-ink);
+  border-bottom: 1px solid var(--nav-line);
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+.final-app .app-header-inner {
+  min-height: 80px;
+  gap: 16px;
+  padding: 12px 32px;
+}
+.final-app .app-navigation a,
+.stitch-landing > header nav a {
+  font:
+    600 13px/1.4 "Plus Jakarta Sans",
+    sans-serif;
+  letter-spacing: 0;
+  color: var(--nav-ink);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: none;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
+}
+.final-app .app-navigation a:hover,
+.stitch-landing > header nav a:hover {
+  background: #eaf6eb;
+}
+.final-app .app-navigation a[aria-current="page"] {
+  background: var(--nav-active);
+  color: var(--nav-ink);
+  font-weight: 700;
+  box-shadow: none;
+}
+.stitch-landing > header nav {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  gap: 4px;
+}
+.final-app .app-profile {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 48px;
+  padding: 5px 8px;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  cursor: pointer;
+  list-style: none;
+  background: transparent;
+  color: var(--nav-ink);
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease;
+}
+.final-app .app-profile:hover {
+  background: #eaf6eb;
+  border-color: #d5e4d1;
+}
+.final-app .app-profile[aria-current="page"] {
+  border-color: #abc9a9;
+  background: #eaf6eb;
+}
+.final-app .app-profile .app-avatar {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  background: var(--nav-active);
+  color: var(--nav-ink);
+  border-radius: 50%;
+  font:
+    800 15px/1 "Plus Jakarta Sans",
+    sans-serif;
+  border: 1px solid #b4d7b9;
+}
+.final-app .app-profile .app-profile-name {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  min-width: 0;
+  max-width: 120px;
+}
+.app-profile-name > span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 700;
+}
+.app-profile-name > span:last-child {
+  font-size: 11px;
+  color: #59665d;
+}
+.app-profile > .material-symbols-outlined {
+  font-size: 18px;
+}
+.final-app .app-profile:focus-visible {
+  outline: 3px solid #3b4c9b;
+  outline-offset: 3px;
+}
+.high-contrast .app-header {
+  border-color: #273b35;
+}
+.high-contrast .app-profile .app-avatar {
+  background: #273b35;
+  color: #fff;
+}
+@media (max-width: 1199px) {
+  .final-app .app-header-inner {
+    padding: 12px 24px 8px;
+    gap: 0 16px;
+    grid-template-rows: 48px 48px;
+  }
+}
+@media (max-width: 639px) {
+  .final-app .app-header-inner {
+    padding-inline: 16px;
+  }
+  .final-app .app-profile .app-profile-name {
+    display: none;
+  }
+  .final-app .app-profile {
+    gap: 4px;
+    padding-inline: 4px;
+  }
+}

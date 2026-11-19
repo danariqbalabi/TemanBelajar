@@ -67,12 +67,16 @@ async def material_detail(material_id: str, store: StoreDep):
 @router.post("/sessions", status_code=201, response_model=SessionResponse)
 async def create_session(body: SessionCreate, store: StoreDep):
     snapshot = await store.load()
-    payload = body.model_dump(mode="json")
+    payload = body.model_dump(mode="json", exclude_none=True)
     previous = replay(snapshot, str(body.request_id), "session.create", payload)
     if previous is not None:
         return previous
     material = get_material(snapshot.data, body.material_id)
     concept = material.concepts[0]
+    if body.concept_id is not None:
+        concept = next((c for c in material.concepts if c.id == body.concept_id), None)
+    if concept is None:
+        raise HTTPException(422, "konsep tidak ada dalam materi ini")
     if body.mode not in modes_for(concept):
         raise HTTPException(422, "format belum tersedia pada konsep ini")
     session = {

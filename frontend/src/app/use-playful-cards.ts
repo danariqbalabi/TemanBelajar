@@ -51,8 +51,8 @@ export function usePlayfulCards(page: string, reducedMotion: boolean) {
       );
       if (frame) cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
-        card.style.setProperty("--card-x", `${x * 9}px`);
-        card.style.setProperty("--card-y", `${y * 7}px`);
+        card.style.setProperty("--card-x", `${x * 5}px`);
+        card.style.setProperty("--card-y", `${y * 4}px`);
       });
     };
     root.addEventListener("pointermove", move, { passive: true });

@@ -116,11 +116,7 @@ export function LandingHow() {
               <UiIcon name="explore" />
             </span>
           </div>
-          <h3>
-            Saran yang
-            <br />
-            bisa kamu mengerti.
-          </h3>
+          <h3>Kenapa materi ini disarankan?</h3>
           <div className="landing-how-suggestion">
             <span className="landing-how-mini-icon">
               <UiIcon name="eco" />
@@ -144,7 +140,7 @@ export function LandingHow() {
             </p>
           ) : (
             <p className="landing-how-caption">
-              Ada alasan di balik setiap langkah. Klik + untuk melihatnya.
+              Buka alasan di balik saran ini.
             </p>
           )}
         </article>

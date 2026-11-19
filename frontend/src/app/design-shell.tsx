@@ -1,5 +1,7 @@
 "use client";
+import { ProfileSettingsButton } from "./profile-settings-button";
 import { Brand } from "./brand";
+import { useScrollNavbar } from "./use-scroll-navbar";
 import { usePlayfulCards } from "./use-playful-cards";
 import { MimoMascot } from "./mimo-mascot";
 import { useEffect, useRef } from "react";
@@ -21,6 +23,7 @@ export function DesignShell({
   style: CSSProperties;
 }) {
   const header = useRef<HTMLElement>(null);
+  useScrollNavbar(header);
   usePlayfulCards(page, profile.preferences.reduced_motion);
   useEffect(() => {
     const element = header.current;
@@ -74,7 +77,6 @@ export function DesignShell({
                 "Materi Saya",
                 "Mulai Belajar",
                 "Progres",
-                "Pengaturan",
               ].map((destination) => (
                 <a
                   key={destination}
@@ -90,26 +92,11 @@ export function DesignShell({
               ))}
             </nav>
             <div className="app-header-tools">
-              <button
-                aria-label="Mode Aksesibilitas dan Kontras"
-                className="app-accessibility"
-                type="button"
-                onClick={() => goTo("Pengaturan")}
-              >
-                <span className="material-symbols-outlined" aria-hidden="true">
-                  accessibility_new
-                </span>
-                <span className="app-accessibility-label">Aksesibilitas</span>
-              </button>
-              <div className="app-profile">
-                <div className="app-profile-name">
-                  <p>{profile.display_name}</p>
-                  <p>Pelajar SMP &amp; SMA</p>
-                </div>
-                <span className="app-avatar" aria-hidden="true">
-                  <span className="material-symbols-outlined">person</span>
-                </span>
-              </div>
+              <ProfileSettingsButton
+                name={profile.display_name}
+                active={page === "Pengaturan"}
+                onSettings={() => goTo("Pengaturan")}
+              />
             </div>
           </div>
         </header>

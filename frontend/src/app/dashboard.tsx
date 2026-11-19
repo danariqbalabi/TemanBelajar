@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { MimoMascot } from "./mimo-mascot";
 import type {
   LearningSession,
@@ -18,6 +18,7 @@ export function Dashboard({
   recommendation,
   start,
   navigate,
+  onPreferences,
 }: {
   profile: Profile;
   materials: Material[];
@@ -33,7 +34,6 @@ export function Dashboard({
   navigate: (p: string) => void;
   onPreferences?: (p: Partial<Preferences>) => void;
 }) {
-  const reason = useRef<HTMLDialogElement>(null);
   const [showMimo, setShowMimo] = useState(true);
   const material =
       materials.find((m) => m.id === recommendation?.material_id) ||
@@ -99,7 +99,18 @@ export function Dashboard({
               </div>
 
               <div className="flex items-center gap-space-sm bg-surface p-2 rounded-xl shadow-sm self-start md:self-auto">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mint-tint text-primary">
+                <button
+                  type="button"
+                  className="dashboard-ruler flex items-center gap-2 px-3 py-1.5 rounded-lg"
+                  aria-pressed={profile.preferences.reading_ruler}
+                  aria-label="Penggaris baca"
+                  onClick={() =>
+                    onPreferences?.({
+                      reading_ruler: !profile.preferences.reading_ruler,
+                    })
+                  }
+                  disabled={!onPreferences}
+                >
                   <span
                     className="material-symbols-outlined text-[18px] text-secondary"
                     aria-hidden="true"
@@ -110,7 +121,7 @@ export function Dashboard({
                     Penggaris baca:{" "}
                     {profile.preferences.reading_ruler ? "Aktif" : "Nonaktif"}
                   </span>
-                </div>
+                </button>
                 <button
                   aria-label="Sesuaikan tampilan fokus"
                   className="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors"
@@ -159,93 +170,31 @@ export function Dashboard({
 
             <section
               aria-label="Rekomendasi Belajar Utama Hari Ini"
-              className="w-full relative overflow-hidden rounded-[24px] bg-secondary-container text-primary p-space-lg md:p-space-xl shadow-md"
+              className="dashboard-feature w-full relative overflow-hidden rounded-[24px] text-primary"
             >
-              <div className="absolute -top-6 -right-6 w-32 h-32 rounded-full bg-butter-tint/50 pointer-events-none"></div>
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-center relative z-10">
-                <div className="lg:col-span-7 flex flex-col gap-space-md">
+              <div className="dashboard-feature-layout">
+                <div className="flex flex-col gap-2.5 min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface text-primary font-label text-[11px] font-bold tracking-wider uppercase shadow-sm border border-secondary/20">
-                      <span
-                        className="material-symbols-outlined text-[15px] text-secondary"
-                        aria-hidden="true"
-                      >
-                        stars
-                      </span>{" "}
-                      REKOMENDASI PERSONAL
-                    </span>
-                    <span className="px-2.5 py-0.5 rounded-full bg-mint-tint text-primary font-label text-[11px] border border-secondary/10">
+                    <span className="dashboard-topic">
                       {material?.subject || "Materi"}
                     </span>
-                    <span className="px-2.5 py-0.5 rounded-full bg-butter-tint text-primary font-label text-[11px] font-semibold">{`${recommendation?.estimated_minutes || concept?.estimated_minutes || profile.daily_minutes} menit`}</span>
+                    <span className="font-label text-primary">
+                      Saran belajar hari ini
+                    </span>
                   </div>
-                  <div className="flex flex-col gap-1">
-                    <h2 className="font-display text-section-title md:text-[1.85rem] text-primary font-extrabold leading-tight ui-section-title">
-                      {recommendation?.title ||
-                        concept?.title ||
-                        material?.title ||
-                        "Mulai dari materi contoh"}
-                    </h2>
-                    <div className="flex flex-wrap items-center gap-x-space-md gap-y-1 font-label text-metadata text-primary/90 mt-1">
-                      <span className="flex items-center gap-1">
-                        <span
-                          className="material-symbols-outlined text-[17px] text-secondary"
-                          aria-hidden="true"
-                        >
-                          schedule
-                        </span>{" "}
-                        Durasi{" "}
-                        {recommendation?.estimated_minutes ||
-                          concept?.estimated_minutes ||
-                          profile.daily_minutes}{" "}
-                        menit
-                      </span>
-                      <span>•</span>
-                      <span className="flex items-center gap-1">
-                        <span
-                          className="material-symbols-outlined text-[17px] text-secondary"
-                          aria-hidden="true"
-                        >
-                          menu_book
-                        </span>{" "}
-                        Mode Teman Baca
-                      </span>
-                      <span>•</span>
-                      <span className="flex items-center gap-1">
-                        <span
-                          className="material-symbols-outlined text-[17px] text-secondary"
-                          aria-hidden="true"
-                        >
-                          psychology
-                        </span>{" "}
-                        Ramah Beban Kognitif
-                      </span>
-                    </div>
-                  </div>
-                  <div className="p-space-md rounded-2xl bg-surface/90 border border-secondary/20 shadow-sm flex items-start gap-space-sm">
-                    <div className="w-9 h-9 rounded-xl bg-mint-tint flex items-center justify-center text-secondary shrink-0">
-                      <span
-                        className="material-symbols-outlined text-[20px]"
-                        aria-hidden="true"
-                      >
-                        insights
-                      </span>
-                    </div>
-                    <div className="flex flex-col gap-0.5 text-primary">
-                      <div className="flex items-center gap-2">
-                        <span className="font-label text-metadata font-bold">
-                          Alasan rekomendasi Mimo
-                        </span>
-                      </div>
-                      <p className="font-body text-label text-on-surface-variant leading-relaxed">
-                        {recommendation?.reason ||
-                          "Pilih satu konsep pendek yang nyaman buatmu hari ini."}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex flex-wrap items-center gap-space-sm pt-1">
+                  <h2 className="ui-section-title text-primary">
+                    {recommendation?.title ||
+                      concept?.title ||
+                      material?.title ||
+                      "Mulai dari materi contoh"}
+                  </h2>
+                  <p className="dashboard-feature-reason">
+                    {recommendation?.reason ||
+                      "Pilih satu konsep pendek untuk mulai belajar."}
+                  </p>
+                  <div className="flex flex-wrap items-center gap-3">
                     <a
-                      className="inline-flex items-center justify-center gap-2 px-space-xl py-3 rounded-xl bg-primary text-on-primary font-label text-label hover:bg-primary-hover active:bg-primary-pressed transition-all shadow-md"
+                      className="inline-flex min-h-11 items-center justify-center gap-2 px-4 py-2 rounded-xl bg-primary text-on-primary font-label text-label hover:bg-primary-hover active:bg-primary-pressed transition-all shadow-md"
                       data-path="mulai-belajar"
                       href="#"
                       onClick={(e) => {
@@ -274,19 +223,6 @@ export function Dashboard({
                       </span>
                     </a>
                     <button
-                      className="inline-flex items-center gap-1.5 px-space-md py-3 rounded-xl bg-surface hover:bg-surface-container text-primary font-label text-label transition-colors shadow-sm border border-secondary/20"
-                      type="button"
-                      onClick={() => reason.current?.showModal()}
-                    >
-                      <span
-                        className="material-symbols-outlined text-[18px] text-secondary"
-                        aria-hidden="true"
-                      >
-                        help_outline
-                      </span>
-                      <span>Kenapa Materi Ini?</span>
-                    </button>
-                    <button
                       className="inline-flex items-center gap-1 px-space-md py-3 rounded-xl text-primary hover:bg-surface/50 font-label text-label transition-colors"
                       type="button"
                       onClick={() => navigate("Rencana Belajar")}
@@ -297,33 +233,28 @@ export function Dashboard({
                       >
                         calendar_today
                       </span>
-                      <span>Nanti Dulu / Tunda</span>
+                      <span>Lihat jadwal</span>
                     </button>
                   </div>
                 </div>
-                <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
-                  <div className="relative w-56 h-56 sm:w-64 sm:h-64 flex items-center justify-center">
-                    <div className="absolute inset-0 rounded-full bg-surface/60 pointer-events-none ring-4 ring-secondary-fixed/50"></div>
-                    {showMimo && profile.preferences.show_mimo && (
-                      <MimoMascot
-                        context="Beranda"
-                        reducedMotion={profile.preferences.reduced_motion}
-                        onMotionSettings={() => navigate("Pengaturan")}
-                      />
-                    )}
+                {showMimo && profile.preferences.show_mimo && (
+                  <div className="dashboard-feature-mimo relative">
+                    <div
+                      aria-hidden="true"
+                      className="absolute top-0 inset-x-0 aspect-square rounded-full bg-surface/60 pointer-events-none ring-4 ring-secondary-fixed/50"
+                    ></div>
+                    <MimoMascot
+                      context="Beranda"
+                      reducedMotion={profile.preferences.reduced_motion}
+                      onMotionSettings={() => navigate("Pengaturan")}
+                    />
                   </div>
-                  <div className="mt-[-8px] relative z-20 px-4 py-2 rounded-full bg-surface border border-secondary/20 shadow-md text-primary font-mimo-voice text-metadata text-center flex items-center gap-1.5">
-                    <span className="text-[14px]">🌿</span>
-                    <span>
-                      &quot;Kita pelajari satu konsep sesuai ritmemu, ya.&quot;
-                    </span>
-                  </div>
-                </div>
+                )}
               </div>
             </section>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
-              <div className="lg:col-span-8 flex flex-col gap-space-xl">
+            <div className="dashboard-columns grid grid-cols-1 gap-space-lg items-start">
+              <div className="min-w-0 flex flex-col gap-space-xl">
                 <section
                   aria-labelledby="schedule-heading"
                   className="bg-surface rounded-2xl p-space-md sm:p-space-lg shadow-sm flex flex-col gap-space-md"
@@ -405,7 +336,7 @@ export function Dashboard({
                     className="font-section-title text-section-title text-primary ui-section-title"
                     id="ongoing-materials"
                   >
-                    Materi yang Sedang Dipelajari
+                    Materi belajar
                   </h2>
                   <div className="grid sm:grid-cols-2 gap-4">
                     {materials.slice(0, 2).map((m) => (
@@ -427,7 +358,13 @@ export function Dashboard({
                           className="mt-4 rounded-xl px-4 py-2 bg-primary text-white"
                           onClick={() => start(m)}
                         >
-                          Lanjut belajar
+                          {sessions.some(
+                            (session) =>
+                              session.material_id === m.id &&
+                              session.status !== "completed",
+                          )
+                            ? "Lanjut belajar"
+                            : "Mulai belajar"}
                         </button>
                       </article>
                     ))}
@@ -435,45 +372,36 @@ export function Dashboard({
                 </section>
 
                 <section
-                  aria-label="Jaminan Belajar Tenang"
-                  className="rounded-2xl p-space-lg bg-lavender-tint text-primary shadow-sm flex flex-col sm:flex-row items-center gap-space-md"
+                  aria-labelledby="dashboard-rest-title"
+                  className="dashboard-rest"
                 >
-                  <div className="w-14 h-14 rounded-2xl bg-surface border border-divider flex items-center justify-center text-primary shrink-0 shadow-sm">
-                    <span
-                      className="material-symbols-outlined text-[30px] text-tertiary-container"
-                      aria-hidden="true"
-                    >
-                      spa
-                    </span>
-                  </div>
-                  <div className="flex flex-col gap-0.5 text-center sm:text-left flex-1">
-                    <div className="flex items-center justify-center sm:justify-start gap-2">
-                      <h3 className="font-card-title text-card-title text-primary ui-card-title">
-                        Nggak ada streak patah di TemanBelajar
-                      </h3>
-                      <span className="px-2 py-0.5 rounded-full bg-surface text-primary font-label text-[10px] font-bold border border-divider hidden sm:inline-block">
-                        Zero-Streak Penalty
-                      </span>
-                    </div>
-                    <p className="font-body text-label text-on-surface-variant">
-                      Tubuh dan kesehatan mentalmu selalu yang paling utama.
-                      Jika hari ini lelah, jadwal bisa digeser kapan saja tanpa
-                      kehilangan jejak prestasi yang sudah kamu raih.
-                    </p>
-                  </div>
-                  <button
-                    className="shrink-0 px-space-lg py-2.5 rounded-xl bg-surface text-primary font-label text-metadata hover:bg-surface-container transition-colors shadow-sm border border-divider font-semibold"
-                    type="button"
-                    onClick={() => navigate("Rencana Belajar")}
+                  <span
+                    className="dashboard-rest-icon material-symbols-outlined"
+                    aria-hidden="true"
                   >
-                    Geser Jadwal Hari Ini
-                  </button>
+                    spa
+                  </span>
+                  <div className="dashboard-rest-copy">
+                    <h3 id="dashboard-rest-title" className="ui-card-title">
+                      Butuh jeda?
+                    </h3>
+                    <p>
+                      Kamu bisa ubah jadwal. Progres yang sudah tersimpan tetap
+                      ada.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => navigate("Rencana Belajar")}
+                    >
+                      Buka rencana belajar <span aria-hidden="true">?</span>
+                    </button>
+                  </div>
                 </section>
               </div>
 
               <aside
                 aria-label="Panel Utilitas dan Status Siswa"
-                className="lg:col-span-4 flex flex-col gap-space-lg"
+                className="min-w-0 flex flex-col gap-space-lg"
               >
                 <section className="bg-surface rounded-2xl p-6 border border-divider">
                   <div className="flex justify-between">
@@ -556,18 +484,6 @@ export function Dashboard({
           </div>
         </div>
       </div>
-      <dialog
-        ref={reason}
-        className="stitch-reason"
-        aria-label="Kenapa ini disarankan?"
-      >
-        <h2 className="ui-section-title">Kenapa ini disarankan?</h2>
-        <p>
-          {recommendation?.reason ||
-            "Mulai satu konsep pendek. Rekomendasi akan menyesuaikan hasil belajarmu."}
-        </p>
-        <button onClick={() => reason.current?.close()}>Tutup alasan</button>
-      </dialog>
     </>
   );
 }

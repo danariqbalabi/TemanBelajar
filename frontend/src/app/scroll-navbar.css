@@ -1,0 +1,53 @@
+/* Transform only: keep the sticky header's space so content never jumps. */
+.stitch-landing {
+  overflow-x: clip;
+}
+.final-design header[data-scroll-nav] {
+  transform-origin: 50% 0;
+  transition:
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 260ms ease,
+    box-shadow 300ms ease,
+    border-radius 300ms ease;
+}
+.final-design header[data-scroll-nav="shown"] {
+  transform: translateY(0) scaleX(1);
+  opacity: 1;
+}
+.final-design header[data-scroll-nav="hidden"] {
+  transform: translateY(-115%) scaleX(0.94);
+  opacity: 0;
+  pointer-events: none;
+}
+.final-design header[data-nav-compact="true"][data-scroll-nav="shown"] {
+  transform: translateY(0) scaleX(0.98);
+  box-shadow: 0 8px 24px #273b3510;
+  border-radius: 0 0 22px 22px;
+}
+.final-design header[data-scroll-nav]:has(:focus-visible) {
+  transform: none;
+  opacity: 1;
+  pointer-events: auto;
+}
+/* A short fade preserves auto-hide without spatial movement in calm mode. */
+.final-design.calm header[data-scroll-nav] {
+  transition: opacity 160ms ease-out !important;
+  transform: none;
+  border-radius: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .final-design header[data-scroll-nav][data-scroll-nav],
+  .final-design.calm header[data-scroll-nav] {
+    transition: none !important;
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
+    border-radius: 0;
+  }
+}
+@media print {
+  .final-design header[data-scroll-nav] {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}

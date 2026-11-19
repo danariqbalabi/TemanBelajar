@@ -1,0 +1,37 @@
+/* Independent translate keeps existing card rotations and pointer effects intact. */
+@media (prefers-reduced-motion: no-preference) {
+  .final-design:not(.calm) [data-card-reveal] {
+    transition:
+      opacity 460ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+      translate 620ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+      box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 250ms ease,
+      transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .final-design [data-card-reveal="pending"] {
+    opacity: 0;
+    translate: 0 14px;
+  }
+  .final-design [data-card-reveal="visible"] {
+    opacity: 1;
+    translate: 0 0;
+  }
+  /* Replace older mount-only animations to avoid two entrances competing. */
+  .final-design [data-card-reveal]:is(.material-tile, .workspace-mode) {
+    animation: none;
+  }
+  .final-design.calm [data-card-reveal],
+  .calm [data-card-reveal],
+  .final-design [data-card-reveal]:has(:focus-visible) {
+    opacity: 1;
+    translate: none;
+    transition: none;
+  }
+}
+@media print {
+  [data-card-reveal] {
+    opacity: 1 !important;
+    translate: none !important;
+    transition: none !important;
+  }
+}

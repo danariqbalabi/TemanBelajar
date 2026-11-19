@@ -470,6 +470,9 @@
   background-color: white;
   box-shadow: none;
 }
+.final-settings button[aria-pressed] {
+  color: #273b35;
+}
 .final-onboarding button[aria-pressed="true"],
 .final-settings button[aria-pressed="true"] {
   background-color: #c8e8ce;

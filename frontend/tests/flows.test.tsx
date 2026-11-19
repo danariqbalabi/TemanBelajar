@@ -186,11 +186,9 @@ describe("alur belajar", () => {
       />,
     );
     await waitFor(() => expect(request).toHaveBeenCalled());
-    expect(
-      screen.getByRole("button", { name: "Latihan pemahaman" }),
-    ).toBeTruthy();
+    await userEvent.click(screen.getByText("Alat bantu"));
     await userEvent.click(
-      screen.getByRole("button", { name: "Latihan pemahaman" }),
+      screen.getByRole("button", { name: "Cek pemahaman" }),
     );
     expect(await screen.findByText(/1 dari 2 jawaban tepat/)).toBeTruthy();
     expect(
@@ -317,19 +315,22 @@ describe("alur belajar", () => {
         },
       ],
     };
-    request.mockResolvedValueOnce(attempt).mockResolvedValueOnce({
-      ...attempt,
-      version: 2,
-      answers: { q1: { selected_index: 0, correct: true, answered_at: "" } },
-      questions: [
-        {
-          ...attempt.questions[0],
-          correct_index: 0,
-          explanation: "Cahaya menyediakan energi.",
-        },
-        attempt.questions[1],
-      ],
-    });
+    request
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce(attempt)
+      .mockResolvedValueOnce({
+        ...attempt,
+        version: 2,
+        answers: { q1: { selected_index: 0, correct: true, answered_at: "" } },
+        questions: [
+          {
+            ...attempt.questions[0],
+            correct_index: 0,
+            explanation: "Cahaya menyediakan energi.",
+          },
+          attempt.questions[1],
+        ],
+      });
     render(
       <Reader
         material={material}
@@ -342,8 +343,9 @@ describe("alur belajar", () => {
         onPlanner={() => {}}
       />,
     );
+    await userEvent.click(screen.getByText("Alat bantu"));
     await userEvent.click(
-      screen.getByRole("button", { name: "Latihan pemahaman" }),
+      screen.getByRole("button", { name: "Cek pemahaman" }),
     );
     expect(await screen.findByText("Apa peran cahaya?")).toBeTruthy();
     expect(screen.queryByText("Apa bahan fotosintesis?")).toBeNull();
@@ -352,7 +354,11 @@ describe("alur belajar", () => {
       screen.getByRole("button", { name: "Periksa Jawaban Sekarang" }),
     );
     expect(await screen.findByText("Cahaya menyediakan energi.")).toBeTruthy();
-    expect(request.mock.calls[1][1]).toMatchObject({
+    expect(
+      request.mock.calls.find(
+        ([path]) => path === "/attempts/attempt/answers",
+      )?.[1],
+    ).toMatchObject({
       question_id: "q1",
       selected_index: 0,
       expected_version: 1,
@@ -740,6 +746,7 @@ it("rencana baru tidak mengambil rencana lama dan input kosong mendapat pesan", 
 it("latihan dengan referensi yang sudah hilang dapat dimulai kembali", async () => {
   localStorage.setItem("temanbelajar-attempt:session", "missing");
   request.mockImplementation(async (path: string) => {
+    if (path.endsWith("/attempts/active")) return null;
     if (path === "/attempts/missing") throw new ApiError(404, "tidak ada");
     return {
       id: "new",
@@ -772,9 +779,8 @@ it("latihan dengan referensi yang sudah hilang dapat dimulai kembali", async () 
       onPlanner={vi.fn()}
     />,
   );
-  await userEvent.click(
-    screen.getByRole("button", { name: "Latihan pemahaman" }),
-  );
+  await userEvent.click(screen.getByText("Alat bantu"));
+  await userEvent.click(screen.getByRole("button", { name: "Cek pemahaman" }));
   expect(await screen.findByText("Latihan baru")).toBeTruthy();
   expect(localStorage.getItem("temanbelajar-attempt:session")).toBe("new");
 });

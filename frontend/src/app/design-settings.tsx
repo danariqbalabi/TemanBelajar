@@ -206,7 +206,7 @@ export function SettingsDesign({
                 </div>
               </section>
 
-              <div className="max-w-[1200px] w-full mx-auto px-margin pb-20 ui-container">
+              <div className="max-w-[1200px] w-full mx-auto px-margin pb-space-lg ui-container">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
                   <aside className="lg:col-span-5 lg:sticky lg:top-[9rem] flex flex-col gap-space-md order-1 lg:order-2">
                     <div className="bg-surface rounded-2xl p-6 border border-divider">
@@ -310,28 +310,7 @@ export function SettingsDesign({
                                 check_circle
                               </span>
                             </button>
-                            <button
-                              className="font-option-btn p-3 rounded-xl border border-divider bg-surface hover:bg-surface-container-low text-left flex items-start justify-between"
-                              data-font="lexend"
-                              type="button"
-                              disabled={true}
-                              title="Fitur ini belum tersedia di layanan saat ini."
-                            >
-                              <div>
-                                <span className="font-bold text-primary block text-[15px] tracking-wide">
-                                  Lexend / Dyslexic
-                                </span>
-                                <span className="text-xs font-metadata text-on-surface-variant">
-                                  Bentuk huruf mudah dibedakan
-                                </span>
-                              </div>
-                              <span
-                                className="material-symbols-outlined text-transparent text-[18px] check-indicator"
-                                aria-hidden="true"
-                              >
-                                check_circle
-                              </span>
-                            </button>
+
                             <button
                               className="font-option-btn p-3 rounded-xl border border-divider bg-surface hover:bg-surface-container-low text-left flex items-start justify-between"
                               data-font="nunito"
@@ -654,30 +633,6 @@ export function SettingsDesign({
                           </button>
 
                           <button
-                            className="theme-card-btn p-3 rounded-xl border border-divider bg-surface text-left flex flex-col justify-between h-28 relative hover:border-secondary"
-                            data-theme="white"
-                            type="button"
-                            disabled={true}
-                            title="Fitur ini belum tersedia di layanan saat ini."
-                          >
-                            <span className="w-5 h-5 rounded-full bg-white border border-gray-400"></span>
-                            <div>
-                              <span className="text-xs font-bold text-primary block">
-                                Putih Bersih
-                              </span>
-                              <span className="text-[10px] text-on-surface-variant">
-                                Kontras Tajam Terang
-                              </span>
-                            </div>
-                            <span
-                              className="material-symbols-outlined text-transparent text-[16px] absolute top-2 right-2 check-indicator"
-                              aria-hidden="true"
-                            >
-                              check_circle
-                            </span>
-                          </button>
-
-                          <button
                             className="theme-card-btn p-3 rounded-xl border border-divider bg-[#101A16] text-left flex flex-col justify-between h-28 relative hover:border-secondary"
                             data-theme="high-contrast"
                             type="button"
@@ -701,61 +656,6 @@ export function SettingsDesign({
                               check_circle
                             </span>
                           </button>
-
-                          <button
-                            className="theme-card-btn p-3 rounded-xl border border-divider bg-[#273B35] text-left flex flex-col justify-between h-28 relative hover:border-secondary"
-                            data-theme="dimmed"
-                            type="button"
-                            disabled={true}
-                            title="Fitur ini belum tersedia di layanan saat ini."
-                          >
-                            <span className="w-5 h-5 rounded-full bg-[#EAF7ED]"></span>
-                            <div>
-                              <span className="text-xs font-bold text-[#EAF7ED] block">
-                                Redup Malam
-                              </span>
-                              <span className="text-[10px] text-gray-300">
-                                Nuansa Hijau Teduh
-                              </span>
-                            </div>
-                            <span
-                              className="material-symbols-outlined text-transparent text-[16px] absolute top-2 right-2 check-indicator"
-                              aria-hidden="true"
-                            >
-                              check_circle
-                            </span>
-                          </button>
-                        </div>
-
-                        <div className="flex items-center justify-between p-3.5 rounded-xl bg-surface-container-low/60 border border-divider">
-                          <div className="flex items-start gap-space-xs max-w-md">
-                            <span
-                              className="material-symbols-outlined text-secondary text-[20px] mt-0.5"
-                              aria-hidden="true"
-                            >
-                              filter_vintage
-                            </span>
-                            <div>
-                              <p className="font-label text-label font-bold text-primary">
-                                Filter Pelindung Silau (Anti-Glare Tint)
-                              </p>
-                              <p className="text-xs font-metadata text-on-surface-variant">
-                                Menambahkan lapisan pastel sangat halus untuk
-                                memotong pancaran cahaya biru langsung.
-                              </p>
-                            </div>
-                          </div>
-                          <label className="relative inline-flex items-center cursor-pointer shrink-0">
-                            <input
-                              className="sr-only peer"
-                              id="toggle-tint"
-                              type="checkbox"
-                              disabled={true}
-                              checked={false}
-                              title="Fitur ini belum tersedia."
-                            />
-                            <div className="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                          </label>
                         </div>
                       </div>
                     </SettingsGroup>
@@ -816,60 +716,11 @@ export function SettingsDesign({
                                 }
                                 aria-label="Penggaris baca"
                               />
-                              <div className="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                              <span
+                                className="settings-comfort-switch"
+                                aria-hidden="true"
+                              />
                             </label>
-                          </div>
-
-                          <div className="pt-2 border-t border-divider/60 flex flex-wrap items-center justify-between gap-space-sm text-xs">
-                            <div className="flex items-center gap-2">
-                              <span className="font-metadata text-on-surface-variant">
-                                Warna Penggaris:
-                              </span>
-                              <div
-                                className="flex items-center gap-1.5"
-                                id="ruler-color-options"
-                              >
-                                <button
-                                  className="w-6 h-6 rounded-full bg-secondary-container border-2 border-primary"
-                                  data-ruler-color="mint"
-                                  title="Fitur ini belum tersedia di layanan saat ini."
-                                  type="button"
-                                  disabled={true}
-                                ></button>
-                                <button
-                                  className="w-6 h-6 rounded-full bg-butter border border-divider"
-                                  data-ruler-color="butter"
-                                  title="Fitur ini belum tersedia di layanan saat ini."
-                                  type="button"
-                                  disabled={true}
-                                ></button>
-                                <button
-                                  className="w-6 h-6 rounded-full bg-lavender border border-divider"
-                                  data-ruler-color="lavender"
-                                  title="Fitur ini belum tersedia di layanan saat ini."
-                                  type="button"
-                                  disabled={true}
-                                ></button>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <span className="font-metadata text-on-surface-variant">
-                                Lebar Panduan:
-                              </span>
-                              <select
-                                className="text-xs bg-surface-container rounded-lg border-0 py-1 px-2 font-label text-primary"
-                                disabled={true}
-                                title="Suara memakai pilihan bawaan browser."
-                              >
-                                <option value="1">1 Baris Fokus</option>
-                                <option value="3">
-                                  3 Baris (Paragraf Mini)
-                                </option>
-                                <option value="window">
-                                  Jendela Baca Penuh
-                                </option>
-                              </select>
-                            </div>
                           </div>
                         </div>
 
@@ -893,52 +744,10 @@ export function SettingsDesign({
                               }
                               aria-label="Penggaris baca"
                             />
-                            <div className="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                          </label>
-                        </div>
-
-                        <div className="flex items-center justify-between p-3.5 rounded-xl border border-divider bg-surface">
-                          <div>
-                            <p className="font-label text-label font-bold text-primary">
-                              Glosarium Otomatis Kata Sulit
-                            </p>
-                            <p className="text-xs font-metadata text-on-surface-variant">
-                              Beri garis titik-titik lembut pada istilah ilmiah
-                              materi (seperti <em>glomerulus</em>) untuk
-                              penjelasan instan tanpa membuka tab baru.
-                            </p>
-                          </div>
-                          <label className="relative inline-flex items-center cursor-pointer shrink-0">
-                            <input
-                              className="sr-only peer"
-                              type="checkbox"
-                              disabled={true}
-                              checked={false}
-                              title="Fitur ini belum tersedia."
+                            <span
+                              className="settings-comfort-switch"
+                              aria-hidden="true"
                             />
-                            <div className="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                          </label>
-                        </div>
-
-                        <div className="flex items-center justify-between p-3.5 rounded-xl border border-divider bg-surface">
-                          <div>
-                            <p className="font-label text-label font-bold text-primary">
-                              Kamus Ilustrasi &amp; Sketsa Konsep
-                            </p>
-                            <p className="text-xs font-metadata text-on-surface-variant">
-                              Sertakan diagram sederhana ketika menyentuh
-                              istilah konsep yang rumit.
-                            </p>
-                          </div>
-                          <label className="relative inline-flex items-center cursor-pointer shrink-0">
-                            <input
-                              className="sr-only peer"
-                              type="checkbox"
-                              disabled={true}
-                              checked={false}
-                              title="Fitur ini belum tersedia."
-                            />
-                            <div className="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                           </label>
                         </div>
                       </div>
@@ -973,48 +782,7 @@ export function SettingsDesign({
                         </div>
                       </div>
                       <div className="space-y-space-md">
-                        <div className="flex items-center justify-between p-3.5 rounded-xl bg-surface-container-low/60 border border-divider">
-                          <div>
-                            <p className="font-label text-label font-bold text-primary">
-                              Aktifkan Tombol Bacakan Teks (TTS)
-                            </p>
-                            <p className="text-xs font-metadata text-on-surface-variant">
-                              Tampilkan tombol mikro-suara di samping paragraf
-                              dan butir soal latihan.
-                            </p>
-                          </div>
-                          <label className="relative inline-flex items-center cursor-pointer shrink-0">
-                            <input
-                              className="sr-only peer"
-                              id="toggle-tts-master"
-                              type="checkbox"
-                              disabled={true}
-                              checked={false}
-                              title="Fitur ini belum tersedia."
-                            />
-                            <div className="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                          </label>
-                        </div>
-
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
-                          <div>
-                            <label className="block font-label text-label text-primary mb-space-xs font-bold">
-                              Pilihan Karakter Suara
-                            </label>
-                            <select
-                              className="w-full bg-surface border border-control-border rounded-xl py-2 px-3 text-xs font-label text-primary focus:ring-2 focus:ring-primary"
-                              disabled={true}
-                              title="Suara memakai pilihan bawaan browser."
-                            >
-                              <option>
-                                Suara Ramah Mimo (Nada Ceria &amp; Kalem)
-                              </option>
-                              <option>
-                                Suara Guru Pendamping (Artikulasi Lambat)
-                              </option>
-                              <option>Suara Netral Alami</option>
-                            </select>
-                          </div>
                           <div>
                             <div className="flex justify-between items-center mb-space-xs">
                               <label className="font-label text-label text-primary font-bold">
@@ -1060,35 +828,6 @@ export function SettingsDesign({
                               </button>
                             </div>
                           </div>
-                        </div>
-
-                        <div className="space-y-2 pt-1">
-                          <label className="flex items-center gap-space-xs cursor-pointer text-xs font-metadata text-primary">
-                            <input
-                              className="w-4 h-4 rounded text-primary border-control-border focus:ring-primary"
-                              type="checkbox"
-                              disabled={true}
-                              checked={false}
-                              title="Fitur ini belum tersedia."
-                            />
-                            <span>
-                              Otomatis sorot kata yang sedang diucapkan narator
-                              suara (Karaoke Tracking)
-                            </span>
-                          </label>
-                          <label className="flex items-center gap-space-xs cursor-pointer text-xs font-metadata text-primary">
-                            <input
-                              className="w-4 h-4 rounded text-primary border-control-border focus:ring-primary"
-                              type="checkbox"
-                              disabled={true}
-                              checked={false}
-                              title="Fitur ini belum tersedia."
-                            />
-                            <span>
-                              Beri jeda napas 1.5 detik lebih panjang di setiap
-                              akhir tanda titik (.)
-                            </span>
-                          </label>
                         </div>
                       </div>
                     </SettingsGroup>
@@ -1142,7 +881,10 @@ export function SettingsDesign({
                               }
                               aria-label="Kurangi gerakan"
                             />
-                            <div className="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                            <span
+                              className="settings-comfort-switch"
+                              aria-hidden="true"
+                            />
                           </label>
                         </div>
 
@@ -1169,7 +911,10 @@ export function SettingsDesign({
                               }
                               aria-label="Mode fokus"
                             />
-                            <div className="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                            <span
+                              className="settings-comfort-switch"
+                              aria-hidden="true"
+                            />
                           </label>
                         </div>
 
@@ -1193,87 +938,96 @@ export function SettingsDesign({
                               }
                               aria-label="Tampilkan transkrip"
                             />
-                            <div className="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                            <span
+                              className="settings-comfort-switch"
+                              aria-hidden="true"
+                            />
                           </label>
                         </div>
+                        {(
+                          [
+                            [
+                              "timer_enabled",
+                              "Tampilkan waktu belajar",
+                              "Lihat durasi sesi saat belajar.",
+                              "timer",
+                            ],
+                            [
+                              "show_mimo",
+                              "Tampilkan Mimo",
+                              "Teman kecil yang menemani belajarmu.",
+                              "pets",
+                            ],
+                          ] as const
+                        ).map(([key, label, description, icon]) => (
+                          <label className="settings-comfort-toggle" key={key}>
+                            <span
+                              className="settings-comfort-icon material-symbols-outlined"
+                              aria-hidden="true"
+                            >
+                              {icon}
+                            </span>
+                            <span className="settings-comfort-copy">
+                              <strong>{label}</strong>
+                              <small>{description}</small>
+                            </span>
+                            <input
+                              type="checkbox"
+                              role="switch"
+                              aria-label={label}
+                              checked={prefs[key]}
+                              onChange={(event) =>
+                                update(key, event.target.checked)
+                              }
+                              disabled={busy}
+                            />
+                            <span
+                              className="settings-comfort-switch"
+                              aria-hidden="true"
+                            />
+                          </label>
+                        ))}
                       </div>
                     </SettingsGroup>
                   </div>
                 </div>
               </div>
 
-              <div className="w-full bg-surface border-t border-divider py-space-sm shadow-md mt-auto">
-                <div className="max-w-[1200px] mx-auto px-margin flex flex-col sm:flex-row items-center justify-between gap-space-sm ui-container">
-                  <div className="flex items-center gap-space-xs text-xs font-metadata text-on-surface-variant">
-                    <span className="w-2 h-2 rounded-full bg-success"></span>
-                    <span>
-                      Pratinjau mengikuti pilihanmu. Simpan untuk menerapkannya
-                      pada materi belajar lainnya.
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-space-sm w-full sm:w-auto justify-end">
-                    <a
-                      className="px-space-md py-2 rounded-xl text-primary hover:bg-canvas font-label text-label text-xs transition-colors"
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        onBack();
-                      }}
+              <div className="settings-save-container ui-container">
+                <aside
+                  className="settings-save-bar"
+                  aria-label="Simpan tampilan dan alat bantu"
+                >
+                  <span className="settings-save-hint">
+                    <span
+                      className="material-symbols-outlined"
+                      aria-hidden="true"
                     >
-                      Batal
-                    </a>
+                      tune
+                    </span>
+                    Pratinjau siap. Simpan untuk menerapkan.
+                  </span>
+                  <div className="settings-save-actions">
                     <button
-                      className="px-space-lg py-2 rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label text-xs flex items-center gap-1.5 shadow-sm transition-all"
-                      id="btn-bottom-save"
                       type="button"
+                      className="workspace-button"
+                      onClick={() => setValue(profile)}
+                      disabled={busy}
+                    >
+                      Batalkan perubahan
+                    </button>
+                    <button
+                      type="button"
+                      id="btn-bottom-save"
+                      className="workspace-button primary"
                       onClick={() => onSave(value)}
                       disabled={busy}
                     >
-                      <span
-                        className="material-symbols-outlined text-[16px]"
-                        aria-hidden="true"
-                      >
-                        check
-                      </span>
-                      <span>Terapkan preferensi</span>
+                      Terapkan preferensi
                     </button>
                   </div>
-                </div>
+                </aside>
               </div>
-
-              <div
-                className="fixed bottom-20 right-6 z-50 bg-primary text-on-primary px-4 py-3 rounded-xl shadow-lg border border-primary-hover flex items-center gap-2 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300"
-                id="save-toast"
-              >
-                <span
-                  className="material-symbols-outlined text-secondary-fixed text-[20px]"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
-                  aria-hidden="true"
-                >
-                  task_alt
-                </span>
-                <span className="font-label text-xs">
-                  Pengaturan aksesibilitas berhasil diperbarui!
-                </span>
-              </div>
-            </div>
-            <div className="max-w-6xl mx-auto px-6 pb-8 ui-container">
-              <label className="flex items-center gap-3">
-                <input
-                  type="checkbox"
-                  checked={prefs.timer_enabled}
-                  onChange={(e) => update("timer_enabled", e.target.checked)}
-                />
-                Tampilkan waktu belajar
-              </label>
-              <label className="flex items-center gap-3 mt-4">
-                <input
-                  type="checkbox"
-                  checked={prefs.show_mimo}
-                  onChange={(e) => update("show_mimo", e.target.checked)}
-                />
-                Tampilkan Mimo
-              </label>
             </div>
           </div>
         ) : (
@@ -1568,78 +1322,6 @@ export function SettingsDesign({
                           </p>
                         </div>
 
-                        <div className="space-y-1.5">
-                          <label className="block font-label text-label text-primary font-bold">
-                            Tingkat Kelas Saat Ini
-                          </label>
-                          <div
-                            aria-label="Jenjang Kelas"
-                            className="grid grid-cols-3 sm:grid-cols-6 gap-2"
-                            role="radiogroup"
-                          >
-                            <button
-                              aria-checked="false"
-                              className="h-10 rounded-xl border border-divider bg-surface text-on-surface-variant font-label text-label hover:bg-surface-container transition-all"
-                              role="radio"
-                              type="button"
-                              disabled={true}
-                              title="Fitur ini belum tersedia di layanan saat ini."
-                            >
-                              SMP 7
-                            </button>
-                            <button
-                              aria-checked="true"
-                              className="h-10 rounded-xl border-2 border-primary bg-secondary-container text-primary font-label text-label font-bold shadow-sm"
-                              role="radio"
-                              type="button"
-                              disabled={true}
-                              title="Fitur ini belum tersedia di layanan saat ini."
-                            >
-                              SMP 8
-                            </button>
-                            <button
-                              aria-checked="false"
-                              className="h-10 rounded-xl border border-divider bg-surface text-on-surface-variant font-label text-label hover:bg-surface-container transition-all"
-                              role="radio"
-                              type="button"
-                              disabled={true}
-                              title="Fitur ini belum tersedia di layanan saat ini."
-                            >
-                              SMP 9
-                            </button>
-                            <button
-                              aria-checked="false"
-                              className="h-10 rounded-xl border border-divider bg-surface text-on-surface-variant font-label text-label hover:bg-surface-container transition-all"
-                              role="radio"
-                              type="button"
-                              disabled={true}
-                              title="Fitur ini belum tersedia di layanan saat ini."
-                            >
-                              SMA 10
-                            </button>
-                            <button
-                              aria-checked="false"
-                              className="h-10 rounded-xl border border-divider bg-surface text-on-surface-variant font-label text-label hover:bg-surface-container transition-all"
-                              role="radio"
-                              type="button"
-                              disabled={true}
-                              title="Fitur ini belum tersedia di layanan saat ini."
-                            >
-                              SMA 11
-                            </button>
-                            <button
-                              aria-checked="false"
-                              className="h-10 rounded-xl border border-divider bg-surface text-on-surface-variant font-label text-label hover:bg-surface-container transition-all"
-                              role="radio"
-                              type="button"
-                              disabled={true}
-                              title="Fitur ini belum tersedia di layanan saat ini."
-                            >
-                              SMA 12
-                            </button>
-                          </div>
-                        </div>
-
                         <div className="space-y-2">
                           <div className="flex items-center justify-between">
                             <label className="block font-label text-label text-primary font-bold">
@@ -1778,57 +1460,6 @@ export function SettingsDesign({
                           </div>
                         </div>
 
-                        <div className="space-y-2 pt-1">
-                          <label className="block font-label text-label text-primary font-bold">
-                            Gaya Tutur Kata Mimo
-                          </label>
-                          <div
-                            aria-label="Gaya Komunikasi Mimo"
-                            className="grid grid-cols-1 sm:grid-cols-2 gap-space-sm"
-                            role="radiogroup"
-                          >
-                            <label className="flex items-start gap-3 p-space-sm rounded-xl border-2 border-primary bg-mint-tint/60 cursor-pointer transition-all">
-                              <input
-                                className="mt-1 text-primary focus:ring-tertiary w-4 h-4"
-                                name="mimo-style"
-                                type="radio"
-                                disabled={true}
-                                checked={false}
-                                title="Belum tersedia."
-                              />
-                              <div>
-                                <span className="font-label text-label text-primary font-bold block">
-                                  Santai &amp; Bersahabat
-                                </span>
-                                <span className="font-metadata text-metadata text-on-surface-variant text-[13px] block">
-                                  Penuh perumpamaan analogi sehari-hari dan kata
-                                  penyemangat lembut (Cocok untuk rileks).
-                                </span>
-                              </div>
-                            </label>
-
-                            <label className="flex items-start gap-3 p-space-sm rounded-xl border border-divider bg-surface hover:bg-surface-container cursor-pointer transition-all">
-                              <input
-                                className="mt-1 text-primary focus:ring-tertiary w-4 h-4"
-                                name="mimo-style"
-                                type="radio"
-                                disabled={true}
-                                checked={false}
-                                title="Belum tersedia."
-                              />
-                              <div>
-                                <span className="font-label text-label text-primary font-bold block">
-                                  Langsung ke Inti (To the Point)
-                                </span>
-                                <span className="font-metadata text-metadata text-on-surface-variant text-[13px] block">
-                                  Ringkas, cepat, langsung ke poin kunci materi
-                                  tanpa basa-basi pengantar.
-                                </span>
-                              </div>
-                            </label>
-                          </div>
-                        </div>
-
                         <div className="pt-space-sm flex items-center justify-end">
                           <button
                             className="h-11 px-space-lg rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary font-label text-label font-bold flex items-center gap-2 transition-colors"
@@ -1897,274 +1528,68 @@ export function SettingsDesign({
                         </p>
                       </div>
 
-                      <div className="space-y-2">
-                        <label className="block font-label text-label text-primary font-bold">
-                          Target Waktu Belajar Harian
-                        </label>
-                        <div
-                          aria-label="Preset Durasi Belajar"
-                          className="grid grid-cols-1 sm:grid-cols-2 gap-space-sm"
-                          role="radiogroup"
-                        >
-                          <div className="p-space-sm rounded-xl border border-divider hover:border-control-border bg-surface cursor-pointer transition-all flex items-center justify-between">
-                            <div>
-                              <p className="font-label text-label font-bold text-primary">
-                                15 Menit / Hari
-                              </p>
-                              <p className="font-metadata text-metadata text-on-surface-variant text-[12px]">
-                                Santai &amp; Ringan (1 Micro-lesson)
-                              </p>
-                            </div>
-                            <input
-                              className="text-primary focus:ring-tertiary"
-                              name="waktu-harian"
-                              type="radio"
-                              checked={value.daily_minutes === 15}
-                              onChange={() =>
-                                setValue({ ...value, daily_minutes: 15 })
-                              }
-                            />
-                          </div>
-
-                          <div className="p-space-sm rounded-xl border-2 border-primary bg-secondary-container/50 cursor-pointer shadow-sm transition-all flex items-center justify-between">
-                            <div>
-                              <div className="flex items-center gap-1.5">
-                                <p className="font-label text-label font-bold text-primary">
-                                  25 Menit / Hari
-                                </p>
-                                <span className="text-[11px] font-bold px-1.5 py-0.2 rounded bg-primary text-on-primary">
-                                  Rekomendasi
-                                </span>
-                              </div>
-                              <p className="font-metadata text-metadata text-on-surface-variant text-[12px]">
-                                Ritme Nyaman Pomodoro (2 Sesi Belajar)
-                              </p>
-                            </div>
-                            <input
-                              className="text-primary focus:ring-tertiary"
-                              name="waktu-harian"
-                              type="radio"
-                              checked={value.daily_minutes === 25}
-                              onChange={() =>
-                                setValue({ ...value, daily_minutes: 25 })
-                              }
-                            />
-                          </div>
-
-                          <div className="p-space-sm rounded-xl border border-divider hover:border-control-border bg-surface cursor-pointer transition-all flex items-center justify-between">
-                            <div>
-                              <p className="font-label text-label font-bold text-primary">
-                                40 Menit / Hari
-                              </p>
-                              <p className="font-metadata text-metadata text-on-surface-variant text-[12px]">
-                                Fokus Mendalam &amp; Latihan Soal PAS
-                              </p>
-                            </div>
-                            <input
-                              className="text-primary focus:ring-tertiary"
-                              name="waktu-harian"
-                              type="radio"
-                              disabled={true}
-                              checked={false}
-                              title="Belum tersedia."
-                            />
-                          </div>
-
-                          <div className="p-space-sm rounded-xl border border-divider hover:border-control-border bg-surface cursor-pointer transition-all flex items-center justify-between">
-                            <div>
-                              <p className="font-label text-label font-bold text-primary">
-                                Atur Durasi Sendiri
-                              </p>
-                              <p className="font-metadata text-metadata text-on-surface-variant text-[12px]">
-                                Fleksibel sesuai ketersediaan waktumu
-                              </p>
-                            </div>
-                            <span
-                              className="material-symbols-outlined text-outline text-[18px]"
-                              aria-hidden="true"
-                            >
-                              edit
-                            </span>
-                          </div>
+                      <fieldset className="settings-rhythm">
+                        <legend>Target waktu per hari</legend>
+                        <div className="settings-duration">
+                          {[15, 25, 40].map((minutes) => (
+                            <label key={minutes}>
+                              <input
+                                type="radio"
+                                name="waktu-harian"
+                                checked={value.daily_minutes === minutes}
+                                disabled={busy}
+                                onChange={() =>
+                                  setValue((current) => ({
+                                    ...current,
+                                    daily_minutes: minutes,
+                                  }))
+                                }
+                              />
+                              {minutes} menit
+                            </label>
+                          ))}
                         </div>
-                      </div>
-
-                      <div className="space-y-2 pt-1">
-                        <div className="flex items-center justify-between flex-wrap gap-1">
-                          <label className="block font-label text-label text-primary font-bold">
-                            Hari Belajar Rutin Mingguan
-                          </label>
-                          <span className="text-[12px] font-label text-success font-semibold flex items-center gap-1">
-                            <span className="w-2 h-2 rounded-full bg-success"></span>
-                            Friendly Streak Terlindungi di Hari Rehat
-                          </span>
+                      </fieldset>
+                      <fieldset className="settings-rhythm">
+                        <legend>Hari belajar</legend>
+                        <div className="settings-days">
+                          {[
+                            "Sen",
+                            "Sel",
+                            "Rab",
+                            "Kam",
+                            "Jum",
+                            "Sab",
+                            "Min",
+                          ].map((day, index) => {
+                            const selected =
+                              value.available_days.includes(index);
+                            return (
+                              <button
+                                key={day}
+                                type="button"
+                                aria-pressed={selected}
+                                disabled={busy}
+                                onClick={() =>
+                                  setValue((current) => ({
+                                    ...current,
+                                    available_days:
+                                      current.available_days.includes(index)
+                                        ? current.available_days.filter(
+                                            (day) => day !== index,
+                                          )
+                                        : [...current.available_days, index],
+                                  }))
+                                }
+                              >
+                                {day}
+                                <small>{selected ? "Belajar" : "Rehat"}</small>
+                              </button>
+                            );
+                          })}
                         </div>
-                        <div
-                          aria-label="Pilihan hari belajar"
-                          className="grid grid-cols-7 gap-1.5 sm:gap-2 text-center"
-                        >
-                          <button
-                            aria-pressed={value.available_days.includes(0)}
-                            className="py-2.5 rounded-xl border border-primary bg-primary text-on-primary font-label text-label font-bold"
-                            type="button"
-                            onClick={() =>
-                              setValue({
-                                ...value,
-                                available_days: value.available_days.includes(0)
-                                  ? value.available_days.filter((d) => d !== 0)
-                                  : [...value.available_days, 0],
-                              })
-                            }
-                            disabled={busy}
-                          >
-                            Sen
-                          </button>
+                      </fieldset>
 
-                          <button
-                            aria-pressed={value.available_days.includes(1)}
-                            className="py-2.5 rounded-xl border border-primary bg-primary text-on-primary font-label text-label font-bold"
-                            type="button"
-                            onClick={() =>
-                              setValue({
-                                ...value,
-                                available_days: value.available_days.includes(1)
-                                  ? value.available_days.filter((d) => d !== 1)
-                                  : [...value.available_days, 1],
-                              })
-                            }
-                            disabled={busy}
-                          >
-                            Sel
-                          </button>
-
-                          <button
-                            aria-pressed={value.available_days.includes(2)}
-                            className="py-2.5 rounded-xl border border-primary bg-primary text-on-primary font-label text-label font-bold"
-                            type="button"
-                            onClick={() =>
-                              setValue({
-                                ...value,
-                                available_days: value.available_days.includes(2)
-                                  ? value.available_days.filter((d) => d !== 2)
-                                  : [...value.available_days, 2],
-                              })
-                            }
-                            disabled={busy}
-                          >
-                            Rab
-                          </button>
-
-                          <button
-                            aria-pressed={value.available_days.includes(3)}
-                            className="py-2.5 rounded-xl border border-primary bg-primary text-on-primary font-label text-label font-bold"
-                            type="button"
-                            onClick={() =>
-                              setValue({
-                                ...value,
-                                available_days: value.available_days.includes(3)
-                                  ? value.available_days.filter((d) => d !== 3)
-                                  : [...value.available_days, 3],
-                              })
-                            }
-                            disabled={busy}
-                          >
-                            Kam
-                          </button>
-
-                          <button
-                            aria-pressed={value.available_days.includes(4)}
-                            className="py-2.5 rounded-xl border border-primary bg-primary text-on-primary font-label text-label font-bold"
-                            type="button"
-                            onClick={() =>
-                              setValue({
-                                ...value,
-                                available_days: value.available_days.includes(4)
-                                  ? value.available_days.filter((d) => d !== 4)
-                                  : [...value.available_days, 4],
-                              })
-                            }
-                            disabled={busy}
-                          >
-                            Jum
-                          </button>
-
-                          <button
-                            aria-pressed={value.available_days.includes(5)}
-                            className="py-2.5 rounded-xl border border-dashed border-divider bg-peach-tint text-on-surface-variant font-label text-label flex flex-col items-center justify-center"
-                            type="button"
-                            onClick={() =>
-                              setValue({
-                                ...value,
-                                available_days: value.available_days.includes(5)
-                                  ? value.available_days.filter((d) => d !== 5)
-                                  : [...value.available_days, 5],
-                              })
-                            }
-                            disabled={busy}
-                          >
-                            <span>Sab</span>
-                            <span className="text-[9px] font-bold text-outline">
-                              Rehat
-                            </span>
-                          </button>
-
-                          <button
-                            aria-pressed={value.available_days.includes(6)}
-                            className="py-2.5 rounded-xl border border-dashed border-divider bg-peach-tint text-on-surface-variant font-label text-label flex flex-col items-center justify-center"
-                            type="button"
-                            onClick={() =>
-                              setValue({
-                                ...value,
-                                available_days: value.available_days.includes(6)
-                                  ? value.available_days.filter((d) => d !== 6)
-                                  : [...value.available_days, 6],
-                              })
-                            }
-                            disabled={busy}
-                          >
-                            <span>Min</span>
-                            <span className="text-[9px] font-bold text-outline">
-                              Rehat
-                            </span>
-                          </button>
-                        </div>
-                      </div>
-
-                      <div className="p-space-sm rounded-xl border border-divider bg-surface flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
-                        <div className="space-y-0.5">
-                          <span className="text-[11px] font-label font-bold uppercase tracking-wider text-outline">
-                            Target Akademik Utama
-                          </span>
-                          <p className="font-label text-label text-primary font-bold">
-                            Persiapan Penilaian Akhir Semester (PAS) IPA Bab 4
-                            &amp; 5
-                          </p>
-                          <p className="font-metadata text-metadata text-on-surface-variant text-[13px]">
-                            Target selesai: 12 Desember 2024 • Estimasi
-                            kelonggaran: Sangat Cukup (+3 hari buffer)
-                          </p>
-                        </div>
-                        <button
-                          className="px-space-md py-1.5 rounded-lg border border-divider hover:bg-surface-container font-label text-label text-primary font-semibold self-start sm:self-center transition-colors"
-                          type="button"
-                          onClick={() =>
-                            document.getElementById("profile-goal")?.focus()
-                          }
-                          disabled={busy}
-                        >
-                          Ubah Target
-                        </button>
-                      </div>
-
-                      <div className="p-space-sm rounded-xl bg-butter-tint/70 border border-butter/60 flex items-start gap-2.5">
-                        <span className="text-[18px] leading-tight">💡</span>
-                        <p className="font-metadata text-metadata text-warning text-[13px] leading-relaxed">
-                          <strong>Smart Notice:</strong> Jika kamu menurunkan
-                          target harian ke 15 menit, Mimo akan mengusulkan
-                          pemindahan 1 kuis mini ke esok hari secara otomatis
-                          via pembaruan <em>Rencana Belajar v2.5</em>.
-                        </p>
-                      </div>
                       <div className="grid sm:grid-cols-2 gap-4 mt-5">
                         <label className="block">
                           Target belajar
@@ -2248,144 +1673,6 @@ export function SettingsDesign({
 
                   <div className="lg:col-span-5 space-y-space-lg">
                     <SettingsGroup
-                      title="Pengingat"
-                      icon="notifications"
-                      description="Pilihan pengingat belajar"
-                      headingId="heading-notifikasi"
-                    >
-                      <div className="flex items-center justify-between border-b border-divider pb-space-sm">
-                        <div className="flex items-center gap-2">
-                          <span className="w-8 h-8 rounded-lg bg-lavender-tint text-tertiary flex items-center justify-center font-bold font-label">
-                            3
-                          </span>
-                          <div>
-                            <h3
-                              className="font-section-title text-card-title text-primary font-bold ui-card-title"
-                              id="heading-notifikasi"
-                            >
-                              Pengingat Ramah Sensorik
-                            </h3>
-                            <p className="font-metadata text-metadata text-on-surface-variant">
-                              Bebas rasa panik atau guilt-trip.
-                            </p>
-                          </div>
-                        </div>
-                        <span
-                          className="material-symbols-outlined text-outline"
-                          aria-hidden="true"
-                        >
-                          notifications_off
-                        </span>
-                      </div>
-
-                      <div className="p-space-sm rounded-xl bg-lavender-tint/50 border border-lavender/30 text-[13px] font-metadata text-on-surface-variant flex items-center gap-2">
-                        <span
-                          className="material-symbols-outlined text-tertiary text-[18px]"
-                          aria-hidden="true"
-                        >
-                          verified_user
-                        </span>
-                        <span>
-                          <strong>Komitmen Kami:</strong> TemanBelajar tidak
-                          pernah mengirimkan spam atau pesan yang menimbulkan
-                          rasa bersalah jika kamu istirahat.
-                        </span>
-                      </div>
-
-                      <div className="space-y-space-sm divide-y divide-divider">
-                        <div className="pt-space-xs flex items-center justify-between gap-space-sm">
-                          <div className="space-y-0.5">
-                            <span className="font-label text-label font-bold text-primary block">
-                              Pengingat Jadwal Belajar Harian
-                            </span>
-                            <span className="font-metadata text-metadata text-on-surface-variant text-[12px] block">
-                              Pukul 08.45 WIB (15 menit sebelum waktu
-                              komitmenmu).
-                            </span>
-                          </div>
-                          <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
-                            <input
-                              className="sr-only peer"
-                              type="checkbox"
-                              disabled={true}
-                              checked={false}
-                              title="Fitur ini belum tersedia."
-                            />
-                            <div className="w-11 h-6 bg-divider peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                          </label>
-                        </div>
-
-                        <div className="pt-space-sm flex items-center justify-between gap-space-sm">
-                          <div className="space-y-0.5">
-                            <span className="font-label text-label font-bold text-primary block">
-                              Sapaan Semangat dari Mimo
-                            </span>
-                            <span className="font-metadata text-metadata text-on-surface-variant text-[12px] block">
-                              Pesan ramah di pagi hari untuk memulai hari
-                              belajar dengan senyum.
-                            </span>
-                          </div>
-                          <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
-                            <input
-                              className="sr-only peer"
-                              type="checkbox"
-                              checked={prefs.show_mimo}
-                              onChange={(e) =>
-                                update("show_mimo", e.target.checked)
-                              }
-                              aria-label="Tampilkan Mimo"
-                            />
-                            <div className="w-11 h-6 bg-divider peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                          </label>
-                        </div>
-
-                        <div className="pt-space-sm flex items-center justify-between gap-space-sm">
-                          <div className="space-y-0.5">
-                            <span className="font-label text-label font-bold text-primary block">
-                              Pengingat Waktu Rehat &amp; Minum Air
-                            </span>
-                            <span className="font-metadata text-metadata text-on-surface-variant text-[12px] block">
-                              Muncul halus setelah 20 menit membaca agar mata
-                              tidak cepat lelah.
-                            </span>
-                          </div>
-                          <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
-                            <input
-                              className="sr-only peer"
-                              type="checkbox"
-                              disabled={true}
-                              checked={false}
-                              title="Fitur ini belum tersedia."
-                            />
-                            <div className="w-11 h-6 bg-divider peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                          </label>
-                        </div>
-
-                        <div className="pt-space-sm flex items-center justify-between gap-space-sm">
-                          <div className="space-y-0.5">
-                            <span className="font-label text-label font-bold text-primary block">
-                              Rangkuman Progres Mingguan
-                            </span>
-                            <span className="font-metadata text-metadata text-on-surface-variant text-[12px] block">
-                              Apresiasi pencapaian belajar dikirim tiap hari
-                              Jumat sore.
-                            </span>
-                          </div>
-                          <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
-                            <input
-                              className="sr-only peer"
-                              type="checkbox"
-                              disabled={true}
-                              checked={false}
-                              title="Fitur ini belum tersedia."
-                            />
-                            <div className="w-11 h-6 bg-divider peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                          </label>
-                        </div>
-                      </div>
-                    </SettingsGroup>
-
-                    <SettingsGroup
                       title="Akun & privasi"
                       icon="shield"
                       description="Preferensi, ekspor, dan akses akun"
@@ -2460,59 +1747,6 @@ export function SettingsDesign({
                               download
                             </span>
                             Unduh
-                          </button>
-                        </div>
-
-                        <div className="flex items-center justify-between p-space-sm rounded-xl border border-divider hover:bg-surface-container transition-colors">
-                          <div className="space-y-0.5">
-                            <span className="font-label text-label font-bold text-primary block">
-                              Reset Riwayat Latihan
-                            </span>
-                            <span className="font-metadata text-metadata text-on-surface-variant text-[12px] block">
-                              Mulai ulang penguasaan bab dari nol tanpa
-                              menghapus akun.
-                            </span>
-                          </div>
-                          <button
-                            className="h-9 px-space-md rounded-lg border border-divider bg-surface hover:bg-surface-container text-warning font-label text-label font-semibold transition-colors flex items-center gap-1 flex-shrink-0"
-                            type="button"
-                            disabled={true}
-                            title="Fitur ini belum tersedia di layanan saat ini."
-                          >
-                            <span
-                              className="material-symbols-outlined text-[16px]"
-                              aria-hidden="true"
-                            >
-                              restart_alt
-                            </span>
-                            Reset
-                          </button>
-                        </div>
-
-                        <div className="p-space-sm rounded-xl border border-error/30 bg-error-surface/40 space-y-2">
-                          <div className="flex items-start justify-between gap-space-sm">
-                            <div>
-                              <span className="font-label text-label font-bold text-error block">
-                                Hapus Akun &amp; Seluruh Data
-                              </span>
-                              <span className="font-metadata text-metadata text-on-surface-variant text-[12px] block">
-                                {value.display_name}
-                              </span>
-                            </div>
-                          </div>
-                          <button
-                            className="w-full h-10 rounded-lg border border-error text-error hover:bg-error hover:text-on-error font-label text-label font-bold transition-all flex items-center justify-center gap-1.5"
-                            type="button"
-                            disabled={true}
-                            title="Fitur ini belum tersedia di layanan saat ini."
-                          >
-                            <span
-                              className="material-symbols-outlined text-[18px]"
-                              aria-hidden="true"
-                            >
-                              delete_outline
-                            </span>
-                            Hapus Akun &amp; Seluruh Data Belajar
                           </button>
                         </div>
                       </div>
