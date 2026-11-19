@@ -52,6 +52,11 @@ FOTOSINTESIS = Material.model_validate(
                 "concept_id": "peran-cahaya",
                 "prompt": "Apa peran cahaya dalam fotosintesis?",
                 "options": ["Memberikan energi", "Menggantikan air", "Menjadi akar"],
+                "option_hints": [
+                    "Cari sumber energi yang dipakai tumbuhan untuk membuat gula.",
+                    "Air tetap diperlukan sebagai bahan pembentuk gula. Perhatikan dari mana energinya berasal.",
+                    "Akar adalah bagian tumbuhan. Soal ini menanyakan energi untuk membuat gula.",
+                ],
                 "correct_index": 0,
                 "explanation": "Cahaya memberikan energi untuk proses fotosintesis.",
                 "source_ids": ["cahaya"],
@@ -65,6 +70,11 @@ FOTOSINTESIS = Material.model_validate(
                     "Air dan karbon dioksida",
                     "Cahaya dan oksigen",
                 ],
+                "option_hints": [
+                    "Oksigen dilepas saat fotosintesis. Cari dua bahan yang masuk ke proses itu.",
+                    "Cocokkan kedua bahan ini dengan bahan pembentuk gula dalam bacaan.",
+                    "Cahaya memberi energi dan oksigen dihasilkan. Cari bahan yang digunakan tumbuhan.",
+                ],
                 "correct_index": 1,
                 "explanation": "Tumbuhan menggunakan air dan karbon dioksida, dengan bantuan energi cahaya.",
                 "source_ids": ["cahaya"],
@@ -77,6 +87,11 @@ FOTOSINTESIS = Material.model_validate(
                     "Menyerap energi cahaya",
                     "Menyerap tanah",
                     "Menghasilkan akar",
+                ],
+                "option_hints": [
+                    "Perhatikan apa yang diserap pigmen pada daun.",
+                    "Cari hubungan klorofil dengan cahaya yang mengenai daun.",
+                    "Pertanyaan menanyakan kerja pigmen saat daun menerima cahaya.",
                 ],
                 "correct_index": 0,
                 "explanation": "Klorofil adalah pigmen yang menyerap energi cahaya.",
@@ -121,6 +136,11 @@ PYTHAGORAS = Material.model_validate(
                 "concept_id": "teorema-pythagoras",
                 "prompt": "Sisi siku-siku panjangnya 3 dan 4. Berapa panjang hipotenusa?",
                 "options": ["5", "7", "25"],
+                "option_hints": [
+                    "Periksa dengan menghitung 5 kuadrat.",
+                    "Kuadratkan 3 dan 4 sebelum menjumlahkannya.",
+                    "25 adalah kuadrat hipotenusa. Ambil akarnya untuk memperoleh panjang sisi.",
+                ],
                 "correct_index": 0,
                 "explanation": "c = √(3² + 4²) = √25 = 5.",
                 "source_ids": ["rumus"],
@@ -130,6 +150,11 @@ PYTHAGORAS = Material.model_validate(
                 "concept_id": "teorema-pythagoras",
                 "prompt": "Hipotenusa 13 dan salah satu sisi siku-siku 5. Berapa sisi siku-siku lainnya?",
                 "options": ["8", "12", "18"],
+                "option_hints": [
+                    "Kurangkan kuadrat kedua panjang sisi sebelum mengambil akar.",
+                    "Uji dengan menjumlahkan 12 kuadrat dan 5 kuadrat.",
+                    "Panjang sisi siku-siku harus lebih pendek dari hipotenusa 13.",
+                ],
                 "correct_index": 1,
                 "explanation": "b = √(13² - 5²) = √144 = 12.",
                 "source_ids": ["rumus"],
@@ -139,6 +164,11 @@ PYTHAGORAS = Material.model_validate(
                 "concept_id": "teorema-pythagoras",
                 "prompt": "Sisi siku-siku panjangnya 6 dan 8. Berapa panjang hipotenusa?",
                 "options": ["14", "100", "10"],
+                "option_hints": [
+                    "Mulai dengan mengkuadratkan 6 dan 8.",
+                    "100 masih berupa kuadrat panjang. Ambil akar positifnya.",
+                    "Uji dengan membandingkan 10 kuadrat dengan jumlah kuadrat 6 dan 8.",
+                ],
                 "correct_index": 2,
                 "explanation": "c = √(6² + 8²) = √100 = 10.",
                 "source_ids": ["rumus"],
@@ -151,31 +181,82 @@ DEMO_MATERIALS = {m.id: m for m in [FOTOSINTESIS, PYTHAGORAS]}
 
 # Worked practice history for one demo course.
 MANDA_COURSE_ID = "manda-pythagoras"
+
+
 def manda_course_history() -> dict:
     material = PYTHAGORAS.model_dump()
     material["id"] = MANDA_COURSE_ID
     material["title"] = "Pythagoras: Mencari Sisi Segitiga"
     for qid, prompt, options, correct, explanation in [
-        ("manda-4", "Sisi 5 dan 12 saling tegak lurus. Berapa panjang hipotenusa?", ["13", "17", "169"], 0, "Akar dari 25 + 144 adalah 13."),
-        ("manda-5", "Hipotenusa 10 dan salah satu kaki 6. Berapa kaki lainnya?", ["4", "8", "16"], 1, "Kurangi kuadrat: 100 - 36 = 64. Akar 64 adalah 8."),
-        ("manda-6", "Hipotenusa 17 dan salah satu kaki 8. Berapa kaki lainnya?", ["9", "15", "25"], 1, "Kurangi kuadrat: 289 - 64 = 225. Akar 225 adalah 15."),
+        (
+            "manda-4",
+            "Sisi 5 dan 12 saling tegak lurus. Berapa panjang hipotenusa?",
+            ["13", "17", "169"],
+            0,
+            "Akar dari 25 + 144 adalah 13.",
+        ),
+        (
+            "manda-5",
+            "Hipotenusa 10 dan salah satu kaki 6. Berapa kaki lainnya?",
+            ["4", "8", "16"],
+            1,
+            "Kurangi kuadrat: 100 - 36 = 64. Akar 64 adalah 8.",
+        ),
+        (
+            "manda-6",
+            "Hipotenusa 17 dan salah satu kaki 8. Berapa kaki lainnya?",
+            ["9", "15", "25"],
+            1,
+            "Kurangi kuadrat: 289 - 64 = 225. Akar 225 adalah 15.",
+        ),
     ]:
-        material["questions"].append({
-            "id": qid, "concept_id": "teorema-pythagoras", "prompt": prompt,
-            "options": options, "correct_index": correct, "explanation": explanation,
-            "source_ids": ["rumus"],
-        })
+        material["questions"].append(
+            {
+                "id": qid,
+                "concept_id": "teorema-pythagoras",
+                "prompt": prompt,
+                "options": options,
+                "correct_index": correct,
+                "explanation": explanation,
+                "source_ids": ["rumus"],
+                "option_hints": {
+                    "manda-4": [
+                        "Periksa dengan mengkuadratkan 13.",
+                        "Jumlahkan kuadrat kedua sisi, lalu ambil akar hasilnya.",
+                        "169 adalah kuadrat panjang sisi. Ambil akarnya untuk mendapatkan panjang.",
+                    ],
+                    "manda-5": [
+                        "Gunakan kuadrat panjang sisi sebelum mengurangkan.",
+                        "Cek kembali apakah 6 kuadrat ditambah 8 kuadrat sama dengan 10 kuadrat.",
+                        "Kaki segitiga harus lebih pendek dari hipotenusa 10.",
+                    ],
+                    "manda-6": [
+                        "Mulai dari 17 kuadrat dikurangi 8 kuadrat, lalu ambil akarnya.",
+                        "Uji dengan menjumlahkan kuadrat 15 dan kuadrat 8.",
+                        "Sisi yang dicari harus lebih pendek dari hipotenusa 17.",
+                    ],
+                }[qid],
+            }
+        )
     answers = {
         q["id"]: {
-            "selected_index": selected, "correct": selected == q["correct_index"],
+            "selected_index": selected,
+            "correct": selected == q["correct_index"],
             "answered_at": f"2026-01-01T12:00:0{i}+00:00",
         }
-        for i, (q, selected) in enumerate(zip(material["questions"], [0, 0, 2, 0, 0, 0]))
+        for i, (q, selected) in enumerate(
+            zip(material["questions"], [0, 0, 2, 0, 0, 0])
+        )
     }
     return {
         "materials": {MANDA_COURSE_ID: material},
         "attempts": {"manda": {"material_id": MANDA_COURSE_ID, "answers": answers}},
-        "sessions": {"manda": {"material_id": MANDA_COURSE_ID, "completed_concepts": ["teorema-pythagoras"]}},
+        "sessions": {
+            "manda": {
+                "material_id": MANDA_COURSE_ID,
+                "completed_concepts": ["teorema-pythagoras"],
+            }
+        },
     }
 
 

@@ -49,7 +49,9 @@ def estimate(skill_id: str | None, answers: list[bool]) -> dict:
     if skill is None or len(answers) < 3:
         return {
             "mastery": None,
-            "mastery_status": "konsep belum didukung" if skill is None else "belum cukup data",
+            "mastery_status": "konsep belum didukung"
+            if skill is None
+            else "belum cukup data",
             "model_version": None,
         }
     parameters = Parameters.model_validate(skill["parameters"])

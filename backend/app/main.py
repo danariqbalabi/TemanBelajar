@@ -15,6 +15,7 @@ from app.profiles import router as profiles_router
 from app.recommendations import router as recommendations_router
 from app.rescheduling import router as rescheduling_router
 
+
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
     async with httpx.AsyncClient(timeout=15) as client:

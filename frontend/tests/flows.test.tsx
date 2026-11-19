@@ -349,12 +349,21 @@ describe("alur belajar", () => {
     await userEvent.click(screen.getByRole("button", { name: "Bacakan soal dan pilihan" }));
     expect(screen.getByText(/Baca nyaring belum tersedia/)).toBeTruthy();
     expect(screen.queryByText("Apa bahan fotosintesis?")).toBeNull();
-    await userEvent.click(screen.getByLabelText("Energi"));
-    await userEvent.click(
-      screen.getByRole("button", { name: "Periksa Jawaban Sekarang" }),
-    );
+    screen.getByLabelText("Energi").focus();
+    await userEvent.keyboard(" ");
+    await userEvent.tab();
+    expect(document.activeElement).toBe(screen.getByRole("button", { name: "Periksa Jawaban Sekarang" }));
+    await userEvent.keyboard("{Enter}");
     expect(await screen.findByText("Cahaya menyediakan energi.")).toBeTruthy();
     expect(document.activeElement).toBe(screen.getByRole("heading", { name: "Tepat!" }));
+    await userEvent.tab();
+    expect(document.activeElement).toBe(screen.getByText("Jelaskan langkah ini"));
+    await userEvent.keyboard("{Enter}");
+    const nextStep = screen.getByRole("button", { name: "Berikutnya" });
+    await userEvent.tab();
+    expect(document.activeElement).toBe(nextStep);
+    await userEvent.keyboard("{Enter}");
+    expect(screen.getByText(/Langkah 2 dari/)).toBeTruthy();
     expect(
       request.mock.calls.find(
         ([path]) => path === "/attempts/attempt/answers",

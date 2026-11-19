@@ -51,6 +51,7 @@ class QuestionResponse(BaseModel):
     options: list[str]
     source_ids: list[str]
     correct_index: int | None = None
+    selected_hint: str | None = None
     explanation: str | None = None
 
 

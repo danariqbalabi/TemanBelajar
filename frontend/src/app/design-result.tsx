@@ -1,4 +1,5 @@
 "use client";
+import { AnswerWalkthrough } from "./answer-walkthrough";
 import { useState } from "react";
 import type {
   Attempt,
@@ -140,6 +141,7 @@ export function ResultDesign({
             </div>
             <h3>{question.prompt}</h3>
             <p>{question.explanation}</p>
+            <AnswerWalkthrough question={question} answer={attempt.answers[question.id]} sources={material.sources} onSpeak={onSpeak} />
           </article>
         ))}
       </div>

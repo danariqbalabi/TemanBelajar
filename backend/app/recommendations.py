@@ -3,8 +3,8 @@ from typing import Annotated
 from fastapi import APIRouter, Query
 
 from app.bkt import estimate
-from app.learning import get_material, latest_answers, modes_for
 from app.demo import MANDA_COURSE_ID, with_course_history
+from app.learning import get_material, latest_answers, modes_for
 from app.responses import ProgressResponse, RecommendationResponse
 from app.store import StoreDep
 
@@ -15,16 +15,20 @@ def mistakes(data: dict, material, concept_id: str) -> list[dict]:
     questions = {q.id: q for q in material.questions if q.concept_id == concept_id}
     latest = latest_answers(data, material.id, questions)
     result = []
-    for qid, answer in sorted(latest.items(), key=lambda item: item[1]["answered_at"], reverse=True):
+    for qid, answer in sorted(
+        latest.items(), key=lambda item: item[1]["answered_at"], reverse=True
+    ):
         q = questions[qid]
         if answer["correct"]:
             continue
-        result.append({
-            "prompt": q.prompt,
-            "selected": q.options[answer["selected_index"]],
-            "correct": q.options[q.correct_index],
-            "explanation": q.explanation,
-        })
+        result.append(
+            {
+                "prompt": q.prompt,
+                "selected": q.options[answer["selected_index"]],
+                "correct": q.options[q.correct_index],
+                "explanation": q.explanation,
+            }
+        )
     return result[:3]
 
 
@@ -74,7 +78,7 @@ def recommend(data: dict, material_id: str, available_minutes: int) -> dict:
                 if False in recent
                 else "Masih ada soal yang belum dijawab tepat saat terakhir dicoba."
             )
-            reason = f'{count} {errors[0]["explanation"]}'
+            reason = f"{count} {errors[0]['explanation']}"
             if material_id == MANDA_COURSE_ID and len(answers) == 6:
                 reason = "Manda tepat saat mencari hipotenusa, tetapi masih keliru saat mencari sisi siku-siku."
         elif mastery["mastery"] is not None and mastery["mastery"] < 0.5:
@@ -115,9 +119,10 @@ def recommend(data: dict, material_id: str, available_minutes: int) -> dict:
             "estimate": mastery,
             "practice_focus": (
                 "Soal cerita singkat: hipotenusa dan satu sisi diketahui, cari sisi siku-siku yang lain."
-                if material_id == MANDA_COURSE_ID and len(answers) == 6 and errors else
-                f'Ulangi soal ini dengan langkah perhitungan atau alasan yang lengkap: {errors[0]["prompt"]}'
-                if errors else None
+                if material_id == MANDA_COURSE_ID and len(answers) == 6 and errors
+                else f"Ulangi soal ini dengan langkah perhitungan atau alasan yang lengkap: {errors[0]['prompt']}"
+                if errors
+                else None
             ),
             "alternatives": [
                 {

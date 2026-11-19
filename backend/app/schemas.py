@@ -40,11 +40,16 @@ class Question(Input):
     prompt: str = Field(min_length=1, max_length=2000)
     options: list[Option] = Field(min_length=2, max_length=6)
     correct_index: int = Field(ge=0)
+    option_hints: list[Annotated[str, Field(min_length=1, max_length=500)]] = Field(
+        default_factory=list, max_length=6
+    )
     explanation: str = Field(min_length=1, max_length=3000)
     source_ids: list[str] = Field(min_length=1)
 
     @model_validator(mode="after")
     def validate_answer(self):
+        if self.option_hints and len(self.option_hints) != len(self.options):
+            raise ValueError("petunjuk harus sesuai urutan pilihan jawaban")
         if self.correct_index >= len(self.options) or len(set(self.options)) != len(
             self.options
         ):

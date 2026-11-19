@@ -98,6 +98,7 @@ export type Attempt = {
     source_ids: string[];
     correct_index: number | null;
     explanation: string | null;
+    selected_hint?: string;
   }[];
   answers: Record<
     string,

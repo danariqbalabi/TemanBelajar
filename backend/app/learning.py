@@ -154,10 +154,14 @@ def public_attempt(attempt: dict, material: Material) -> dict:
     result = {**attempt, "questions": []}
     for question_id in attempt["question_ids"]:
         question = questions[question_id]
-        fields = {"correct_index", "explanation"}
-        if question_id in attempt["answers"]:
-            fields = set()
-        result["questions"].append(question.model_dump(exclude=fields))
+        answer = attempt["answers"].get(question_id)
+        hidden = {"option_hints"}
+        if answer is None:
+            hidden.update({"correct_index", "explanation"})
+        public = question.model_dump(exclude=hidden)
+        if answer is not None and question.option_hints:
+            public["selected_hint"] = question.option_hints[answer["selected_index"]]
+        result["questions"].append(public)
     return result
 
 
@@ -216,10 +220,18 @@ async def create_attempt(body: AttemptCreate, store: StoreDep):
             payload,
             public_attempt(existing, material),
         )
-    prior = latest_answers(with_course_history(snapshot.data, material.id), material.id, questions)
-    questions.sort(key=lambda qid: (
-        0 if qid in prior and not prior[qid]["correct"] else 1 if qid not in prior else 2
-    ))
+    prior = latest_answers(
+        with_course_history(snapshot.data, material.id), material.id, questions
+    )
+    questions.sort(
+        key=lambda qid: (
+            0
+            if qid in prior and not prior[qid]["correct"]
+            else 1
+            if qid not in prior
+            else 2
+        )
+    )
     attempt = {
         "id": str(uuid4()),
         "session_id": body.session_id,

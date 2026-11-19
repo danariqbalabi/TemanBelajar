@@ -137,19 +137,52 @@ def test_create_session_at_requested_concept(client):
 def test_manda_course_contains_analysis_of_six_sample_answers(client):
     course = "manda-pythagoras"
     materials = client.get("/v1/materials").json()["items"]
-    assert any(item["id"] == course and item["question_count"] == 6 for item in materials)
+    assert any(
+        item["id"] == course and item["question_count"] == 6 for item in materials
+    )
     result = client.get("/v1/progress", params={"material_id": course})
     assert result.status_code == 200
     concept = result.json()["concepts"][0]
     assert concept["observed"] == {"correct": 3, "total": 6}
     assert len(concept["mistakes"]) == 3
-    suggestion = client.get("/v1/recommendations", params={"material_id": course}).json()
+    suggestion = client.get(
+        "/v1/recommendations", params={"material_id": course}
+    ).json()
     assert suggestion["action"] == "REVIEW"
     assert "sisi siku-siku" in suggestion["practice_focus"]
     assert client.get("/v1/sessions").json()["items"] == []
-    session = client.post("/v1/sessions", json={"material_id": course, "request_id": request_id(), "mode": "reading"}).json()
-    practice = client.post("/v1/attempts", json={"session_id": session["id"], "request_id": request_id()}).json()
-    assert {q["prompt"] for q in practice["questions"][:3]} == {m["prompt"] for m in concept["mistakes"]}
+    session = client.post(
+        "/v1/sessions",
+        json={"material_id": course, "request_id": request_id(), "mode": "reading"},
+    ).json()
+    practice = client.post(
+        "/v1/attempts", json={"session_id": session["id"], "request_id": request_id()}
+    ).json()
+    assert {q["prompt"] for q in practice["questions"][:3]} == {
+        m["prompt"] for m in concept["mistakes"]
+    }
+    assert all(
+        "selected_hint" not in q and "option_hints" not in q
+        for q in practice["questions"]
+    )
+    answered = practice
+    for qid in practice["question_ids"]:
+        response = client.post(
+            f"/v1/attempts/{practice['id']}/answers",
+            json={
+                "request_id": request_id(),
+                "expected_version": answered["version"],
+                "question_id": qid,
+                "selected_index": 2,
+            },
+        )
+        assert response.status_code == 200
+        answered = response.json()
+        if qid == "manda-5":
+            break
+    item = next(q for q in answered["questions"] if q["id"] == "manda-5")
+    assert "lebih pendek" in item["selected_hint"]
+    assert "option_hints" not in item
 
 
 def test_new_practice_prioritizes_mistakes_and_keeps_resume_order(client):
@@ -157,7 +190,8 @@ def test_new_practice_prioritizes_mistakes_and_keeps_resume_order(client):
 
     def open_attempt():
         response = client.post(
-            "/v1/attempts", json={"request_id": request_id(), "session_id": session["id"]}
+            "/v1/attempts",
+            json={"request_id": request_id(), "session_id": session["id"]},
         )
         assert response.status_code == 201
         return response.json()
@@ -169,8 +203,10 @@ def test_new_practice_prioritizes_mistakes_and_keeps_resume_order(client):
         response = client.post(
             f"/v1/attempts/{attempt['id']}/answers",
             json={
-                "request_id": request_id(), "expected_version": version,
-                "question_id": question["id"], "selected_index": choice,
+                "request_id": request_id(),
+                "expected_version": version,
+                "question_id": question["id"],
+                "selected_index": choice,
             },
         )
         assert response.status_code == 200

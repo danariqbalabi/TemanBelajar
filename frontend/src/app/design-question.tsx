@@ -1,4 +1,5 @@
 "use client";
+import { AnswerWalkthrough } from "./answer-walkthrough";
 import { useEffect, useRef, useState } from "react";
 import { Workspace, WorkspaceHeading, UiIcon } from "./workspace-ui";
 import type { Attempt, Material, Preferences } from "@/lib/types";
@@ -179,6 +180,7 @@ export function QuestionDesign({
                   "Jawaban yang tepat adalah " + question.options[question.correct_index] + ". "}
                 {question.explanation}
               </p>
+              <AnswerWalkthrough question={question} answer={attempt.answers[question.id]} sources={material.sources} onSpeak={onSpeak} />
               <button
                 className="workspace-button primary"
                 data-tour="feedback"
