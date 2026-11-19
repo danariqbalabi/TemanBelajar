@@ -177,8 +177,9 @@ export function ProgressDesign({
                       <details className="progress-help">
                         <summary>Kenapa?</summary>
                         <p>
-                          Estimasi tersedia untuk konsep yang didukung model
-                          setelah sedikitnya tiga jawaban.
+                          {concept.mastery_status === "konsep belum didukung"
+                            ? "Model belum mencakup konsep ini. Gunakan hasil jawaban dan pembahasan untuk memilih bagian yang ingin diulang."
+                            : "Estimasi untuk konsep ini tersedia setelah tiga jawaban tersimpan."}
                         </p>
                       </details>
                     </div>
@@ -264,7 +265,7 @@ export function ProgressDesign({
                     )
               }
             >
-              {rec?.action === "RESCHEDULE" ? "Atur waktu" : "Lanjut belajar"}
+              {rec?.action === "RESCHEDULE" ? "Atur waktu" : rec?.action === "PRACTICE" ? "Kerjakan latihan" : rec?.action === "REVIEW" ? "Ulangi konsep ini" : "Lanjut belajar"}
               <UiIcon name="arrow_forward" />
             </button>
             <div className="workspace-actions">
