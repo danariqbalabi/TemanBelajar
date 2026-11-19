@@ -51,21 +51,26 @@ export function ModePicker({
   onBack,
   onSelect,
   canSaveDefault,
+  preferredMode,
+  conceptId,
 }: {
   material: Material;
   busy: boolean;
   onBack: () => void;
   onSelect: (mode: Mode, remember: boolean) => void;
   canSaveDefault: boolean;
+  preferredMode: Mode;
+  conceptId?: string;
 }) {
-  const [selected, setSelected] = useState<Mode>("reading");
+  const concept = material.concepts.find(c => c.id === conceptId) ?? material.concepts[0];
   const [remember, setRemember] = useState(false);
   const available = (mode: Mode) =>
     mode === "explore"
-      ? material.concepts.every((c) => c.diagram_description)
+      ? !!concept?.diagram_description?.trim()
       : mode === "transcript"
-        ? material.concepts.every((c) => c.transcript)
+        ? !!concept?.transcript?.trim()
         : true;
+  const [selected, setSelected] = useState<Mode>(() => available(preferredMode) ? preferredMode : "reading");
   return (
     <Workspace screen={12}>
       <WorkspaceHeading
@@ -102,7 +107,7 @@ export function ModePicker({
             <strong>{mode.title}</strong>
             <span>{mode.description}</span>
             {!available(mode.id) && (
-              <small>Belum tersedia untuk materi ini</small>
+              <small>Belum tersedia untuk konsep ini</small>
             )}
           </label>
         ))}

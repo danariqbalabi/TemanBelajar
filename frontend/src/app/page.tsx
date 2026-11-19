@@ -406,6 +406,7 @@ export default function Home() {
         />
       ) : page === "Materi Saya" ? (
         <Materials
+          defaultMode={prefs.mode}
           sessions={sessions}
           onSettings={() => setPage("Pengaturan")}
           onPlan={() => setPage("Rencana Belajar")}

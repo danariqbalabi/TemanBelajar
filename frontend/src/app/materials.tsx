@@ -17,12 +17,14 @@ export function Materials({
   refresh,
   start,
   sessions = [],
+  defaultMode = "reading",
   onSettings = () => {},
   onPlan = () => {},
   onDefaultMode,
 }: {
   materials: Material[];
   sessions?: LearningSession[];
+  defaultMode?: Mode;
   onSettings?: () => void;
   onPlan?: () => void;
   onDefaultMode?: (mode: Mode) => Promise<void>;
@@ -170,10 +172,13 @@ export function Materials({
         onCloseSource={() => setSource(null)}
       />
     );
-  if (detail && choosing)
+  if (detail && choosing) {
+    const resumed = sessions.find(s => s.material_id === detail.id && s.status !== "completed");
     return (
       <ModePicker
         material={detail}
+        conceptId={resumed?.concept_id}
+        preferredMode={resumed?.mode ?? defaultMode}
         busy={busy}
         onBack={() => setChoosing(false)}
         canSaveDefault={!!onDefaultMode}
@@ -190,6 +195,7 @@ export function Materials({
         }}
       />
     );
+  }
   if (detail)
     return (
       <SummaryDesign

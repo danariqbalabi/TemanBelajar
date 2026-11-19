@@ -75,7 +75,7 @@ const session: LearningSession = {
 const run = async (action: () => Promise<void>) => {
   await action();
 };
-it("kedua tautan pemilihan mode membuka pilihan, bukan kembali ke katalog", async () => {
+it("ringkasan membuka pilihan format dalam satu tindakan", async () => {
   const onChoose = vi.fn();
   const onBack = vi.fn();
   render(
@@ -87,12 +87,9 @@ it("kedua tautan pemilihan mode membuka pilihan, bukan kembali ke katalog", asyn
     />,
   );
   await userEvent.click(
-    screen.getByRole("link", { name: "Pilih Cara Belajar" }),
+    screen.getByRole("button", { name: "Pilih Cara Belajar" }),
   );
-  await userEvent.click(
-    screen.getByRole("link", { name: "Buka Mode Selector Lengkap" }),
-  );
-  expect(onChoose).toHaveBeenCalledTimes(2);
+  expect(onChoose).toHaveBeenCalledTimes(1);
   expect(onBack).not.toHaveBeenCalled();
 });
 const plan: Plan = {
@@ -487,6 +484,7 @@ it("menghubungkan katalog, ringkasan, dan mode belajar tanpa membuka format yang
   };
   render(
     <Materials
+      defaultMode="focus"
       materials={[noMedia]}
       run={run}
       busy={false}
@@ -498,14 +496,14 @@ it("menghubungkan katalog, ringkasan, dan mode belajar tanpa membuka format yang
     screen.getByRole("button", { name: "Buka Ringkasan →" }),
   );
   await userEvent.click(
-    screen.getByRole("link", { name: "Pilih Cara Belajar" }),
+    screen.getByRole("button", { name: "Pilih Cara Belajar" }),
   );
   const alternatives = screen.getAllByRole("radio");
   expect(
     alternatives.filter((b) => (b as HTMLButtonElement).disabled),
   ).toHaveLength(2);
   await userEvent.click(screen.getByRole("button", { name: "Mulai belajar" }));
-  expect(start).toHaveBeenCalledWith(noMedia, "reading");
+  expect(start).toHaveBeenCalledWith(noMedia, "focus");
 });
 it("onboarding menampilkan pratinjau sebelum menyimpan profil", async () => {
   const save = vi.fn();

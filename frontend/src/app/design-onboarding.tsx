@@ -20,7 +20,15 @@ export function OnboardingDesign({
 }) {
   const [step, setStep] = useState(0),
     [value, setValue] = useState(initial),
-    [needs, setNeeds] = useState(["membaca"]),
+    [needs, setNeeds] = useState<string[]>(() => {
+      const prefs = initial.preferences;
+      const primary = { reading: "membaca", focus: "fokus", transcript: "audio", standard: "kartu", explore: "deskripsi" }[prefs.mode];
+      return [
+        ...(prefs.reading_ruler && primary !== "membaca" ? ["membaca"] : []),
+        ...(prefs.letter_spacing > 0 ? ["renggang"] : []),
+        primary,
+      ];
+    }),
     [issue, setIssue] = useState("");
   useEffect(
     () => () => {
@@ -54,6 +62,10 @@ export function OnboardingDesign({
         ? ["biasa"]
         : [...needs.filter((need) => need !== "biasa"), key];
     setNeeds(selected);
+    if (key === "renggang") {
+      pref({ letter_spacing: selected.includes(key) ? Math.max(value.preferences.letter_spacing, 0.06) : 0 });
+      return;
+    }
     const modes = {
       membaca: "reading",
       fokus: "focus",
@@ -62,9 +74,10 @@ export function OnboardingDesign({
       deskripsi: "explore",
       biasa: "standard",
     } as const;
-    const preferred = selected.at(-1) as keyof typeof modes | undefined;
+    const preferred = selected.filter(need => need !== "renggang").at(-1) as keyof typeof modes | undefined;
     pref({
       reading_ruler: selected.includes("membaca"),
+      ...(key === "biasa" ? { letter_spacing: 0 } : {}),
       mode: preferred ? modes[preferred] : "standard",
       ...(selected.includes("fokus") ? { reduced_motion: true } : {}),
     });
@@ -112,6 +125,12 @@ export function OnboardingDesign({
       title: "Membaca santai",
       icon: "auto_stories",
       text: "Teks lapang dan penggaris baca.",
+    },
+    {
+      id: "renggang",
+      title: "Renggangkan huruf",
+      icon: "format_size",
+      text: "Tambah jarak antarhuruf saat membaca dan latihan.",
     },
     {
       id: "fokus",

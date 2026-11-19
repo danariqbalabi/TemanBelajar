@@ -50,6 +50,8 @@ export function SummaryDesign({
                   <details className="workspace-disclosure">
                     <summary>Intip konsep</summary>
                     <p>{concept.paragraphs[0]}</p>
+                    <p>Transkrip: {concept.transcript?.trim() ? "tersedia" : "belum tersedia"}.</p>
+                    <p>Deskripsi visual: {concept.diagram_description?.trim() ? "tersedia" : "belum tersedia"}.</p>
                   </details>
                 </div>
                 <UiIcon name="arrow_downward" />
@@ -78,17 +80,10 @@ export function SummaryDesign({
               <dd>{material.question_count} soal</dd>
             </div>
           </dl>
-          <a
-            href="#"
-            className="workspace-button primary"
-            onClick={(e) => {
-              e.preventDefault();
-              onChoose();
-            }}
-          >
+          <button type="button" className="workspace-button primary" onClick={onChoose}>
             Pilih Cara Belajar
             <UiIcon name="arrow_forward" />
-          </a>
+          </button>
           <button
             className="workspace-button"
             aria-label="Susun rencana belajar"
@@ -96,16 +91,7 @@ export function SummaryDesign({
           >
             Tambahkan ke rencana
           </button>
-          <a
-            className="workspace-subtle-link"
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              onChoose();
-            }}
-          >
-            Buka Mode Selector Lengkap
-          </a>
+
         </aside>
       </div>
       <dialog
