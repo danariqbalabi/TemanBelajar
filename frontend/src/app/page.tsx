@@ -181,32 +181,32 @@ export default function Home() {
       ) ?? material.concepts[0];
     const supported =
       preferredMode === "transcript"
-        ? !!target.transcript
+        ? !!target?.transcript
         : preferredMode === "explore"
-          ? !!target.diagram_description
+          ? !!target?.diagram_description
           : true;
     const chosenMode = supported ? preferredMode : "reading";
-    const create = mutation<LearningSession>("/sessions", {
-      material_id: material.id,
-      mode: chosenMode,
-      ...(conceptId ? { concept_id: conceptId } : {}),
-    });
+    let create: (() => Promise<LearningSession>) | undefined;
     let recovered = existing;
     let change: (() => Promise<LearningSession>) | undefined;
     await run(async () => {
+      if (!target)
+        throw new Error("Materi ini belum punya konsep yang bisa dibuka.");
+      create ||= mutation<LearningSession>("/sessions", {
+        material_id: material.id,
+        mode: chosenMode,
+        concept_id: target.id,
+      });
       let s = recovered || (await create());
       recovered = s;
-      if (
-        (conceptId && s.concept_id !== conceptId) ||
-        s.mode !== chosenMode ||
-        s.status === "paused"
-      ) {
+      const changingConcept = s.concept_id !== target.id;
+      if (changingConcept || s.mode !== chosenMode || s.status === "paused") {
         change ||= mutation<LearningSession>(
           `/sessions/${s.id}`,
           {
             expected_version: s.version,
-            concept_id: conceptId || s.concept_id,
-            paragraph: conceptId ? 0 : s.paragraph,
+            concept_id: target.id,
+            paragraph: changingConcept ? 0 : s.paragraph,
             mode: chosenMode,
             status: "active",
             completed_concepts: s.completed_concepts,
@@ -221,6 +221,7 @@ export default function Home() {
       setPracticeRequested(practice);
       setPage("Mulai Belajar");
       setSessions((items) => [s, ...items.filter((item) => item.id !== s.id)]);
+      window.scrollTo({ top: 0, behavior: "instant" });
     });
   }
   async function saveProfile(p: Profile) {
@@ -386,6 +387,7 @@ export default function Home() {
       )}
       {page === "Beranda" ? (
         <Dashboard
+          busy={busy}
           onDemoTour={
             account.user.is_anonymous && !tour ? () => setTour(true) : undefined
           }

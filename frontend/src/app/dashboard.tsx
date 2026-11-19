@@ -20,6 +20,7 @@ export function Dashboard({
   navigate,
   onPreferences,
   onDemoTour,
+  busy = false,
 }: {
   profile: Profile;
   materials: Material[];
@@ -35,6 +36,7 @@ export function Dashboard({
   navigate: (p: string) => void;
   onPreferences?: (p: Partial<Preferences>) => void;
   onDemoTour?: () => void;
+  busy?: boolean;
 }) {
   const material =
       materials.find((m) => m.id === recommendation?.material_id) ||
@@ -173,12 +175,12 @@ export function Dashboard({
                       "Pilih satu konsep pendek untuk mulai belajar."}
                   </p>
                   <div className="flex flex-wrap items-center gap-3">
-                    <a
+                    <button
                       className="inline-flex min-h-11 items-center justify-center gap-2 px-4 py-2 rounded-xl bg-primary text-on-primary font-label text-label hover:bg-primary-hover active:bg-primary-pressed transition-all shadow-md"
                       data-path="mulai-belajar"
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
+                      type="button"
+                      disabled={busy}
+                      onClick={() => {
                         if (recommendation?.action === "RESCHEDULE")
                           navigate("Rencana Belajar");
                         else if (material)
@@ -204,7 +206,7 @@ export function Dashboard({
                       >
                         arrow_forward
                       </span>
-                    </a>
+                    </button>
                     <button
                       className="inline-flex items-center gap-1 px-space-md py-3 rounded-xl text-primary hover:bg-surface/50 font-label text-label transition-colors"
                       type="button"

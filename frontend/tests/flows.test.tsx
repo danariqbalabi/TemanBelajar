@@ -347,13 +347,17 @@ describe("alur belajar", () => {
     await userEvent.click(
       screen.getByRole("button", { name: "Cek pemahaman" }),
     );
-    expect(await screen.findByText("Apa peran cahaya?")).toBeTruthy();
+    const prompt = await screen.findByRole("heading", { name: "Apa peran cahaya?" });
+    expect(document.activeElement).toBe(prompt);
+    await userEvent.click(screen.getByRole("button", { name: "Bacakan soal dan pilihan" }));
+    expect(screen.getByText(/Baca nyaring belum tersedia/)).toBeTruthy();
     expect(screen.queryByText("Apa bahan fotosintesis?")).toBeNull();
     await userEvent.click(screen.getByLabelText("Energi"));
     await userEvent.click(
       screen.getByRole("button", { name: "Periksa Jawaban Sekarang" }),
     );
     expect(await screen.findByText("Cahaya menyediakan energi.")).toBeTruthy();
+    expect(document.activeElement).toBe(screen.getByRole("heading", { name: "Tepat!" }));
     expect(
       request.mock.calls.find(
         ([path]) => path === "/attempts/attempt/answers",

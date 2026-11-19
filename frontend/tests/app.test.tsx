@@ -326,3 +326,61 @@ it("starts the guide when returning with an existing demo session", async () => 
     await screen.findByRole("heading", { name: "Mulai dari satu konsep" }),
   ).toBeTruthy();
 });
+
+it("opens the reader when a recommendation points to a retired concept", async () => {
+  const concept = {
+    id: "current",
+    title: "Konsep yang tersedia",
+    paragraphs: ["Isi bacaan."],
+    estimated_minutes: 5,
+    source_ids: [],
+  };
+  const material = {
+    id: "demo",
+    title: "Materi demo",
+    subject: "IPA",
+    concepts: [concept],
+    sources: [],
+  };
+  request.mockImplementation(
+    async (path: string, body: unknown, method: string) => {
+      if (path === "/profile") return { ...defaultProfile, onboarding_step: 4 };
+      if (path === "/materials") return { items: [material] };
+      if (path.startsWith("/recommendations"))
+        return {
+          action: "ADVANCE",
+          material_id: "demo",
+          concept_id: "retired",
+          estimated_minutes: 5,
+        };
+      if (path === "/sessions" && method === "POST")
+        return {
+          ...(body as object),
+          id: "opened",
+          paragraph: 0,
+          version: 1,
+          status: "active",
+          completed_concepts: [],
+          draft: "",
+          updated_at: "2026-11-20T00:00:00Z",
+        };
+      if (path.endsWith("/attempts/active")) return null;
+      return { items: [] };
+    },
+  );
+  render(<Home />);
+  await userEvent.click(
+    await screen.findByRole("link", { name: "Mulai Belajar Gratis" }),
+  );
+  await userEvent.click(
+    await screen.findByRole("button", { name: /Mulai belajar.*5 menit/i }),
+  );
+  expect(
+    await screen.findByRole("heading", { name: concept.title }),
+  ).toBeTruthy();
+  expect(
+    request.mock.calls.find(
+      ([path, , method]) => path === "/sessions" && method === "POST",
+    )?.[1],
+  ).toMatchObject({ concept_id: concept.id, material_id: material.id });
+});

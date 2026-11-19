@@ -1435,13 +1435,10 @@
   align-items: start;
 }
 .workspace-question h2 {
-  font:
-    800 1.35rem/1.6 "Nunito",
-    sans-serif;
+  font: inherit;
+  font-weight: 800;
+  font-size: 1.25em;
   margin: 12px 0 24px;
-}
-.workspace-question[data-large="true"] h2 {
-  font-size: 1.7rem;
 }
 .workspace-answers {
   border: 0;
@@ -1457,8 +1454,7 @@
   padding: 14px 16px;
   border: 1px solid #dce2d7;
   border-radius: 12px;
-  font-size: 0.9375rem;
-  line-height: 1.6;
+  font: inherit;
   cursor: pointer;
 }
 .workspace-answers input {
@@ -1500,8 +1496,7 @@
   margin-top: 24px;
 }
 .workspace-answer-feedback p {
-  font-size: 0.9375rem;
-  line-height: 1.8;
+  font: inherit;
   margin: 10px 0 16px;
 }
 @media (max-width: 900px) {
@@ -1520,9 +1515,6 @@
   .workspace-question-progress {
     gap: 8px;
     font-size: 0.6875rem;
-  }
-  .workspace-question h2 {
-    font-size: 1.2rem;
   }
 }
 /* Progress overview: one subject filter, one recommendation, a compact activity chart. */

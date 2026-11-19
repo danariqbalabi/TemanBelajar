@@ -52,6 +52,7 @@ export function Reader({
     [choice, setChoice] = useState<number | null>(null),
     [feedback, setFeedback] = useState<string | null>(null),
     [rec, setRec] = useState<Recommendation | null>(null),
+    [audioNotice, setAudioNotice] = useState<string | null>(null),
     [speaking, setSpeaking] = useState(false),
     [elapsed, setElapsed] = useState(0),
     [showRecommendation, setShowRecommendation] = useState(false);
@@ -196,8 +197,9 @@ export function Reader({
     });
   }
   function speak(text?: string) {
+    setAudioNotice(null);
     if (!("speechSynthesis" in window)) {
-      setFeedback(
+      setAudioNotice(
         "Baca nyaring belum tersedia pada browser ini. Transkrip tetap bisa dibaca.",
       );
       return;
@@ -214,7 +216,11 @@ export function Reader({
     speech.lang = "id-ID";
     speech.rate = preferences.speech_rate;
     speech.onend = () => setSpeaking(false);
-    speech.onerror = () => setSpeaking(false);
+    speech.onerror = (event) => {
+      setSpeaking(false);
+      if (event.error !== "interrupted" && event.error !== "canceled")
+        setAudioNotice("Audio belum bisa diputar. Teks tetap tersedia.");
+    };
     speechSynthesis.speak(speech);
     setSpeaking(true);
   }
@@ -232,6 +238,7 @@ export function Reader({
             attempt={attempt}
             material={material}
             question={question}
+            preferences={preferences}
             choice={choice}
             answered={!!last}
             busy={busy}
@@ -242,6 +249,8 @@ export function Reader({
               setAttempt(null);
               setFeedback(null);
             }}
+            speaking={speaking}
+            audioNotice={audioNotice}
             onSpeak={speak}
             displayName={displayName}
           />
@@ -338,9 +347,9 @@ export function Reader({
         onSpeak={speak}
         onPreferences={onPreferences}
         notice={
-          feedback && !attempt.questions.some((q) => q.id === feedback)
+          audioNotice || (feedback && !attempt.questions.some((q) => q.id === feedback)
             ? feedback
-            : null
+            : null)
         }
       />
     );
@@ -360,7 +369,7 @@ export function Reader({
         draft={draft}
         setDraft={setDraft}
         busy={busy}
-        feedback={feedback}
+        feedback={audioNotice || feedback}
         speaking={speaking}
         onSpeak={speak}
         update={update}

@@ -1,10 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Workspace, WorkspaceHeading, UiIcon } from "./workspace-ui";
-import type { Attempt, Material } from "@/lib/types";
+import type { Attempt, Material, Preferences } from "@/lib/types";
+import { readingStyle } from "./reading-style";
 export function QuestionDesign({
   attempt,
   material,
+  preferences,
   question,
   choice,
   answered,
@@ -14,10 +16,13 @@ export function QuestionDesign({
   onNext,
   onPause,
   onSpeak,
+  speaking,
+  audioNotice,
   displayName,
 }: {
   attempt: Attempt;
   material: Material;
+  preferences: Preferences;
   question: Attempt["questions"][number];
   choice: number | null;
   answered: boolean;
@@ -27,6 +32,8 @@ export function QuestionDesign({
   onNext: () => void;
   onPause: () => void;
   onSpeak: (text?: string) => void;
+  speaking: boolean;
+  audioNotice: string | null;
   displayName: string;
 }) {
   const [hints, setHints] = useState(false),
@@ -71,6 +78,11 @@ export function QuestionDesign({
     onChoice(i);
     persist(scratch, i);
   }
+  const prompt = useRef<HTMLHeadingElement>(null);
+  const result = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    (answered ? result.current : prompt.current)?.focus();
+  }, [answered, question.id]);
   const index = attempt.question_ids.indexOf(question.id);
   const done = Object.keys(attempt.answers).length;
   return (
@@ -83,10 +95,13 @@ export function QuestionDesign({
           <>
             <button
               className="workspace-button"
-              onClick={() => onSpeak(question.prompt)}
+              onClick={() => onSpeak(speaking ? undefined : [
+                question.prompt,
+                ...question.options.map((option, i) => `Pilihan ${String.fromCharCode(65 + i)}. ${option}`),
+              ].join(" "))}
             >
               <UiIcon name="volume_up" />
-              Bacakan Soal
+              {speaking ? "Hentikan bacaan" : "Bacakan soal dan pilihan"}
             </button>
             <button
               className="workspace-button"
@@ -98,6 +113,7 @@ export function QuestionDesign({
           </>
         }
       />
+      <div role="status">{audioNotice}</div>
       <div className="workspace-question-progress">
         <span>
           Soal {index + 1} dari {attempt.questions.length}
@@ -112,11 +128,12 @@ export function QuestionDesign({
       <div className="workspace-question-layout">
         <section
           className="workspace-panel workspace-question"
-          data-large={large}
+          style={{ ...readingStyle(preferences), fontSize: preferences.font_size * (large ? 1.25 : 1) }}
         >
           <span className="workspace-eyebrow">Pilih satu jawaban</span>
-          <h2>{question.prompt}</h2>
+          <h2 ref={prompt} id="quiz-prompt" tabIndex={-1}>{question.prompt}</h2>
           <fieldset
+            aria-labelledby="quiz-prompt"
             data-tour="choices"
             className="workspace-answers"
             disabled={busy || answered}
@@ -152,12 +169,16 @@ export function QuestionDesign({
           </fieldset>
           {answered ? (
             <div className="workspace-answer-feedback">
-              <strong>
+              <h3 ref={result} tabIndex={-1} aria-describedby="quiz-explanation">
                 {attempt.answers[question.id]?.correct
                   ? "Tepat!"
                   : "Mari tinjau kembali"}
-              </strong>
-              <p>{question.explanation}</p>
+              </h3>
+              <p id="quiz-explanation">
+                {!attempt.answers[question.id]?.correct && question.correct_index != null &&
+                  "Jawaban yang tepat adalah " + question.options[question.correct_index] + ". "}
+                {question.explanation}
+              </p>
               <button
                 className="workspace-button primary"
                 data-tour="feedback"
