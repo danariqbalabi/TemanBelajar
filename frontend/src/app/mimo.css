@@ -475,3 +475,22 @@
     display: none !important;
   }
 }
+
+@media (hover: hover) and (pointer: fine) {
+  .final-design :is(a[href], button:not(:disabled), summary):hover {
+    cursor: url("/design/book-cursor.png") 4 4, pointer;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .mimo-mascot[data-reduced-motion="false"] .mimo-stage[data-animating="false"] {
+    animation: mimo-idle 5.4s ease-in-out infinite;
+  }
+  .calm .mimo-mascot .mimo-stage {
+    animation: none;
+  }
+  @keyframes mimo-idle {
+    0%, 100% { translate: 0 0; rotate: -2deg; }
+    45% { translate: 0 -5px; rotate: 2deg; }
+    72% { translate: 0 -2px; rotate: 0deg; }
+  }
+}

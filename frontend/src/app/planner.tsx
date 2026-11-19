@@ -115,8 +115,11 @@ export function Planner({
     });
     run(async () => {
       const p = await save();
-      await refresh();
-      await load(p.id);
+      setSelected(p.id);
+      setDetail({ ...p, proposals: [] });
+      setActivities(null);
+      setProposal(null);
+      void refresh().catch(() => {});
       setMessage("Rencana tersimpan. Kamu tetap bebas mengubah ritme.");
       reactMimo({
         mood: "cheer",

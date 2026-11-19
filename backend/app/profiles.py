@@ -104,6 +104,9 @@ def response_json(response: httpx.Response):
         raise HTTPException(502, "respons layanan data belum valid") from exc
 
 
+supabase_client: httpx.AsyncClient | None = None
+
+
 async def request_supabase(
     method: str, path: str, token: str, **kwargs
 ) -> httpx.Response:
@@ -117,13 +120,14 @@ async def request_supabase(
             headers.pop("Authorization")
     headers.update(kwargs.pop("headers", {}))
     try:
-        async with httpx.AsyncClient(timeout=15) as client:
-            response = await client.request(
-                method,
-                config.supabase_url.rstrip("/") + path,
-                headers=headers,
-                **kwargs,
+        url = config.supabase_url.rstrip("/") + path
+        if supabase_client is not None:
+            response = await supabase_client.request(
+                method, url, headers=headers, **kwargs
             )
+        else:
+            async with httpx.AsyncClient(timeout=15) as client:
+                response = await client.request(method, url, headers=headers, **kwargs)
     except (httpx.RequestError, ssl.SSLError) as exc:
         raise HTTPException(503, "layanan akun sedang tidak tersedia") from exc
     if response.status_code in (401, 403):

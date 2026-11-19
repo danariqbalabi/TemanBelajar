@@ -43,11 +43,14 @@ export function SettingsDesign({
     [],
   );
   const update = <K extends keyof Preferences>(key: K, v: Preferences[K]) =>
-    setValue({ ...value, preferences: { ...prefs, [key]: v } });
+    setValue((current) => ({
+      ...current,
+      preferences: { ...current.preferences, [key]: v },
+    }));
   const previewStyle = {
     ...readingStyle(prefs),
-    color: prefs.high_contrast ? "#101a16" : undefined,
-    backgroundColor: prefs.high_contrast ? "white" : undefined,
+    color: prefs.high_contrast ? "#101a16" : "#273b35",
+    backgroundColor: prefs.high_contrast ? "#fff" : "#faf3e4",
   };
 
   function openSettingsGroup(id: string) {
@@ -214,8 +217,9 @@ export function SettingsDesign({
                         Pratinjau bacaan
                       </h2>
                       <div
-                        className="mt-6 space-y-4"
+                        className="settings-reading-preview mt-4 space-y-4"
                         data-reading-preview
+                        data-contrast={prefs.high_contrast}
                         style={previewStyle}
                       >
                         <h3 className="font-bold ui-card-title">
@@ -372,7 +376,7 @@ export function SettingsDesign({
                               className="font-label text-label font-bold text-primary px-2.5 py-0.5 rounded-full bg-surface-container"
                               id="font-size-display"
                             >
-                              18px (Sedang • Default)
+                              {prefs.font_size} px
                             </span>
                           </div>
                           <div className="flex items-center gap-space-md">
@@ -387,7 +391,7 @@ export function SettingsDesign({
                                   Math.max(14, prefs.font_size - 2),
                                 )
                               }
-                              disabled={busy}
+                              disabled={busy || prefs.font_size <= 14}
                             >
                               <span
                                 className="material-symbols-outlined text-[20px]"
@@ -397,12 +401,12 @@ export function SettingsDesign({
                               </span>
                             </button>
                             <input
-                              aria-valuemax={26}
+                              aria-valuemax={32}
                               aria-valuemin={14}
                               aria-valuenow={prefs.font_size}
                               className="w-full accent-primary bg-surface-container h-2 rounded-lg cursor-pointer"
                               id="font-size-slider"
-                              max="26"
+                              max="32"
                               min="14"
                               step="2"
                               type="range"
@@ -423,7 +427,7 @@ export function SettingsDesign({
                                   Math.min(32, prefs.font_size + 2),
                                 )
                               }
-                              disabled={busy}
+                              disabled={busy || prefs.font_size >= 32}
                             >
                               <span
                                 className="material-symbols-outlined text-[20px]"
@@ -437,7 +441,7 @@ export function SettingsDesign({
                             <span>Kecil (14px)</span>
                             <span>Standar (18px)</span>
                             <span>Besar (22px)</span>
-                            <span>Ekstra (26px)</span>
+                            <span>Ekstra (32px)</span>
                           </div>
                         </div>
 
@@ -604,59 +608,58 @@ export function SettingsDesign({
                       </div>
                       <div className="space-y-space-md">
                         <div
-                          className="grid grid-cols-2 sm:grid-cols-4 gap-space-xs"
                           id="theme-selector"
+                          className="settings-theme-grid"
+                          role="group"
+                          aria-label="Tema bacaan"
                         >
-                          <button
-                            className="theme-card-btn p-3 rounded-xl border-2 border-primary bg-canvas text-left flex flex-col justify-between h-28 relative"
-                            data-theme="cream"
-                            type="button"
-                            onClick={() => update("high_contrast", false)}
-                            disabled={busy}
-                            aria-pressed={prefs.high_contrast === false}
-                          >
-                            <span className="w-5 h-5 rounded-full bg-[#112520] border border-white"></span>
-                            <div>
-                              <span className="text-xs font-bold text-primary block">
-                                Krem Hangat
-                              </span>
-                              <span className="text-[10px] text-on-surface-variant">
-                                Default TemanBelajar
-                              </span>
-                            </div>
-                            <span
-                              className="material-symbols-outlined text-primary text-[16px] absolute top-2 right-2 check-indicator"
-                              aria-hidden="true"
+                          {(
+                            [
+                              [false, "Krem Hangat", "Latar krem lembut"],
+                              [
+                                true,
+                                "Kontras Tinggi",
+                                "Teks gelap di atas putih",
+                              ],
+                            ] as const
+                          ).map(([contrast, label, description]) => (
+                            <button
+                              key={label}
+                              type="button"
+                              className="theme-card-btn"
+                              data-theme={contrast ? "high-contrast" : "cream"}
+                              aria-pressed={prefs.high_contrast === contrast}
+                              disabled={busy}
+                              onClick={() => update("high_contrast", contrast)}
                             >
-                              check_circle
-                            </span>
-                          </button>
-
-                          <button
-                            className="theme-card-btn p-3 rounded-xl border border-divider bg-[#101A16] text-left flex flex-col justify-between h-28 relative hover:border-secondary"
-                            data-theme="high-contrast"
-                            type="button"
-                            onClick={() => update("high_contrast", true)}
-                            disabled={busy}
-                            aria-pressed={prefs.high_contrast === true}
-                          >
-                            <span className="w-5 h-5 rounded-full bg-[#FFE7A3] border border-black"></span>
-                            <div>
-                              <span className="text-xs font-bold text-[#FFE7A3] block">
-                                Kontras Tinggi
+                              <span
+                                className="settings-theme-swatch"
+                                aria-hidden="true"
+                              >
+                                Aa
                               </span>
-                              <span className="text-[10px] text-gray-400">
-                                Kuning di atas Hitam
+                              <span>
+                                <strong>{label}</strong>
+                                <small>{description}</small>
                               </span>
-                            </div>
-                            <span
-                              className="material-symbols-outlined text-transparent text-[16px] absolute top-2 right-2 check-indicator"
-                              aria-hidden="true"
-                            >
-                              check_circle
-                            </span>
-                          </button>
+                              {prefs.high_contrast === contrast && (
+                                <span
+                                  className="settings-theme-check material-symbols-outlined"
+                                  aria-hidden="true"
+                                >
+                                  check_circle
+                                </span>
+                              )}
+                            </button>
+                          ))}
                         </div>
+                        <p className="workspace-muted" role="status">
+                          Pratinjau:{" "}
+                          {prefs.high_contrast
+                            ? "Kontras Tinggi"
+                            : "Krem Hangat"}
+                          . Simpan untuk menerapkan.
+                        </p>
                       </div>
                     </SettingsGroup>
 

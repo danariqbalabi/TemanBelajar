@@ -80,6 +80,13 @@ export function DesignShell({
               ].map((destination) => (
                 <a
                   key={destination}
+                  data-tour={
+                    destination === "Progres"
+                      ? "progress"
+                      : destination === "Rencana Belajar"
+                        ? "plan"
+                        : undefined
+                  }
                   href="#"
                   aria-current={page === destination ? "page" : undefined}
                   onClick={(event) => {

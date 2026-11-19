@@ -131,6 +131,7 @@ export function ReaderDesign({
           <label>
             Format belajar
             <select
+              data-tour="format"
               aria-label="Format belajar"
               value={session.mode}
               disabled={busy}
@@ -271,6 +272,7 @@ export function ReaderDesign({
             <button
               type="button"
               className="workspace-button primary"
+              data-tour="advance"
               disabled={busy}
               onClick={
                 session.status === "completed" &&

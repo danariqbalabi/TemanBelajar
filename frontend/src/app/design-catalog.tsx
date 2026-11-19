@@ -140,7 +140,7 @@ export function Catalog({
                   >
                     add_circle
                   </span>
-                  + Tambah Materi Baru
+                  Tambah Materi Baru
                 </button>
               </div>
             </header>

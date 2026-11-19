@@ -1,8 +1,12 @@
+from contextlib import asynccontextmanager
+
+import httpx
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from app import profiles
 from app.config import settings
 from app.learning import router as learning_router
 from app.material_processing import router as processing_router
@@ -11,7 +15,17 @@ from app.profiles import router as profiles_router
 from app.recommendations import router as recommendations_router
 from app.rescheduling import router as rescheduling_router
 
-app = FastAPI(title="TemanBelajar API", version="0.1.0")
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    async with httpx.AsyncClient(timeout=15) as client:
+        profiles.supabase_client = client
+        try:
+            yield
+        finally:
+            profiles.supabase_client = None
+
+
+app = FastAPI(title="TemanBelajar API", version="0.1.0", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings().cors_origins,

@@ -9,6 +9,7 @@ import {
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { defaultProfile } from "../src/lib/types";
+import { auth } from "../src/lib/api";
 const { request, authEvents } = vi.hoisted(() => ({
   request: vi.fn(),
   authEvents: {
@@ -31,6 +32,12 @@ vi.mock("../src/lib/api", () => ({
       onAuthStateChange: (listener: typeof authEvents.listener) => {
         authEvents.listener = listener;
         return { data: { subscription: { unsubscribe: () => {} } } };
+      },
+      signInAnonymously: async () => {
+        authEvents.listener?.("SIGNED_IN", {
+          user: { id: "demo-tour-user", is_anonymous: true },
+        });
+        return { error: null };
       },
     },
   },
@@ -272,4 +279,50 @@ it("menampilkan landing meski sesi tersimpan dan tidak memaksa onboarding yang b
   expect(
     request.mock.calls.some((c) => c[0] === "/profile" && c[2] === "PUT"),
   ).toBe(false);
+});
+
+it("starts the Mimo guide only after choosing demo and allows skipping", async () => {
+  const session = vi.spyOn(auth!.auth, "getSession").mockResolvedValueOnce({
+    data: { session: null },
+    error: null,
+  });
+  request.mockImplementation(async (path: string) =>
+    path === "/profile"
+      ? defaultProfile
+      : path.startsWith("/recommendations")
+        ? null
+        : { items: [] },
+  );
+  render(<Home />);
+  expect(screen.queryByText("Lewati tur")).toBeNull();
+  await userEvent.click(
+    await screen.findByRole("link", { name: "Mulai Belajar Gratis" }),
+  );
+  expect(screen.queryByText("Lewati tur")).toBeNull();
+  await userEvent.click(
+    screen.getByRole("link", { name: "Coba Demo Materi Fotosintesis" }),
+  );
+  expect(
+    await screen.findByRole("heading", { name: "Mulai dari satu konsep" }),
+  ).toBeTruthy();
+  await userEvent.click(screen.getByRole("button", { name: "Lewati tur" }));
+  expect(screen.queryByText("Lewati tur")).toBeNull();
+  session.mockRestore();
+});
+
+it("starts the guide when returning with an existing demo session", async () => {
+  request.mockImplementation(async (path: string) =>
+    path === "/profile"
+      ? defaultProfile
+      : path.startsWith("/recommendations")
+        ? null
+        : { items: [] },
+  );
+  render(<Home />);
+  await userEvent.click(
+    await screen.findByRole("link", { name: "Mulai Belajar Gratis" }),
+  );
+  expect(
+    await screen.findByRole("heading", { name: "Mulai dari satu konsep" }),
+  ).toBeTruthy();
 });

@@ -3,7 +3,7 @@
 from datetime import datetime
 from typing import Generic, Literal, TypeVar
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.schemas import Concept, Mode, Source
 
@@ -89,10 +89,18 @@ class Observation(BaseModel):
     total: int
 
 
+class MistakeResponse(BaseModel):
+    prompt: str
+    selected: str
+    correct: str
+    explanation: str
+
+
 class ConceptProgress(EstimateResponse):
     id: str
     title: str
     observed: Observation
+    mistakes: list[MistakeResponse] = Field(default_factory=list)
 
 
 class ProgressResponse(BaseModel):
@@ -117,3 +125,4 @@ class RecommendationResponse(BaseModel):
     requires_plan_review: bool
     title: str | None = None
     estimate: EstimateResponse | None = None
+    practice_focus: str | None = None

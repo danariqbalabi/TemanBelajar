@@ -116,7 +116,11 @@ export function QuestionDesign({
         >
           <span className="workspace-eyebrow">Pilih satu jawaban</span>
           <h2>{question.prompt}</h2>
-          <fieldset className="workspace-answers" disabled={busy || answered}>
+          <fieldset
+            data-tour="choices"
+            className="workspace-answers"
+            disabled={busy || answered}
+          >
             <legend className="sr-only">Pilih salah satu jawaban</legend>
             {question.options.map((option, i) => (
               <label
@@ -156,6 +160,7 @@ export function QuestionDesign({
               <p>{question.explanation}</p>
               <button
                 className="workspace-button primary"
+                data-tour="feedback"
                 onClick={onNext}
                 disabled={busy}
               >
@@ -168,6 +173,7 @@ export function QuestionDesign({
               <button
                 className="workspace-button primary"
                 disabled={busy || choice === null}
+                data-tour="submit"
                 onClick={onAnswer}
               >
                 Periksa Jawaban Sekarang
@@ -178,7 +184,7 @@ export function QuestionDesign({
         </section>
         <aside className="workspace-question-tools">
           <section className="workspace-panel">
-            <h2>Ruang coretan</h2>
+            <h2>Catatan pribadi (opsional)</h2>
             <label className="workspace-field">
               <span className="sr-only">Catatan latihan</span>
               <textarea
@@ -190,7 +196,10 @@ export function QuestionDesign({
                 placeholder="Tulis cara berpikirmu di sini..."
               />
             </label>
-            <span className="workspace-muted">Disimpan di browser ini.</span>
+            <span className="workspace-muted">
+              Untuk mencatat kata kunci atau cara berpikir. Catatan tersimpan di
+              browser ini dan tidak dikirim sebagai jawaban.
+            </span>
           </section>
           <section className="workspace-panel">
             <button

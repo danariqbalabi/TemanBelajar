@@ -3,11 +3,40 @@ from typing import Annotated
 from fastapi import APIRouter, Query
 
 from app.bkt import estimate
-from app.learning import get_material, modes_for
+from app.learning import get_material, latest_answers, modes_for
+from app.demo import MANDA_COURSE_ID, manda_course_history
 from app.responses import ProgressResponse, RecommendationResponse
 from app.store import StoreDep
 
 router = APIRouter(prefix="/v1", tags=["rekomendasi"])
+
+
+def with_course_history(data: dict, material_id: str) -> dict:
+    if material_id != MANDA_COURSE_ID:
+        return data
+    sample = manda_course_history()
+    return {
+        **data,
+        "attempts": {**sample["attempts"], **data["attempts"]},
+        "sessions": {**sample["sessions"], **data["sessions"]},
+    }
+
+
+def mistakes(data: dict, material, concept_id: str) -> list[dict]:
+    questions = {q.id: q for q in material.questions if q.concept_id == concept_id}
+    latest = latest_answers(data, material.id, questions)
+    result = []
+    for qid, answer in sorted(latest.items(), key=lambda item: item[1]["answered_at"], reverse=True):
+        q = questions[qid]
+        if answer["correct"]:
+            continue
+        result.append({
+            "prompt": q.prompt,
+            "selected": q.options[answer["selected_index"]],
+            "correct": q.options[q.correct_index],
+            "explanation": q.explanation,
+        })
+    return result[:3]
 
 
 def observations(data: dict, material_id: str) -> dict:
@@ -27,6 +56,7 @@ def observations(data: dict, material_id: str) -> dict:
 
 def recommend(data: dict, material_id: str, available_minutes: int) -> dict:
     material = get_material(data, material_id)
+    data = with_course_history(data, material_id)
     evidence = observations(data, material_id)
     answered_questions = {
         qid
@@ -38,13 +68,26 @@ def recommend(data: dict, material_id: str, available_minutes: int) -> dict:
     for session in data["sessions"].values():
         if session["material_id"] == material_id:
             completed.update(session["completed_concepts"])
-    for concept in material.concepts:
+    by_concept = {
+        concept.id: mistakes(data, material, concept.id)
+        for concept in material.concepts
+    }
+    ordered_concepts = sorted(material.concepts, key=lambda c: not by_concept[c.id])
+    for concept in ordered_concepts:
         answers = evidence[concept.id]
+        errors = by_concept[concept.id]
         recent = answers[-3:]
         mastery = estimate(concept.skill_id, answers)
-        if recent and not all(recent):
+        if errors:
             action = "REVIEW"
-            reason = f"{recent.count(False)} dari {len(recent)} jawaban terakhir pada konsep ini belum tepat."
+            count = (
+                f"{recent.count(False)} dari {len(recent)} jawaban terakhir belum tepat."
+                if False in recent
+                else "Masih ada soal yang belum dijawab tepat saat terakhir dicoba."
+            )
+            reason = f'{count} {errors[0]["explanation"]}'
+            if material_id == MANDA_COURSE_ID and len(answers) == 6:
+                reason = "Manda tepat saat mencari hipotenusa, tetapi masih keliru saat mencari sisi siku-siku."
         elif mastery["mastery"] is not None and mastery["mastery"] < 0.5:
             action = "REVIEW"
             reason = "Estimasi penguasaan dari riwayat latihan masih rendah. Kamu bisa meninjau contoh lagi."
@@ -81,6 +124,12 @@ def recommend(data: dict, material_id: str, available_minutes: int) -> dict:
             "estimated_minutes": duration,
             "reason": reason,
             "estimate": mastery,
+            "practice_focus": (
+                "Soal cerita singkat: hipotenusa dan satu sisi diketahui, cari sisi siku-siku yang lain."
+                if material_id == MANDA_COURSE_ID and len(answers) == 6 and errors else
+                f'Ulangi soal ini dengan langkah perhitungan atau alasan yang lengkap: {errors[0]["prompt"]}'
+                if errors else None
+            ),
             "alternatives": [
                 {
                     "action": "SWITCH",
@@ -115,8 +164,13 @@ async def recommendations(
 @router.get("/progress", response_model=ProgressResponse)
 async def progress(material_id: str, store: StoreDep):
     snapshot = await store.load()
-    material = get_material(snapshot.data, material_id)
-    evidence = observations(snapshot.data, material_id)
+    return progress_summary(snapshot.data, material_id)
+
+
+def progress_summary(data: dict, material_id: str) -> dict:
+    material = get_material(data, material_id)
+    data = with_course_history(data, material_id)
+    evidence = observations(data, material_id)
     return {
         "material_id": material_id,
         "is_demo": material.is_demo,
@@ -128,6 +182,7 @@ async def progress(material_id: str, store: StoreDep):
                     "correct": sum(evidence[concept.id]),
                     "total": len(evidence[concept.id]),
                 },
+                "mistakes": mistakes(data, material, concept.id),
                 **estimate(concept.skill_id, evidence[concept.id]),
             }
             for concept in material.concepts

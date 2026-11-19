@@ -7,11 +7,13 @@ import { auth } from "@/lib/api";
 import type { Run } from "./page";
 export function AccountDesign({
   onBack,
+  onDemo,
   run,
   busy,
   error,
 }: {
   onBack: () => void;
+  onDemo?: () => void;
   run: Run;
   busy: boolean;
   error: string;
@@ -23,6 +25,7 @@ export function AccountDesign({
       if (!auth) throw Error("Layanan akun belum tersedia.");
       const { error } = await auth.auth.signInAnonymously();
       if (error) throw error;
+      onDemo?.();
     });
   }
   function sendLink() {

@@ -18,6 +18,7 @@ import { LearningStart } from "./learning-start";
 import { reactMimo } from "@/lib/mimo";
 import { Reader } from "./reader";
 import { Planner } from "./planner";
+import { DemoTour } from "./demo-tour";
 import { ProgressView } from "./progress";
 import { Dashboard } from "./dashboard";
 import { DesignShell } from "./design-shell";
@@ -46,6 +47,7 @@ async function readWorkspace(minutes: number) {
   };
 }
 export default function Home() {
+  const [tour, setTour] = useState(false);
   const [account, setAccount] = useState<Session | null>(null),
     [ready, setReady] = useState(false),
     [loadedUserId, setLoadedUserId] = useState<string | null>(null),
@@ -249,7 +251,14 @@ export default function Home() {
     return (
       <Account
         landing={landing}
-        onContinue={() => setLanding(false)}
+        onDemo={() => setTour(true)}
+        onContinue={() => {
+          if (account?.user.is_anonymous) {
+            setPage("Beranda");
+            setTour(true);
+          }
+          setLanding(false);
+        }}
         onBack={() => setLanding(true)}
         run={run}
         busy={busy}
@@ -306,6 +315,14 @@ export default function Home() {
       }
     >
       {" "}
+      {tour && (
+        <DemoTour
+          page={page}
+          suspended={!!error}
+          busy={busy}
+          onClose={() => setTour(false)}
+        />
+      )}
       {error && (
         <div className="notice" role="alert">
           <p>{error}</p>
@@ -346,8 +363,8 @@ export default function Home() {
         </p>
       )}
       {busy && (
-        <p role="status" className="working">
-          Menyimpan langkahmu...
+        <p role="status" className="workspace-request-status">
+          Memproses permintaan?
         </p>
       )}
       {page === "Beranda" && profile.onboarding_step < 4 && (
@@ -369,6 +386,9 @@ export default function Home() {
       )}
       {page === "Beranda" ? (
         <Dashboard
+          onDemoTour={
+            account.user.is_anonymous && !tour ? () => setTour(true) : undefined
+          }
           profile={profile}
           materials={materials}
           sessions={sessions}

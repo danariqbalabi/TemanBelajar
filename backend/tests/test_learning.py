@@ -132,3 +132,45 @@ def test_create_session_at_requested_concept(client):
     assert client.post("/v1/sessions", json=body).json()["id"] == session["id"]
     invalid = {**body, "request_id": request_id(), "mode": "explore"}
     assert client.post("/v1/sessions", json=invalid).status_code == 422
+
+
+def test_manda_course_contains_analysis_of_six_sample_answers(client):
+    course = "manda-pythagoras"
+    materials = client.get("/v1/materials").json()["items"]
+    assert any(item["id"] == course and item["question_count"] == 6 for item in materials)
+    result = client.get("/v1/progress", params={"material_id": course})
+    assert result.status_code == 200
+    concept = result.json()["concepts"][0]
+    assert concept["observed"] == {"correct": 3, "total": 6}
+    assert len(concept["mistakes"]) == 3
+    suggestion = client.get("/v1/recommendations", params={"material_id": course}).json()
+    assert suggestion["action"] == "REVIEW"
+    assert "sisi siku-siku" in suggestion["practice_focus"]
+    assert client.get("/v1/sessions").json()["items"] == []
+
+
+def test_new_practice_prioritizes_mistakes_and_keeps_resume_order(client):
+    session = create_session(client)
+
+    def open_attempt():
+        response = client.post(
+            "/v1/attempts", json={"request_id": request_id(), "session_id": session["id"]}
+        )
+        assert response.status_code == 201
+        return response.json()
+
+    attempt = open_attempt()
+    for version, (question, choice) in enumerate(
+        zip(attempt["questions"], [0, 0, 0]), start=1
+    ):
+        response = client.post(
+            f"/v1/attempts/{attempt['id']}/answers",
+            json={
+                "request_id": request_id(), "expected_version": version,
+                "question_id": question["id"], "selected_index": choice,
+            },
+        )
+        assert response.status_code == 200
+    retry = open_attempt()
+    assert retry["question_ids"][0] == "cahaya-2"
+    assert open_attempt()["id"] == retry["id"]

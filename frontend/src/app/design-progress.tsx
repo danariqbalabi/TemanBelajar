@@ -99,6 +99,11 @@ export function ProgressDesign({
           </>
         }
       />
+      {selected === "manda-pythagoras" && (
+        <p className="workspace-inline-message">
+          Materi demo Manda ini sudah berisi enam jawaban contoh untuk ditinjau.
+        </p>
+      )}
       <div className="workspace-progress-filter">
         <label className="workspace-field">
           Materi
@@ -187,6 +192,7 @@ export function ProgressDesign({
                       <span>{Math.round(concept.mastery * 100)}% estimasi</span>
                     </div>
                   )}
+                  <MistakeList mistakes={concept.mistakes} />
                   <button
                     className="workspace-subtle-link"
                     disabled={!material}
@@ -238,6 +244,11 @@ export function ProgressDesign({
               {rec?.reason ||
                 `${displayName}, pilih materi untuk mulai membangun riwayat belajar.`}
             </p>
+            {rec?.practice_focus && (
+              <p>
+                <strong>Fokus latihan</strong> {rec.practice_focus}
+              </p>
+            )}
             <button
               className="workspace-button primary"
               disabled={!material}
@@ -268,5 +279,29 @@ export function ProgressDesign({
         </aside>
       </div>
     </Workspace>
+  );
+}
+
+function MistakeList({
+  mistakes,
+}: {
+  mistakes: Progress["concepts"][number]["mistakes"];
+}) {
+  if (!mistakes?.length) return null;
+  return (
+    <details className="progress-help">
+      <summary>Lihat jawaban yang perlu ditinjau</summary>
+      <ol>
+        {mistakes.map((item, index) => (
+          <li key={index}>
+            <strong>{item.prompt}</strong>
+            <p>
+              Dipilih: {item.selected}. Jawaban tepat: {item.correct}.
+            </p>
+            <p>{item.explanation}</p>
+          </li>
+        ))}
+      </ol>
+    </details>
   );
 }

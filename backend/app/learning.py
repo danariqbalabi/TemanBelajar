@@ -161,6 +161,20 @@ def public_attempt(attempt: dict, material: Material) -> dict:
     return result
 
 
+def latest_answers(data: dict, material_id: str, question_ids) -> dict:
+    allowed = set(question_ids)
+    latest = {}
+    for attempt in data["attempts"].values():
+        if attempt["material_id"] != material_id:
+            continue
+        for qid, answer in attempt["answers"].items():
+            if qid in allowed and (
+                qid not in latest or answer["answered_at"] >= latest[qid]["answered_at"]
+            ):
+                latest[qid] = answer
+    return latest
+
+
 @router.post(
     "/attempts",
     status_code=201,
@@ -189,7 +203,7 @@ async def create_attempt(body: AttemptCreate, store: StoreDep):
             for a in snapshot.data["attempts"].values()
             if a["session_id"] == body.session_id
             and a["status"] == "active"
-            and a["question_ids"] == questions
+            and set(a["question_ids"]) == set(questions)
         ),
         None,
     )
@@ -202,6 +216,10 @@ async def create_attempt(body: AttemptCreate, store: StoreDep):
             payload,
             public_attempt(existing, material),
         )
+    prior = latest_answers(snapshot.data, material.id, questions)
+    questions.sort(key=lambda qid: (
+        0 if qid in prior and not prior[qid]["correct"] else 1 if qid not in prior else 2
+    ))
     attempt = {
         "id": str(uuid4()),
         "session_id": body.session_id,

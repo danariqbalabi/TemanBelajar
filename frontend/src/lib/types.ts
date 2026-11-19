@@ -123,6 +123,12 @@ export type Progress = {
     id: string;
     title: string;
     observed: { correct: number; total: number };
+    mistakes?: {
+      prompt: string;
+      selected: string;
+      correct: string;
+      explanation: string;
+    }[];
   })[];
 };
 export type Recommendation = {
@@ -131,6 +137,7 @@ export type Recommendation = {
   concept_id: string;
   estimated_minutes: number;
   reason: string;
+  practice_focus?: string | null;
   title: string | null;
   alternatives: { action: string; mode: Mode; reason: string }[];
   estimate: Estimate | null;

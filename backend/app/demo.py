@@ -148,3 +148,37 @@ PYTHAGORAS = Material.model_validate(
 )
 
 DEMO_MATERIALS = {m.id: m for m in [FOTOSINTESIS, PYTHAGORAS]}
+
+# Worked practice history for one demo course.
+MANDA_COURSE_ID = "manda-pythagoras"
+def manda_course_history() -> dict:
+    material = PYTHAGORAS.model_dump()
+    material["id"] = MANDA_COURSE_ID
+    material["title"] = "Pythagoras: Mencari Sisi Segitiga"
+    for qid, prompt, options, correct, explanation in [
+        ("manda-4", "Sisi 5 dan 12 saling tegak lurus. Berapa panjang hipotenusa?", ["13", "17", "169"], 0, "Akar dari 25 + 144 adalah 13."),
+        ("manda-5", "Hipotenusa 10 dan salah satu kaki 6. Berapa kaki lainnya?", ["4", "8", "16"], 1, "Kurangi kuadrat: 100 - 36 = 64. Akar 64 adalah 8."),
+        ("manda-6", "Hipotenusa 17 dan salah satu kaki 8. Berapa kaki lainnya?", ["9", "15", "25"], 1, "Kurangi kuadrat: 289 - 64 = 225. Akar 225 adalah 15."),
+    ]:
+        material["questions"].append({
+            "id": qid, "concept_id": "teorema-pythagoras", "prompt": prompt,
+            "options": options, "correct_index": correct, "explanation": explanation,
+            "source_ids": ["rumus"],
+        })
+    answers = {
+        q["id"]: {
+            "selected_index": selected, "correct": selected == q["correct_index"],
+            "answered_at": f"2026-01-01T12:00:0{i}+00:00",
+        }
+        for i, (q, selected) in enumerate(zip(material["questions"], [0, 0, 2, 0, 0, 0]))
+    }
+    return {
+        "materials": {MANDA_COURSE_ID: material},
+        "attempts": {"manda": {"material_id": MANDA_COURSE_ID, "answers": answers}},
+        "sessions": {"manda": {"material_id": MANDA_COURSE_ID, "completed_concepts": ["teorema-pythagoras"]}},
+    }
+
+
+DEMO_MATERIALS[MANDA_COURSE_ID] = Material.model_validate(
+    manda_course_history()["materials"][MANDA_COURSE_ID]
+)

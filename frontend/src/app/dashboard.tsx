@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { UiIcon } from "./workspace-ui";
 import { MimoMascot } from "./mimo-mascot";
 import type {
   LearningSession,
@@ -19,6 +19,7 @@ export function Dashboard({
   start,
   navigate,
   onPreferences,
+  onDemoTour,
 }: {
   profile: Profile;
   materials: Material[];
@@ -33,8 +34,8 @@ export function Dashboard({
   ) => void;
   navigate: (p: string) => void;
   onPreferences?: (p: Partial<Preferences>) => void;
+  onDemoTour?: () => void;
 }) {
-  const [showMimo, setShowMimo] = useState(true);
   const material =
       materials.find((m) => m.id === recommendation?.material_id) ||
       materials[0],
@@ -67,7 +68,7 @@ export function Dashboard({
     <>
       <div className="final-design final-screen-7 w-full bg-canvas flex-1 screen-page">
         <div className="flex flex-col w-full">
-          <div className="max-w-[1200px] w-full mx-auto px-margin-mobile md:px-margin-tablet xl:px-margin pb-space-xl flex flex-col gap-space-xl ui-container">
+          <div className="max-w-[1200px] w-full mx-auto px-margin-mobile md:px-margin-tablet xl:px-margin pb-6 flex flex-col gap-4 ui-container">
             <section
               aria-labelledby="beranda-greeting"
               className="flex flex-col md:flex-row md:items-end justify-between gap-space-md"
@@ -98,7 +99,16 @@ export function Dashboard({
                 </p>
               </div>
 
-              <div className="flex items-center gap-space-sm bg-surface p-2 rounded-xl shadow-sm self-start md:self-auto">
+              <div className="flex flex-wrap items-center gap-space-sm bg-surface p-2 rounded-xl shadow-sm self-start md:self-auto">
+                {onDemoTour && (
+                  <button
+                    type="button"
+                    className="min-h-11 px-3 rounded-lg bg-butter-tint text-primary font-label"
+                    onClick={onDemoTour}
+                  >
+                    Mulai tur Mimo
+                  </button>
+                )}
                 <button
                   type="button"
                   className="dashboard-ruler flex items-center gap-2 px-3 py-1.5 rounded-lg"
@@ -137,36 +147,6 @@ export function Dashboard({
                 </button>
               </div>
             </section>
-
-            <div
-              className="hidden flex items-center justify-between gap-space-md p-space-md rounded-xl bg-peach-tint text-primary transition-all duration-300"
-              id="reschedule-banner"
-            >
-              <div className="flex items-center gap-space-sm">
-                <span
-                  className="material-symbols-outlined text-[24px] text-secondary"
-                  aria-hidden="true"
-                >
-                  hotel_class
-                </span>
-                <div>
-                  <p className="font-label text-label font-bold text-primary">
-                    Jadwal dialihkan ke besok tanpa pengurangan skor!
-                  </p>
-                  <p className="font-body text-metadata text-on-surface-variant">
-                    Istirahat itu bagian penting dari daya ingat otakmu. Tarik
-                    napas dalam-dalam, ya.
-                  </p>
-                </div>
-              </div>
-              <button
-                className="px-space-md py-1.5 rounded-lg bg-surface text-primary font-label text-label hover:bg-surface-container transition-colors shadow-sm"
-                type="button"
-                onClick={() => setShowMimo(false)}
-              >
-                Tutup
-              </button>
-            </div>
 
             <section
               aria-label="Rekomendasi Belajar Utama Hari Ini"
@@ -208,12 +188,15 @@ export function Dashboard({
                             concept?.id,
                             recommendation?.action === "PRACTICE",
                           );
+                        else navigate("Materi Saya");
                       }}
                     >
                       <span>
                         {recommendation?.action === "RESCHEDULE"
                           ? "Atur jadwal"
-                          : `${recommendation?.action === "PRACTICE" ? "Mulai latihan" : "Mulai belajar"} · ${recommendation?.estimated_minutes || concept?.estimated_minutes || profile.daily_minutes} menit`}
+                          : !material
+                            ? "Buka Materi Saya"
+                            : `${recommendation?.action === "PRACTICE" ? "Mulai latihan" : "Mulai belajar"} · ${recommendation?.estimated_minutes || concept?.estimated_minutes || profile.daily_minutes} menit`}
                       </span>
                       <span
                         className="material-symbols-outlined text-[18px]"
@@ -237,7 +220,7 @@ export function Dashboard({
                     </button>
                   </div>
                 </div>
-                {showMimo && profile.preferences.show_mimo && (
+                {profile.preferences.show_mimo && (
                   <div className="dashboard-feature-mimo relative">
                     <div
                       aria-hidden="true"
@@ -253,11 +236,11 @@ export function Dashboard({
               </div>
             </section>
 
-            <div className="dashboard-columns grid grid-cols-1 gap-space-lg items-start">
-              <div className="min-w-0 flex flex-col gap-space-xl">
+            <div className="dashboard-columns grid grid-cols-1 gap-4 items-start">
+              <div className="min-w-0 flex flex-col gap-4">
                 <section
                   aria-labelledby="schedule-heading"
-                  className="bg-surface rounded-2xl p-space-md sm:p-space-lg shadow-sm flex flex-col gap-space-md"
+                  className="dashboard-panel dashboard-agenda flex flex-col gap-3"
                 >
                   <div className="flex justify-between items-center gap-3">
                     <div>
@@ -266,7 +249,7 @@ export function Dashboard({
                         className="font-section-title text-section-title text-primary ui-section-title"
                         id="schedule-heading"
                       >
-                        Linimasa Belajar Hari Ini
+                        Jadwal hari ini
                       </h2>
                     </div>
                     <button
@@ -276,12 +259,12 @@ export function Dashboard({
                       Ubah jadwal
                     </button>
                   </div>
-                  <div className="space-y-4">
+                  <div className="space-y-2">
                     {activities.length ? (
                       activities.map((a) => (
                         <article
                           key={a.id}
-                          className="flex items-center gap-4 p-4 bg-canvas rounded-xl border border-divider"
+                          className="flex flex-wrap items-center gap-3 p-3 bg-surface rounded-xl border border-divider"
                         >
                           <span className="font-bold tabular-nums">
                             {new Date(a.start_at).toLocaleTimeString("id-ID", {
@@ -320,7 +303,7 @@ export function Dashboard({
                         </article>
                       ))
                     ) : (
-                      <p className="py-6">
+                      <p className="dashboard-empty">
                         Belum ada jadwal hari ini. Kamu tetap bisa mulai dari
                         materi yang tersedia.
                       </p>
@@ -330,7 +313,7 @@ export function Dashboard({
 
                 <section
                   aria-labelledby="ongoing-materials"
-                  className="flex flex-col gap-space-md"
+                  className="flex flex-col gap-2"
                 >
                   <h2
                     className="font-section-title text-section-title text-primary ui-section-title"
@@ -338,24 +321,27 @@ export function Dashboard({
                   >
                     Materi belajar
                   </h2>
-                  <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="grid sm:grid-cols-2 gap-3">
                     {materials.slice(0, 2).map((m) => (
                       <article
                         key={m.id}
-                        className="bg-surface border border-divider rounded-2xl p-6"
+                        className="dashboard-panel dashboard-book"
                       >
                         <p className="text-sm text-text-secondary">
                           {m.subject} ·{" "}
                           {m.is_demo ? "Materi contoh" : "Materi kamu"}
                         </p>
-                        <h3 className="font-bold text-xl my-3 ui-card-title">
-                          {m.title}
-                        </h3>
+                        <h3 className="ui-card-title">{m.title}</h3>
                         <p>
                           {completed(m.id)} / {m.concepts.length} konsep dibaca
                         </p>
+                        <progress
+                          aria-label={`Konsep selesai untuk ${m.title}`}
+                          value={completed(m.id)}
+                          max={m.concepts.length}
+                        />
                         <button
-                          className="mt-4 rounded-xl px-4 py-2 bg-primary text-white"
+                          className="justify-self-start min-h-11 rounded-xl px-3 py-2 bg-primary text-white"
                           onClick={() => start(m)}
                         >
                           {sessions.some(
@@ -400,85 +386,121 @@ export function Dashboard({
               </div>
 
               <aside
-                aria-label="Panel Utilitas dan Status Siswa"
-                className="min-w-0 flex flex-col gap-space-lg"
+                aria-label="Ringkasan belajar"
+                className="min-w-0 flex flex-col gap-3"
               >
-                <section className="bg-surface rounded-2xl p-6 border border-divider">
-                  <div className="flex justify-between">
-                    <h2 className="font-bold text-lg ui-section-title">
-                      Preferensi Belajar
+                <section className="dashboard-panel dashboard-preferences">
+                  <div className="dashboard-panel-heading">
+                    <h2 className="ui-card-title">
+                      <UiIcon name="tune" /> Ritme belajar
                     </h2>
-                    <button onClick={() => navigate("Pengaturan")}>Ubah</button>
+                    <button
+                      className="dashboard-link"
+                      onClick={() => navigate("Pengaturan")}
+                    >
+                      Ubah
+                    </button>
                   </div>
-                  <dl className="grid grid-cols-2 gap-4 mt-4">
+                  <dl className="dashboard-stats">
                     <div>
-                      <dt>Durasi nyaman</dt>
+                      <dt>Per hari</dt>
                       <dd>{profile.daily_minutes} menit</dd>
                     </div>
                     <div>
                       <dt>Hari aktif</dt>
-                      <dd>{profile.available_days.length} hari / pekan</dd>
+                      <dd>{profile.available_days.length} hari</dd>
                     </div>
                   </dl>
                 </section>
-                <section className="bg-surface rounded-2xl p-6 border border-divider">
-                  <h2 className="font-bold text-lg ui-section-title">
-                    Agenda Terdekat
-                  </h2>
-                  <p className="mt-3">
-                    {profile.goal || "Belajar pelan-pelan sesuai ritmemu"}
-                  </p>
+                {(profile.goal || profile.exam_date) && (
+                  <section className="dashboard-panel dashboard-target">
+                    <div className="dashboard-panel-heading">
+                      <h2 className="ui-card-title">
+                        <UiIcon name="flag" /> Target belajar
+                      </h2>
+                      <button
+                        className="dashboard-link"
+                        onClick={() => navigate("Rencana Belajar")}
+                      >
+                        Lihat jadwal
+                      </button>
+                    </div>
+                    {profile.goal && <p>{profile.goal}</p>}
+                    {profile.exam_date && (
+                      <p className="text-sm">
+                        Ujian{" "}
+                        <time dateTime={profile.exam_date}>
+                          {new Intl.DateTimeFormat("id-ID", {
+                            dateStyle: "medium",
+                            timeZone: "UTC",
+                          }).format(new Date(profile.exam_date))}
+                        </time>
+                      </p>
+                    )}
+                  </section>
+                )}
+                <section className="dashboard-panel dashboard-progress">
+                  <div className="dashboard-panel-heading">
+                    <h2 className="ui-card-title">
+                      <UiIcon name="insights" /> Progres belajar
+                    </h2>
+                    <button
+                      className="dashboard-link"
+                      onClick={() => navigate("Progres")}
+                    >
+                      Lihat progres
+                    </button>
+                  </div>
                   <p>
-                    {profile.exam_date
-                      ? `Target: ${profile.exam_date}`
-                      : "Belum ada tanggal ujian"}
-                  </p>
-                  <button
-                    className="mt-4"
-                    onClick={() => navigate("Rencana Belajar")}
-                  >
-                    Buka rencana belajar →
-                  </button>
-                </section>
-                <section className="bg-surface rounded-2xl p-6 border border-divider">
-                  <h2 className="font-bold text-lg ui-section-title">
-                    Progres Belajar
-                  </h2>
-                  <p className="mt-3">
-                    {sessions.filter((s) => s.status === "completed").length}{" "}
+                    <strong>
+                      {sessions.filter((s) => s.status === "completed").length}
+                    </strong>{" "}
                     sesi selesai
                   </p>
-                  <p className="text-sm mt-2">
-                    Estimasi penguasaan dan dasar rekomendasi bisa kamu lihat di
-                    halaman progres.
-                  </p>
-                  <button className="mt-4" onClick={() => navigate("Progres")}>
-                    Lihat progres →
-                  </button>
                 </section>
-                <section className="bg-surface rounded-2xl p-6 border border-divider">
-                  <h2 className="font-bold text-lg ui-section-title">
-                    Eksplorasi Gaya Belajar
-                  </h2>
-                  <div className="grid grid-cols-2 gap-2 mt-4">
-                    {(
-                      [
-                        ["reading", "Teman Baca"],
-                        ["focus", "Selangkah demi Selangkah"],
-                        ["explore", "Dengar & Jelajah"],
-                        ["transcript", "Visual & Teks"],
-                      ] as const
-                    ).map(([mode, label]) => (
-                      <button
-                        key={mode}
-                        className="bg-mint-tint rounded-xl p-3 text-sm"
-                        onClick={() => material && start(material, mode)}
-                      >
-                        {label}
-                      </button>
-                    ))}
-                  </div>
-                </section>
+                {material && (
+                  <section className="dashboard-panel dashboard-formats">
+                    <h2 className="ui-card-title">Cara belajar</h2>
+                    <div className="dashboard-format-grid">
+                      {(
+                        [
+                          ["reading", "Teman Baca", "menu_book"],
+                          [
+                            "focus",
+                            "Langkah demi langkah",
+                            "format_list_numbered",
+                          ],
+                          ["explore", "Teks & Visual", "image"],
+                          ["transcript", "Transkrip & audio", "headphones"],
+                        ] as const
+                      )
+                        .filter(([mode]) =>
+                          mode === "explore"
+                            ? !!(concept ?? material.concepts[0])
+                                ?.diagram_description
+                            : mode === "transcript"
+                              ? !!(concept ?? material.concepts[0])?.transcript
+                              : true,
+                        )
+                        .map(([mode, label, icon]) => (
+                          <button
+                            key={mode}
+                            type="button"
+                            onClick={() =>
+                              start(
+                                material,
+                                mode,
+                                (concept ?? material.concepts[0])?.id,
+                              )
+                            }
+                          >
+                            <UiIcon name={icon} />
+                            {label}
+                          </button>
+                        ))}
+                    </div>
+                  </section>
+                )}
               </aside>
             </div>
           </div>

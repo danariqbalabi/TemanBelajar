@@ -21,6 +21,7 @@ export function Mimo() {
 export function Account({
   landing,
   onContinue,
+  onDemo,
   onBack,
   run,
   busy,
@@ -28,6 +29,7 @@ export function Account({
 }: {
   landing: boolean;
   onContinue: () => void;
+  onDemo?: () => void;
   onBack: () => void;
   run: Run;
   busy: boolean;
@@ -35,7 +37,13 @@ export function Account({
 }) {
   if (!landing)
     return (
-      <AccountDesign onBack={onBack} run={run} busy={busy} error={error} />
+      <AccountDesign
+        onDemo={onDemo}
+        onBack={onBack}
+        run={run}
+        busy={busy}
+        error={error}
+      />
     );
   return <Landing onContinue={onContinue} error={error} />;
 }

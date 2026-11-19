@@ -108,8 +108,12 @@ export function Landing({
         >
           <section
             aria-labelledby="hero-title"
-            className="relative pt-6 pb-20 lg:pt-12 lg:pb-28 grid lg:grid-cols-12 gap-10 items-center"
+            className="landing-hero-motion relative pt-6 pb-20 lg:pt-12 lg:pb-28 grid lg:grid-cols-12 gap-10 items-center"
           >
+            <div className="landing-starfield" aria-hidden="true">
+              <span />
+              <span />
+            </div>
             <div className="absolute -top-3 left-4 w-28 h-6 washi-tape rotate-[-4deg] rounded-sm opacity-90 pointer-events-none hidden md:block"></div>
 
             <div className="lg:col-span-7 flex flex-col items-start">
@@ -205,7 +209,11 @@ export function Landing({
                     <span>⚡</span> Timer bebas cemas
                   </div>
 
-                  <div className="w-full flex justify-center my-2">
+                  <div className="landing-mimo-stage w-full flex justify-center my-2">
+                    <div className="landing-mimo-orbit" aria-hidden="true">
+                      <span />
+                      <span />
+                    </div>
                     <MimoMascot context="Kenalan" />
                   </div>
 

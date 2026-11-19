@@ -161,7 +161,6 @@ export function Reader({
       setChoice(null);
       setFeedback(null);
       setRec(null);
-      if (result.status === "completed") await recommendation();
     });
   }
   async function recommendation() {
@@ -170,7 +169,6 @@ export function Reader({
         `/recommendations?material_id=${encodeURIComponent(material.id)}&available_minutes=${availableMinutes}`,
       ),
     );
-    await refresh();
   }
   const nextQuestion = attempt?.questions.find((q) => !attempt.answers[q.id]);
   function answer() {
@@ -194,7 +192,7 @@ export function Reader({
       setAttempt(result);
       setFeedback(nextQuestion.id);
       setChoice(null);
-      if (result.status === "completed") await recommendation();
+      if (result.status === "completed") void refresh().catch(() => {});
     });
   }
   function speak(text?: string) {

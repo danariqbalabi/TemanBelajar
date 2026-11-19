@@ -294,6 +294,7 @@ export function PlanDesign({
           <div className="workspace-actions">
             <button
               className="workspace-button"
+              data-tour="planner-open"
               aria-expanded={controls}
               onClick={() => setControls(!controls)}
             >
@@ -309,7 +310,15 @@ export function PlanDesign({
           </div>
         </div>
         {message && (
-          <p role="status" className="workspace-inline-message">
+          <p
+            role="status"
+            data-tour={
+              message.startsWith("Rencana tersimpan.")
+                ? "planner-saved"
+                : undefined
+            }
+            className="workspace-inline-message"
+          >
             {message}
           </p>
         )}
@@ -319,6 +328,7 @@ export function PlanDesign({
               <label className="workspace-field">
                 Rencana aktif
                 <select
+                  data-tour="planner-new"
                   value={plan?.id || ""}
                   onChange={(e) => onSelectPlan(e.target.value)}
                 >
@@ -346,6 +356,7 @@ export function PlanDesign({
               <label className="workspace-field">
                 Waktu mulai (zona perangkat)
                 <input
+                  data-tour="planner-date"
                   type="datetime-local"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
@@ -374,6 +385,7 @@ export function PlanDesign({
               <button
                 className="workspace-button"
                 disabled={busy}
+                data-tour="planner-suggest"
                 onClick={onSuggest}
               >
                 Susun usulan awal
@@ -395,9 +407,10 @@ export function PlanDesign({
               <button
                 className="workspace-button primary"
                 disabled={busy || !hasDraft}
+                data-tour="planner-save"
                 onClick={onSave}
               >
-                Simpan usulan perubahan
+                {plan ? "Simpan usulan perubahan" : "Simpan rencana"}
               </button>
             </div>
             {editor}

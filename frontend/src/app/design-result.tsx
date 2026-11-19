@@ -65,7 +65,11 @@ export function ResultDesign({
           </button>
         }
       />
-      <section className="workspace-result-summary" data-tone="mint">
+      <section
+        data-tour="result"
+        className="workspace-result-summary"
+        data-tone="mint"
+      >
         <span className="workspace-result-icon">
           <UiIcon name="done_all" />
         </span>
