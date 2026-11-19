@@ -1,11 +1,16 @@
 "use client";
+import { useEffect } from "react";
 
 export default function ErrorPage({
   retry,
+  error,
 }: {
   error: unknown;
   retry: () => void;
 }) {
+  useEffect(() => {
+    console.error("TemanBelajar render failed", error);
+  }, [error]);
   return (
     <main className="welcome">
       <section role="alert">

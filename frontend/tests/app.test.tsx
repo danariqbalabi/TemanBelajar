@@ -40,6 +40,36 @@ vi.mock("../src/lib/api", () => ({
   },
 }));
 import Home from "../src/app/page";
+it("separates the study launcher from the materials catalogue without an active session", async () => {
+  request.mockImplementation(async (path: string) =>
+    path === "/profile"
+      ? { ...defaultProfile, onboarding_step: 4 }
+      : { items: [] },
+  );
+  render(<Home />);
+  await userEvent.click(
+    await screen.findByRole("link", { name: "Mulai Belajar Gratis" }),
+  );
+  const navigation = await screen.findByRole("navigation");
+  await userEvent.click(
+    within(navigation).getByRole("link", { name: "Mulai Belajar" }),
+  );
+  expect(
+    await screen.findByRole("heading", { name: "Mulai belajar" }),
+  ).toBeTruthy();
+  expect(
+    screen.queryByRole("button", { name: /Tambah Materi Baru/ }),
+  ).toBeNull();
+  await userEvent.click(
+    screen.getByRole("button", { name: "Buka Materi Saya" }),
+  );
+  expect(
+    await screen.findByRole("heading", { name: "Materi Saya" }),
+  ).toBeTruthy();
+  expect(
+    screen.getByRole("button", { name: /Tambah Materi Baru/ }),
+  ).toBeTruthy();
+});
 afterEach(() => {
   cleanup();
   request.mockReset();

@@ -11,11 +11,11 @@ import {
   type Mode,
 } from "@/lib/types";
 const modeOptions: [Mode, string][] = [
-  ["standard", "Teks & Visual"],
+  ["standard", "Belajar standar"],
   ["reading", "Teman Baca"],
-  ["focus", "Langkah demi Langkah"],
-  ["explore", "Jelajahi Diagram"],
-  ["transcript", "Audio & Transkrip"],
+  ["focus", "Selangkah demi Selangkah"],
+  ["explore", "Jelajah visual"],
+  ["transcript", "Transkrip & audio"],
 ];
 export function SettingsDesign({
   profile,
@@ -156,16 +156,8 @@ export function SettingsDesign({
 
                 <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md pb-space-md border-b border-divider">
                   <div className="max-w-2xl">
-                    <div className="flex items-center gap-space-xs mb-1">
-                      <span className="px-2.5 py-0.5 rounded-full bg-mint-tint text-success font-label text-[11px] uppercase tracking-wider font-extrabold">
-                        Alat Inklusif &amp; Kognitif
-                      </span>
-                      <span className="px-2.5 py-0.5 rounded-full bg-butter-tint text-warning font-label text-[11px] uppercase tracking-wider font-extrabold">
-                        Target WCAG 2.2 AA
-                      </span>
-                    </div>
                     <h1 className="font-page-title text-page-title text-primary tracking-tight ui-page-title">
-                      Pengaturan Aksesibilitas
+                      Tampilan & alat bantu
                     </h1>
                     <p className="font-body text-body text-on-surface-variant mt-1.5 leading-relaxed">
                       Atur tampilan dan alat bantu belajar yang paling pas buat
@@ -219,7 +211,7 @@ export function SettingsDesign({
                   <aside className="lg:col-span-5 lg:sticky lg:top-[9rem] flex flex-col gap-space-md order-1 lg:order-2">
                     <div className="bg-surface rounded-2xl p-6 border border-divider">
                       <h2 className="font-bold text-xl ui-section-title">
-                        Pratinjau Teks Nyata
+                        Pratinjau bacaan
                       </h2>
                       <div
                         className="mt-6 space-y-4"
@@ -249,7 +241,7 @@ export function SettingsDesign({
                         onClick={speak}
                         className="bg-primary text-white px-5 py-3 rounded-xl mt-5"
                       >
-                        Coba bacakan kalimat ini
+                        Coba suara
                       </button>
                       <p role="status" className="text-sm mt-3">
                         {speechNotice}

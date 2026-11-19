@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import Image from "next/image";
+import { Workspace, WorkspaceHeading, UiIcon } from "./workspace-ui";
 import type {
   LearningSession,
   Material,
@@ -77,301 +77,196 @@ export function ProgressDesign({
     };
   });
   return (
-    <>
-      <div className="final-design final-screen-22 w-full bg-canvas flex-1 screen-page">
-        <div className="flex flex-col w-full">
-          <div className="max-w-[1200px] w-full mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin py-space-lg space-y-space-xl ui-container">
-            <section className="flex flex-col gap-space-md">
-              <nav
-                aria-label="Jejak Navigasi"
-                className="flex items-center gap-space-xs text-metadata font-metadata text-on-surface-variant flex-wrap"
-              >
-                <a
-                  className="hover:text-primary transition-colors"
-                  data-path="beranda"
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onBack();
-                  }}
-                >
-                  Beranda
-                </a>
-                <span className="text-outline-variant">•</span>
-                <span className="text-primary font-semibold">
-                  Progres Belajar
-                </span>
-                <span className="text-outline-variant">•</span>
-                <span className="text-on-surface-variant">
-                  Perkembangan Pemahaman Konsep
-                </span>
-              </nav>
-
-              <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg">
-                <div className="max-w-2xl space-y-space-xs">
-                  <div className="inline-flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-mint-tint text-success font-label text-[12px] uppercase tracking-wider font-bold">
-                    <span className="w-2 h-2 rounded-full bg-success"></span>
-                    Pelacak Adaptif TemanBelajar
-                  </div>
-                  <h1 className="font-page-title text-page-title text-primary tracking-tight ui-page-title">{`Progres Belajarmu, ${displayName}`}</h1>
-                  <p className="font-reading text-reading text-on-surface-variant">
-                    Lihat langkahmu. Pilih yang ingin kamu lanjutkan.
+    <Workspace screen={22}>
+      <WorkspaceHeading
+        title="Progres belajar"
+        description="Ringkasan dari aktivitas yang tersimpan."
+        back={onBack}
+        actions={
+          <>
+            <button className="workspace-button" onClick={onRefresh}>
+              <UiIcon name="refresh" />
+              Perbarui progres
+            </button>
+            <button
+              className="workspace-button"
+              aria-label="Ekspor Rapor Mandiri PDF"
+              onClick={() => window.print()}
+            >
+              <UiIcon name="download" />
+              Cetak hasil
+            </button>
+          </>
+        }
+      />
+      <div className="workspace-progress-filter">
+        <label className="workspace-field">
+          Materi
+          <select
+            aria-label="Materi progres"
+            value={selected}
+            onChange={(e) => onSelect(e.target.value)}
+          >
+            {materials.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.title}
+              </option>
+            ))}
+          </select>
+        </label>
+        <span className="workspace-muted">Seluruh riwayat</span>
+      </div>
+      {error && (
+        <p role="alert" className="workspace-inline-error">
+          {error}
+        </p>
+      )}
+      <section className="progress-stats" aria-label="Ringkasan progres">
+        {[
+          {
+            label: "Konsep dibaca",
+            count: completed.size,
+            icon: "auto_stories",
+          },
+          {
+            label: "Sesi selesai",
+            count: sessions.filter(
+              (item) =>
+                item.material_id === selected && item.status === "completed",
+            ).length,
+            icon: "task_alt",
+          },
+          { label: "Jawaban tersimpan", count: total, icon: "edit_note" },
+          { label: "Jawaban tepat", count: correct, icon: "check_circle" },
+        ].map((stat) => (
+          <div key={stat.label} className="progress-stat">
+            <UiIcon name={stat.icon} />
+            <p>{stat.count}</p>
+            <h2 className="progress-stat-label">{stat.label}</h2>
+          </div>
+        ))}
+      </section>
+      <div className="workspace-progress-layout">
+        <section className="workspace-panel">
+          <div className="workspace-panel-heading">
+            <h2>Pemahaman per konsep</h2>
+            <span>{progress?.concepts.length || 0} konsep</span>
+          </div>
+          {!progress ? (
+            <p className="workspace-muted workspace-loading" role="status">
+              {error ? "Progres belum dapat dimuat." : "Memuat progres..."}
+            </p>
+          ) : (
+            progress.concepts.map((concept, index) => (
+              <article className="workspace-progress-concept" key={concept.id}>
+                <span className="workspace-step">{index + 1}</span>
+                <div>
+                  <h3>{concept.title}</h3>
+                  <p>
+                    {concept.observed.correct}/{concept.observed.total} jawaban
+                    tepat
                   </p>
-                </div>
-                <div className="flex flex-wrap items-center gap-space-sm">
-                  <span className="px-3 py-2 rounded-xl bg-mint-tint text-sm">
-                    Pemahaman: seluruh riwayat
-                  </span>
-                  <button
-                    type="button"
-                    onClick={onRefresh}
-                    className="px-3 py-2 rounded-xl bg-surface"
-                  >
-                    Perbarui progres
-                  </button>
-
-                  <div className="flex items-center gap-space-xs">
-                    <button
-                      aria-label="Ekspor Rapor Mandiri PDF"
-                      className="flex items-center gap-space-xs px-space-md py-2.5 bg-surface hover:bg-canvas rounded-xl text-primary font-label text-label shadow-sm min-h-[44px] transition-colors"
-                      type="button"
-                      onClick={() => window.print()}
-                    >
-                      <span
-                        className="material-symbols-outlined text-[18px]"
-                        aria-hidden="true"
-                      >
-                        download
-                      </span>
-                      <span>Rapor Mandiri</span>
-                    </button>
-                    <button
-                      aria-label="Atur Target Belajar"
-                      className="flex items-center gap-space-xs px-space-md py-2.5 bg-primary hover:bg-primary-hover active:bg-primary-pressed text-on-primary rounded-xl font-label text-label min-h-[44px] transition-colors shadow-sm"
-                      type="button"
-                      onClick={onPlan}
-                    >
-                      <span
-                        className="material-symbols-outlined text-[18px]"
-                        aria-hidden="true"
-                      >
-                        tune
-                      </span>
-                      <span>Atur Target</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section className="relative bg-surface rounded-[24px] p-space-md md:p-space-lg lg:p-space-xl shadow-sm overflow-hidden">
-              <div className="flex flex-col md:flex-row items-center gap-space-lg">
-                <div className="relative w-36 h-36 md:w-44 md:h-44 flex-shrink-0 flex items-center justify-center">
-                  <Image
-                    alt=""
-                    className="w-full h-full object-contain select-none object-contain"
-                    src="/design/mimo-final.png"
-                    width={1408}
-                    height={1120}
-                  ></Image>
-                </div>
-
-                <div className="flex-1 flex flex-col gap-space-sm w-full">
-                  <div className="flex flex-wrap items-center justify-between gap-space-xs">
-                    <div className="inline-flex items-center gap-space-xs px-space-sm py-1 bg-lavender-tint text-primary font-label text-label rounded-full">
-                      <span
-                        className="material-symbols-outlined text-[16px] text-tertiary"
-                        aria-hidden="true"
-                      >
-                        record_voice_over
-                      </span>
-                      <span className="font-bold">Mimo berkata:</span>
-                    </div>
-                    <div className="flex items-center gap-space-xs text-metadata font-metadata text-on-surface-variant">
-                      <span className="w-2 h-2 rounded-full bg-success"></span>
-                      <span>{`${displayName}, setiap langkahmu berarti. Progres mengikuti aktivitas yang tersimpan.`}</span>
-                      <span className="text-outline-variant">•</span>
-                      <span>Ritme: Seimbang Tanpa Beban</span>
-                    </div>
-                  </div>
-                  <div className="bg-lavender-tint rounded-[20px] p-space-md md:p-space-lg">
-                    <p className="font-mimo-voice text-mimo-voice text-primary leading-relaxed">
-                      {rec?.reason ||
-                        "Pilih satu konsep yang ingin dipelajari. Hasil belajar akan muncul setelah aktivitas tersimpan."}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-space-sm text-metadata font-metadata text-on-surface-variant pt-space-xs">
-                    <span
-                      className="material-symbols-outlined text-[16px] text-success"
-                      aria-hidden="true"
-                    >
-                      psychology_alt
-                    </span>
-                    <span>
-                      Didukung Analisis Pelacak Pengetahuan Bayesian (BKT) yang
-                      menghargai proses belajarmu.
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
-              {[
-                [
-                  "Sesi selesai",
-                  sessions.filter(
-                    (s) =>
-                      s.material_id === selected && s.status === "completed",
-                  ).length,
-                ],
-                ["Konsep dibaca", completed.size],
-                ["Jawaban tersimpan", total],
-                ["Jawaban tepat", correct],
-              ].map(([label, count]) => (
-                <div
-                  key={label}
-                  className="bg-surface rounded-2xl p-6 border border-divider"
-                >
-                  <h2 className="text-sm font-bold ui-section-title">
-                    {label}
-                  </h2>
-                  <p className="text-3xl font-display font-bold my-3">
-                    {count}
-                  </p>
-                </div>
-              ))}
-            </section>
-
-            <section className="bg-surface rounded-[24px] p-space-md md:p-space-lg lg:p-space-xl shadow-sm flex flex-col gap-space-lg">
-              <h2 className="font-section-title text-section-title text-primary tracking-tight ui-section-title">
-                Rincian Penguasaan Tiap Konsep
-              </h2>
-              <label className="block mt-4">
-                Materi
-                <select
-                  aria-label="Materi progres"
-                  value={selected}
-                  onChange={(e) => onSelect(e.target.value)}
-                  className="block w-full mt-2"
-                >
-                  {materials.map((m) => (
-                    <option key={m.id} value={m.id}>
-                      {m.title}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              {error && (
-                <p role="alert" className="text-error">
-                  {error}
-                </p>
-              )}
-              {!progress ? (
-                <p className="py-8">
-                  {error ? "Progres belum dapat dimuat." : "Memuat progres…"}
-                </p>
-              ) : (
-                progress.concepts.map((c) => (
-                  <article
-                    key={c.id}
-                    className="bg-canvas border border-divider rounded-2xl p-5 mt-4"
-                  >
-                    <h3 className="font-bold text-lg ui-card-title">
-                      {c.title}
-                    </h3>
-                    <p className="text-sm my-3">
-                      {c.observed.correct}/{c.observed.total} jawaban tepat
-                    </p>
-                    {c.mastery === null ? (
-                      <p className="text-sm">
-                        Estimasi penguasaan belum tersedia. Diperlukan skill
-                        yang didukung model dan sedikitnya tiga jawaban.
-                      </p>
-                    ) : (
-                      <>
-                        <progress
-                          value={c.mastery}
-                          max={1}
-                          aria-label={"Estimasi penguasaan " + c.title}
-                        />
-                        <p className="text-sm">
-                          Estimasi model: {Math.round(c.mastery * 100)}%
+                  {concept.mastery === null ? (
+                    <div className="workspace-muted">
+                      Belum ada estimasi.
+                      <details className="progress-help">
+                        <summary>Kenapa?</summary>
+                        <p>
+                          Estimasi tersedia untuk konsep yang didukung model
+                          setelah sedikitnya tiga jawaban.
                         </p>
-                      </>
-                    )}
-                    <button
-                      onClick={() =>
-                        material && start(material, undefined, c.id)
-                      }
-                      className="mt-4 px-4 py-2 bg-primary text-white rounded-xl"
-                    >
-                      Tinjau konsep
-                    </button>
-                  </article>
-                ))
-              )}
-            </section>
-
-            <section className="bg-surface rounded-[24px] p-space-md md:p-space-lg lg:p-space-xl shadow-sm flex flex-col gap-space-lg">
-              <h2 className="font-bold text-xl ui-section-title">
-                Ritme Belajar
-              </h2>
-              <p className="text-sm my-3">
-                Jumlah sesi berdasarkan pembaruan terakhir dalam 7 hari terakhir
-                ({timezone}).
-              </p>
-              <div className="grid grid-cols-7 gap-3">
-                {days.map((d) => (
-                  <div
-                    key={d.key}
-                    className="text-center bg-mint-tint rounded-xl py-4"
-                  >
-                    <b>{d.count}</b>
-                    <p className="text-sm">{d.label}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            <section className="flex flex-col gap-space-md pb-space-lg">
-              <h2 className="font-bold text-xl ui-section-title">
-                Rekomendasi Langkah Berikutnya
-              </h2>
-              <div className="bg-mint-tint rounded-2xl p-6">
-                <p>
-                  {rec?.reason ||
-                    "Mulai satu konsep pendek untuk membangun riwayat belajar."}
-                </p>
-                {rec && (
+                      </details>
+                    </div>
+                  ) : (
+                    <div className="workspace-mastery">
+                      <progress
+                        value={concept.mastery}
+                        max={1}
+                        aria-label={"Estimasi penguasaan " + concept.title}
+                      />
+                      <span>{Math.round(concept.mastery * 100)}% estimasi</span>
+                    </div>
+                  )}
                   <button
-                    className="mt-4 bg-primary text-white px-5 py-3 rounded-xl"
+                    className="workspace-subtle-link"
+                    disabled={!material}
                     onClick={() =>
-                      rec.action === "RESCHEDULE"
-                        ? onPlan()
-                        : material &&
-                          start(
-                            material,
-                            undefined,
-                            rec.concept_id,
-                            rec.action === "PRACTICE",
-                          )
+                      material && start(material, undefined, concept.id)
                     }
                   >
-                    Ikuti saran belajar
+                    Tinjau konsep
                   </button>
-                )}
-                <button onClick={onPlan} className="block mt-4">
-                  Lihat rencana belajar →
-                </button>
-                <button onClick={onSettings} className="block mt-3">
-                  Aksesibilitas
-                </button>
-              </div>
-            </section>
-          </div>
-        </div>
+                </div>
+              </article>
+            ))
+          )}
+        </section>
+        <aside className="workspace-progress-aside">
+          <section className="workspace-panel">
+            <div className="workspace-panel-heading">
+              <h2>Ritme minggu ini</h2>
+              <UiIcon name="bar_chart" />
+            </div>
+            <div className="workspace-week-chart">
+              {days.map((day) => (
+                <div key={day.key}>
+                  <span className="workspace-day-count">{day.count}</span>
+                  <div className="workspace-day-track">
+                    <span
+                      style={{
+                        height: `${day.count ? Math.max(12, (day.count / Math.max(1, ...days.map((item) => item.count))) * 100) : 0}%`,
+                      }}
+                    />
+                  </div>
+                  <span>{day.label}</span>
+                </div>
+              ))}
+            </div>
+            <p className="workspace-muted">
+              Sesi menurut pembaruan terakhir - {timezone}
+            </p>
+          </section>
+          <section className="workspace-next-card">
+            <span className="workspace-eyebrow">Langkah berikutnya</span>
+            <h2>
+              {rec?.title ||
+                material?.concepts.find((item) => item.id === rec?.concept_id)
+                  ?.title ||
+                "Mulai satu konsep"}
+            </h2>
+            <p>
+              {rec?.reason ||
+                `${displayName}, pilih materi untuk mulai membangun riwayat belajar.`}
+            </p>
+            <button
+              className="workspace-button primary"
+              disabled={!material}
+              onClick={() =>
+                rec?.action === "RESCHEDULE"
+                  ? onPlan()
+                  : material &&
+                    start(
+                      material,
+                      undefined,
+                      rec?.concept_id,
+                      rec?.action === "PRACTICE",
+                    )
+              }
+            >
+              {rec?.action === "RESCHEDULE" ? "Atur waktu" : "Lanjut belajar"}
+              <UiIcon name="arrow_forward" />
+            </button>
+            <div className="workspace-actions">
+              <button className="workspace-subtle-link" onClick={onPlan}>
+                Rencana belajar
+              </button>
+              <button className="workspace-subtle-link" onClick={onSettings}>
+                Aksesibilitas
+              </button>
+            </div>
+          </section>
+        </aside>
       </div>
-    </>
+    </Workspace>
   );
 }

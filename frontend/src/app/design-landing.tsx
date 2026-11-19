@@ -1,5 +1,6 @@
 "use client";
 import { Brand } from "./brand";
+import { LandingHow } from "./landing-how";
 import Image from "next/image";
 export function Landing({
   onContinue,
@@ -233,106 +234,7 @@ export function Landing({
             </div>
           </section>
 
-          <section
-            aria-labelledby="cara-kerja-title"
-            className="py-16 sm:py-20 border-t-2 border-dashed border-divider"
-            id="cara-kerja"
-          >
-            <div className="text-center max-w-2xl mx-auto mb-14">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-mint-tint border border-mint text-xs font-bold uppercase tracking-wider text-primary mb-3">
-                <span>📝</span> Belajar Tanpa Bingung
-              </div>
-              <h2
-                className="font-nunito font-black text-3xl sm:text-4xl text-primary ui-section-title"
-                id="cara-kerja-title"
-              >
-                Tiga langkah mudah belajar lebih nyaman
-              </h2>
-              <p className="text-text-secondary mt-3 text-base">
-                Mulai dari mengatur caramu sendiri, dengarkan saran materi yang
-                transparan, dan tentukan ritme belajar harianmu.
-              </p>
-            </div>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="relative bg-surface rounded-feature p-7 border-2 border-primary shadow-zine hover:shadow-zine-hover transition-all flex flex-col justify-between group">
-                <div className="absolute -top-4 -right-2 bg-mint text-primary font-nunito font-black text-xl px-3.5 py-1 rounded-xl border-2 border-primary shadow-zine-sm">
-                  01
-                </div>
-                <div>
-                  <div className="w-13 h-13 w-12 h-12 rounded-2xl bg-mint-tint border-2 border-primary text-primary flex items-center justify-center font-bold text-2xl mb-6 shadow-zine-sm">
-                    ✨
-                  </div>
-                  <h3 className="font-nunito font-extrabold text-2xl text-primary mb-3 ui-card-title">
-                    Pilih format favoritmu
-                  </h3>
-                  <p className="text-text-secondary text-sm leading-relaxed mb-6 font-medium">
-                    Suka membaca dengan penggaris fokus, mendengarkan narasi
-                    audio, atau melihat peta konsep visual? Semuanya siap dalam
-                    satu klik.
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-divider">
-                  <div className="flex items-center gap-2 bg-mint-tint px-3 py-2 rounded-xl text-xs font-bold text-primary border border-mint">
-                    <span className="w-2 h-2 rounded-full bg-primary"></span>
-                    <span>Mode baca, audio, visual &amp; bertahap</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="relative bg-surface rounded-feature p-7 border-2 border-primary shadow-zine hover:shadow-zine-hover transition-all flex flex-col justify-between group">
-                <div className="absolute -top-4 -right-2 bg-lavender text-primary font-nunito font-black text-xl px-3.5 py-1 rounded-xl border-2 border-primary shadow-zine-sm">
-                  02
-                </div>
-                <div>
-                  <div className="w-12 h-12 rounded-2xl bg-lavender-tint border-2 border-primary text-primary flex items-center justify-center font-bold text-2xl mb-6 shadow-zine-sm">
-                    💡
-                  </div>
-                  <h3 className="font-nunito font-extrabold text-2xl text-primary mb-3 ui-card-title">
-                    Rekomendasi yang beralasan
-                  </h3>
-                  <p className="text-text-secondary text-sm leading-relaxed mb-6 font-medium">
-                    Mimo kasih rekomendasi adaptif transparan. Kamu selalu tahu
-                    alasan kenapa suatu materi atau konsep disarankan untuk
-                    dipelajari kembali.
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-divider">
-                  <div className="flex items-center gap-2 bg-lavender-tint px-3 py-2 rounded-xl text-xs font-bold text-primary border border-lavender">
-                    <span className="w-2 h-2 rounded-full bg-primary"></span>
-                    <span>Alasan transparan tanpa perkiraan palsu</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="relative bg-surface rounded-feature p-7 border-2 border-primary shadow-zine hover:shadow-zine-hover transition-all flex flex-col justify-between group">
-                <div className="absolute -top-4 -right-2 bg-butter text-primary font-nunito font-black text-xl px-3.5 py-1 rounded-xl border-2 border-primary shadow-zine-sm">
-                  03
-                </div>
-                <div>
-                  <div className="w-12 h-12 rounded-2xl bg-butter-tint border-2 border-primary text-primary flex items-center justify-center font-bold text-2xl mb-6 shadow-zine-sm">
-                    ⏰
-                  </div>
-                  <h3 className="font-nunito font-extrabold text-2xl text-primary mb-3 ui-card-title">
-                    Atur jadwal tanpa rasa bersalah
-                  </h3>
-                  <p className="text-text-secondary text-sm leading-relaxed mb-6 font-medium">
-                    Sisa waktu cuma 15 menit hari ini? Geser latihan ke besok
-                    pagi dengan satu sentuhan tanpa pengurangan skor dan tanpa
-                    stres.
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-divider">
-                  <div className="flex items-center gap-2 bg-butter-tint px-3 py-2 rounded-xl text-xs font-bold text-primary border border-butter">
-                    <span className="w-2 h-2 rounded-full bg-primary"></span>
-                    <span>Fleksibel: 10, 15, atau 25 menit per sesi</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+          <LandingHow />
 
           <section
             aria-labelledby="mode-title"

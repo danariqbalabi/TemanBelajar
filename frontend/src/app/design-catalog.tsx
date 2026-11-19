@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { Material, LearningSession, Job } from "@/lib/types";
 export function Catalog({
@@ -100,7 +99,7 @@ export function Catalog({
                 <div className="flex items-center gap-space-sm">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-primary font-label text-label">
                     <span className="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
-                    Katalog Belajar Pribadi
+                    Koleksi belajar
                   </span>
                   <span className="text-on-surface-variant font-metadata text-metadata">{`${materials.length} materi · ${jobs.filter((j) => j.status !== "ready").length} unggahan belum siap`}</span>
                 </div>
@@ -408,43 +407,6 @@ export function Catalog({
                   </button>
                 </div>
               )}
-            </section>
-
-            <section
-              aria-label="Catatan Pendamping dari Mimo"
-              className="w-full bg-surface rounded-3xl p-space-lg lg:p-space-xl shadow-sm flex flex-col md:flex-row items-center gap-space-lg"
-            >
-              <div className="w-28 h-28 shrink-0 flex items-center justify-center bg-mint-tint rounded-2xl p-2 relative">
-                <Image
-                  src="/design/mimo-final.png"
-                  alt=""
-                  width={1408}
-                  height={1120}
-                  className="w-32 h-auto object-contain"
-                />
-              </div>
-              <div className="flex flex-col gap-space-xs text-center md:text-left">
-                <div className="inline-flex items-center justify-center md:justify-start gap-1.5 text-secondary font-label text-label">
-                  <span
-                    className="material-symbols-outlined text-[18px]"
-                    aria-hidden="true"
-                  >
-                    verified
-                  </span>
-                  Tips Mimo
-                </div>
-                <blockquote className="font-mimo-voice text-mimo-voice text-primary max-w-3xl">
-                  Mulai dari satu konsep. Atur tampilan bacaan yang nyaman
-                  buatmu.
-                </blockquote>
-                <div className="flex items-center justify-center md:justify-start gap-space-sm mt-1 text-on-surface-variant font-metadata text-metadata">
-                  <span>Ukuran teks bisa diatur</span>
-                  <span>•</span>
-                  <span>Pilihan mode fokus</span>
-                  <span>•</span>
-                  <span>Sumber bisa dibuka</span>
-                </div>
-              </div>
             </section>
           </div>
         </div>

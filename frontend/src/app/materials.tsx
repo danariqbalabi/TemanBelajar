@@ -342,8 +342,8 @@ export function Materials({
 
 export const modeNames: Record<Mode, string> = {
   standard: "Belajar standar",
-  reading: "Membaca santai",
-  focus: "Fokus satu langkah",
+  reading: "Teman Baca",
+  focus: "Selangkah demi Selangkah",
   explore: "Jelajah visual",
   transcript: "Transkrip & audio",
 };

@@ -112,25 +112,6 @@ export function DesignShell({
             </div>
           </div>
         </header>
-        {page !== "Beranda" && (
-          <div className="studio-page-index" aria-hidden="true">
-            <span>
-              RUANG BELAJAR /{" "}
-              {String(
-                [
-                  "Beranda",
-                  "Rencana Belajar",
-                  "Materi Saya",
-                  "Mulai Belajar",
-                  "Progres",
-                  "Pengaturan",
-                ].indexOf(page) + 1,
-              ).padStart(2, "0")}
-            </span>
-            <span>{page}</span>
-            <span>SATU LANGKAH, SESUAI RITMEMU ↗</span>
-          </div>
-        )}
         <main id="main" tabIndex={-1}>
           {children}
         </main>

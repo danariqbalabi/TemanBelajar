@@ -14,6 +14,7 @@ import {
 } from "@/lib/types";
 import { Account, Onboarding, Settings } from "./profile";
 import { Materials } from "./materials";
+import { LearningStart } from "./learning-start";
 import { Reader } from "./reader";
 import { Planner } from "./planner";
 import { ProgressView } from "./progress";
@@ -429,7 +430,7 @@ export default function Home() {
             })
           }
         />
-      ) : selected && active ? (
+      ) : page === "Mulai Belajar" && selected && active ? (
         <Reader
           availableMinutes={profile.daily_minutes}
           key={active.id}
@@ -455,18 +456,12 @@ export default function Home() {
           onPlanner={() => setPage("Rencana Belajar")}
         />
       ) : (
-        <Materials
-          sessions={sessions}
-          onSettings={() => setPage("Pengaturan")}
-          onPlan={() => setPage("Rencana Belajar")}
-          onDefaultMode={(mode) =>
-            saveProfile({ ...profile, preferences: { ...prefs, mode } })
-          }
+        <LearningStart
           materials={materials}
-          run={run}
+          sessions={sessions}
           busy={busy}
-          refresh={refresh}
           start={start}
+          onMaterials={() => setPage("Materi Saya")}
         />
       )}
     </DesignShell>

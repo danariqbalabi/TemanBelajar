@@ -455,7 +455,7 @@ it("menyimpan sumber terlebih dahulu tanpa memulai AI diam-diam", async () => {
     material_id: null,
   });
   await userEvent.click(
-    screen.getByRole("button", { name: "Siapkan Materi Bersama Mimo" }),
+    screen.getByRole("button", { name: "Simpan sumber & lanjut" }),
   );
   expect(
     await screen.findByRole("button", { name: "Mulai pemrosesan" }),
@@ -488,15 +488,13 @@ it("menghubungkan katalog, ringkasan, dan mode belajar tanpa membuka format yang
     screen.getByRole("button", { name: "Buka Ringkasan →" }),
   );
   await userEvent.click(
-    screen.getAllByRole("button", { name: "Pilih cara belajar" })[0],
+    screen.getByRole("link", { name: "Pilih Cara Belajar" }),
   );
   const alternatives = screen.getAllByRole("radio");
   expect(
     alternatives.filter((b) => (b as HTMLButtonElement).disabled),
   ).toHaveLength(2);
-  await userEvent.click(
-    screen.getByRole("button", { name: "Mulai Belajar Sekarang" }),
-  );
+  await userEvent.click(screen.getByRole("button", { name: "Mulai belajar" }));
   expect(start).toHaveBeenCalledWith(noMedia, "reading");
 });
 it("onboarding menampilkan pratinjau sebelum menyimpan profil", async () => {
@@ -520,7 +518,7 @@ it("onboarding menampilkan pratinjau sebelum menyimpan profil", async () => {
   );
   expect(
     screen.getByRole("heading", {
-      name: /Yeay! Rencana belajarmu udah siap/,
+      name: "Preferensimu siap",
     }),
   ).toBeTruthy();
   expect(save).not.toHaveBeenCalled();
@@ -604,7 +602,11 @@ it("memisahkan jawaban teramati dari estimasi model yang belum tersedia", async 
   );
   expect(await screen.findByText("1/2 jawaban tepat")).toBeTruthy();
   expect(screen.queryByRole("progressbar")).toBeNull();
-  expect(screen.getByText(/Estimasi penguasaan belum tersedia/)).toBeTruthy();
+  expect(screen.getByText(/Belum ada estimasi/)).toBeTruthy();
+  const explanation = screen.getByText("Kenapa?");
+  expect(explanation.closest("details")?.open).toBe(false);
+  await userEvent.click(explanation);
+  expect(explanation.closest("details")?.open).toBe(true);
   expect(screen.queryByText(/82%/)).toBeNull();
 });
 

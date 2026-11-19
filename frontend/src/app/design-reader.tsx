@@ -372,7 +372,7 @@ export function ReaderDesign({
                   <aside className="reader-sidebar lg:col-span-4 flex flex-col gap-space-lg sticky top-36">
                     <div
                       hidden={zen || !preferences.show_mimo}
-                      className="bg-mint-tint border border-divider rounded-2xl p-6"
+                      className="reader-companion bg-mint-tint border border-divider rounded-2xl p-6"
                     >
                       <Image
                         src="/design/mimo-final.png"
@@ -408,9 +408,9 @@ export function ReaderDesign({
                             [
                               ["reading", "Teman Baca"],
                               ["focus", "Selangkah demi Selangkah"],
-                              ["explore", "Dengarkan dan Jelajahi"],
-                              ["transcript", "Teks dan Visual"],
-                              ["standard", "Belajar Biasa"],
+                              ["explore", "Jelajah visual"],
+                              ["transcript", "Transkrip & audio"],
+                              ["standard", "Belajar standar"],
                             ] as const
                           ).map(([v, t]) => (
                             <option
@@ -621,7 +621,7 @@ export function ReaderDesign({
                   <aside className="lg:col-span-4 flex flex-col gap-6">
                     <div
                       hidden={zen || !preferences.show_mimo}
-                      className="bg-mint-tint border border-divider rounded-2xl p-6"
+                      className="reader-companion bg-mint-tint border border-divider rounded-2xl p-6"
                     >
                       <Image
                         src="/design/mimo-final.png"
@@ -657,9 +657,9 @@ export function ReaderDesign({
                             [
                               ["reading", "Teman Baca"],
                               ["focus", "Selangkah demi Selangkah"],
-                              ["explore", "Dengarkan dan Jelajahi"],
-                              ["transcript", "Teks dan Visual"],
-                              ["standard", "Belajar Biasa"],
+                              ["explore", "Jelajah visual"],
+                              ["transcript", "Transkrip & audio"],
+                              ["standard", "Belajar standar"],
                             ] as const
                           ).map(([v, t]) => (
                             <option
@@ -1019,11 +1019,11 @@ export function ReaderDesign({
                           className="font-section-title text-section-title text-primary ui-section-title"
                           id="transcript-title"
                         >
-                          Transkrip Narasi Sinkron
+                          Transkrip
                         </h2>
                       </div>
                       <span className="text-xs font-label text-on-surface-variant bg-canvas px-3 py-1 rounded-full">
-                        Klik kalimat untuk melompat audio
+                        Transkrip materi
                       </span>
                     </div>
                     <div
@@ -1040,7 +1040,7 @@ export function ReaderDesign({
                 <aside className="lg:col-span-4 flex flex-col gap-space-lg">
                   <div
                     hidden={zen || !preferences.show_mimo}
-                    className="bg-mint-tint border border-divider rounded-2xl p-6"
+                    className="reader-companion bg-mint-tint border border-divider rounded-2xl p-6"
                   >
                     <Image
                       src="/design/mimo-final.png"
@@ -1076,9 +1076,9 @@ export function ReaderDesign({
                           [
                             ["reading", "Teman Baca"],
                             ["focus", "Selangkah demi Selangkah"],
-                            ["explore", "Dengarkan dan Jelajahi"],
-                            ["transcript", "Teks dan Visual"],
-                            ["standard", "Belajar Biasa"],
+                            ["explore", "Jelajah visual"],
+                            ["transcript", "Transkrip & audio"],
+                            ["standard", "Belajar standar"],
                           ] as const
                         ).map(([v, t]) => (
                           <option
@@ -1393,7 +1393,7 @@ export function ReaderDesign({
                   <aside className="lg:col-span-4 flex flex-col gap-space-lg">
                     <div
                       hidden={zen || !preferences.show_mimo}
-                      className="bg-mint-tint border border-divider rounded-2xl p-6"
+                      className="reader-companion bg-mint-tint border border-divider rounded-2xl p-6"
                     >
                       <Image
                         src="/design/mimo-final.png"
@@ -1429,9 +1429,9 @@ export function ReaderDesign({
                             [
                               ["reading", "Teman Baca"],
                               ["focus", "Selangkah demi Selangkah"],
-                              ["explore", "Dengarkan dan Jelajahi"],
-                              ["transcript", "Teks dan Visual"],
-                              ["standard", "Belajar Biasa"],
+                              ["explore", "Jelajah visual"],
+                              ["transcript", "Transkrip & audio"],
+                              ["standard", "Belajar standar"],
                             ] as const
                           ).map(([v, t]) => (
                             <option
