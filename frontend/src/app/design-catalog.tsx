@@ -108,8 +108,7 @@ export function Catalog({
                   Materi Saya
                 </h1>
                 <p className="font-body text-body text-on-surface-variant">
-                  Kumpulan modul, rangkuman, dan catatan belajarmu yang sudah
-                  disesuaikan agar nyaman dibaca dan dipahami tanpa rasa cemas.
+                  Pilih materi. Temukan cara belajarmu.
                 </p>
               </div>
 
@@ -146,6 +145,47 @@ export function Catalog({
                 </button>
               </div>
             </header>
+            <div className="collection-snapshot" aria-label="Ringkasan koleksi">
+              {[
+                {
+                  icon: "auto_stories",
+                  value: materials.length,
+                  label: "Materi",
+                  color: "mint",
+                },
+                {
+                  icon: "category",
+                  value: new Set(materials.map((item) => item.subject)).size,
+                  label: "Mata pelajaran",
+                  color: "lilac",
+                },
+                {
+                  icon: "task_alt",
+                  value: materials.filter(
+                    (item) =>
+                      item.concepts.length > 0 &&
+                      completed(item.id) >= item.concepts.length,
+                  ).length,
+                  label: "Selesai dibaca",
+                  color: "apricot",
+                },
+              ].map((item) => (
+                <div
+                  className="collection-stat"
+                  data-color={item.color}
+                  key={item.label}
+                >
+                  <span
+                    className="material-symbols-outlined"
+                    aria-hidden="true"
+                  >
+                    {item.icon}
+                  </span>
+                  <strong>{item.value}</strong>
+                  <span>{item.label}</span>
+                </div>
+              ))}
+            </div>
 
             {jobs.length > 0 && (
               <section
@@ -286,9 +326,16 @@ export function Catalog({
                   : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3")
               }
             >
-              {filtered.map((item) => (
+              {filtered.map((item, index) => (
                 <article
-                  className="flex flex-col justify-between bg-surface rounded-3xl p-space-lg shadow-sm hover:shadow-md transition-shadow relative"
+                  className="material-tile flex flex-col justify-between bg-surface rounded-3xl p-space-lg shadow-sm hover:shadow-md transition-shadow relative"
+                  data-color={
+                    index % 3 === 0
+                      ? "mint"
+                      : index % 3 === 1
+                        ? "lilac"
+                        : "apricot"
+                  }
                   key={item.id}
                 >
                   <div className="flex justify-between text-sm">
@@ -297,18 +344,23 @@ export function Catalog({
                       {item.is_demo ? "Materi contoh" : "Materi kamu"}
                     </span>
                   </div>
-                  <div className="my-5 p-5 rounded-2xl bg-mint-tint border border-divider">
+                  <div className="material-art my-5 p-5 rounded-2xl bg-mint-tint border border-divider">
+                    <span className="material-art-orbit" aria-hidden="true" />
                     <span
                       className="material-symbols-outlined text-4xl"
                       aria-hidden="true"
                     >
-                      menu_book
+                      {item.subject.toLocaleLowerCase("id").includes("mat")
+                        ? "functions"
+                        : item.subject.toLocaleLowerCase("id").includes("ipa")
+                          ? "eco"
+                          : "auto_stories"}
                     </span>
                     <p className="mt-3 text-sm">
                       {item.concepts.length} konsep · {item.question_count} soal
                     </p>
                   </div>
-                  <h2 className="text-xl font-bold ui-section-title">
+                  <h2 className="text-xl font-bold ui-card-title">
                     {item.title}
                   </h2>
                   <p className="text-sm mt-3">
@@ -379,20 +431,18 @@ export function Catalog({
                   >
                     verified
                   </span>
-                  Catatan Sahabat Belajar dari Mimo
+                  Tips Mimo
                 </div>
                 <blockquote className="font-mimo-voice text-mimo-voice text-primary max-w-3xl">
-                  “Semua materi yang kamu unggah bakal otomatis disesuaikan
-                  dengan preferensi bacamu (font ramah disleksia, pemenggal suku
-                  kata, dan pemecah durasi 15 menit). Belajar jadi tenang tanpa
-                  pusing!”
+                  Mulai dari satu konsep. Atur tampilan bacaan yang nyaman
+                  buatmu.
                 </blockquote>
                 <div className="flex items-center justify-center md:justify-start gap-space-sm mt-1 text-on-surface-variant font-metadata text-metadata">
-                  <span>✓ Otomatis simpan posisi baca</span>
+                  <span>Ukuran teks bisa diatur</span>
                   <span>•</span>
-                  <span>✓ Mode bebas distraksi aktif</span>
+                  <span>Pilihan mode fokus</span>
                   <span>•</span>
-                  <span>✓ Sesuai standar kurikulum nasional</span>
+                  <span>Sumber bisa dibuka</span>
                 </div>
               </div>
             </section>

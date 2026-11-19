@@ -1,0 +1,749 @@
+/* Inner screens only. Landing and Beranda retain their original design. */
+.studio-playground {
+  --studio-paper: #f8f7f2;
+  --studio-ink: #273b35;
+  --studio-orange: #ffca9d;
+  --studio-lime: #c8e8ce;
+  --ui-heading-font: "Plus Jakarta Sans", sans-serif;
+  --ui-divider: #c5c6b8;
+  background: var(--studio-paper);
+  color: var(--studio-ink);
+}
+.studio-playground.final-design,
+.studio-playground .final-design {
+  color: var(--studio-ink);
+}
+.studio-playground .bg-canvas,
+.studio-playground.bg-canvas {
+  background-color: var(--studio-paper);
+}
+.studio-playground .bg-secondary-container {
+  background-color: #c8e8ce;
+}
+.studio-playground .bg-mint-tint {
+  background-color: #eaf6eb;
+}
+.studio-playground .bg-lavender-tint {
+  background-color: #f0edfc;
+}
+.studio-playground .bg-butter-tint {
+  background-color: #fff5d6;
+}
+.studio-playground .bg-peach-tint {
+  background-color: #fff0e6;
+}
+.studio-playground :is(.ui-page-title, .ui-hero-title, .ui-section-title) {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+  overflow-wrap: normal;
+}
+.studio-playground .ui-page-title {
+  font-size: clamp(2rem, 4.6vw, 3.8rem);
+  line-height: 1.06;
+}
+.studio-playground .ui-section-title {
+  font-size: clamp(1.6rem, 2.6vw, 2.35rem);
+  line-height: 1.15;
+}
+.studio-playground .ui-card-title {
+  letter-spacing: -0.035em;
+  font-weight: 800;
+}
+.studio-playground :is(.rounded-3xl, .rounded-feature, .rounded-card) {
+  border-radius: 4px 24px 4px 4px;
+}
+.studio-playground :is(.bg-surface, .bg-white).rounded-2xl {
+  border: 1px solid #c5c6b8;
+  border-radius: 4px;
+  box-shadow: 0 3px 0 #273b3509;
+}
+.studio-playground :is(button, a).bg-primary {
+  background: var(--studio-ink);
+  color: #fffdf4;
+  border: 1px solid var(--studio-ink);
+  border-radius: 3px;
+  box-shadow: 3px 3px 0 #273b3533;
+  font-weight: 700;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
+}
+.studio-playground :is(button, a).bg-primary:hover {
+  background: #285a46;
+  transform: translate(-1px, -2px);
+  box-shadow: 5px 5px 0 #273b3533;
+}
+.studio-playground :is(button, a).bg-primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+.studio-playground
+  :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea) {
+  border-radius: 3px;
+  border-color: #858e7f;
+  background-color: #fffdf7;
+}
+.studio-playground :is(button, a, input, textarea, select):focus-visible {
+  outline: 3px solid #334cc7;
+  outline-offset: 4px;
+}
+.studio-playground .app-header {
+  background: #fffdf7;
+  border-bottom: 2px solid var(--studio-ink);
+}
+.studio-playground .app-header-inner {
+  min-height: 88px;
+}
+.studio-playground .app-navigation {
+  gap: 2px;
+}
+.studio-playground .app-navigation a {
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 12px 10px;
+  position: relative;
+}
+.studio-playground .app-navigation a[aria-current="page"] {
+  background: var(--studio-ink);
+  color: #fffdf7;
+}
+.studio-playground .app-navigation a[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  height: 3px;
+  bottom: 4px;
+  background: var(--studio-lime);
+}
+.studio-playground .app-avatar {
+  border-radius: 4px;
+  background: var(--studio-orange);
+  color: var(--studio-ink);
+  transform: rotate(-5deg);
+}
+.studio-page-index {
+  max-width: 1136px;
+  margin: 0 auto;
+  padding: 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid #9ca594;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+.studio-page-index > span:nth-child(2) {
+  font-size: 12px;
+  letter-spacing: -0.02em;
+}
+.studio-playground #main .screen-page {
+  padding-top: 32px;
+}
+
+.studio-playground dialog {
+  border: 2px solid var(--studio-ink);
+  border-radius: 4px 24px 4px 4px;
+  box-shadow: 12px 12px 0 #273b3533;
+}
+.studio-playground dialog::backdrop {
+  background: #142f29a6;
+  backdrop-filter: blur(4px);
+}
+.studio-playground .screen-action-bar {
+  border-top: 2px solid var(--studio-ink);
+  background: #fffdf7;
+}
+/* Tools have character; the reading surface keeps user-controlled typography. */
+.stitch-reader .reader-toolbar {
+  border-bottom: 1px solid #9ca594;
+  background: #fffdf7;
+}
+.stitch-reader .reference-reading {
+  background: #fffdf7;
+}
+.studio-playground .notice {
+  border-left: 4px solid var(--studio-orange);
+  border-radius: 0;
+  background: #fff3df;
+}
+.studio-playground .success {
+  border-left: 4px solid #285a46;
+  border-radius: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .studio-playground .screen-page {
+    animation: studio-arrive 220ms ease-out both;
+  }
+  @keyframes studio-arrive {
+    from {
+      opacity: 0.3;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+.studio-playground.calm *,
+.studio-playground.calm *::before,
+.studio-playground.calm *::after {
+  animation: none !important;
+  transition: none !important;
+}
+.studio-playground.high-contrast {
+  --studio-paper: #fff;
+  --studio-ink: #10251b;
+}
+.studio-playground.high-contrast .studio-page-index {
+  color: #10251b;
+  border-color: #10251b;
+}
+.studio-playground.high-contrast
+  :is(.bg-surface, .bg-white, .reference-reading) {
+  background-color: #fff;
+  color: #10251b;
+}
+.studio-playground.high-contrast
+  :is(.text-text-secondary, .text-on-surface-variant) {
+  color: #263d30;
+}
+.studio-playground :is(button, a):disabled {
+  transform: none;
+  box-shadow: none;
+}
+@media (max-width: 1200px) {
+  .studio-page-index {
+    margin-inline: 32px;
+  }
+}
+@media (max-width: 767px) {
+  .studio-page-index {
+    margin-inline: 16px;
+    padding-block: 12px;
+    font-size: 9px;
+  }
+  .studio-page-index > span:last-child {
+    display: none;
+  }
+  .studio-playground .app-header-inner {
+    min-height: 72px;
+  }
+  .studio-playground .app-navigation a {
+    font-size: 11px;
+    padding: 10px;
+  }
+  .studio-playground .ui-page-title {
+    font-size: clamp(1.9rem, 8vw, 2.7rem);
+  }
+}
+
+/* A softer playground: asymmetry without displacing controls. */
+.studio-playground {
+  --studio-paper: #f8f7f2;
+  --ui-heading-font: "Nunito", sans-serif;
+}
+.studio-playground #main {
+  background-image:
+    radial-gradient(ellipse at 98% 10%, #f0edfc 0, transparent 40%),
+    radial-gradient(ellipse at 0% 75%, #eaf6eb 0, transparent 40%);
+}
+.studio-playground .screen-page {
+  background: transparent;
+}
+.studio-playground :is(.ui-page-title, .ui-hero-title, .ui-section-title) {
+  font-family: "Nunito", sans-serif;
+  letter-spacing: -0.035em;
+}
+.studio-playground .ui-page-title {
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1.12;
+}
+.studio-playground :is(.rounded-3xl, .rounded-feature, .rounded-card) {
+  border-radius: 32px 12px 40px 16px;
+}
+.studio-playground :is(.bg-surface, .bg-white).rounded-2xl {
+  border-radius: 28px 12px 30px 18px;
+  border-color: #263c3612;
+  box-shadow: 0 10px 32px -20px #344e4a40;
+}
+.studio-playground :is(button, a).bg-primary {
+  border-radius: 20px 20px 20px 7px;
+  box-shadow: 0 5px 0 #152a231a;
+  transition:
+    transform 180ms ease,
+    border-radius 180ms ease,
+    box-shadow 180ms ease;
+}
+.studio-playground :is(button, a).bg-primary:hover {
+  transform: translateY(-3px) rotate(-1deg);
+  border-radius: 12px 24px 12px 24px;
+  box-shadow: 0 9px 18px -10px #152a2370;
+}
+.studio-playground :is(button, a).bg-primary:active {
+  transform: translateY(1px);
+}
+.studio-playground
+  :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea) {
+  border-radius: 16px;
+}
+.studio-playground .app-header {
+  border-bottom: 1px solid #e5e8e1;
+}
+.studio-playground .app-navigation a {
+  border-radius: 18px 18px 6px 18px;
+}
+.studio-playground .app-navigation a[aria-current="page"] {
+  background: #d7ebba;
+  color: #263c36;
+  box-shadow: inset 0 -3px 0 #8ab468;
+}
+.studio-playground .app-navigation a[aria-current="page"]::after {
+  display: none;
+}
+.studio-playground .app-avatar {
+  background: #ffcdab;
+  border-radius: 45% 55% 56% 44%;
+  transform: none;
+}
+.studio-playground .studio-page-index {
+  padding: 10px 16px;
+  margin-top: 16px;
+  border: none;
+  border-radius: 8px 24px 24px 24px;
+  background: #e9eddc;
+  letter-spacing: 0.05em;
+}
+.studio-playground dialog {
+  border: 1px solid #c0ccbb;
+  border-radius: 32px 12px 32px 24px;
+  box-shadow: 0 28px 100px #172c3540;
+}
+.studio-playground .screen-action-bar {
+  border-top: 1px solid #e0e6d9;
+}
+.studio-playground.high-contrast #main {
+  background: #fff;
+}
+@media (max-width: 767px) {
+  .studio-playground .ui-page-title {
+    font-size: clamp(1.8rem, 8vw, 2.6rem);
+  }
+}
+/* Color carries hierarchy; text remains predictable across inner screens. */
+.studio-playground {
+  --ui-font: "Plus Jakarta Sans", system-ui, sans-serif;
+}
+.studio-playground
+  :is(.ui-page-title, .ui-section-title, .ui-card-title, .ui-label-title) {
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+}
+.studio-playground .ui-page-title {
+  font-size: clamp(1.9rem, 3.7vw, 3rem);
+  line-height: 1.15;
+}
+.studio-playground .ui-section-title {
+  font-size: clamp(1.35rem, 2.4vw, 1.8rem);
+  line-height: 1.25;
+}
+.studio-playground .ui-card-title {
+  font-size: 1.2rem;
+  line-height: 1.35;
+  letter-spacing: -0.025em;
+}
+.studio-playground .ui-label-title {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+.studio-playground :is(.font-label, .font-metadata) {
+  font-family: var(--ui-font);
+}
+.studio-playground .font-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.studio-playground .font-metadata {
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+.collection-snapshot {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.collection-stat {
+  --tile-color: #c8e8ce;
+  background: var(--tile-color);
+  padding: 18px 22px;
+  border-radius: 24px 24px 8px 24px;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  column-gap: 12px;
+  align-items: center;
+  color: #263c36;
+}
+.collection-stat[data-color="lilac"],
+.material-tile[data-color="lilac"] {
+  --tile-color: #f0edfc;
+  --tile-accent: #7153a0;
+}
+.collection-stat[data-color="apricot"],
+.material-tile[data-color="apricot"] {
+  --tile-color: #fff0e6;
+  --tile-accent: #ad5832;
+}
+.collection-stat > .material-symbols-outlined {
+  grid-row: span 2;
+  font-size: 27px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #ffffff80;
+}
+.collection-stat strong {
+  font:
+    900 1.8rem/1.1 "Nunito",
+    sans-serif;
+}
+.collection-stat > span:last-child {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.material-tile {
+  --tile-color: #c8e8ce;
+  --tile-accent: #46744a;
+}
+.material-tile .material-art {
+  background: var(--tile-color);
+  color: #263c36;
+  position: relative;
+  overflow: hidden;
+  min-height: 138px;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.material-tile .material-art > .material-symbols-outlined {
+  font-size: 52px;
+  width: 72px;
+  height: 72px;
+  display: grid;
+  place-items: center;
+  border-radius: 30% 60% 40% 50%;
+  background: #ffffff85;
+  position: relative;
+  z-index: 1;
+}
+.material-art-orbit {
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  border: 18px solid #ffffff60;
+  border-radius: 50%;
+  right: -25px;
+  top: -30px;
+  transform: rotate(-18deg);
+}
+.material-art::after {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  right: 30px;
+  bottom: -18px;
+  border-radius: 12px;
+  background: var(--tile-accent);
+  opacity: 0.18;
+  transform: rotate(28deg);
+}
+.material-tile .material-art p {
+  font-size: 0.75rem;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+}
+.studio-playground .mode-card {
+  border-radius: 26px 12px 26px 26px;
+  border-color: #263c3622;
+}
+.studio-playground #mode-card-1 {
+  background: #eaf6eb;
+}
+.studio-playground #mode-card-2 {
+  background: #f0edfc;
+}
+.studio-playground #mode-card-3 {
+  background: #fff0e6;
+}
+.studio-playground #mode-card-4 {
+  background: #dde1ff;
+}
+.studio-playground #mode-card-5 {
+  background: #fff5d6;
+}
+.studio-playground .mode-card[data-selected="true"] {
+  border-color: #263c36;
+  box-shadow: 0 0 0 3px #263c3615;
+}
+.studio-playground.high-contrast
+  :is(.collection-stat, .mode-card, .material-art) {
+  background: #fff !important;
+  color: #10251b;
+  border: 2px solid #10251b;
+}
+@media (max-width: 600px) {
+  .collection-snapshot {
+    gap: 8px;
+  }
+  .collection-stat {
+    padding: 12px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+    border-radius: 18px 18px 6px 18px;
+  }
+  .collection-stat strong {
+    font-size: 1.5rem;
+  }
+  .collection-stat > .material-symbols-outlined {
+    width: 36px;
+    height: 36px;
+    font-size: 22px;
+  }
+}
+/* Progressive disclosure keeps settings approachable without hiding changes. */
+.stitch-settings .settings-group {
+  border: 1px solid #dce3d4;
+  border-radius: 24px 12px 24px 24px;
+  background: #fffef9;
+  overflow: clip;
+  scroll-margin-top: 110px;
+}
+.stitch-settings .settings-group > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px;
+  cursor: pointer;
+  min-height: 88px;
+}
+.stitch-settings .settings-group > summary::-webkit-details-marker {
+  display: none;
+}
+.stitch-settings .settings-group > summary:focus-visible {
+  outline: 3px solid #4658ba;
+  outline-offset: -4px;
+  border-radius: 20px;
+}
+.stitch-settings .settings-group-icon {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  background: #dcecc9;
+  border-radius: 18px 18px 6px 18px;
+  font-size: 26px;
+  color: #263c36;
+}
+.stitch-settings .settings-group:nth-of-type(3n + 2) .settings-group-icon {
+  background: #e7ddfa;
+}
+.stitch-settings .settings-group:nth-of-type(3n) .settings-group-icon {
+  background: #ffdfc8;
+}
+.stitch-settings .settings-group-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+.stitch-settings .settings-group-title {
+  font:
+    800 1.15rem/1.3 "Nunito",
+    sans-serif;
+  color: #263c36;
+}
+.stitch-settings .settings-group-description {
+  font:
+    400 0.8rem/1.5 "Plus Jakarta Sans",
+    sans-serif;
+  color: #566458;
+}
+.stitch-settings .settings-group-chevron {
+  flex-shrink: 0;
+  color: #566458;
+}
+.stitch-settings .settings-group[open] > summary {
+  background: #f2f5e9;
+}
+.stitch-settings .settings-group[open] .settings-group-chevron {
+  transform: rotate(180deg);
+}
+.stitch-settings .settings-group-body {
+  padding: 20px;
+  border-top: 1px solid #e0e5d7;
+}
+.stitch-settings .settings-group-body > * + * {
+  margin-top: 20px;
+}
+.high-contrast .settings-group,
+.high-contrast .settings-group[open] > summary {
+  background: white;
+  border-color: #10251b;
+}
+.high-contrast .settings-group-description {
+  color: #10251b;
+}
+@media (max-width: 600px) {
+  .stitch-settings .settings-group > summary {
+    padding: 16px;
+    gap: 10px;
+  }
+  .stitch-settings .settings-group-body {
+    padding: 16px;
+  }
+}
+/* Responsive objects, inspired by the reference's depth and product motion.
+   Only artwork moves: buttons and radio targets remain stable. */
+.studio-playground .material-art {
+  isolation: isolate;
+}
+.studio-playground .material-art > .material-symbols-outlined {
+  transform: translate(var(--card-x, 0px), var(--card-y, 0px)) rotate(-7deg);
+  transition:
+    transform 180ms ease-out,
+    border-radius 220ms ease;
+  box-shadow: 6px 9px 0 #263c3610;
+}
+.studio-playground
+  .material-tile:hover
+  .material-art
+  > .material-symbols-outlined {
+  border-radius: 50% 30% 55% 35%;
+}
+.studio-playground .material-art-orbit {
+  transform: translate(
+      calc(var(--card-x, 0px) * -0.7),
+      calc(var(--card-y, 0px) * -0.7)
+    )
+    rotate(-18deg);
+  transition: transform 200ms ease-out;
+}
+.studio-playground .material-art::after {
+  transform: translate(var(--card-x, 0px), var(--card-y, 0px)) rotate(28deg);
+  transition: transform 240ms ease-out;
+}
+.studio-playground .mode-card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.studio-playground .mode-card::before {
+  content: "";
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  right: -45px;
+  top: -45px;
+  border: 16px solid #ffffff60;
+  border-radius: 50%;
+  z-index: -1;
+  pointer-events: none;
+  transform: translate(var(--card-x, 0px), var(--card-y, 0px));
+  transition: transform 220ms ease-out;
+}
+.studio-playground .mode-card[data-selected="true"]::before {
+  border-color: #ffffffc0;
+}
+.studio-playground .mode-card:focus-within {
+  outline: 3px solid #3b4c9b;
+  outline-offset: 3px;
+}
+.studio-playground .collection-stat > .material-symbols-outlined {
+  transform: translate(
+      calc(var(--card-x, 0px) * 0.5),
+      calc(var(--card-y, 0px) * 0.5)
+    )
+    rotate(-5deg);
+  transition: transform 180ms ease-out;
+}
+.studio-playground .settings-group > summary {
+  transition: background 180ms ease;
+}
+.studio-playground .settings-group > summary:hover {
+  background: #eaf6eb;
+}
+.studio-playground .settings-group-chevron {
+  transition: transform 200ms ease;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .studio-playground:not(.calm)
+    :is(.material-tile, .collection-stat, .mode-card) {
+    animation: card-unfold 400ms cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+  }
+  .studio-playground:not(.calm)
+    :is(.material-tile, .collection-stat, .mode-card):nth-child(2) {
+    animation-delay: 55ms;
+  }
+  .studio-playground:not(.calm)
+    :is(.material-tile, .collection-stat, .mode-card):nth-child(3) {
+    animation-delay: 110ms;
+  }
+  .studio-playground:not(.calm) .mode-card:nth-child(4) {
+    animation-delay: 165ms;
+  }
+  .studio-playground:not(.calm) .mode-card:nth-child(5) {
+    animation-delay: 220ms;
+  }
+  .studio-playground:not(.calm) .settings-group[open] .settings-group-body {
+    animation: card-unfold 200ms ease-out;
+  }
+  @keyframes card-unfold {
+    from {
+      opacity: 0.2;
+      transform: translateY(12px) scale(0.985);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .studio-playground
+    :is(
+      .material-art > .material-symbols-outlined,
+      .material-art-orbit,
+      .material-art::after,
+      .collection-stat > .material-symbols-outlined,
+      .mode-card::before
+    ) {
+    transform: none;
+    transition: none;
+  }
+}
+.studio-playground.calm
+  :is(
+    .material-art > .material-symbols-outlined,
+    .material-art-orbit,
+    .material-art::after,
+    .collection-stat > .material-symbols-outlined,
+    .mode-card::before
+  ) {
+  transform: none;
+}

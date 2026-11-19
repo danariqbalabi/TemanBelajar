@@ -59,18 +59,22 @@ export function ModePicker({
               <div className="flex items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-mint-tint text-success font-label text-[12px] font-bold">
                   <span className="w-2 h-2 rounded-full bg-success"></span>
-                  Sesi Adaptif • Bagian 1 (15 mnt)
+                  {material.concepts.length} konsep ·{" "}
+                  {material.concepts.reduce(
+                    (sum, concept) => sum + concept.estimated_minutes,
+                    0,
+                  )}{" "}
+                  menit
                 </span>
               </div>
             </header>
 
             <section className="space-y-1">
               <h1 className="font-display font-black text-2xl md:text-3xl text-primary tracking-tight ui-page-title">
-                Mau belajar dengan cara apa hari ini?
+                Pilih cara belajar
               </h1>
               <p className="text-on-surface-variant font-body text-base">
-                Pilih gaya yang pas buat energimu sekarang. Bisa kamu ganti
-                kapan saja!
+                Ikuti energimu. Ganti mode kapan saja.
               </p>
             </section>
 
@@ -136,8 +140,8 @@ export function ModePicker({
                       Teman Baca
                     </h3>
                     <p className="text-on-surface-variant text-[13px] leading-snug mt-1">
-                      Teks santai dengan penggaris pemandu fokus per baris dan
-                      font ramah disleksia.
+                      Teks lapang. Ukuran, jarak, dan penggaris baca bisa
+                      diatur.
                     </p>
                   </div>
 
@@ -213,8 +217,7 @@ export function ModePicker({
                       Selangkah demi Selangkah
                     </h3>
                     <p className="text-on-surface-variant text-[13px] leading-snug mt-1">
-                      Materi dipecah kartu per kartu tanpa alarm atau timer yang
-                      bikin panik.
+                      Satu bagian setiap langkah. Lanjut saat kamu siap.
                     </p>
                   </div>
 

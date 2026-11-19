@@ -115,9 +115,7 @@ export function ProgressDesign({
                   </div>
                   <h1 className="font-page-title text-page-title text-primary tracking-tight ui-page-title">{`Progres Belajarmu, ${displayName}`}</h1>
                   <p className="font-reading text-reading text-on-surface-variant">
-                    Lihat seberapa jauh pemahamanmu berkembang, rayakan
-                    pencapaian kecil, dan temukan topik yang asyik untuk diulang
-                    santai.
+                    Lihat langkahmu. Pilih yang ingin kamu lanjutkan.
                   </p>
                 </div>
                 <div className="flex flex-wrap items-center gap-space-sm">

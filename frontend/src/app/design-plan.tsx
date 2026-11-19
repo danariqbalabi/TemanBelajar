@@ -113,8 +113,7 @@ export function PlanDesign({
                   </span>
                 </div>
                 <p className="font-body text-body text-on-surface-variant max-w-2xl">
-                  Waktu belajar ramah pikiran — atur sesuai energimu tanpa rasa
-                  cemas dan tetap selaras dengan kurikulum sekolah.
+                  Atur belajar dan jeda, sesuai energimu.
                 </p>
               </div>
 

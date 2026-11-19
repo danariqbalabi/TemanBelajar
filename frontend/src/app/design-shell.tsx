@@ -1,5 +1,6 @@
 "use client";
 import { Brand } from "./brand";
+import { usePlayfulCards } from "./use-playful-cards";
 import { useEffect, useRef } from "react";
 import type { ReactNode, CSSProperties } from "react";
 import type { Profile } from "@/lib/types";
@@ -19,6 +20,7 @@ export function DesignShell({
   style: CSSProperties;
 }) {
   const header = useRef<HTMLElement>(null);
+  usePlayfulCards(page, profile.preferences.reduced_motion);
   useEffect(() => {
     const element = header.current;
     if (!element || typeof ResizeObserver === "undefined") return;
@@ -41,7 +43,11 @@ export function DesignShell({
   return (
     <>
       <div
-        className={"stitch-shell final-design final-app " + className}
+        className={
+          "stitch-shell final-design final-app " +
+          (page === "Beranda" ? "" : "studio-playground ") +
+          className
+        }
         style={style}
       >
         <a className="skip" href="#main">
@@ -106,6 +112,25 @@ export function DesignShell({
             </div>
           </div>
         </header>
+        {page !== "Beranda" && (
+          <div className="studio-page-index" aria-hidden="true">
+            <span>
+              RUANG BELAJAR /{" "}
+              {String(
+                [
+                  "Beranda",
+                  "Rencana Belajar",
+                  "Materi Saya",
+                  "Mulai Belajar",
+                  "Progres",
+                  "Pengaturan",
+                ].indexOf(page) + 1,
+              ).padStart(2, "0")}
+            </span>
+            <span>{page}</span>
+            <span>SATU LANGKAH, SESUAI RITMEMU ↗</span>
+          </div>
+        )}
         <main id="main" tabIndex={-1}>
           {children}
         </main>

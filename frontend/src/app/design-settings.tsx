@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { readingStyle } from "./reading-style";
+import { SettingsGroup } from "./settings-group";
 import type { Session } from "@supabase/supabase-js";
 import {
   defaultProfile,
@@ -49,6 +50,11 @@ export function SettingsDesign({
     backgroundColor: prefs.high_contrast ? "white" : undefined,
   };
 
+  function openSettingsGroup(id: string) {
+    const element = document.getElementById(id);
+    if (element instanceof HTMLDetailsElement) element.open = true;
+    element?.scrollIntoView?.({ block: "start" });
+  }
   function speak() {
     if (!window.speechSynthesis) {
       setSpeechNotice("Baca nyaring belum tersedia di peramban ini.");
@@ -252,9 +258,11 @@ export function SettingsDesign({
                   </aside>
 
                   <div className="lg:col-span-7 flex flex-col gap-space-lg order-2 lg:order-1">
-                    <section
-                      aria-labelledby="section-typography"
-                      className="bg-surface rounded-2xl p-space-lg border border-divider shadow-sm"
+                    <SettingsGroup
+                      title="Teks & bacaan"
+                      icon="text_fields"
+                      description="Font, ukuran, dan jarak baca"
+                      headingId="section-typography"
                     >
                       <div className="flex items-center gap-space-sm mb-space-md pb-space-xs border-b border-divider">
                         <div className="w-9 h-9 rounded-xl bg-mint-tint text-success flex items-center justify-center">
@@ -593,11 +601,13 @@ export function SettingsDesign({
                           </div>
                         </div>
                       </div>
-                    </section>
+                    </SettingsGroup>
 
-                    <section
-                      aria-labelledby="section-contrast"
-                      className="bg-surface rounded-2xl p-space-lg border border-divider shadow-sm"
+                    <SettingsGroup
+                      title="Warna & kontras"
+                      icon="palette"
+                      description="Tampilan yang nyaman untuk matamu"
+                      headingId="section-contrast"
                     >
                       <div className="flex items-center gap-space-sm mb-space-md pb-space-xs border-b border-divider">
                         <div className="w-9 h-9 rounded-xl bg-butter-tint text-warning flex items-center justify-center">
@@ -756,11 +766,13 @@ export function SettingsDesign({
                           </label>
                         </div>
                       </div>
-                    </section>
+                    </SettingsGroup>
 
-                    <section
-                      aria-labelledby="section-reading-tools"
-                      className="bg-surface rounded-2xl p-space-lg border border-divider shadow-sm"
+                    <SettingsGroup
+                      title="Alat bantu baca"
+                      icon="auto_stories"
+                      description="Penggaris dan panduan fokus"
+                      headingId="section-reading-tools"
                     >
                       <div className="flex items-center gap-space-sm mb-space-md pb-space-xs border-b border-divider">
                         <div className="w-9 h-9 rounded-xl bg-lavender-tint text-tertiary-container flex items-center justify-center">
@@ -938,11 +950,13 @@ export function SettingsDesign({
                           </label>
                         </div>
                       </div>
-                    </section>
+                    </SettingsGroup>
 
-                    <section
-                      aria-labelledby="section-audio"
-                      className="bg-surface rounded-2xl p-space-lg border border-divider shadow-sm"
+                    <SettingsGroup
+                      title="Suara & audio"
+                      icon="headphones"
+                      description="Coba suara dan atur kecepatannya"
+                      headingId="section-audio"
                     >
                       <div className="flex items-center gap-space-sm mb-space-md pb-space-xs border-b border-divider">
                         <div className="w-9 h-9 rounded-xl bg-peach-tint text-primary flex items-center justify-center">
@@ -1085,11 +1099,13 @@ export function SettingsDesign({
                           </label>
                         </div>
                       </div>
-                    </section>
+                    </SettingsGroup>
 
-                    <section
-                      aria-labelledby="section-motion"
-                      className="bg-surface rounded-2xl p-space-lg border border-divider shadow-sm"
+                    <SettingsGroup
+                      title="Gerakan & fokus"
+                      icon="filter_vintage"
+                      description="Kurangi animasi dan atur pendamping"
+                      headingId="section-motion"
                     >
                       <div className="flex items-center gap-space-sm mb-space-md pb-space-xs border-b border-divider">
                         <div className="w-9 h-9 rounded-xl bg-surface-container text-primary flex items-center justify-center">
@@ -1189,7 +1205,7 @@ export function SettingsDesign({
                           </label>
                         </div>
                       </div>
-                    </section>
+                    </SettingsGroup>
                   </div>
                 </div>
               </div>
@@ -1385,9 +1401,7 @@ export function SettingsDesign({
 
                         onClick={(e) => {
                           e.preventDefault();
-                          document
-                            .getElementById("rencana-preferensi")
-                            ?.scrollIntoView({ block: "start" });
+                          openSettingsGroup("rencana-preferensi");
                         }}
                       >
                         <span
@@ -1404,9 +1418,7 @@ export function SettingsDesign({
 
                         onClick={(e) => {
                           e.preventDefault();
-                          document
-                            .getElementById("privasi-preferensi")
-                            ?.scrollIntoView({ block: "start" });
+                          openSettingsGroup("privasi-preferensi");
                         }}
                       >
                         <span
@@ -1503,9 +1515,12 @@ export function SettingsDesign({
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
                   <div className="lg:col-span-7 space-y-space-lg">
-                    <section
-                      aria-labelledby="heading-data-diri"
-                      className="bg-surface rounded-2xl border border-divider p-space-md md:p-space-lg space-y-space-md shadow-sm"
+                    <SettingsGroup
+                      title="Profil kamu"
+                      icon="face"
+                      description="Nama dan mata pelajaran"
+                      headingId="heading-data-diri"
+                      defaultOpen
                     >
                       <div className="flex items-center justify-between border-b border-divider pb-space-sm">
                         <div className="flex items-center gap-2">
@@ -1839,12 +1854,14 @@ export function SettingsDesign({
                           </button>
                         </div>
                       </form>
-                    </section>
+                    </SettingsGroup>
 
-                    <section
+                    <SettingsGroup
+                      title="Ritme belajar"
+                      icon="schedule"
+                      description="Waktu, hari, dan tujuan belajar"
+                      headingId="heading-target-waktu"
                       id="rencana-preferensi"
-                      aria-labelledby="heading-target-waktu"
-                      className="bg-surface rounded-2xl border border-divider p-space-md md:p-space-lg space-y-space-md shadow-sm"
                     >
                       <div className="flex items-center justify-between border-b border-divider pb-space-sm">
                         <div className="flex items-center gap-2">
@@ -2234,13 +2251,15 @@ export function SettingsDesign({
                           </select>
                         </label>
                       </div>
-                    </section>
+                    </SettingsGroup>
                   </div>
 
                   <div className="lg:col-span-5 space-y-space-lg">
-                    <section
-                      aria-labelledby="heading-notifikasi"
-                      className="bg-surface rounded-2xl border border-divider p-space-md md:p-space-lg space-y-space-md shadow-sm"
+                    <SettingsGroup
+                      title="Pengingat"
+                      icon="notifications"
+                      description="Pilihan pengingat belajar"
+                      headingId="heading-notifikasi"
                     >
                       <div className="flex items-center justify-between border-b border-divider pb-space-sm">
                         <div className="flex items-center gap-2">
@@ -2372,12 +2391,14 @@ export function SettingsDesign({
                           </label>
                         </div>
                       </div>
-                    </section>
+                    </SettingsGroup>
 
-                    <section
+                    <SettingsGroup
+                      title="Akun & privasi"
+                      icon="shield"
+                      description="Preferensi, ekspor, dan akses akun"
+                      headingId="heading-privasi"
                       id="privasi-preferensi"
-                      aria-labelledby="heading-privasi"
-                      className="bg-surface rounded-2xl border border-divider p-space-md md:p-space-lg space-y-space-md shadow-sm"
                     >
                       <div className="flex items-center justify-between border-b border-divider pb-space-sm">
                         <div className="flex items-center gap-2">
@@ -2503,7 +2524,7 @@ export function SettingsDesign({
                           </button>
                         </div>
                       </div>
-                    </section>
+                    </SettingsGroup>
                   </div>
                 </div>
 

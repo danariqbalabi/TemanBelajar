@@ -12,6 +12,7 @@ import "./globals.css";
 import "./stitch.css";
 import "./design-final.css";
 import "./ui-consistency.css";
+import "./studio.css";
 export const metadata: Metadata = {
   title: "TemanBelajar — belajar sesuai ritmemu",
   description: "Teman belajar adaptif untuk SMP dan SMA.",
