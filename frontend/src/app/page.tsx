@@ -15,6 +15,7 @@ import {
 import { Account, Onboarding, Settings } from "./profile";
 import { Materials } from "./materials";
 import { LearningStart } from "./learning-start";
+import { reactMimo } from "@/lib/mimo";
 import { Reader } from "./reader";
 import { Planner } from "./planner";
 import { ProgressView } from "./progress";
@@ -221,6 +222,10 @@ export default function Home() {
       "PUT",
     );
     setProfile(saved);
+    reactMimo({
+      mood: "cheer",
+      message: "Sudah tersimpan. Sekarang ruang belajarmu lebih pas buatmu!",
+    });
     dailyMinutes.current = saved.daily_minutes;
     setOnboarding(false);
     setNotice("Preferensi tersimpan. Ritmemu bisa diubah kapan saja.");

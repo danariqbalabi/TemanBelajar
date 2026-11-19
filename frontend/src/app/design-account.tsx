@@ -1,5 +1,6 @@
 "use client";
 import { Brand } from "./brand";
+import { MimoMascot } from "./mimo-mascot";
 import { useState } from "react";
 import { UiIcon } from "./workspace-ui";
 import { auth } from "@/lib/api";
@@ -131,6 +132,7 @@ export function AccountDesign({
           </p>
         </section>
       </main>
+      <MimoMascot variant="dock" context="Masuk" />
     </div>
   );
 }

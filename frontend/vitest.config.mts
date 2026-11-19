@@ -19,7 +19,8 @@ export default defineConfig({
         const path = id.replaceAll("\\", "/");
         if (
           !path.endsWith("/src/app/workspace-ui.tsx") &&
-          !path.endsWith("/src/app/landing-how.tsx")
+          !path.endsWith("/src/app/landing-how.tsx") &&
+          !path.endsWith("/src/app/mimo-mascot.tsx")
         )
           return;
         return (

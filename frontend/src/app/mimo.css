@@ -1,0 +1,344 @@
+/* Mimo is a short, opt-in interaction, never an autoplay distraction. */
+.mimo-mascot {
+  isolation: isolate;
+  position: relative;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  color: #273b35;
+}
+.mimo-inline {
+  width: min(100%, 300px);
+  margin-inline: auto;
+}
+.final-design .mimo-touch {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 24px;
+  background: transparent;
+  cursor: pointer;
+  perspective: 600px;
+  -webkit-tap-highlight-color: transparent;
+}
+.final-design .mimo-touch:hover {
+  background: transparent;
+}
+.mimo-stage {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform: rotateX(var(--mimo-look-y, 0deg)) rotateY(var(--mimo-look-x, 0deg));
+  transform-origin: 50% 85%;
+  transition: transform 180ms ease-out;
+}
+.final-design .mimo-pose {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+  transition: opacity 140ms ease;
+}
+.final-design .mimo-pose[data-active="true"] {
+  opacity: 1;
+}
+.mimo-floor {
+  position: absolute;
+  left: 24%;
+  right: 24%;
+  bottom: 4%;
+  height: 6%;
+  border-radius: 50%;
+  background: #273b3510;
+  z-index: -1;
+  transition: transform 220ms ease;
+}
+.mimo-touch-hint {
+  display: block;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #496550;
+  line-height: 1.5;
+  margin-top: 2px;
+}
+.mimo-touch:focus-visible {
+  outline: 3px solid #3b4c9b;
+  outline-offset: 3px;
+}
+.mimo-stage[data-animating="true"][data-mood="cheer"] {
+  animation: mimo-hop 700ms cubic-bezier(0.22, 0.7, 0.3, 1) both;
+}
+.mimo-stage[data-animating="true"][data-mood="wave"] {
+  animation: mimo-wiggle 650ms ease-in-out both;
+}
+.mimo-stage[data-animating="true"][data-mood="reading"] {
+  animation: mimo-nod 650ms ease-in-out both;
+}
+.mimo-touch:hover .mimo-stage:not([data-animating="true"]) {
+  transform: translateY(-3px) rotateX(var(--mimo-look-y, 0deg))
+    rotateY(var(--mimo-look-x, 0deg));
+}
+.mimo-confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.mimo-confetti i {
+  position: absolute;
+  left: calc(10% + var(--particle) * 18%);
+  top: 35%;
+  width: 7px;
+  height: 10px;
+  border-radius: 2px;
+  opacity: 0;
+  background: #a8b7f5;
+}
+.mimo-confetti i:nth-child(2n) {
+  background: #ffe7a3;
+}
+.mimo-confetti i:nth-child(3n) {
+  background: #c8e8ce;
+}
+.mimo-stage[data-mood="cheer"][data-animating="true"] .mimo-confetti i {
+  animation: mimo-pop 750ms ease-out both;
+  animation-delay: calc(var(--particle) * 25ms);
+}
+.mimo-bubble {
+  position: absolute;
+  z-index: 2;
+  width: 250px;
+  max-width: calc(100vw - 32px);
+  right: 0;
+  bottom: calc(100% + 8px);
+  padding: 14px 16px;
+  border: 1px solid #c8d8c3;
+  border-radius: 18px 18px 5px 18px;
+  background: #fffef9;
+  box-shadow: 0 8px 28px #273b351c;
+}
+.mimo-inline .mimo-bubble {
+  bottom: 12%;
+  right: -8px;
+}
+.mimo-bubble-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 5px;
+}
+.mimo-bubble-heading strong {
+  font:
+    800 14px/1.4 "Nunito",
+    sans-serif;
+}
+.final-design .mimo-bubble-heading button {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 22px;
+  background: #eaf6eb;
+  line-height: 1;
+}
+.mimo-bubble p {
+  font-size: 12px;
+  line-height: 1.7;
+  margin: 0;
+}
+.mimo-bubble-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  margin-top: 10px;
+}
+.final-design .mimo-bubble-actions button {
+  min-height: 36px;
+  font-size: 10px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 4px 0;
+  background: transparent;
+}
+.mimo-dock {
+  position: fixed;
+  z-index: 45;
+  width: 76px;
+  right: 20px;
+  bottom: max(18px, env(safe-area-inset-bottom));
+}
+.mimo-dock .mimo-touch {
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at 50% 70%,
+    #eaf6eb 0 45%,
+    transparent 46%
+  );
+}
+.final-app:has(.mimo-dock) #main {
+  padding-bottom: 90px;
+}
+.final-app:has(.screen-action-bar) .mimo-dock {
+  bottom: 130px;
+}
+.final-app:has(.stitch-reader[data-zen="true"]) .mimo-dock {
+  display: none;
+}
+.final-app:has(textarea:focus) .mimo-dock,
+.final-app:has(input:focus) .mimo-dock,
+.onboarding-shell:has(input:focus) .mimo-dock,
+.workspace-account:has(input:focus) .mimo-dock {
+  visibility: hidden;
+  pointer-events: none;
+}
+.mimo-dock[data-quiet="true"] {
+  width: auto;
+}
+.final-design .mimo-wake {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid #c8d8c3;
+  border-radius: 24px;
+  background: #fffef9;
+  color: #496550;
+  font-size: 10px;
+  font-weight: 700;
+}
+.mimo-wake > span:first-child {
+  font-size: 17px;
+}
+.high-contrast .mimo-bubble,
+.high-contrast .mimo-wake {
+  background: white;
+  color: #10251b;
+  border: 2px solid #10251b;
+  box-shadow: none;
+}
+.high-contrast .mimo-touch-hint {
+  color: #10251b;
+}
+@keyframes mimo-hop {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  18% {
+    transform: translateY(3px) scale(1.05, 0.92);
+  }
+  42% {
+    transform: translateY(-16px) rotate(-5deg) scale(0.98, 1.03);
+  }
+  67% {
+    transform: translateY(1px) rotate(3deg) scale(1.04, 0.95);
+  }
+  83% {
+    transform: translateY(-4px) rotate(-2deg);
+  }
+}
+@keyframes mimo-wiggle {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-9deg);
+  }
+  55% {
+    transform: rotate(8deg) translateY(-3px);
+  }
+  80% {
+    transform: rotate(-3deg);
+  }
+}
+@keyframes mimo-nod {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  35% {
+    transform: translateY(3px) rotate(5deg);
+  }
+  70% {
+    transform: translateY(-2px) rotate(-3deg);
+  }
+}
+@keyframes mimo-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(0) rotate(0);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-45px) rotate(160deg);
+  }
+}
+.mimo-mascot[data-reduced-motion="true"] .mimo-stage,
+.mimo-mascot[data-reduced-motion="true"] .mimo-pose,
+.mimo-mascot[data-reduced-motion="true"] .mimo-confetti i,
+.calm .mimo-stage,
+.calm .mimo-pose,
+.calm .mimo-confetti i {
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+}
+.mimo-mascot[data-reduced-motion="true"] .mimo-confetti,
+.calm .mimo-confetti {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mimo-mascot * {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+  .mimo-confetti {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .mimo-dock {
+    width: 58px;
+    right: 12px;
+    bottom: max(12px, env(safe-area-inset-bottom));
+  }
+  .mimo-dock .mimo-touch-hint {
+    font-size: 8px;
+  }
+  .mimo-bubble {
+    width: 230px;
+  }
+  .mimo-inline .mimo-bubble {
+    right: 0;
+  }
+  .final-app:has(.screen-action-bar) .mimo-dock {
+    bottom: 150px;
+  }
+}
+@media print {
+  .mimo-mascot {
+    display: none !important;
+  }
+}
+.mimo-bubble .mimo-calm-note {
+  font-size: 10px;
+  color: #505c55;
+  margin-top: 8px;
+}

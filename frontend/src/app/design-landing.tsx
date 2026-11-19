@@ -1,7 +1,7 @@
 "use client";
 import { Brand } from "./brand";
 import { LandingHow } from "./landing-how";
-import Image from "next/image";
+import { MimoMascot } from "./mimo-mascot";
 export function Landing({
   onContinue,
   error,
@@ -199,13 +199,7 @@ export function Landing({
                   </div>
 
                   <div className="w-full flex justify-center my-2">
-                    <Image
-                      alt=""
-                      className="w-full max-w-[270px] sm:max-w-[310px] h-auto object-contain  select-none transition-transform hover: duration-300 object-contain"
-                      src="/design/mimo-final.png"
-                      width={1408}
-                      height={1120}
-                    ></Image>
+                    <MimoMascot context="Kenalan" />
                   </div>
 
                   <div className="absolute -bottom-4 right-8 bg-lavender-tint border-2 border-primary rounded-full px-4 py-1 text-xs font-bold text-primary shadow-zine-sm flex items-center gap-1.5 rotate-[-2deg]">

@@ -1,5 +1,6 @@
 "use client";
 import { Brand } from "./brand";
+import { MimoMascot } from "./mimo-mascot";
 import { useEffect, useState } from "react";
 import { Workspace, WorkspaceHeading, UiIcon } from "./workspace-ui";
 import { readingStyle } from "./reading-style";
@@ -499,6 +500,13 @@ export function OnboardingDesign({
           </a>
         </footer>
       </Workspace>
+      {value.preferences.show_mimo && (
+        <MimoMascot
+          variant="dock"
+          context="Preferensi"
+          reducedMotion={value.preferences.reduced_motion}
+        />
+      )}
     </div>
   );
 }

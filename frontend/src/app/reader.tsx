@@ -15,6 +15,7 @@ import { QuestionDesign } from "./design-question";
 import { ResultDesign } from "./design-result";
 import { RecommendationDesign } from "./design-recommendation";
 import { useReadingDraft } from "./use-reading-draft";
+import { reactMimo } from "@/lib/mimo";
 export function Reader({
   material,
   session,
@@ -133,6 +134,11 @@ export function Reader({
     return run(async () => {
       const next = await save();
       onUpdate(next);
+      if (next.completed_concepts.length > session.completed_concepts.length)
+        reactMimo({
+          mood: "cheer",
+          message: "Satu konsep selesai. Langkah kecilmu berarti!",
+        });
       setFeedback("Tersimpan. Kamu bisa melanjutkan kapan saja.");
     });
   }
@@ -176,6 +182,15 @@ export function Reader({
     });
     run(async () => {
       const result = await send();
+      reactMimo(
+        result.answers[nextQuestion.id]?.correct
+          ? { mood: "cheer", message: "Tepat! Kita rayakan dengan tos kecil." }
+          : {
+              mood: "reading",
+              message:
+                "Yuk lihat pembahasannya. Belajar itu boleh pelan-pelan.",
+            },
+      );
       setAttempt(result);
       setFeedback(nextQuestion.id);
       setChoice(null);

@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
-import Image from "next/image";
+import { MimoMascot } from "./mimo-mascot";
 import type {
   LearningSession,
   Material,
@@ -304,14 +304,13 @@ export function Dashboard({
                 <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
                   <div className="relative w-56 h-56 sm:w-64 sm:h-64 flex items-center justify-center">
                     <div className="absolute inset-0 rounded-full bg-surface/60 pointer-events-none ring-4 ring-secondary-fixed/50"></div>
-                    <Image
-                      alt=""
-                      className="w-full h-full object-contain relative z-10 select-none pointer-events-none transform transition-transform hover: object-contain"
-                      src="/design/mimo-final.png"
-                      width={1408}
-                      height={1120}
-                      hidden={!showMimo || !profile.preferences.show_mimo}
-                    ></Image>
+                    {showMimo && profile.preferences.show_mimo && (
+                      <MimoMascot
+                        context="Beranda"
+                        reducedMotion={profile.preferences.reduced_motion}
+                        onMotionSettings={() => navigate("Pengaturan")}
+                      />
+                    )}
                   </div>
                   <div className="mt-[-8px] relative z-20 px-4 py-2 rounded-full bg-surface border border-secondary/20 shadow-md text-primary font-mimo-voice text-metadata text-center flex items-center gap-1.5">
                     <span className="text-[14px]">🌿</span>

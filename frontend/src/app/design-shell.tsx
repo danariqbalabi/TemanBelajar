@@ -1,6 +1,7 @@
 "use client";
 import { Brand } from "./brand";
 import { usePlayfulCards } from "./use-playful-cards";
+import { MimoMascot } from "./mimo-mascot";
 import { useEffect, useRef } from "react";
 import type { ReactNode, CSSProperties } from "react";
 import type { Profile } from "@/lib/types";
@@ -115,6 +116,15 @@ export function DesignShell({
         <main id="main" tabIndex={-1}>
           {children}
         </main>
+        {page !== "Beranda" && profile.preferences.show_mimo && (
+          <MimoMascot
+            key={page}
+            variant="dock"
+            context={page}
+            reducedMotion={profile.preferences.reduced_motion}
+            onMotionSettings={() => goTo("Pengaturan")}
+          />
+        )}
       </div>
     </>
   );

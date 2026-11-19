@@ -3,6 +3,7 @@ import { useState } from "react";
 import { api, mutation } from "@/lib/api";
 import { PlanDesign } from "./design-plan";
 import { ProposalDesign } from "./design-proposal";
+import { reactMimo } from "@/lib/mimo";
 import type {
   Activity,
   Material,
@@ -117,6 +118,10 @@ export function Planner({
       await refresh();
       await load(p.id);
       setMessage("Rencana tersimpan. Kamu tetap bebas mengubah ritme.");
+      reactMimo({
+        mood: "cheer",
+        message: "Rencanamu siap. Jangan lupa sisakan ruang untuk jeda!",
+      });
     });
   }
   function propose() {
@@ -140,6 +145,11 @@ export function Planner({
       await send();
       await refresh();
       await load(plan.id);
+      if (action === "accept")
+        reactMimo({
+          mood: "wave",
+          message: "Jadwal baru sudah dipakai. Kita ikuti ritmemu.",
+        });
       setMessage(
         action === "accept"
           ? "Perubahan diterapkan."
@@ -157,6 +167,11 @@ export function Planner({
       await send();
       await refresh();
       await load(plan.id);
+      if (next === "completed")
+        reactMimo({
+          mood: "cheer",
+          message: "Satu kegiatan selesai. Sekarang boleh tarik napas dulu.",
+        });
     });
   }
   function recompute() {

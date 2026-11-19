@@ -7,6 +7,7 @@ import { SummaryDesign } from "./design-summary";
 import { ModePicker } from "./design-modes";
 import { JobDesign } from "./design-job";
 import { userMessage } from "@/lib/errors";
+import { reactMimo } from "@/lib/mimo";
 import type { Job, Material, Mode, LearningSession } from "@/lib/types";
 import type { Run } from "./page";
 export function Materials({
@@ -61,6 +62,11 @@ export function Materials({
     await run(async () => {
       try {
         const result = await api<Job>(`/jobs/${job.id}/process`, {});
+        if (result.status === "ready")
+          reactMimo({
+            mood: "cheer",
+            message: "Materinya siap! Pilih cara belajar yang kamu suka.",
+          });
         if (mounted.current) {
           setJobs((items) => items.map((j) => (j.id === job.id ? result : j)));
           setActiveJob((current) =>
@@ -112,6 +118,11 @@ export function Materials({
       request = mutation<Job>("/materials/text", { title: title.trim(), text });
     run(async () => {
       const job = await request();
+      reactMimo({
+        mood: "wave",
+        message:
+          "Sumbermu sudah tersimpan. Kita bisa susun materinya saat kamu siap.",
+      });
       setJobs((items) => [job, ...items.filter((x) => x.id !== job.id)]);
       setUpload(false);
       setActiveJob(job);

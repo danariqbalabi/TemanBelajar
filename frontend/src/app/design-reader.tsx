@@ -1,6 +1,5 @@
 ﻿"use client";
 import { useRef, useState } from "react";
-import Image from "next/image";
 import { readingStyle } from "./reading-style";
 import type { Material, LearningSession, Preferences } from "@/lib/types";
 export function ReaderDesign({
@@ -19,7 +18,6 @@ export function ReaderDesign({
   onBack,
   onPreferences,
   elapsed,
-  displayName,
 }: {
   material: Material;
   session: LearningSession;
@@ -370,25 +368,6 @@ export function ReaderDesign({
                   </article>
 
                   <aside className="reader-sidebar lg:col-span-4 flex flex-col gap-space-lg sticky top-36">
-                    <div
-                      hidden={zen || !preferences.show_mimo}
-                      className="reader-companion bg-mint-tint border border-divider rounded-2xl p-6"
-                    >
-                      <Image
-                        src="/design/mimo-final.png"
-                        alt=""
-                        width={1408}
-                        height={1120}
-                        className="w-40 h-auto object-contain mx-auto"
-                      />
-                      <h2 className="font-display font-bold text-lg mt-3 ui-section-title">
-                        Mimo Menemanimu
-                      </h2>
-                      <p className="mt-3">
-                        {displayName}, pelajari satu bagian dulu. Kamu bebas
-                        mengganti cara belajar.
-                      </p>
-                    </div>
                     <div className="bg-surface border border-divider rounded-2xl p-6 space-y-4">
                       <label className="block font-bold">
                         Format belajar
@@ -619,25 +598,6 @@ export function ReaderDesign({
                   </div>
 
                   <aside className="lg:col-span-4 flex flex-col gap-6">
-                    <div
-                      hidden={zen || !preferences.show_mimo}
-                      className="reader-companion bg-mint-tint border border-divider rounded-2xl p-6"
-                    >
-                      <Image
-                        src="/design/mimo-final.png"
-                        alt=""
-                        width={1408}
-                        height={1120}
-                        className="w-40 h-auto object-contain mx-auto"
-                      />
-                      <h2 className="font-display font-bold text-lg mt-3 ui-section-title">
-                        Mimo Menemanimu
-                      </h2>
-                      <p className="mt-3">
-                        {displayName}, pelajari satu bagian dulu. Kamu bebas
-                        mengganti cara belajar.
-                      </p>
-                    </div>
                     <div className="bg-surface border border-divider rounded-2xl p-6 space-y-4">
                       <label className="block font-bold">
                         Format belajar
@@ -1038,25 +998,6 @@ export function ReaderDesign({
                 </div>
 
                 <aside className="lg:col-span-4 flex flex-col gap-space-lg">
-                  <div
-                    hidden={zen || !preferences.show_mimo}
-                    className="reader-companion bg-mint-tint border border-divider rounded-2xl p-6"
-                  >
-                    <Image
-                      src="/design/mimo-final.png"
-                      alt=""
-                      width={1408}
-                      height={1120}
-                      className="w-40 h-auto object-contain mx-auto"
-                    />
-                    <h2 className="font-display font-bold text-lg mt-3 ui-section-title">
-                      Mimo Menemanimu
-                    </h2>
-                    <p className="mt-3">
-                      {displayName}, pelajari satu bagian dulu. Kamu bebas
-                      mengganti cara belajar.
-                    </p>
-                  </div>
                   <div className="bg-surface border border-divider rounded-2xl p-6 space-y-4">
                     <label className="block font-bold">
                       Format belajar
@@ -1391,25 +1332,6 @@ export function ReaderDesign({
                   </div>
 
                   <aside className="lg:col-span-4 flex flex-col gap-space-lg">
-                    <div
-                      hidden={zen || !preferences.show_mimo}
-                      className="reader-companion bg-mint-tint border border-divider rounded-2xl p-6"
-                    >
-                      <Image
-                        src="/design/mimo-final.png"
-                        alt=""
-                        width={1408}
-                        height={1120}
-                        className="w-40 h-auto object-contain mx-auto"
-                      />
-                      <h2 className="font-display font-bold text-lg mt-3 ui-section-title">
-                        Mimo Menemanimu
-                      </h2>
-                      <p className="mt-3">
-                        {displayName}, pelajari satu bagian dulu. Kamu bebas
-                        mengganti cara belajar.
-                      </p>
-                    </div>
                     <div className="bg-surface border border-divider rounded-2xl p-6 space-y-4">
                       <label className="block font-bold">
                         Format belajar
