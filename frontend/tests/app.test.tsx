@@ -69,7 +69,6 @@ it("separates the study launcher from the materials catalogue without an active 
       ? {
           ...defaultProfile,
           onboarding_step: 4,
-          preferences: { ...defaultProfile.preferences, reduced_motion: false },
         }
       : { items: [] },
   );
@@ -93,9 +92,10 @@ it("separates the study launcher from the materials catalogue without an active 
   expect(
     await screen.findByRole("heading", { name: "Materi Saya" }),
   ).toBeTruthy();
-  expect(document.querySelector('[data-kind="navigation"]')?.textContent).toBe(
-    "Materi Saya",
-  );
+  const popup = document.querySelector('[data-kind="navigation"]');
+  expect(popup?.textContent).toContain("Yuk, lanjut bareng Mimo!");
+  expect(popup?.textContent).toContain("Materi Saya");
+  expect(popup?.querySelector(".mimo-loading-track")).toBeTruthy();
   expect(
     document
       .querySelector('[data-kind="navigation"]')
@@ -104,6 +104,9 @@ it("separates the study launcher from the materials catalogue without an active 
   expect(
     screen.getByRole("button", { name: /Tambah Materi Baru/ }),
   ).toBeTruthy();
+  await waitFor(() => expect(popup?.isConnected).toBe(false), {
+    timeout: 1800,
+  });
 });
 afterEach(() => {
   cleanup();

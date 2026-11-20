@@ -16,15 +16,12 @@
 .mimo-loading[data-kind="startup"] {
   margin-inline: auto;
 }
-.mimo-loading:is([data-kind="request"], [data-kind="navigation"]) {
+.mimo-loading[data-kind="request"] {
   position: fixed;
   inset-inline-start: 16px;
   bottom: max(16px, env(safe-area-inset-bottom));
   z-index: 180;
   box-shadow: 0 6px 24px #273b3520;
-}
-.mimo-loading[data-kind="navigation"] {
-  display: none;
 }
 .mimo-loading-mascot {
   position: relative;
@@ -64,6 +61,58 @@
   background: #496550;
   content: "";
 }
+.mimo-page-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 190;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: #273b352b;
+  pointer-events: none;
+}
+.mimo-loading[data-kind="navigation"] {
+  width: min(280px, 100%);
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  border: 2px solid #273b35;
+  border-radius: 24px;
+  background: #f7fbf3;
+  box-shadow: 5px 6px 0 #273b35;
+  text-align: center;
+}
+.mimo-loading[data-kind="navigation"] .mimo-loading-mascot {
+  flex: 0 0 auto;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: #e1f2e2;
+}
+.mimo-loading[data-kind="navigation"] .mimo-loading-copy {
+  width: 100%;
+}
+.mimo-page-title {
+  font:
+    900 1.125rem/1.25 Nunito,
+    sans-serif;
+}
+.mimo-loading[data-kind="navigation"] .mimo-loading-track {
+  height: 10px;
+  margin-top: 6px;
+}
+.mimo-loading[data-kind="navigation"] .mimo-loading-track::before {
+  width: 100%;
+  background: repeating-linear-gradient(
+    120deg,
+    #496550 0 12px,
+    #66836b 12px 24px
+  );
+}
+.high-contrast .mimo-loading[data-kind="navigation"] {
+  background: white;
+  color: #101a16;
+}
 @media (prefers-reduced-motion: no-preference) {
   .final-app:not(.calm)
     #main
@@ -72,26 +121,31 @@
   .onboarding-shell:not(.calm) {
     animation: study-page-enter 220ms ease-out;
   }
-  .final-app:not(.calm):not(:has(.mimo-loading[data-kind="request"]))
-    .mimo-loading[data-kind="navigation"] {
-    display: flex;
-    animation: mimo-page-cue 640ms ease-in-out both;
+  .final-app:not(.calm) .mimo-page-overlay {
+    animation: mimo-page-cue 960ms ease-in-out both;
+  }
+  .final-app:not(.calm) .mimo-loading[data-kind="navigation"] {
+    animation: mimo-page-pop 230ms cubic-bezier(0.22, 0.78, 0.3, 1.18) both;
   }
   .mimo-loading:not([data-kind="navigation"]):not(.calm *)
     .mimo-loading-mascot::before {
     animation: mimo-loading-spin 750ms linear infinite;
   }
-  .mimo-loading[data-kind="navigation"] .mimo-loading-mascot img {
-    animation: mimo-loading-spin 560ms ease-in-out;
+  .final-app:not(.calm)
+    .mimo-loading[data-kind="navigation"]
+    .mimo-loading-mascot
+    img {
+    animation: mimo-loading-spin 740ms ease-in-out;
   }
   .mimo-loading:not([data-kind="navigation"]):not(.calm *)
     .mimo-loading-track::before {
     animation: mimo-loading-progress 900ms ease-in-out infinite;
   }
-  .mimo-loading[data-kind="navigation"] .mimo-loading-track::before {
-    width: 100%;
+  .final-app:not(.calm)
+    .mimo-loading[data-kind="navigation"]
+    .mimo-loading-track::before {
     transform-origin: left;
-    animation: mimo-page-progress 560ms ease-out both;
+    animation: mimo-page-progress 760ms ease-out both;
   }
 }
 @keyframes study-page-enter {
@@ -106,13 +160,21 @@
   0% {
     opacity: 0;
   }
-  18%,
-  74% {
+  10%,
+  84% {
     opacity: 1;
   }
   100% {
     opacity: 0;
     visibility: hidden;
+  }
+}
+@keyframes mimo-page-pop {
+  from {
+    transform: translateY(10px) scale(0.88);
+  }
+  to {
+    transform: translateY(0) scale(1);
   }
 }
 @keyframes mimo-loading-spin {
