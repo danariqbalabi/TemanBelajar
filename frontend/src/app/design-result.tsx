@@ -1,5 +1,6 @@
 "use client";
 import { AnswerWalkthrough } from "./answer-walkthrough";
+import { MimoAnswerHelp } from "./mimo-answer-help";
 import { useState } from "react";
 import type {
   Attempt,
@@ -13,6 +14,7 @@ export function ResultDesign({
   material,
   busy,
   displayName,
+  preferences,
   onBack,
   onRecommend,
   onRetry,
@@ -27,6 +29,7 @@ export function ResultDesign({
   recommendation: Recommendation | null;
   busy: boolean;
   displayName: string;
+  preferences: Preferences;
   onBack: () => void;
   onRecommend: () => void;
   onRetry: () => void;
@@ -142,6 +145,16 @@ export function ResultDesign({
             <h3>{question.prompt}</h3>
             <p>{question.explanation}</p>
             <AnswerWalkthrough question={question} answer={attempt.answers[question.id]} sources={material.sources} onSpeak={onSpeak} />
+            {attempt.answers[question.id]?.correct === false && (
+              <MimoAnswerHelp
+                key={attempt.id + ":" + question.id}
+                attemptId={attempt.id}
+                questionId={question.id}
+                sources={material.sources}
+                preferences={preferences}
+                onSpeak={onSpeak}
+              />
+            )}
           </article>
         ))}
       </div>

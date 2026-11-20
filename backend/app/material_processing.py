@@ -1,18 +1,17 @@
 import asyncio
 import hashlib
 import json
-import ssl
 from datetime import UTC, datetime, timedelta
 from io import BytesIO
 from typing import Annotated
 from uuid import UUID, uuid4
 
-import httpx
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from pydantic import Field, ValidationError
 from pypdf import PdfReader
 
 from app.config import settings
+from app.gemini import generate_json
 from app.learning import now
 from app.responses import JobResponse, Page
 from app.schemas import Material, Mutation, Source
@@ -152,23 +151,6 @@ async def job_detail(job_id: str, store: StoreDep):
     return job_public(find_item(snapshot.data["jobs"], job_id, "pemrosesan"))
 
 
-def provider_schema(schema: dict) -> dict:
-    """Keep Gemini's structural subset; enforce all domain limits locally."""
-    result = {}
-    for key, value in schema.items():
-        if key in {"properties", "$defs"}:
-            result[key] = {
-                name: provider_schema(child) for name, child in value.items()
-            }
-        elif key == "items":
-            result[key] = provider_schema(value)
-        elif key == "anyOf":
-            result[key] = [provider_schema(child) for child in value]
-        elif key in {"type", "required", "enum", "$ref"}:
-            result[key] = value
-    return result
-
-
 async def generate_material(job: dict) -> Material:
     config = settings()
     if not config.gemini_api_key or not config.gemini_model:
@@ -187,31 +169,15 @@ async def generate_material(job: dict) -> Material:
             {"title": job["title"], "sources": job["sources"]}, ensure_ascii=False
         )
     )
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{config.gemini_model}:generateContent"
     try:
-        async with httpx.AsyncClient(timeout=90) as client:
-            response = await client.post(
-                url,
-                headers={"x-goog-api-key": config.gemini_api_key},
-                json={
-                    "contents": [{"parts": [{"text": prompt}]}],
-                    "generationConfig": {
-                        "responseMimeType": "application/json",
-                        "responseJsonSchema": provider_schema(
-                            Material.model_json_schema()
-                        ),
-                    },
-                },
-            )
-        if response.is_error:
-            raise HTTPException(
-                503, "layanan AI belum berhasil memproses materi, coba lagi"
-            )
-        result = response.json()
-        candidate = result["candidates"][0]
-        if candidate.get("finishReason", "STOP") != "STOP":
-            raise ValueError("generasi belum selesai")
-        text = "".join(p.get("text", "") for p in candidate["content"]["parts"])
+        text = await generate_json(
+            config,
+            prompt,
+            Material.model_json_schema(),
+            timeout=90,
+            unavailable="layanan AI belum berhasil memproses materi, coba lagi",
+            invalid="hasil AI belum valid, sumber tetap tersimpan dan bisa dicoba lagi",
+        )
         material = Material.model_validate_json(text)
         # The server owns sources, provenance and model skill assignments.
         material.sources = [Source.model_validate(source) for source in job["sources"]]
@@ -223,18 +189,7 @@ async def generate_material(job: dict) -> Material:
             concept.diagram_description = None
             concept.transcript = None
         return Material.model_validate(material.model_dump())
-    except HTTPException:
-        raise
-    except (
-        httpx.RequestError,
-        ssl.SSLError,
-        AttributeError,
-        KeyError,
-        IndexError,
-        TypeError,
-        ValueError,
-        ValidationError,
-    ) as exc:
+    except ValidationError as exc:
         raise HTTPException(
             502, "hasil AI belum valid, sumber tetap tersimpan dan bisa dicoba lagi"
         ) from exc
