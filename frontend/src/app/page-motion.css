@@ -1,200 +1,166 @@
-.mimo-loading {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: fit-content;
-  max-width: calc(100vw - 32px);
-  padding: 8px 14px 8px 10px;
-  border: 1px solid #9eb8a6;
-  border-radius: 16px;
-  background: #f3fbf3;
-  color: #273b35;
-  font-size: 0.8125rem;
-  font-weight: 700;
-  pointer-events: none;
-}
-.mimo-loading[data-kind="startup"] {
-  margin-inline: auto;
-}
-.mimo-loading[data-kind="request"] {
-  position: fixed;
-  inset-inline-start: 16px;
-  bottom: max(16px, env(safe-area-inset-bottom));
-  z-index: 180;
-  box-shadow: 0 6px 24px #273b3520;
-}
-.mimo-loading-mascot {
-  position: relative;
-  display: grid;
-  place-items: center;
-  flex: 0 0 42px;
-  height: 42px;
-}
-.mimo-loading-mascot::before {
-  position: absolute;
-  inset: 0;
-  border: 2px solid #c8e8ce;
-  border-top-color: #496550;
-  border-radius: 50%;
-  content: "";
-}
-.mimo-loading-mascot img {
-  position: relative;
-  object-fit: contain;
-}
-.mimo-loading-copy {
-  display: grid;
-  gap: 4px;
-}
-.mimo-loading-track {
-  display: block;
-  height: 3px;
-  border-radius: 999px;
-  background: #c8e8ce;
-  overflow: hidden;
-}
-.mimo-loading-track::before {
-  display: block;
-  width: 40%;
-  height: 100%;
-  border-radius: inherit;
-  background: #496550;
-  content: "";
-}
-.mimo-page-overlay {
+﻿.mimo-page-overlay {
   position: fixed;
   inset: 0;
   z-index: 190;
   display: grid;
   place-items: center;
   padding: 16px;
-  background: #273b352b;
+  background: rgb(248 247 242 / 62%);
   pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 230ms ease,
+    visibility 0s linear 230ms;
 }
-.mimo-loading[data-kind="navigation"] {
-  width: min(280px, 100%);
-  flex-direction: column;
-  gap: 8px;
-  padding: 20px;
-  border: 2px solid #273b35;
-  border-radius: 24px;
-  background: #f7fbf3;
-  box-shadow: 5px 6px 0 #273b35;
+
+.mimo-page-overlay[data-visible="true"] {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+@starting-style {
+  .mimo-page-overlay[data-visible="true"] {
+    opacity: 0;
+  }
+}
+
+.mimo-page-popup {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  max-width: min(100%, 280px);
   text-align: center;
 }
-.mimo-loading[data-kind="navigation"] .mimo-loading-mascot {
-  flex: 0 0 auto;
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
-  background: #e1f2e2;
+
+.mimo-page-art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 190px;
+  height: 148px;
+  background: radial-gradient(ellipse at center, #ccebd3 0%, transparent 68%);
 }
-.mimo-loading[data-kind="navigation"] .mimo-loading-copy {
-  width: 100%;
+
+.mimo-page-art img {
+  width: 144px;
+  height: 144px;
+  object-fit: contain;
+  filter: drop-shadow(0 9px 12px #273b3528);
 }
-.mimo-page-title {
+
+.mimo-spark {
+  position: absolute;
   font:
-    900 1.125rem/1.25 Nunito,
+    900 1.5rem/1 Nunito,
     sans-serif;
 }
-.mimo-loading[data-kind="navigation"] .mimo-loading-track {
-  height: 10px;
-  margin-top: 6px;
+
+.mimo-spark-left {
+  inset: 28px auto auto 13px;
+  color: #8a571b;
 }
-.mimo-loading[data-kind="navigation"] .mimo-loading-track::before {
-  width: 100%;
-  background: repeating-linear-gradient(
-    120deg,
-    #496550 0 12px,
-    #66836b 12px 24px
-  );
+
+.mimo-spark-right {
+  inset: 61px 9px auto auto;
+  color: #62518c;
 }
-.high-contrast .mimo-loading[data-kind="navigation"] {
-  background: white;
+
+.mimo-page-caption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 7px 11px;
+  padding: 9px 15px;
+  border: 1px solid #c7dfcc;
+  border-radius: 999px;
+  background: #fff;
+  color: #273b35;
+  box-shadow: 0 5px 18px #273b351c;
+  font:
+    800 0.9rem/1.35 Nunito,
+    sans-serif;
+}
+
+.mimo-page-dots {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.mimo-page-dots i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #557863;
+}
+
+.mimo-page-dots i:nth-child(2) {
+  background: #796391;
+}
+.mimo-page-dots i:nth-child(3) {
+  background: #99631e;
+}
+
+.mimo-page-overlay[data-high-contrast="true"] .mimo-page-caption {
+  border-color: #101a16;
   color: #101a16;
 }
+
 @media (prefers-reduced-motion: no-preference) {
-  .final-app:not(.calm)
-    #main
-    > :is(.screen-page, .lesson-reader, .final-settings),
-  .workspace-account,
-  .onboarding-shell:not(.calm) {
-    animation: study-page-enter 220ms ease-out;
+  .mimo-page-overlay[data-reduced-motion="false"] .mimo-page-popup {
+    transform: translateY(8px) scale(0.97);
+    transition: transform 280ms cubic-bezier(0.22, 0.8, 0.35, 1);
   }
-  .final-app:not(.calm) .mimo-page-overlay {
-    animation: mimo-page-cue 960ms ease-in-out both;
-  }
-  .final-app:not(.calm) .mimo-loading[data-kind="navigation"] {
-    animation: mimo-page-pop 230ms cubic-bezier(0.22, 0.78, 0.3, 1.18) both;
-  }
-  .mimo-loading:not([data-kind="navigation"]):not(.calm *)
-    .mimo-loading-mascot::before {
-    animation: mimo-loading-spin 750ms linear infinite;
-  }
-  .final-app:not(.calm)
-    .mimo-loading[data-kind="navigation"]
-    .mimo-loading-mascot
-    img {
-    animation: mimo-loading-spin 740ms ease-in-out;
-  }
-  .mimo-loading:not([data-kind="navigation"]):not(.calm *)
-    .mimo-loading-track::before {
-    animation: mimo-loading-progress 900ms ease-in-out infinite;
-  }
-  .final-app:not(.calm)
-    .mimo-loading[data-kind="navigation"]
-    .mimo-loading-track::before {
-    transform-origin: left;
-    animation: mimo-page-progress 760ms ease-out both;
-  }
-}
-@keyframes study-page-enter {
-  from {
-    opacity: 0.45;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@keyframes mimo-page-cue {
-  0% {
-    opacity: 0;
-  }
-  10%,
-  84% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    visibility: hidden;
-  }
-}
-@keyframes mimo-page-pop {
-  from {
-    transform: translateY(10px) scale(0.88);
-  }
-  to {
+
+  .mimo-page-overlay[data-visible="true"][data-reduced-motion="false"]
+    .mimo-page-popup {
     transform: translateY(0) scale(1);
   }
-}
-@keyframes mimo-loading-spin {
-  to {
-    rotate: 1turn;
+
+  .mimo-page-overlay[data-visible="true"][data-reduced-motion="false"]
+    .mimo-page-art
+    img {
+    animation: mimo-hover 1.3s ease-in-out infinite;
+  }
+
+  .mimo-page-overlay[data-visible="true"][data-reduced-motion="false"]
+    .mimo-page-dots
+    i {
+    animation: mimo-dot 900ms ease-in-out infinite;
+  }
+
+  .mimo-page-dots i:nth-child(2) {
+    animation-delay: 100ms !important;
+  }
+  .mimo-page-dots i:nth-child(3) {
+    animation-delay: 200ms !important;
   }
 }
-@keyframes mimo-loading-progress {
-  from {
-    translate: -100% 0;
-  }
-  to {
-    translate: 250% 0;
+
+@media (prefers-reduced-motion: reduce) {
+  .mimo-page-overlay {
+    transition: none;
   }
 }
-@keyframes mimo-page-progress {
-  from {
-    scale: 0 1;
+
+@keyframes mimo-hover {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-3deg);
   }
-  to {
-    scale: 1 1;
+  50% {
+    transform: translateY(-8px) rotate(3deg);
+  }
+}
+
+@keyframes mimo-dot {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  45% {
+    opacity: 1;
+    transform: translateY(-3px);
   }
 }

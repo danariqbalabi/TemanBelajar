@@ -4,7 +4,6 @@ import { Brand } from "./brand";
 import { useScrollNavbar } from "./use-scroll-navbar";
 import { usePlayfulCards } from "./use-playful-cards";
 import { MimoMascot } from "./mimo-mascot";
-import { MimoPageCue } from "./mimo-loading";
 import { useEffect, useRef } from "react";
 import type { ReactNode, CSSProperties } from "react";
 import type { Profile } from "@/lib/types";
@@ -111,11 +110,6 @@ export function DesignShell({
         <main id="main" tabIndex={-1}>
           {children}
         </main>
-        <MimoPageCue
-          key={`navigation:${page}`}
-          page={page}
-          showMimo={profile.preferences.show_mimo}
-        />
         {page !== "Beranda" && profile.preferences.show_mimo && (
           <MimoMascot
             key={page}

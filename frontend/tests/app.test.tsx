@@ -93,9 +93,9 @@ it("separates the study launcher from the materials catalogue without an active 
     await screen.findByRole("heading", { name: "Materi Saya" }),
   ).toBeTruthy();
   const popup = document.querySelector('[data-kind="navigation"]');
-  expect(popup?.textContent).toContain("Yuk, lanjut bareng Mimo!");
   expect(popup?.textContent).toContain("Materi Saya");
-  expect(popup?.querySelector(".mimo-loading-track")).toBeTruthy();
+  expect(popup?.getAttribute("data-visible")).toBe("true");
+  expect(popup?.querySelector(".mimo-page-dots")).toBeTruthy();
   expect(
     document
       .querySelector('[data-kind="navigation"]')
@@ -104,9 +104,12 @@ it("separates the study launcher from the materials catalogue without an active 
   expect(
     screen.getByRole("button", { name: /Tambah Materi Baru/ }),
   ).toBeTruthy();
-  await waitFor(() => expect(popup?.isConnected).toBe(false), {
-    timeout: 1800,
-  });
+  await waitFor(
+    () => expect(popup?.getAttribute("data-visible")).toBe("false"),
+    {
+      timeout: 1800,
+    },
+  );
 });
 afterEach(() => {
   cleanup();
