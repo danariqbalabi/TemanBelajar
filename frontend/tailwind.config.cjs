@@ -94,12 +94,12 @@ module.exports = {
         "gutter-tablet": "1rem",
         "margin-tablet": "1.5rem",
         "space-sm": "0.5rem",
-        "gutter": "1.5rem",
-        "space-xl": "2rem",
+        "gutter": "1rem",
+        "space-xl": "1.5rem",
         "gutter-mobile": "0.75rem",
         "margin-mobile": "1rem",
-        "space-xxl": "3rem",
-        "space-section": "4rem"
+        "space-xxl": "2rem",
+        "space-section": "2.5rem"
       },
       "fontFamily": {
         "section-title": [

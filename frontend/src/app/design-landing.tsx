@@ -103,12 +103,12 @@ export function Landing({
         </header>
 
         <main
-          className="relative z-10 max-w-7xl mx-auto px-6 pt-8 pb-24 ui-container"
+          className="relative z-10 max-w-7xl mx-auto px-6 pt-4 pb-8 ui-container"
           id="main-content"
         >
           <section
             aria-labelledby="hero-title"
-            className="landing-hero-motion relative pt-6 pb-20 lg:pt-12 lg:pb-28 grid lg:grid-cols-12 gap-10 items-center"
+            className="landing-hero-motion relative pt-4 pb-6 lg:pt-6 lg:pb-8 grid lg:grid-cols-12 gap-6 items-center"
           >
             <div className="landing-starfield" aria-hidden="true">
               <span />
@@ -141,7 +141,7 @@ export function Landing({
                 pusing dan tanpa tes diagnosis medis!
               </p>
 
-              <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto mb-10">
+              <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto mb-6">
                 <a
                   className="w-full sm:w-auto inline-flex justify-center items-center gap-2.5 bg-primary hover:bg-primary-hover text-surface text-base font-extrabold px-8 py-4 rounded-xl shadow-zine hover:shadow-zine-hover transition-all transform hover:-translate-y-0.5 active:translate-y-0"
                   href="#"
@@ -243,21 +243,65 @@ export function Landing({
             </div>
           </section>
 
-          <section aria-labelledby="film-title" className="my-8 grid items-center gap-6 rounded-feature border border-divider bg-mint-tint p-5 sm:p-8 lg:grid-cols-[1fr_2fr]">
+          <section
+            aria-labelledby="film-title"
+            className="my-4 grid items-center gap-5 rounded-feature border border-divider bg-mint-tint p-5 sm:p-6 lg:grid-cols-[1fr_2fr]"
+          >
             <div>
-              <h2 id="film-title" className="ui-section-title font-nunito text-3xl font-black text-primary">Belajar bareng Manda</h2>
-              <p className="mt-3">Dalam 58 detik, lihat cara Manda membaca, berlatih, dan mengambil jeda.</p>
+              <h2
+                id="film-title"
+                className="ui-section-title font-nunito text-3xl font-black text-primary"
+              >
+                Belajar bareng Manda
+              </h2>
+              <p className="mt-3">
+                Dalam 58 detik, lihat cara Manda membaca, berlatih, dan
+                mengambil jeda.
+              </p>
               <details className="mt-4">
-                <summary className="cursor-pointer font-bold">Baca transkrip video</summary>
-                <p className="mt-2">Untuk pelajar penyandang disabilitas, cara materi disajikan bisa menentukan seberapa mudah mereka ikut belajar. Ada yang lebih nyaman mendengarkan, ada yang butuh teks lebih besar, atau satu bagian bacaan dalam satu waktu.</p>
-                <p className="mt-2">TemanBelajar membantu kamu mengatur cara belajar sesuai kebutuhanmu. Kamu bisa besarkan huruf, atur kontras, atau nyalakan penggaris baca. Kalau lebih nyaman mendengarkan, putar audio sambil mengikuti transkrip.</p>
-                <p className="mt-2">Lalu, cek apa yang sudah kamu pahami. Manda, misalnya, sudah bisa mencari hipotenusa, tapi masih keliru saat mencari sisi siku-siku. TemanBelajar menunjukkan di mana letak salahnya dan menyarankan latihan yang sesuai.</p>
-                <p className="mt-2">Kalau butuh jeda, geser jadwalnya. Progresmu tetap tersimpan, dan Mimo siap menemani saat kamu kembali. TemanBelajar. Ruang belajar yang bisa kamu sesuaikan.</p>
+                <summary className="cursor-pointer font-bold">
+                  Baca transkrip video
+                </summary>
+                <p className="mt-2">
+                  Untuk pelajar penyandang disabilitas, cara materi disajikan
+                  bisa menentukan seberapa mudah mereka ikut belajar. Ada yang
+                  lebih nyaman mendengarkan, ada yang butuh teks lebih besar,
+                  atau satu bagian bacaan dalam satu waktu.
+                </p>
+                <p className="mt-2">
+                  TemanBelajar membantu kamu mengatur cara belajar sesuai
+                  kebutuhanmu. Kamu bisa besarkan huruf, atur kontras, atau
+                  nyalakan penggaris baca. Kalau lebih nyaman mendengarkan,
+                  putar audio sambil mengikuti transkrip.
+                </p>
+                <p className="mt-2">
+                  Lalu, cek apa yang sudah kamu pahami. Manda, misalnya, sudah
+                  bisa mencari hipotenusa, tapi masih keliru saat mencari sisi
+                  siku-siku. TemanBelajar menunjukkan di mana letak salahnya dan
+                  menyarankan latihan yang sesuai.
+                </p>
+                <p className="mt-2">
+                  Kalau butuh jeda, geser jadwalnya. Progresmu tetap tersimpan,
+                  dan Mimo siap menemani saat kamu kembali. TemanBelajar. Ruang
+                  belajar yang bisa kamu sesuaikan.
+                </p>
               </details>
             </div>
-            <video className="aspect-video w-full rounded-2xl bg-black" controls playsInline preload="metadata" aria-labelledby="film-title">
+            <video
+              className="aspect-video w-full rounded-2xl bg-black"
+              controls
+              playsInline
+              preload="metadata"
+              aria-labelledby="film-title"
+            >
               <source src="/media/temanbelajar.mp4" type="video/mp4" />
-              <track default kind="captions" src="/media/temanbelajar-id.vtt" srcLang="id" label="Bahasa Indonesia" />
+              <track
+                default
+                kind="captions"
+                src="/media/temanbelajar-id.vtt"
+                srcLang="id"
+                label="Bahasa Indonesia"
+              />
               <a href="/media/temanbelajar.mp4">Buka video TemanBelajar</a>
             </video>
           </section>
@@ -266,10 +310,10 @@ export function Landing({
 
           <section
             aria-labelledby="mode-title"
-            className="py-16 sm:py-20 border-t-2 border-dashed border-divider"
+            className="py-8 sm:py-10 border-t-2 border-dashed border-divider"
             id="mode-belajar"
           >
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-5">
               <div>
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-butter-tint border border-butter text-xs font-bold uppercase tracking-wider text-primary mb-3">
                   <span>🎨</span> Ragam Pilihan
@@ -286,7 +330,7 @@ export function Landing({
                 mode kapan saja di tengah sesi tanpa reset kemajuan belajarmu.
               </p>
             </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div className="bg-mint-tint rounded-feature p-6 border-2 border-primary shadow-zine flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-4">
@@ -462,10 +506,10 @@ export function Landing({
 
           <section
             aria-labelledby="showcase-title"
-            className="py-16 sm:py-20 border-t-2 border-dashed border-divider"
+            className="py-8 sm:py-10 border-t-2 border-dashed border-divider"
             id="contoh-nyata"
           >
-            <div className="bg-surface rounded-feature border-2 border-primary p-7 sm:p-12 shadow-zine grid lg:grid-cols-12 gap-10 items-center relative">
+            <div className="bg-surface rounded-feature border-2 border-primary p-5 sm:p-6 shadow-zine grid lg:grid-cols-12 gap-6 items-center relative">
               <div className="absolute -top-3.5 right-10 w-24 h-6 washi-tape rotate-[-2deg] rounded-sm pointer-events-none hidden sm:block"></div>
 
               <div className="lg:col-span-6">
@@ -652,10 +696,10 @@ export function Landing({
 
           <section
             aria-labelledby="inclusive-title"
-            className="py-16 sm:py-20 border-t-2 border-dashed border-divider"
+            className="py-8 sm:py-10 border-t-2 border-dashed border-divider"
             id="aksesibilitas"
           >
-            <div className="text-center max-w-2xl mx-auto mb-14">
+            <div className="text-center max-w-2xl mx-auto mb-6">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lavender-tint border border-lavender text-xs font-bold uppercase tracking-wider text-primary mb-3">
                 <span>💜</span> Belajar Nyaman Untuk Semua
               </div>
@@ -671,7 +715,7 @@ export function Landing({
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6 mb-12">
+            <div className="grid md:grid-cols-3 gap-4 mb-6">
               <div className="bg-surface rounded-card p-6 border-2 border-primary shadow-zine flex flex-col justify-between">
                 <p className="text-sm text-text-secondary leading-relaxed font-medium mb-4">
                   “Dulu suka pusing kalau lihat teks bacaan panjang di buku
@@ -732,7 +776,7 @@ export function Landing({
               </div>
             </div>
 
-            <div className="bg-canvas rounded-feature p-8 border-2 border-primary shadow-zine-sm grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-canvas rounded-feature p-5 sm:p-6 border-2 border-primary shadow-zine-sm grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="flex flex-col items-start">
                 <span className="text-2xl mb-2">👁️</span>
                 <h4 className="font-nunito font-extrabold text-base text-primary mb-1 ui-label-title">
@@ -776,7 +820,7 @@ export function Landing({
             </div>
           </section>
 
-          <section className="mt-8 bg-gradient-to-r from-mint-tint via-butter-tint to-peach-tint rounded-feature p-8 sm:p-16 border-2 border-primary shadow-zine text-center relative overflow-hidden">
+          <section className="mt-8 bg-gradient-to-r from-mint-tint via-butter-tint to-peach-tint rounded-feature p-6 sm:p-8 border-2 border-primary shadow-zine text-center relative overflow-hidden">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface border-2 border-primary text-xs font-black uppercase text-primary mb-6 shadow-zine-sm">
               <span>🎒</span> AYO BELAJAR BERSAMA MIMO!
             </div>
@@ -824,9 +868,9 @@ export function Landing({
           </section>
         </main>
 
-        <footer className="border-t-2 border-primary bg-surface py-14 mt-12 relative z-10">
+        <footer className="border-t-2 border-primary bg-surface py-8 mt-4 relative z-10">
           <div className="max-w-7xl mx-auto px-6 ui-container">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-8 pb-10 border-b border-divider">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-5 pb-6 border-b border-divider">
               <div className="flex flex-col gap-2">
                 <Brand />
                 <span className="text-xs font-semibold text-text-secondary">
@@ -871,7 +915,7 @@ export function Landing({
                 </a>
               </div>
             </div>
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 text-xs font-semibold text-text-secondary">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-5 text-xs font-semibold text-text-secondary">
               <p>
                 © {new Date().getFullYear()} TemanBelajar. Didesain untuk siswa
                 SMP &amp; SMA di seluruh Indonesia.

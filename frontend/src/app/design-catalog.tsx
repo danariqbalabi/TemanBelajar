@@ -93,7 +93,7 @@ export function Catalog({
         {errorsPanel}
         {uploadPanel}
         <div className="flex flex-col w-full">
-          <div className="max-w-[1200px] w-full mx-auto px-margin py-space-xl flex flex-col gap-space-xl ui-container">
+          <div className="max-w-[1200px] w-full mx-auto px-margin py-space-xl flex flex-col gap-4 ui-container">
             <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg">
               <div className="flex flex-col gap-space-xs max-w-2xl">
                 <div className="flex items-center gap-space-sm">
@@ -225,7 +225,7 @@ export function Catalog({
               </div>
 
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
-                <div className="flex items-center gap-space-xs overflow-x-auto pb-1 -mx-margin px-margin lg:mx-0 lg:px-0">
+                <div className="flex max-w-full items-center gap-space-xs overflow-x-auto pb-1">
                   {[
                     "Semua Topik",
                     ...new Set(materials.map((m) => m.subject)),
@@ -319,7 +319,7 @@ export function Catalog({
             <section
               aria-label="Daftar Modul Belajar"
               className={
-                "grid gap-6 " +
+                "grid gap-4 " +
                 (list
                   ? "grid-cols-1"
                   : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3")
@@ -327,7 +327,7 @@ export function Catalog({
             >
               {filtered.map((item, index) => (
                 <article
-                  className="material-tile flex flex-col justify-between bg-surface rounded-3xl p-space-lg shadow-sm hover:shadow-md transition-shadow relative"
+                  className="material-tile flex flex-col justify-between bg-surface rounded-3xl p-5 shadow-sm hover:shadow-md transition-shadow relative"
                   data-color={
                     index % 3 === 0
                       ? "mint"
@@ -343,7 +343,7 @@ export function Catalog({
                       {item.is_demo ? "Materi contoh" : "Materi kamu"}
                     </span>
                   </div>
-                  <div className="material-art my-5 p-5 rounded-2xl bg-mint-tint border border-divider">
+                  <div className="material-art my-3 p-4 rounded-2xl bg-mint-tint border border-divider">
                     <span className="material-art-orbit" aria-hidden="true" />
                     <span
                       className="material-symbols-outlined text-4xl"
