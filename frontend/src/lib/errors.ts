@@ -11,6 +11,14 @@ export function userMessage(error: unknown): string {
     anonymous_provider_disabled:
       "Demo anonim belum tersedia. Kamu bisa mencoba masuk dengan email.",
     signup_disabled: "Pendaftaran akun sedang tidak tersedia.",
+    weak_password:
+      "Kata sandi terlalu mudah ditebak. Gunakan kata sandi yang lebih kuat.",
+    email_address_invalid:
+      "Alamat email belum valid. Periksa kembali penulisannya.",
+    otp_expired:
+      "Tautan email sudah kedaluwarsa atau sudah dipakai. Minta tautan baru.",
+    over_request_rate_limit:
+      "Terlalu banyak percobaan. Tunggu sebentar, lalu coba lagi.",
   };
   if (e?.code && messages[e.code]) return messages[e.code];
   if (e?.name === "TimeoutError" || e?.name === "AbortError")

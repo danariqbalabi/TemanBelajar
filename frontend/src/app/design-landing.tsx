@@ -6,9 +6,11 @@ import { LandingHow } from "./landing-how";
 import { MimoMascot } from "./mimo-mascot";
 export function Landing({
   onContinue,
+  onLogin,
   error,
 }: {
   onContinue: () => void;
+  onLogin?: () => void;
   error: string;
 }) {
   const header = useRef<HTMLElement>(null);
@@ -77,7 +79,7 @@ export function Landing({
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  onContinue();
+                  (onLogin || onContinue)();
                 }}
               >
                 Masuk
@@ -166,6 +168,13 @@ export function Landing({
                 </a>
               </div>
 
+              <button
+                type="button"
+                className="sm:hidden workspace-subtle-link mb-4"
+                onClick={onLogin || onContinue}
+              >
+                Masuk atau daftar dengan email
+              </button>
               <div className="flex flex-wrap items-center gap-y-2.5 gap-x-6 text-xs font-semibold text-text-secondary border-t border-divider pt-6 w-full">
                 <div className="flex items-center gap-2">
                   <span className="w-5 h-5 rounded-full bg-mint text-primary flex items-center justify-center font-black text-xs border border-primary/20">

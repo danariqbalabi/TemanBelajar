@@ -4,6 +4,7 @@ import { Brand } from "./brand";
 import { useScrollNavbar } from "./use-scroll-navbar";
 import { usePlayfulCards } from "./use-playful-cards";
 import { MimoMascot } from "./mimo-mascot";
+import { MimoLoading } from "./mimo-loading";
 import { useEffect, useRef } from "react";
 import type { ReactNode, CSSProperties } from "react";
 import type { Profile } from "@/lib/types";
@@ -110,6 +111,14 @@ export function DesignShell({
         <main id="main" tabIndex={-1}>
           {children}
         </main>
+        {profile.preferences.show_mimo &&
+          !profile.preferences.reduced_motion && (
+            <MimoLoading
+              key={`navigation:${page}`}
+              kind="navigation"
+              label={page}
+            />
+          )}
         {page !== "Beranda" && profile.preferences.show_mimo && (
           <MimoMascot
             key={page}
