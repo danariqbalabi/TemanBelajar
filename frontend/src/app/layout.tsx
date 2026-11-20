@@ -18,6 +18,7 @@ import "./card-motion.css";
 import "./scroll-navbar.css";
 import "./navbar.css";
 import "./demo-tour.css";
+import "./page-motion.css";
 import { CardMotion } from "./card-motion";
 export const metadata: Metadata = {
   title: "TemanBelajar — belajar sesuai ritmemu",

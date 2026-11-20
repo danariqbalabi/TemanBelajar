@@ -2921,22 +2921,6 @@
     to { transform: translate3d(3%, -2%, 0) scale(1.04); }
   }
 }
-.workspace-request-status {
-  position: fixed;
-  inset-inline-start: 16px;
-  bottom: max(16px, env(safe-area-inset-bottom));
-  z-index: 210;
-  margin: 0;
-  padding: 8px 12px;
-  max-width: calc(100vw - 32px);
-  border: 1px solid #d6c79e;
-  border-radius: 12px;
-  background: #fff7db;
-  color: #273b35;
-  font-size: .8125rem;
-  pointer-events: none;
-}
-
 .landing-starfield {
   position: absolute;
   inset: 0;

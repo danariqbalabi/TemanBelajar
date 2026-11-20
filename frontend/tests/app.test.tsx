@@ -66,7 +66,11 @@ import Home from "../src/app/page";
 it("separates the study launcher from the materials catalogue without an active session", async () => {
   request.mockImplementation(async (path: string) =>
     path === "/profile"
-      ? { ...defaultProfile, onboarding_step: 4 }
+      ? {
+          ...defaultProfile,
+          onboarding_step: 4,
+          preferences: { ...defaultProfile.preferences, reduced_motion: false },
+        }
       : { items: [] },
   );
   render(<Home />);
@@ -89,6 +93,14 @@ it("separates the study launcher from the materials catalogue without an active 
   expect(
     await screen.findByRole("heading", { name: "Materi Saya" }),
   ).toBeTruthy();
+  expect(document.querySelector('[data-kind="navigation"]')?.textContent).toBe(
+    "Materi Saya",
+  );
+  expect(
+    document
+      .querySelector('[data-kind="navigation"]')
+      ?.getAttribute("aria-hidden"),
+  ).toBe("true");
   expect(
     screen.getByRole("button", { name: /Tambah Materi Baru/ }),
   ).toBeTruthy();

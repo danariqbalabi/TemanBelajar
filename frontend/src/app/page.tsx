@@ -23,6 +23,7 @@ import { DemoTour } from "./demo-tour";
 import { ProgressView } from "./progress";
 import { Dashboard } from "./dashboard";
 import { DesignShell } from "./design-shell";
+import { MimoLoading } from "./mimo-loading";
 export type Run = (action: () => Promise<void>) => Promise<void>;
 async function readWorkspace(minutes: number) {
   const [m, s, p] = await Promise.all([
@@ -277,7 +278,7 @@ export default function Home() {
   if (!ready)
     return (
       <main className="welcome">
-        <p role="status">Menyiapkan ruang belajarmu...</p>
+        <MimoLoading kind="startup" label="Menyiapkan ruang belajarmu…" />
       </main>
     );
   if (landing || !account || accountEntry)
@@ -326,7 +327,7 @@ export default function Home() {
             </button>
           </section>
         ) : (
-          <p role="status">Memuat ruang belajarmu...</p>
+          <MimoLoading kind="startup" label="Memuat ruang belajarmu…" />
         )}
       </main>
     );
@@ -406,9 +407,7 @@ export default function Home() {
         </p>
       )}
       {busy && (
-        <p role="status" className="workspace-request-status">
-          Memproses permintaan?
-        </p>
+        <MimoLoading label="Memproses permintaan…" showMimo={prefs.show_mimo} />
       )}
       {page === "Beranda" && profile.onboarding_step < 4 && (
         <section className="stitch-screen bg-secondary-container rounded-2xl p-space-lg mb-space-lg">

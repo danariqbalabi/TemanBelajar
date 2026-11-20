@@ -1,0 +1,138 @@
+.mimo-loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  max-width: calc(100vw - 32px);
+  padding: 8px 14px 8px 10px;
+  border: 1px solid #9eb8a6;
+  border-radius: 16px;
+  background: #f3fbf3;
+  color: #273b35;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  pointer-events: none;
+}
+.mimo-loading[data-kind="startup"] {
+  margin-inline: auto;
+}
+.mimo-loading:is([data-kind="request"], [data-kind="navigation"]) {
+  position: fixed;
+  inset-inline-start: 16px;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 180;
+  box-shadow: 0 6px 24px #273b3520;
+}
+.mimo-loading[data-kind="navigation"] {
+  display: none;
+}
+.mimo-loading-mascot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 42px;
+  height: 42px;
+}
+.mimo-loading-mascot::before {
+  position: absolute;
+  inset: 0;
+  border: 2px solid #c8e8ce;
+  border-top-color: #496550;
+  border-radius: 50%;
+  content: "";
+}
+.mimo-loading-mascot img {
+  position: relative;
+  object-fit: contain;
+}
+.mimo-loading-copy {
+  display: grid;
+  gap: 4px;
+}
+.mimo-loading-track {
+  display: block;
+  height: 3px;
+  border-radius: 999px;
+  background: #c8e8ce;
+  overflow: hidden;
+}
+.mimo-loading-track::before {
+  display: block;
+  width: 40%;
+  height: 100%;
+  border-radius: inherit;
+  background: #496550;
+  content: "";
+}
+@media (prefers-reduced-motion: no-preference) {
+  .final-app:not(.calm)
+    #main
+    > :is(.screen-page, .lesson-reader, .final-settings),
+  .workspace-account,
+  .onboarding-shell:not(.calm) {
+    animation: study-page-enter 220ms ease-out;
+  }
+  .final-app:not(.calm):not(:has(.mimo-loading[data-kind="request"]))
+    .mimo-loading[data-kind="navigation"] {
+    display: flex;
+    animation: mimo-page-cue 640ms ease-in-out both;
+  }
+  .mimo-loading:not([data-kind="navigation"]):not(.calm *)
+    .mimo-loading-mascot::before {
+    animation: mimo-loading-spin 750ms linear infinite;
+  }
+  .mimo-loading[data-kind="navigation"] .mimo-loading-mascot img {
+    animation: mimo-loading-spin 560ms ease-in-out;
+  }
+  .mimo-loading:not([data-kind="navigation"]):not(.calm *)
+    .mimo-loading-track::before {
+    animation: mimo-loading-progress 900ms ease-in-out infinite;
+  }
+  .mimo-loading[data-kind="navigation"] .mimo-loading-track::before {
+    width: 100%;
+    transform-origin: left;
+    animation: mimo-page-progress 560ms ease-out both;
+  }
+}
+@keyframes study-page-enter {
+  from {
+    opacity: 0.45;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes mimo-page-cue {
+  0% {
+    opacity: 0;
+  }
+  18%,
+  74% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+@keyframes mimo-loading-spin {
+  to {
+    rotate: 1turn;
+  }
+}
+@keyframes mimo-loading-progress {
+  from {
+    translate: -100% 0;
+  }
+  to {
+    translate: 250% 0;
+  }
+}
+@keyframes mimo-page-progress {
+  from {
+    scale: 0 1;
+  }
+  to {
+    scale: 1 1;
+  }
+}
