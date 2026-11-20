@@ -1502,6 +1502,44 @@
   font: inherit;
   margin: 10px 0 16px;
 }
+.mimo-answer-help {
+  margin: 12px 0;
+  border: 1px solid #9eb8a6;
+  border-radius: 14px;
+  padding: 12px;
+  background: #fff;
+  overflow-wrap: anywhere;
+}
+.mimo-answer-help summary {
+  cursor: pointer;
+  font-weight: 800;
+}
+.mimo-answer-help [role="status"]:empty {
+  margin: 0;
+}
+.mimo-answer-help blockquote {
+  margin-inline: 0;
+  padding-inline-start: 12px;
+  border-inline-start: 3px solid currentColor;
+}
+.mimo-help-practice {
+  min-inline-size: 0;
+  margin-top: 12px;
+}
+.mimo-help-practice label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  cursor: pointer;
+}
+.mimo-help-practice legend {
+  font-weight: 800;
+}
+.high-contrast .mimo-answer-help {
+  border-color: #101a16;
+  color: #101a16;
+}
 @media (max-width: 900px) {
   .workspace-question-layout {
     grid-template-columns: minmax(0, 1fr);

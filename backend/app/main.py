@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app import profiles
+from app.answer_help import router as answer_help_router
 from app.config import settings
 from app.learning import router as learning_router
 from app.material_processing import router as processing_router
@@ -35,6 +36,7 @@ app.add_middleware(
 )
 app.include_router(profiles_router)
 app.include_router(learning_router)
+app.include_router(answer_help_router)
 app.include_router(planner_router)
 app.include_router(rescheduling_router)
 app.include_router(recommendations_router)

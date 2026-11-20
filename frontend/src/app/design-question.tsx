@@ -1,5 +1,6 @@
 "use client";
 import { AnswerWalkthrough } from "./answer-walkthrough";
+import { MimoAnswerHelp } from "./mimo-answer-help";
 import { useEffect, useRef, useState } from "react";
 import { Workspace, WorkspaceHeading, UiIcon } from "./workspace-ui";
 import type { Attempt, Material, Preferences } from "@/lib/types";
@@ -181,6 +182,16 @@ export function QuestionDesign({
                 {question.explanation}
               </p>
               <AnswerWalkthrough question={question} answer={attempt.answers[question.id]} sources={material.sources} onSpeak={onSpeak} />
+              {attempt.answers[question.id]?.correct === false && (
+                <MimoAnswerHelp
+                  key={attempt.id + ":" + question.id}
+                  attemptId={attempt.id}
+                  questionId={question.id}
+                  sources={material.sources}
+                  preferences={preferences}
+                  onSpeak={onSpeak}
+                />
+              )}
               <button
                 className="workspace-button primary"
                 data-tour="feedback"

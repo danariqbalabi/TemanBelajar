@@ -330,6 +330,7 @@ export function Reader({
       <ResultDesign
         attempt={attempt}
         material={material}
+        preferences={preferences}
         recommendation={rec}
         busy={busy}
         displayName={displayName}

@@ -30,6 +30,7 @@ import { RecommendationDesign } from "../src/app/design-recommendation";
 import { Catalog } from "../src/app/design-catalog";
 import { ApiError } from "../src/lib/api";
 import { Reader } from "../src/app/reader";
+import { MimoAnswerHelp } from "../src/app/mimo-answer-help";
 import { Planner } from "../src/app/planner";
 import { Materials } from "../src/app/materials";
 import { ProgressView } from "../src/app/progress";
@@ -389,6 +390,52 @@ describe("alur belajar", () => {
     expect(await screen.findByText("Apa bahan fotosintesis?")).toBeTruthy();
   });
 });
+it("membaca bantuan Mimo satu langkah per layar sebelum mencoba soal tambahan", async () => {
+  request.mockResolvedValueOnce({
+    explanation: [
+      "Air berubah menjadi uap.",
+      "Uap mendingin dan membentuk awan.",
+    ],
+    source_id: "source",
+    source_quote: "Uap air mendingin.",
+    practice: {
+      prompt: "Apa yang terjadi saat uap mendingin?",
+      options: ["Membentuk titik air", "Menjadi cahaya", "Hilang"],
+      correct_index: 0,
+      explanation: "Uap berubah menjadi titik air.",
+    },
+  });
+  render(
+    <MimoAnswerHelp
+      attemptId="attempt"
+      questionId="q1"
+      sources={material.sources}
+      preferences={defaultProfile.preferences}
+      onSpeak={vi.fn()}
+    />,
+  );
+  await userEvent.click(screen.getByText("Mimo bantu aku paham"));
+  expect(request).not.toHaveBeenCalled();
+  await userEvent.click(
+    screen.getByRole("button", { name: "Pecah jadi langkah kecil" }),
+  );
+  expect(await screen.findByText("Air berubah menjadi uap.")).toBeTruthy();
+  expect(screen.queryByText("Uap mendingin dan membentuk awan.")).toBeNull();
+  expect(screen.queryByRole("group", { name: "Cek pemahaman" })).toBeNull();
+  await userEvent.click(
+    screen.getByRole("button", { name: "Langkah berikutnya" }),
+  );
+  await userEvent.click(
+    screen.getByRole("radio", { name: "Membentuk titik air" }),
+  );
+  await userEvent.click(screen.getByRole("button", { name: "Cek jawabanku" }));
+  expect(screen.getByText("Tepat! Kamu bisa lanjut.")).toBeTruthy();
+  expect(request).toHaveBeenCalledExactlyOnceWith(
+    "/attempts/attempt/questions/q1/help",
+    { mode: "steps" },
+  );
+});
+
 describe("planner yang dapat ditinjau", () => {
   it("melindungi kegiatan selesai dalam draf", async () => {
     render(
