@@ -24,6 +24,7 @@ export function SettingsDesign({
   account,
   signOut,
   onBack,
+  onAccount,
 }: {
   profile: Profile;
   onSave: (p: Profile) => void;
@@ -31,6 +32,7 @@ export function SettingsDesign({
   account: Session;
   signOut: () => void;
   onBack: () => void;
+  onAccount?: () => void;
 }) {
   const [value, setValue] = useState(profile),
     [tab, setTab] = useState("accessibility"),
@@ -88,6 +90,18 @@ export function SettingsDesign({
     <>
       <div className="stitch-settings final-settings">
         <p className="sr-only">{account.user.email || "Akun demo anonim"}</p>
+        {account.user.is_anonymous && onAccount && (
+          <div className="ui-container py-3 flex flex-wrap items-center justify-between gap-3">
+            <p>Kamu sedang mencoba demo Manda. Punya akun sendiri?</p>
+            <button
+              type="button"
+              className="workspace-button"
+              onClick={onAccount}
+            >
+              Masuk atau daftar dengan email
+            </button>
+          </div>
+        )}
         <nav
           aria-label="Bagian pengaturan"
           className="final-settings-tabs flex gap-3 max-w-[1200px] w-full mx-auto px-margin py-4 ui-container"

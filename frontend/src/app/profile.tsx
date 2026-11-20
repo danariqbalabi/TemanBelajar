@@ -23,6 +23,8 @@ export function Account({
   onContinue,
   onDemo,
   onBack,
+  onLogin,
+  onClearError,
   run,
   busy,
   error,
@@ -31,6 +33,8 @@ export function Account({
   onContinue: () => void;
   onDemo?: () => void;
   onBack: () => void;
+  onLogin?: () => void;
+  onClearError?: () => void;
   run: Run;
   busy: boolean;
   error: string;
@@ -43,9 +47,10 @@ export function Account({
         run={run}
         busy={busy}
         error={error}
+        onClearError={onClearError}
       />
     );
-  return <Landing onContinue={onContinue} error={error} />;
+  return <Landing onContinue={onContinue} onLogin={onLogin} error={error} />;
 }
 export function Onboarding(props: {
   initial: Profile;
@@ -57,6 +62,7 @@ export function Onboarding(props: {
   return <OnboardingDesign {...props} />;
 }
 export function Settings(props: {
+  onAccount?: () => void;
   profile: Profile;
   onSave: (p: Profile) => void;
   busy: boolean;

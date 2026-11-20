@@ -9,7 +9,7 @@ import {
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { defaultProfile } from "../src/lib/types";
-import { auth } from "../src/lib/api";
+import { auth, ApiError } from "../src/lib/api";
 const { request, authEvents } = vi.hoisted(() => ({
   request: vi.fn(),
   authEvents: {
@@ -17,13 +17,26 @@ const { request, authEvents } = vi.hoisted(() => ({
       | undefined
       | ((
           event: string,
-          session: { user: { id: string; is_anonymous: boolean } },
+          session: {
+            user: {
+              id: string;
+              is_anonymous: boolean;
+              user_metadata?: { display_name?: string };
+            };
+          },
         ) => void),
   },
 }));
 vi.mock("../src/lib/api", () => ({
   api: request,
-  ApiError: class extends Error {},
+  ApiError: class extends Error {
+    constructor(
+      public status: number,
+      message: string,
+    ) {
+      super(message);
+    }
+  },
   auth: {
     auth: {
       getSession: async () => ({
@@ -39,6 +52,9 @@ vi.mock("../src/lib/api", () => ({
         });
         return { error: null };
       },
+      setSession: vi.fn(),
+      exchangeCodeForSession: vi.fn(),
+      verifyOtp: vi.fn(),
     },
   },
   mutation: (path: string, body: object, method = "POST") => {
@@ -81,6 +97,111 @@ afterEach(() => {
   cleanup();
   request.mockReset();
   authEvents.listener = undefined;
+  window.history.replaceState(null, "", "/");
+  vi.restoreAllMocks();
+});
+
+it("tautan email langsung membuka ruang belajar tanpa klik landing lagi", async () => {
+  window.history.replaceState(
+    null,
+    "",
+    "/auth/callback#access_token=valid&refresh_token=valid-refresh&type=magiclink",
+  );
+  const session = {
+    user: {
+      id: "rani",
+      is_anonymous: false,
+      user_metadata: { display_name: "Rani" },
+    },
+  };
+  vi.mocked(auth!.auth.setSession).mockResolvedValue({
+    data: { session, user: session.user },
+    error: null,
+  } as unknown as Awaited<
+    ReturnType<NonNullable<typeof auth>["auth"]["setSession"]>
+  >);
+  request.mockImplementation(async (path: string) =>
+    path === "/profile"
+      ? { ...defaultProfile, display_name: "Rani" }
+      : path.startsWith("/recommendations")
+        ? null
+        : { items: [] },
+  );
+  render(<Home />);
+  expect(
+    await screen.findByRole("heading", { name: /Hai, Rani!/ }),
+  ).toBeTruthy();
+  expect(
+    screen.queryByRole("heading", { name: /Setiap orang punya/ }),
+  ).toBeNull();
+  expect(location.hash).toBe("");
+});
+
+it("tautan kedaluwarsa membuka form masuk dan tidak masuk sebagai Manda", async () => {
+  window.history.replaceState(
+    null,
+    "",
+    "/auth/callback#error=access_denied&error_code=otp_expired",
+  );
+  render(<Home />);
+  expect(
+    await screen.findByRole("heading", { name: "Masuk ke ruang belajarmu" }),
+  ).toBeTruthy();
+  expect(screen.getByRole("alert").textContent).toMatch(/kedaluwarsa/);
+  expect(
+    screen.queryByRole("navigation", { name: "Navigasi utama" }),
+  ).toBeNull();
+  expect(request).not.toHaveBeenCalled();
+});
+
+it("akun baru memakai nama pendaftaran dan membuka pengaturan awal", async () => {
+  window.history.replaceState(
+    null,
+    "",
+    "/auth/callback#access_token=valid&refresh_token=valid-refresh&type=signup",
+  );
+  const session = {
+    user: {
+      id: "rani-baru",
+      is_anonymous: false,
+      user_metadata: { display_name: "Rani" },
+    },
+  };
+  vi.mocked(auth!.auth.setSession).mockResolvedValue({
+    data: { session, user: session.user },
+    error: null,
+  } as unknown as Awaited<
+    ReturnType<NonNullable<typeof auth>["auth"]["setSession"]>
+  >);
+  request.mockImplementation(async (path: string) => {
+    if (path === "/profile") throw new ApiError(404, "belum ada");
+    return path.startsWith("/recommendations") ? null : { items: [] };
+  });
+  render(<Home />);
+  expect(
+    await screen.findByRole("heading", {
+      name: "Belajar nyaman, mulai dari kamu",
+    }),
+  ).toBeTruthy();
+  expect(
+    (screen.getByLabelText("Nama panggilan") as HTMLInputElement).value,
+  ).toBe("Rani");
+});
+
+it("tombol masuk tetap membuka form meski sesi demo tersimpan", async () => {
+  request.mockImplementation(async (path: string) =>
+    path === "/profile"
+      ? defaultProfile
+      : path.startsWith("/recommendations")
+        ? null
+        : { items: [] },
+  );
+  render(<Home />);
+  await userEvent.click(await screen.findByRole("link", { name: "Masuk" }));
+  expect(
+    await screen.findByRole("button", { name: "Masuk ke akun" }),
+  ).toBeTruthy();
+  expect(screen.getByRole("button", { name: "Daftar" })).toBeTruthy();
 });
 it("ignores a late workspace response after switching accounts", async () => {
   let second = false;
@@ -299,9 +420,7 @@ it("starts the Mimo guide only after choosing demo and allows skipping", async (
     await screen.findByRole("link", { name: "Mulai Belajar Gratis" }),
   );
   expect(screen.queryByText("Lewati tur")).toBeNull();
-  await userEvent.click(
-    screen.getByRole("link", { name: "Coba Demo Materi Fotosintesis" }),
-  );
+  await userEvent.click(screen.getByRole("link", { name: "Coba demo Manda" }));
   expect(
     await screen.findByRole("heading", { name: "Mulai dari satu konsep" }),
   ).toBeTruthy();

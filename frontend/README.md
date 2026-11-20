@@ -21,6 +21,9 @@ bukan service role. Backend lokal berjalan pada port 8000 dan frontend port
 email confirmation/tautan masuk, masukkan origin frontend pada daftar redirect
 URL Supabase.
 
+Lihat [panduan akun](AUTH.md) untuk konfigurasi callback email, daftar dan login
+dengan kata sandi, pengujian preview, serta demo Manda.
+
 ## alur yang tersedia
 
 | layar desain | implementasi |

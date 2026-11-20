@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { api, ApiError, auth, mutation } from "@/lib/api";
 import { userMessage } from "@/lib/errors";
+import { finishAuthReturn } from "@/lib/auth-return";
 import {
   defaultProfile,
   type Material,
@@ -48,6 +49,7 @@ async function readWorkspace(minutes: number) {
 }
 export default function Home() {
   const [tour, setTour] = useState(false);
+  const [accountEntry, setAccountEntry] = useState(false);
   const [account, setAccount] = useState<Session | null>(null),
     [ready, setReady] = useState(false),
     [loadedUserId, setLoadedUserId] = useState<string | null>(null),
@@ -105,23 +107,41 @@ export default function Home() {
       queueMicrotask(() => setReady(true));
       return;
     }
-    auth.auth
-      .getSession()
-      .then(({ data }) => {
-        setAccount(data.session);
+    let alive = true;
+    let authRevision = 0;
+    const { data } = auth.auth.onAuthStateChange((event, s) => {
+      authRevision += 1;
+      setAccount(s);
+      if (event === "SIGNED_IN" && s) {
+        setLanding(false);
+        setAccountEntry(false);
+      }
+    });
+    const revision = authRevision;
+    finishAuthReturn(auth)
+      .then(({ session, callback }) => {
+        if (!alive) return;
+        if (callback || revision === authRevision) setAccount(session);
+        if (callback || (session && !session.user.is_anonymous))
+          setLanding(false);
         setReady(true);
       })
       .catch((e) => {
+        if (!alive) return;
+        setAccount(null);
+        setLanding(false);
+        setAccountEntry(true);
         setReady(true);
         setError(userMessage(e));
       });
-    const { data } = auth.auth.onAuthStateChange((_event, s) => {
-      setAccount(s);
-      setReady(true);
-    });
-    return () => data.subscription.unsubscribe();
+    return () => {
+      alive = false;
+      data.subscription.unsubscribe();
+    };
   }, []);
   const userId = account?.user.id;
+  const anonymous = account?.user.is_anonymous;
+  const accountName = account?.user.user_metadata?.display_name;
   useEffect(() => {
     const epoch = ++workspaceEpoch.current;
     if (!userId) return;
@@ -136,15 +156,27 @@ export default function Home() {
         retry.current = null;
         setError("");
         setNotice("");
+        let needsProfile = false;
         const loadedProfile = await api<Profile>("/profile").catch((e) => {
-          if (e instanceof ApiError && e.status === 404) return defaultProfile;
+          if (e instanceof ApiError && e.status === 404) {
+            needsProfile = !anonymous;
+            const name = accountName;
+            return {
+              ...defaultProfile,
+              display_name: needsProfile
+                ? typeof name === "string" && name.trim()
+                  ? name.trim().slice(0, 80)
+                  : "Teman"
+                : "Manda",
+            };
+          }
           throw e;
         });
         const data = await readWorkspace(loadedProfile.daily_minutes);
         if (!alive || epoch !== workspaceEpoch.current) return;
         dailyMinutes.current = loadedProfile.daily_minutes;
         setProfile(loadedProfile);
-        setOnboarding(false);
+        setOnboarding(needsProfile);
         applyWorkspace(data);
         setLoadedUserId(userId);
       })
@@ -154,7 +186,7 @@ export default function Home() {
     return () => {
       alive = false;
     };
-  }, [userId, loadRevision, applyWorkspace]);
+  }, [userId, anonymous, accountName, loadRevision, applyWorkspace]);
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.altKey && e.key.toLowerCase() === "a") {
@@ -248,12 +280,22 @@ export default function Home() {
         <p role="status">Menyiapkan ruang belajarmu...</p>
       </main>
     );
-  if (landing || !account)
+  if (landing || !account || accountEntry)
     return (
       <Account
         landing={landing}
+        onClearError={() => {
+          setError("");
+          retry.current = null;
+        }}
+        onLogin={() => {
+          setLanding(false);
+          setAccountEntry(true);
+          setError("");
+        }}
         onDemo={() => setTour(true)}
         onContinue={() => {
+          setAccountEntry(false);
           if (account?.user.is_anonymous) {
             setPage("Beranda");
             setTour(true);
@@ -451,6 +493,10 @@ export default function Home() {
           onSave={(p) => run(() => saveProfile(p))}
           busy={busy}
           account={account}
+          onAccount={() => {
+            setAccountEntry(true);
+            setError("");
+          }}
           signOut={() =>
             run(async () => {
               const { error: signOutError } = await auth!.auth.signOut();

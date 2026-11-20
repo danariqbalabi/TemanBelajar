@@ -1,7 +1,12 @@
 import { createClient } from "@supabase/supabase-js";
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-export const auth = url && key ? createClient(url, key) : null;
+export const auth =
+  url && key
+    ? createClient(url, key, {
+        auth: { detectSessionInUrl: false, flowType: "implicit" },
+      })
+    : null;
 export class ApiError extends Error {
   status: number;
   constructor(status: number, message: string) {

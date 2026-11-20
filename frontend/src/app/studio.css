@@ -1746,6 +1746,26 @@
   gap: 16px;
   margin-top: 8px;
 }
+.workspace-auth-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 12px;
+  background: #f8f7f2;
+}
+.workspace-auth-tabs button {
+  flex: 1;
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  font-weight: 700;
+}
+.workspace-auth-tabs button[aria-pressed="true"] {
+  background: #273b35;
+  color: white;
+}
 .workspace-auth-divider {
   display: flex;
   align-items: center;
