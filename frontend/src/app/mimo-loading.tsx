@@ -1,63 +1,72 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import { useEffect, useState } from "react";
 
-export function MimoPageCue({
-  page,
-  showMimo,
-}: {
-  page: string;
-  showMimo: boolean;
-}) {
-  const [visible, setVisible] = useState(true);
-  useEffect(() => {
-    const timer = window.setTimeout(() => setVisible(false), 960);
-    return () => window.clearTimeout(timer);
-  }, []);
-
-  if (!visible) return null;
-  return (
-    <div className="mimo-page-overlay">
-      <MimoLoading label={page} kind="navigation" showMimo={showMimo} />
-    </div>
-  );
-}
+const CUE_DURATION = 750;
 
 export function MimoLoading({
-  label,
-  kind = "request",
-  showMimo = true,
+  page,
+  pendingLabel,
+  showMimo,
+  reducedMotion,
+  highContrast,
 }: {
-  label: string;
-  kind?: "navigation" | "request" | "startup";
-  showMimo?: boolean;
+  page: string | null;
+  pendingLabel: string | null;
+  showMimo: boolean;
+  reducedMotion: boolean;
+  highContrast: boolean;
 }) {
-  const navigation = kind === "navigation";
+  const [previousPage, setPreviousPage] = useState(page);
+  const [navigation, setNavigation] = useState<string | null>(null);
+  if (page !== previousPage) {
+    setPreviousPage(page);
+    setNavigation(page && previousPage ? page : null);
+  }
+
+  useEffect(() => {
+    if (!navigation) return;
+    const timer = window.setTimeout(() => setNavigation(null), CUE_DURATION);
+    return () => window.clearTimeout(timer);
+  }, [navigation]);
+
+  const label = pendingLabel || navigation;
+  const [lastLabel, setLastLabel] = useState(label);
+  if (label && label !== lastLabel) setLastLabel(label);
+
   return (
     <div
-      className="mimo-loading"
-      data-kind={kind}
-      role={navigation ? undefined : "status"}
-      aria-hidden={navigation || undefined}
+      className="mimo-page-overlay"
+      data-visible={!!label}
+      data-kind={
+        pendingLabel ? "pending" : navigation ? "navigation" : undefined
+      }
+      data-reduced-motion={reducedMotion}
+      data-high-contrast={highContrast}
+      aria-hidden={pendingLabel ? undefined : true}
+      role={pendingLabel ? "status" : undefined}
     >
-      {showMimo && (
-        <span className="mimo-loading-mascot" aria-hidden="true">
-          <Image
-            src="/design/mimo-final.png"
-            alt=""
-            width={navigation ? 88 : 40}
-            height={navigation ? 88 : 40}
-            loading="eager"
-          />
-        </span>
-      )}
-      <div className="mimo-loading-copy">
-        {navigation && (
-          <span className="mimo-page-title">
-            {showMimo ? "Yuk, lanjut bareng Mimo!" : "Pindah halaman"}
-          </span>
+      <div className="mimo-page-popup">
+        {showMimo && (
+          <div className="mimo-page-art" aria-hidden="true">
+            <span className="mimo-spark mimo-spark-left">✦</span>
+            <Image
+              src="/design/mimo-cheer-v2.png"
+              width={144}
+              height={144}
+              alt=""
+              loading="eager"
+            />
+            <span className="mimo-spark mimo-spark-right">✧</span>
+          </div>
         )}
-        <span>{label}</span>
-        <span className="mimo-loading-track" aria-hidden="true" />
+        <div className="mimo-page-caption">
+          {label || lastLabel}
+          <span className="mimo-page-dots" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+          </span>
+        </div>
       </div>
     </div>
   );

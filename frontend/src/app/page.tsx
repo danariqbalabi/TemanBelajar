@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { api, ApiError, auth, mutation } from "@/lib/api";
 import { userMessage } from "@/lib/errors";
@@ -275,14 +276,38 @@ export default function Home() {
     setOnboarding(false);
     setNotice("Preferensi tersimpan. Ritmemu bisa diubah kapan saja.");
   }
-  if (!ready)
+  const prefs = profile.preferences;
+  const showAccount = landing || !account || accountEntry;
+  const awaitingWorkspace = ready && !showAccount && loadedUserId !== userId;
+  const workspacePage =
+    ready && !showAccount && !awaitingWorkspace && !onboarding ? page : null;
+  const loadingLabel = !ready
+    ? "Menyiapkan ruang belajarmu"
+    : awaitingWorkspace
+      ? loadFailure
+        ? null
+        : "Memuat ruang belajarmu"
+      : busy
+        ? "Sebentar, ya"
+        : null;
+  function withLoading(content: ReactNode) {
     return (
-      <main className="welcome">
-        <MimoLoading kind="startup" label="Menyiapkan ruang belajarmu…" />
-      </main>
+      <>
+        {content}
+        <MimoLoading
+          page={workspacePage}
+          pendingLabel={loadingLabel}
+          showMimo={prefs.show_mimo}
+          reducedMotion={prefs.reduced_motion}
+          highContrast={prefs.high_contrast}
+        />
+      </>
     );
-  if (landing || !account || accountEntry)
-    return (
+  }
+
+  if (!ready) return withLoading(null);
+  if (!account || showAccount)
+    return withLoading(
       <Account
         landing={landing}
         onClearError={() => {
@@ -307,10 +332,10 @@ export default function Home() {
         run={run}
         busy={busy}
         error={error}
-      />
+      />,
     );
-  if (loadedUserId !== userId)
-    return (
+  if (awaitingWorkspace)
+    return withLoading(
       <main className="welcome">
         {loadFailure ? (
           <section>
@@ -326,24 +351,21 @@ export default function Home() {
               Kembali ke halaman awal
             </button>
           </section>
-        ) : (
-          <MimoLoading kind="startup" label="Memuat ruang belajarmu…" />
-        )}
-      </main>
+        ) : null}
+      </main>,
     );
   if (onboarding)
-    return (
+    return withLoading(
       <Onboarding
         initial={profile}
         onBack={() => setOnboarding(false)}
         onSave={(p) => run(() => saveProfile(p))}
         busy={busy}
         error={error}
-      />
+      />,
     );
-  const selected = materials.find((m) => m.id === active?.material_id),
-    prefs = profile.preferences;
-  return (
+  const selected = materials.find((m) => m.id === active?.material_id);
+  return withLoading(
     <DesignShell
       profile={profile}
       page={page}
@@ -405,9 +427,6 @@ export default function Home() {
         <p className="success" role="status">
           {notice}
         </p>
-      )}
-      {busy && (
-        <MimoLoading label="Memproses permintaan…" showMimo={prefs.show_mimo} />
       )}
       {page === "Beranda" && profile.onboarding_step < 4 && (
         <section className="stitch-screen bg-secondary-container rounded-2xl p-space-lg mb-space-lg">
@@ -546,6 +565,6 @@ export default function Home() {
           onMaterials={() => setPage("Materi Saya")}
         />
       )}
-    </DesignShell>
+    </DesignShell>,
   );
 }
