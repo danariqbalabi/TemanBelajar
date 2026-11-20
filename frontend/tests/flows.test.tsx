@@ -344,20 +344,30 @@ describe("alur belajar", () => {
     await userEvent.click(
       screen.getByRole("button", { name: "Cek pemahaman" }),
     );
-    const prompt = await screen.findByRole("heading", { name: "Apa peran cahaya?" });
+    const prompt = await screen.findByRole("heading", {
+      name: "Apa peran cahaya?",
+    });
     expect(document.activeElement).toBe(prompt);
-    await userEvent.click(screen.getByRole("button", { name: "Bacakan soal dan pilihan" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: "Bacakan soal dan pilihan" }),
+    );
     expect(screen.getByText(/Baca nyaring belum tersedia/)).toBeTruthy();
     expect(screen.queryByText("Apa bahan fotosintesis?")).toBeNull();
     screen.getByLabelText("Energi").focus();
     await userEvent.keyboard(" ");
     await userEvent.tab();
-    expect(document.activeElement).toBe(screen.getByRole("button", { name: "Periksa Jawaban Sekarang" }));
+    expect(document.activeElement).toBe(
+      screen.getByRole("button", { name: "Periksa Jawaban Sekarang" }),
+    );
     await userEvent.keyboard("{Enter}");
     expect(await screen.findByText("Cahaya menyediakan energi.")).toBeTruthy();
-    expect(document.activeElement).toBe(screen.getByRole("heading", { name: "Tepat!" }));
+    expect(document.activeElement).toBe(
+      screen.getByRole("heading", { name: "Tepat!" }),
+    );
     await userEvent.tab();
-    expect(document.activeElement).toBe(screen.getByText("Jelaskan langkah ini"));
+    expect(document.activeElement).toBe(
+      screen.getByText("Jelaskan langkah ini"),
+    );
     await userEvent.keyboard("{Enter}");
     const nextStep = screen.getByRole("button", { name: "Berikutnya" });
     await userEvent.tab();
@@ -628,6 +638,47 @@ it("memisahkan jawaban teramati dari estimasi model yang belum tersedia", async 
 });
 
 import { ReaderDesign } from "../src/app/design-reader";
+it("diagram siklus air hanya tampil di course dan mode visual yang sesuai", () => {
+  const props = {
+    material: {
+      ...material,
+      id: "demo-siklus-air",
+      concepts: [{ ...material.concepts[0], id: "perjalanan-air" }],
+    },
+    session: {
+      ...session,
+      material_id: "demo-siklus-air",
+      concept_id: "perjalanan-air",
+      mode: "explore" as const,
+    },
+    preferences: defaultProfile.preferences,
+    draft: "",
+    setDraft: vi.fn(),
+    busy: false,
+    feedback: null,
+    speaking: false,
+    onSpeak: vi.fn(),
+    update: vi.fn(),
+    onPractice: vi.fn(),
+    onSettings: vi.fn(),
+    onBack: vi.fn(),
+    elapsed: 0,
+    displayName: "Manda",
+  };
+  const { rerender } = render(<ReaderDesign {...props} />);
+  expect(screen.getByRole("img", { name: /Diagram siklus air/ })).toBeTruthy();
+  rerender(
+    <ReaderDesign {...props} session={{ ...props.session, mode: "reading" }} />,
+  );
+  expect(screen.queryByRole("img", { name: /Diagram siklus air/ })).toBeNull();
+  rerender(
+    <ReaderDesign
+      {...props}
+      material={{ ...props.material, id: "unggahan" }}
+    />,
+  );
+  expect(screen.queryByRole("img", { name: /Diagram siklus air/ })).toBeNull();
+});
 it.each(["reading", "standard", "focus", "explore", "transcript"] as const)(
   "mode %s memakai materi aktif tanpa contoh anatomi dari ekspor",
   (mode) => {

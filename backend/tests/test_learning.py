@@ -24,6 +24,39 @@ def test_unauthenticated_cannot_access_learning():
         assert client.get("/v1/demo").status_code == 200
 
 
+def test_water_cycle_course_supports_visual_session_and_practice(client):
+    course = "demo-siklus-air"
+    catalog = client.get("/v1/materials").json()["items"]
+    assert any(item["id"] == course for item in catalog)
+    response = client.post(
+        "/v1/sessions",
+        json={"request_id": request_id(), "material_id": course, "mode": "explore"},
+    )
+    assert response.status_code == 201, response.text
+    session = response.json()
+    assert session["concept_id"] == "perjalanan-air"
+    response = client.post(
+        "/v1/attempts",
+        json={"request_id": request_id(), "session_id": session["id"]},
+    )
+    assert response.status_code == 201, response.text
+    attempt = response.json()
+    assert len(attempt["questions"]) == 3
+    for question_id, choice in [("air-1", 0), ("air-2", 1), ("air-3", 2)]:
+        response = client.post(
+            f"/v1/attempts/{attempt['id']}/answers",
+            json={
+                "request_id": request_id(),
+                "expected_version": attempt["version"],
+                "question_id": question_id,
+                "selected_index": choice,
+            },
+        )
+        assert response.status_code == 200, response.text
+        attempt = response.json()
+        assert attempt["answers"][question_id]["correct"] is True
+
+
 def test_switch_mode_preserves_progress_and_rejects_stale_write(client):
     session = create_session(client)
     body = {

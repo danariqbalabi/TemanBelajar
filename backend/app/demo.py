@@ -1,5 +1,6 @@
 """Original, reviewed sample text. Demo results never represent real learners."""
 
+from app.diagram_course import SIKLUS_AIR
 from app.schemas import Material
 
 FOTOSINTESIS = Material.model_validate(
@@ -177,7 +178,7 @@ PYTHAGORAS = Material.model_validate(
     }
 )
 
-DEMO_MATERIALS = {m.id: m for m in [FOTOSINTESIS, PYTHAGORAS]}
+DEMO_MATERIALS = {m.id: m for m in [FOTOSINTESIS, PYTHAGORAS, SIKLUS_AIR]}
 
 # Worked practice history for one demo course.
 MANDA_COURSE_ID = "manda-pythagoras"

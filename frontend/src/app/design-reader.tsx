@@ -2,6 +2,7 @@
 import { useRef, useState } from "react";
 import { readingStyle } from "./reading-style";
 import { UiIcon } from "./workspace-ui";
+import { WaterCycleDiagram } from "./water-cycle-diagram";
 import type { Material, LearningSession, Preferences } from "@/lib/types";
 
 const formats = [
@@ -226,6 +227,9 @@ export function ReaderDesign({
                     </details>
                   </div>
                 )}
+                {visual &&
+                  material.id === "demo-siklus-air" &&
+                  concept.id === "perjalanan-air" && <WaterCycleDiagram />}
                 {visual && caption && (
                   <details
                     className="lesson-visual"
