@@ -4,9 +4,16 @@
 
 TemanBelajar adalah web app pembelajaran inklusif dan adaptif yang dirancang untuk siswa SMP dan SMA. Siswa bisa membawa materi sendiri, memilih cara belajar yang sesuai dengan kebutuhannya, lalu mendapat saran dan rencana belajar berdasarkan hasil latihan. Mimo, bunglon 2D, menemani siswa saat mulai belajar dan meninjau langkah berikutnya.
 
-**status proyek:** backend mvp tersedia di branch `feat/backend-temanbelajar`. branch `feat/frontend-temanbelajar` menambahkan alur antarmuka dari akun dan onboarding sampai materi, sesi, latihan, rekomendasi, progres, dan planner berversi. verifikasi browser dan deployment masih menjadi pemeriksaan berikutnya.
+[Buka website TemanBelajar](https://temanbelajar-six.vercel.app/)
 
-lihat [panduan frontend](frontend/README.md), [panduan backend](backend/README.md), [kontrak api](backend/API.md), dan [evaluasi model](backend/models/README.md) untuk menjalankan serta menguji layanan.
+## Coba demo sebagai Manda
+
+1. Buka website dan pilih **Coba demo gratis**. Sesi demo memakai akun anonim, sehingga kamu bisa langsung mencoba tanpa mengisi email atau kata sandi.
+2. Dari **Beranda**, buka bagian materi dan pilih **Pythagoras: Mencari Sisi Segitiga**. Sesuaikan tampilan bacaan atau pilih mode belajar yang tersedia.
+3. Kerjakan satu soal dan periksa jawabannya. Coba pilih jawaban keliru untuk melihat bagaimana **Jelaskan langkah ini** membantu memeriksa pilihan tersebut dan meninjau pembahasannya.
+4. Buka **Progres** dan pilih materi Pythagoras untuk melihat riwayat contoh Manda dan saran belajar berikutnya. Buka **Rencana Belajar** untuk melihat cara mengatur jadwal.
+
+Tur Mimo bisa diikuti untuk mengenal navigasi atau dilewati jika ingin langsung mencoba sendiri.
 
 ## Masalah yang ingin diselesaikan
 
@@ -21,7 +28,7 @@ Materi sekolah sering tersedia dalam satu format, sementara siswa bisa membutuhk
 
 Siswa dapat memilih beberapa dukungan sekaligus dan mengubahnya saat belajar. Preferensi bersifat opsional dan dipilih tanpa menyebut diagnosis. Target desain aksesibilitas adalah WCAG 2.2 AA untuk alur inti.
 
-## Alur MVP
+## Alur belajar
 
 1. **Tentukan tujuan.** Pilih bantuan belajar yang dibutuhkan, mata pelajaran, dan waktu yang tersedia.
 2. **Buka materi.** Coba materi contoh, unggah PDF berbasis teks, atau tempel teks. Gemini membantu menyusun ringkasan, konsep, dan latihan dengan rujukan ke materi asli.
@@ -30,9 +37,9 @@ Siswa dapat memilih beberapa dukungan sekaligus dan mengubahnya saat belajar. Pr
 5. **Pilih langkah berikutnya.** Tinjau alasan rekomendasi dan perkiraan durasinya. Siswa bisa mengikuti, mengganti, atau melewati saran.
 6. **Tinjau jadwal.** Bandingkan usulan dengan jadwal saat ini. Siswa bisa menerima, mengubah, menunda, atau memulihkan jadwal.
 
-## Rencana teknologi
+## Teknologi
 
-| Bagian | Teknologi yang direncanakan |
+| Bagian | Teknologi yang digunakan |
 | --- | --- |
 | Antarmuka | Next.js, React, TypeScript, dan CSS dengan design tokens |
 | Akun, data, dan penyimpanan privat | Supabase Auth, PostgreSQL, dan Storage |
@@ -42,5 +49,6 @@ Siswa dapat memilih beberapa dukungan sekaligus dan mengubahnya saat belajar. Pr
 
 ## Dokumentasi dan alat
 
+- [Panduan frontend](frontend/README.md) dan [panduan backend](backend/README.md) menjelaskan cara menjalankan dan menguji aplikasi secara lokal. Lihat juga [kontrak API](backend/API.md) serta [evaluasi model BKT](backend/models/README.md).
 - [DESIGN.md](./DESIGN.md) memuat design tokens, aturan penggunaan Mimo, pola aksesibilitas, inventaris 24 layar, dan alur interaksi.
-- Google Stitch digunakan untuk eksplorasi desain dan prototipe antarmuka. OpenAI Codex digunakan untuk membantu dokumentasi, implementasi backend, pengujian, serta pipeline training model. dataset ASSISTments, pustaka, dan batas evaluasi dicantumkan dalam dokumentasi backend dan model.
+- Google Stitch digunakan untuk eksplorasi desain dan prototipe antarmuka. OpenAI Codex membantu dokumentasi, implementasi backend, pengujian, dan pelatihan model. Dataset ASSISTments, pustaka, dan batas evaluasi dicantumkan dalam dokumentasi backend dan model.
