@@ -99,7 +99,6 @@ const plan: Plan = {
   daily_minutes: 15,
   version: 2,
   history: {},
-  proposals: [],
   activities: [
     {
       id: "activity",

@@ -76,7 +76,7 @@ export function PlanDesign({
   const activities = (plan?.activities || []).toSorted((a, b) =>
     a.start_at.localeCompare(b.start_at),
   );
-  const pending = plan?.proposals.find((p) => p.status === "pending");
+  const pending = plan?.proposals?.find((p) => p.status === "pending");
   const activeDay = new Date();
   activeDay.setDate(activeDay.getDate() + dayOffset);
   const dayKey = (d: Date) => d.toLocaleDateString("en-CA", { timeZone: zone });
