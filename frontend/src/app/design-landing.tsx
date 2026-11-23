@@ -7,14 +7,17 @@ import { MimoMascot } from "./mimo-mascot";
 export function Landing({
   onContinue,
   onLogin,
+  onRegister,
   error,
 }: {
   onContinue: () => void;
   onLogin?: () => void;
+  onRegister?: () => void;
   error: string;
 }) {
   const header = useRef<HTMLElement>(null);
   useScrollNavbar(header);
+  const register = onRegister || onLogin || onContinue;
   return (
     <>
       <div className="final-design final-screen-1 min-h-screen bg-canvas text-primary antialiased selection:bg-mint selection:text-primary relative overflow-x-hidden stitch-shell stitch-landing">
@@ -89,10 +92,10 @@ export function Landing({
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  onContinue();
+                  register();
                 }}
               >
-                <span>Mulai Belajar Gratis</span>
+                <span>Daftar gratis</span>
                 <span
                   className="material-symbols-outlined text-base"
                   aria-hidden="true"
@@ -152,7 +155,7 @@ export function Landing({
                     onContinue();
                   }}
                 >
-                  <span>Mulai belajar</span>
+                  <span>Coba demo gratis</span>
                   <span
                     className="material-symbols-outlined text-lg"
                     aria-hidden="true"
@@ -164,7 +167,7 @@ export function Landing({
                   className="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-surface hover:bg-mint-tint border-2 border-primary text-primary text-base font-bold px-7 py-3.5 rounded-xl shadow-zine-sm hover:shadow-zine transition-all"
                   href="#cara-kerja"
                 >
-                  Lihat Cara Kerjanya
+                  Lihat cara kerja
                 </a>
               </div>
 
@@ -507,7 +510,7 @@ export function Landing({
                     onContinue();
                   }}
                 >
-                  Coba di Demo Materi →
+                  Coba demo gratis →
                 </a>
               </div>
             </div>
@@ -586,7 +589,7 @@ export function Landing({
                       onContinue();
                     }}
                   >
-                    <span>Coba Demo Fotosintesis</span>
+                    <span>Coba demo gratis</span>
                     <span
                       className="material-symbols-outlined text-base"
                       aria-hidden="true"
@@ -595,7 +598,7 @@ export function Landing({
                     </span>
                   </a>
                   <span className="text-xs text-text-secondary font-medium">
-                    Gratis · Tanpa perlu daftar kartu
+                    Gratis · Tanpa perlu daftar
                   </span>
                 </div>
               </div>
@@ -626,20 +629,12 @@ export function Landing({
                   </p>
                   <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
                     <div className="flex items-center gap-2">
-                      <button
-                        className="bg-primary hover:bg-primary-hover text-surface text-xs font-extrabold px-4 py-2.5 rounded-xl shadow-sm transition-transform active:scale-95"
-                        type="button"
-                        onClick={onContinue}
-                      >
-                        Mulai Sekarang (15 Menit)
-                      </button>
-                      <button
-                        className="text-xs font-bold text-primary underline underline-offset-4 hover:text-primary-hover px-2 py-1"
-                        type="button"
-                        onClick={onContinue}
-                      >
-                        Lihat Alasannya
-                      </button>
+                      <span className="bg-primary text-surface text-xs font-extrabold px-4 py-2.5 rounded-xl shadow-sm">
+                        Mulai 15 menit
+                      </span>
+                      <span className="text-xs font-bold text-primary underline underline-offset-4 px-2 py-1">
+                        Lihat alasannya
+                      </span>
                     </div>
                     <span className="text-[11px] font-bold text-primary/70">
                       Biologi · Bab 3
@@ -689,13 +684,9 @@ export function Landing({
                           </p>
                         </div>
                       </div>
-                      <button
-                        className="text-[11px] font-bold text-primary hover:underline"
-                        type="button"
-                        onClick={onContinue}
-                      >
+                      <span className="text-[11px] font-bold text-primary">
                         Geser ke Besok
-                      </button>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -847,10 +838,10 @@ export function Landing({
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
-                    onContinue();
+                    register();
                   }}
                 >
-                  <span>Daftar Gratis Sekarang</span>
+                  <span>Daftar gratis</span>
                   <span
                     className="material-symbols-outlined text-lg"
                     aria-hidden="true"
@@ -866,7 +857,7 @@ export function Landing({
                     onContinue();
                   }}
                 >
-                  Coba Demo Materi Fotosintesis
+                  Coba demo gratis
                 </a>
               </div>
               <p className="text-xs text-text-secondary mt-5 font-semibold">
@@ -914,11 +905,7 @@ export function Landing({
                 </a>
                 <a
                   className="hover:text-primary transition-colors"
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onContinue();
-                  }}
+                  href="#aksesibilitas"
                 >
                   Privasi Siswa
                 </a>

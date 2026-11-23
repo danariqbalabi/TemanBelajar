@@ -7,6 +7,7 @@ import { auth } from "@/lib/api";
 import { authCallbackUrl } from "@/lib/auth-return";
 import type { Run } from "./page";
 export function AccountDesign({
+  initialMode = "login",
   onBack,
   onDemo,
   run,
@@ -14,6 +15,7 @@ export function AccountDesign({
   error,
   onClearError,
 }: {
+  initialMode?: "login" | "register";
   onBack: () => void;
   onDemo?: () => void;
   run: Run;
@@ -22,7 +24,7 @@ export function AccountDesign({
   onClearError?: () => void;
 }) {
   const [email, setEmail] = useState("");
-  const [mode, setMode] = useState<"login" | "register" | "link">("login");
+  const [mode, setMode] = useState<"login" | "register" | "link">(initialMode);
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmation, setConfirmation] = useState("");
@@ -329,7 +331,7 @@ export function AccountDesign({
               if (!busy) demo();
             }}
           >
-            Coba demo Manda
+            Coba demo gratis
           </a>
           <p className="workspace-muted">
             Demo membuat ruang belajar sementara untuk menyimpan progresmu.

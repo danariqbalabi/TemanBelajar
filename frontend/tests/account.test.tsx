@@ -129,7 +129,7 @@ it("tautan email memakai callback dan pendaftaran tetap eksplisit", async () => 
 });
 it("demo Manda tetap bisa masuk tanpa email", async () => {
   show();
-  await userEvent.click(screen.getByRole("link", { name: "Coba demo Manda" }));
+  await userEvent.click(screen.getByRole("link", { name: "Coba demo gratis" }));
   expect(provider.signInAnonymously).toHaveBeenCalledTimes(1);
   expect(provider.signInWithPassword).not.toHaveBeenCalled();
 });
