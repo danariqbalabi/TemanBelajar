@@ -347,10 +347,10 @@ export function OnboardingDesign({
                 style={{
                   ...readingStyle(value.preferences),
                   background: value.preferences.high_contrast
-                    ? "white"
+                    ? "rgb(var(--tb-surface))"
                     : undefined,
                   color: value.preferences.high_contrast
-                    ? "#10251b"
+                    ? "rgb(var(--tb-deep))"
                     : undefined,
                 }}
               >

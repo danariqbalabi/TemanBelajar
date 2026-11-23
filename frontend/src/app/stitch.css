@@ -116,7 +116,7 @@
 }
 .stitch-reason button {
   background: rgb(var(--tb-deep-alt));
-  color: white;
+  color: rgb(var(--tb-on-primary));
   padding: 12px 20px;
   border: 0;
   border-radius: 12px;
@@ -173,7 +173,7 @@
   right: 24px;
   z-index: 50;
   background: rgb(var(--tb-deep-alt));
-  color: white;
+  color: rgb(var(--tb-on-primary));
   padding: 12px 22px;
   border-radius: 12px;
   box-shadow: 0 4px 16px rgb(var(--tb-deep-alt) / 0.125);
@@ -311,7 +311,7 @@
 .stitch-quiz label {
   margin: 0;
   gap: 16px;
-  background: white;
+  background: rgb(var(--tb-surface));
 }
 .stitch-quiz label[data-selected="true"] {
   background: rgb(var(--tb-mint) / 0.4);
@@ -434,7 +434,7 @@
   }
   .stitch-screen {
     color: black;
-    background: white;
+    background: rgb(var(--tb-surface));
   }
   .stitch-screen section {
     break-inside: avoid;

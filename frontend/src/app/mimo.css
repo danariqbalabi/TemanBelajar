@@ -280,7 +280,7 @@
 }
 .high-contrast .mimo-wake,
 .high-contrast .mimo-control {
-  background: white;
+  background: rgb(var(--tb-surface));
   color: rgb(var(--tb-deep));
   border: 2px solid rgb(var(--tb-deep));
 }

@@ -1,0 +1,167 @@
+/* mode gelap: hijau tua yang hangat, bukan hitam pekat */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* permukaan */
+  --tb-canvas: 17 25 22;
+  --tb-canvas-alt: 22 32 28;
+  --tb-background: 17 25 22;
+  --tb-surface: 26 36 32;
+  --tb-surface-bright: 34 46 41;
+  --tb-surface-dim: 20 29 25;
+  --tb-surface-container-lowest: 26 36 32;
+  --tb-surface-container-low: 29 41 36;
+  --tb-surface-container: 33 46 40;
+  --tb-surface-container-high: 38 52 46;
+  --tb-surface-container-highest: 43 58 51;
+  --tb-surface-variant: 43 58 51;
+  --tb-surface-tint: 160 196 184;
+  --tb-paper: 33 32 26;
+  --tb-inverse-surface: 228 236 230;
+  --tb-inverse-on-surface: 26 36 32;
+
+  /* teks */
+  --tb-primary: 207 230 216;
+  --tb-primary-container: 207 230 216;
+  --tb-primary-hover: 226 242 232;
+  --tb-primary-pressed: 186 214 198;
+  --tb-on-primary: 16 32 26;
+  --tb-on-primary-container: 40 62 54;
+  --tb-on-surface: 228 236 230;
+  --tb-on-background: 228 236 230;
+  --tb-on-surface-variant: 180 192 185;
+  --tb-text-secondary: 176 190 182;
+  --tb-contrast-ink: 242 248 244;
+  --tb-deep: 226 240 232;
+  --tb-deep-alt: 220 236 228;
+  --tb-muted-ink: 164 178 170;
+  --tb-muted-gray: 152 162 156;
+  --tb-inverse-primary: 39 59 53;
+
+  /* garis */
+  --tb-divider: 50 63 57;
+  --tb-outline: 132 142 137;
+  --tb-outline-variant: 66 79 73;
+  --tb-control-border: 122 138 128;
+
+  /* hijau sekunder */
+  --tb-secondary: 158 198 170;
+  --tb-secondary-deep: 150 192 162;
+  --tb-on-secondary: 16 32 26;
+  --tb-secondary-container: 46 80 60;
+  --tb-on-secondary-container: 184 218 194;
+  --tb-secondary-fixed: 46 80 60;
+  --tb-secondary-fixed-dim: 60 96 74;
+  --tb-on-secondary-fixed: 220 240 226;
+  --tb-on-secondary-fixed-variant: 184 218 194;
+  --tb-primary-fixed: 40 60 52;
+  --tb-primary-fixed-dim: 58 80 72;
+  --tb-on-primary-fixed: 226 240 232;
+  --tb-on-primary-fixed-variant: 190 214 204;
+
+  /* aksen pastel versi malam */
+  --tb-mint: 46 80 60;
+  --tb-mint-tint: 27 43 35;
+  --tb-butter: 94 80 38;
+  --tb-butter-tint: 42 39 27;
+  --tb-lavender: 74 84 140;
+  --tb-lavender-tint: 32 33 50;
+  --tb-peach: 112 74 48;
+  --tb-peach-tint: 45 35 29;
+
+  /* status */
+  --tb-focus: 166 180 255;
+  --tb-success: 134 212 164;
+  --tb-warning: 240 202 124;
+  --tb-error: 255 168 166;
+  --tb-on-error: 60 10 12;
+  --tb-error-surface: 62 30 30;
+  --tb-error-container: 92 32 34;
+  --tb-on-error-container: 255 206 202;
+  --tb-tertiary: 188 198 255;
+  --tb-on-tertiary: 20 30 80;
+  --tb-tertiary-container: 62 72 140;
+  --tb-on-tertiary-container: 214 220 255;
+  --tb-tertiary-fixed: 50 58 110;
+  --tb-tertiary-fixed-dim: 72 82 140;
+  --tb-on-tertiary-fixed: 220 225 255;
+  --tb-on-tertiary-fixed-variant: 200 208 255;
+
+  /* lapisan peredup tur harus tetap gelap */
+  --tb-auto-15241d: 4 9 7;
+}
+
+/* header pakai permukaan hijau tua, bukan kertas krem */
+:root[data-theme="dark"] .final-design {
+  --nav-paper: rgb(var(--tb-surface));
+}
+
+/* logo png tulisannya gelap: dibalik biar kebaca, rona hijaunya tetap */
+:root[data-theme="dark"] .brand-logo {
+  filter: invert(1) hue-rotate(180deg) brightness(1.05);
+}
+
+/* transisi halus pas ganti tema, kecuali yang minta gerakan dikurangi */
+@media (prefers-reduced-motion: no-preference) {
+  :root.theme-switching,
+  :root.theme-switching * {
+    transition:
+      background-color 260ms ease,
+      border-color 260ms ease,
+      color 260ms ease !important;
+  }
+}
+
+/* tombol ganti tema */
+.theme-toggle {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border: 1px solid rgb(var(--tb-divider));
+  border-radius: 999px;
+  background: rgb(var(--tb-surface));
+  color: rgb(var(--tb-primary));
+  cursor: pointer;
+  overflow: hidden;
+}
+.theme-toggle:hover {
+  background: rgb(var(--tb-mint-tint));
+}
+.theme-toggle[aria-pressed] {
+  outline: none;
+  border-radius: 999px !important;
+}
+.theme-toggle[aria-pressed]:focus-visible {
+  outline: 3px solid rgb(var(--tb-focus));
+  outline-offset: 2px;
+}
+.theme-toggle svg {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  transition:
+    transform 420ms cubic-bezier(0.3, 1.4, 0.5, 1),
+    opacity 220ms ease;
+}
+.theme-toggle .theme-toggle-sun {
+  color: #e0a31c;
+}
+.theme-toggle .theme-toggle-moon {
+  color: #f3d77a;
+}
+.theme-toggle[aria-pressed="false"] .theme-toggle-moon,
+.theme-toggle[aria-pressed="true"] .theme-toggle-sun {
+  opacity: 0;
+  transform: translateY(18px) rotate(-90deg) scale(0.6);
+}
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle svg {
+    transition: opacity 120ms ease;
+  }
+  .theme-toggle[aria-pressed] svg {
+    transform: none;
+  }
+}

@@ -31,7 +31,7 @@ select {
 button {
   border: 1px solid var(--line);
   border-radius: 12px;
-  background: white;
+  background: rgb(var(--tb-surface));
   padding: 11px 16px;
   cursor: pointer;
 }
@@ -82,7 +82,7 @@ small {
   width: 225px;
   position: fixed;
   inset: 0 auto 0 0;
-  background: white;
+  background: rgb(var(--tb-surface));
   padding: 22px 14px;
   display: flex;
   flex-direction: column;
@@ -158,7 +158,7 @@ nav button[aria-current] {
 .person b,
 .avatar {
   background: var(--ink);
-  color: white;
+  color: rgb(var(--tb-on-primary));
   border-radius: 50%;
   width: 32px;
   height: 32px;
@@ -171,7 +171,7 @@ nav button[aria-current] {
 }
 header {
   height: 68px;
-  background: white;
+  background: rgb(var(--tb-surface));
   display: flex;
   align-items: center;
   gap: 16px;
@@ -183,7 +183,7 @@ header button {
   font-size: 13px;
 }
 kbd {
-  background: white;
+  background: rgb(var(--tb-surface));
   padding: 4px;
   border-radius: 4px;
   font-size: 10px;
@@ -223,7 +223,7 @@ main {
 .mimo-message {
   display: flex;
   gap: 12px;
-  background: white;
+  background: rgb(var(--tb-surface));
   border-radius: 18px;
   padding: 18px;
   width: 35%;
@@ -250,7 +250,7 @@ main {
   gap: 22px;
 }
 section {
-  background: white;
+  background: rgb(var(--tb-surface));
   border: 1px solid rgb(var(--tb-auto-f0efe9));
   border-radius: 19px;
   padding: 24px;
@@ -271,7 +271,7 @@ section {
 }
 .pill.dark {
   background: var(--ink);
-  color: white;
+  color: rgb(var(--tb-on-primary));
 }
 .hero > small {
   display: block;
@@ -298,7 +298,7 @@ section {
 }
 .primary {
   background: var(--ink);
-  color: white;
+  color: rgb(var(--tb-on-primary));
   border-color: var(--ink);
 }
 .primary:hover {
@@ -345,7 +345,7 @@ section {
 .book {
   padding: 10px;
   background: rgb(var(--tb-secondary-deep));
-  color: white;
+  color: rgb(var(--tb-on-primary));
   border-radius: 10px;
 }
 .secondary {
@@ -463,7 +463,7 @@ input {
   border: 1px solid rgb(var(--tb-auto-a8b3a9));
   border-radius: 7px;
   padding: 7px;
-  background: white;
+  background: rgb(var(--tb-surface));
 }
 .gentle {
   background: rgb(var(--tb-auto-f3f2ed));
@@ -523,7 +523,7 @@ input {
   position: fixed;
   top: -100px;
   z-index: 100;
-  background: white;
+  background: rgb(var(--tb-surface));
   padding: 15px;
 }
 .skip:focus {
@@ -766,7 +766,7 @@ textarea {
   padding: 12px;
   min-height: 90px;
   width: 100%;
-  background: white;
+  background: rgb(var(--tb-surface));
   resize: vertical;
 }
 form label:has(textarea),
@@ -863,7 +863,7 @@ progress::-webkit-progress-value {
   white-space: pre-wrap;
 }
 .search-label {
-  background: white;
+  background: rgb(var(--tb-surface));
   padding: 14px 20px;
 }
 .search-label input {
@@ -970,7 +970,7 @@ progress::-webkit-progress-value {
 .diagram-flow span:not([aria-hidden]) {
   padding: 10px;
   border-radius: 10px;
-  background: white;
+  background: rgb(var(--tb-surface));
   border: 1px solid rgb(var(--tb-auto-8da792));
 }
 .diagram figcaption {
@@ -1035,7 +1035,7 @@ progress::-webkit-progress-value {
   color: rgb(var(--tb-contrast-ink));
 }
 .high-contrast .primary {
-  color: white;
+  color: rgb(var(--tb-on-primary));
 }
 .calm * {
   animation: none !important;

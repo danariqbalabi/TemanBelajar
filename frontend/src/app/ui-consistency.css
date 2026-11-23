@@ -98,7 +98,7 @@
   top: 0;
   z-index: 50;
   height: auto;
-  background: white;
+  background: rgb(var(--tb-surface));
   border-bottom: 1px solid var(--ui-divider);
 }
 .final-design .standalone-header-inner {
@@ -138,7 +138,7 @@
 .final-app .reader-toolbar {
   top: var(--ui-header-height);
   z-index: 30;
-  background: white;
+  background: rgb(var(--tb-surface));
 }
 .final-app .reader-toolbar button[aria-pressed="false"] {
   background: transparent;
@@ -173,7 +173,7 @@
   position: sticky;
   bottom: 0;
   z-index: 20;
-  background: white;
+  background: rgb(var(--tb-surface));
   padding-bottom: max(12px, env(safe-area-inset-bottom));
 }
 .final-app #main > .working {
@@ -194,7 +194,7 @@
   overflow-y: auto;
   border: 1px solid var(--ui-divider);
   border-radius: 20px;
-  background: white;
+  background: rgb(var(--tb-surface));
   color: var(--ui-ink);
   font-family: var(--ui-font);
   font-size: 16px;
@@ -213,7 +213,7 @@
   border: 0;
   border-radius: 12px;
   background: var(--ui-ink);
-  color: white;
+  color: rgb(var(--tb-on-primary));
   font-size: 14px;
   font-weight: 600;
 }

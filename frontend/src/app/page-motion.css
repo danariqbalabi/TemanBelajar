@@ -124,7 +124,7 @@
 .mimo-page-overlay[data-high-contrast="true"]
   :is(.mimo-page-popup, .mimo-page-caption) {
   border-color: rgb(var(--tb-contrast-ink));
-  background: white;
+  background: rgb(var(--tb-surface));
   color: rgb(var(--tb-contrast-ink));
 }
 
