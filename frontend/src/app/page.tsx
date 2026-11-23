@@ -26,6 +26,44 @@ import { Dashboard } from "./dashboard";
 import { DesignShell } from "./design-shell";
 import { MimoLoading } from "./mimo-loading";
 export type Run = (action: () => Promise<void>) => Promise<void>;
+async function ensureDemoPlan(materials: Material[], plans: Plan[]) {
+  if (plans.length) return plans;
+  const material = materials.find((item) => item.id === "manda-pythagoras");
+  const concept = material?.concepts[0];
+  if (!material || !concept) return plans;
+
+  const today = new Intl.DateTimeFormat("sv-SE", {
+    timeZone: "Asia/Jakarta",
+  }).format(new Date());
+  const start = new Date(today + "T16:00:00+07:00");
+  const activities = [
+    "Baca konsep Pythagoras",
+    "Latihan mencari sisi segitiga",
+  ].map((title, index) => ({
+    id: index === 0 ? "demo-baca" : "demo-latihan",
+    title,
+    start_at: new Date(start.getTime() + index * 30 * 60_000).toISOString(),
+    duration_minutes: 10,
+    material_id: material.id,
+    concept_id: concept.id,
+    kind: index === 0 ? "read" : "practice",
+  }));
+  try {
+    return [
+      await mutation<Plan>("/plans", {
+        timezone: "Asia/Jakarta",
+        daily_minutes: 30,
+        activities,
+      })(),
+    ];
+  } catch (error) {
+    if (!(error instanceof ApiError) || error.status !== 409) throw error;
+    const current = await api<{ items: Plan[] }>("/plans");
+    if (!current.items.length) throw error;
+    return current.items;
+  }
+}
+
 async function readWorkspace(minutes: number) {
   const [m, s, p] = await Promise.all([
     api<{ items: Material[] }>("/materials"),
@@ -52,9 +90,7 @@ async function readWorkspace(minutes: number) {
 export default function Home() {
   const [tour, setTour] = useState(false);
   const [accountEntry, setAccountEntry] = useState(false);
-  const [accountMode, setAccountMode] = useState<"login" | "register">(
-    "login",
-  );
+  const [accountMode, setAccountMode] = useState<"login" | "register">("login");
   const [account, setAccount] = useState<Session | null>(null),
     [ready, setReady] = useState(false),
     [loadedUserId, setLoadedUserId] = useState<string | null>(null),
@@ -198,6 +234,9 @@ export default function Home() {
           throw e;
         });
         const data = await readWorkspace(loadedProfile.daily_minutes);
+        if (!alive || epoch !== workspaceEpoch.current) return;
+        if (anonymous)
+          data.plans = await ensureDemoPlan(data.materials, data.plans);
         if (!alive || epoch !== workspaceEpoch.current) return;
         dailyMinutes.current = loadedProfile.daily_minutes;
         setProfile(loadedProfile);
