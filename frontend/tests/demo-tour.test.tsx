@@ -21,12 +21,20 @@ it("keeps the shade as the spotlight leaves the viewport and lets Mimo switch po
     .mockReturnValue(new DOMRect(40, 160, 150, 48));
   window.dispatchEvent(new Event("scroll"));
   await waitFor(() =>
-    expect(document.querySelectorAll(".demo-tour-shade")).toHaveLength(4),
+    expect(
+      document
+        .querySelector(".demo-tour-shade")
+        ?.getAttribute("data-spotlight"),
+    ).toBe("true"),
   );
+  expect(document.querySelectorAll(".demo-tour-shade")).toHaveLength(1);
   rect.mockReturnValue(new DOMRect(40, -80, 150, 48));
   window.dispatchEvent(new Event("scroll"));
   await screen.findByRole("button", { name: "Lihat tombolnya" });
   expect(document.querySelectorAll(".demo-tour-shade")).toHaveLength(1);
+  expect(
+    document.querySelector(".demo-tour-shade")?.getAttribute("data-spotlight"),
+  ).toBe("false");
   const mimo = screen.getByRole("button", { name: "Ganti pose Mimo" });
   await userEvent.click(mimo);
   expect(mimo.getAttribute("aria-pressed")).toBe("true");
