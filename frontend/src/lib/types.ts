@@ -174,5 +174,5 @@ export type Plan = {
   version: number;
   activities: Activity[];
   history: Record<string, Activity[]>;
-  proposals: Proposal[];
+  proposals?: Proposal[];
 };
