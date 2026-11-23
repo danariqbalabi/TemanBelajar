@@ -255,69 +255,6 @@ export function Landing({
             </div>
           </section>
 
-          <section
-            aria-labelledby="film-title"
-            className="my-4 grid items-center gap-5 rounded-feature border border-divider bg-mint-tint p-5 sm:p-6 lg:grid-cols-[1fr_2fr]"
-          >
-            <div>
-              <h2
-                id="film-title"
-                className="ui-section-title font-nunito text-3xl font-black text-primary"
-              >
-                Belajar bareng Manda
-              </h2>
-              <p className="mt-3">
-                Dalam 58 detik, lihat cara Manda membaca, berlatih, dan
-                mengambil jeda.
-              </p>
-              <details className="mt-4">
-                <summary className="cursor-pointer font-bold">
-                  Baca transkrip video
-                </summary>
-                <p className="mt-2">
-                  Untuk pelajar penyandang disabilitas, cara materi disajikan
-                  bisa menentukan seberapa mudah mereka ikut belajar. Ada yang
-                  lebih nyaman mendengarkan, ada yang butuh teks lebih besar,
-                  atau satu bagian bacaan dalam satu waktu.
-                </p>
-                <p className="mt-2">
-                  TemanBelajar membantu kamu mengatur cara belajar sesuai
-                  kebutuhanmu. Kamu bisa besarkan huruf, atur kontras, atau
-                  nyalakan penggaris baca. Kalau lebih nyaman mendengarkan,
-                  putar audio sambil mengikuti transkrip.
-                </p>
-                <p className="mt-2">
-                  Lalu, cek apa yang sudah kamu pahami. Manda, misalnya, sudah
-                  bisa mencari hipotenusa, tapi masih keliru saat mencari sisi
-                  siku-siku. TemanBelajar menunjukkan di mana letak salahnya dan
-                  menyarankan latihan yang sesuai.
-                </p>
-                <p className="mt-2">
-                  Kalau butuh jeda, geser jadwalnya. Progresmu tetap tersimpan,
-                  dan Mimo siap menemani saat kamu kembali. TemanBelajar. Ruang
-                  belajar yang bisa kamu sesuaikan.
-                </p>
-              </details>
-            </div>
-            <video
-              className="aspect-video w-full rounded-2xl bg-black"
-              controls
-              playsInline
-              preload="metadata"
-              aria-labelledby="film-title"
-            >
-              <source src="/media/temanbelajar.mp4" type="video/mp4" />
-              <track
-                default
-                kind="captions"
-                src="/media/temanbelajar-id.vtt"
-                srcLang="id"
-                label="Bahasa Indonesia"
-              />
-              <a href="/media/temanbelajar.mp4">Buka video TemanBelajar</a>
-            </video>
-          </section>
-
           <LandingHow />
 
           <section
@@ -692,6 +629,69 @@ export function Landing({
                 </div>
               </div>
             </div>
+          </section>
+
+          <section
+            aria-labelledby="film-title"
+            className="my-4 grid items-center gap-5 rounded-feature border border-divider bg-mint-tint p-5 sm:p-6 lg:grid-cols-[1fr_2fr]"
+          >
+            <div>
+              <h2
+                id="film-title"
+                className="ui-section-title font-nunito text-3xl font-black text-primary"
+              >
+                Belajar bareng Manda
+              </h2>
+              <p className="mt-3">
+                Dalam 58 detik, lihat cara Manda membaca, berlatih, dan
+                mengambil jeda.
+              </p>
+              <details className="mt-4">
+                <summary className="cursor-pointer font-bold">
+                  Baca transkrip video
+                </summary>
+                <p className="mt-2">
+                  Untuk pelajar penyandang disabilitas, cara materi disajikan
+                  bisa menentukan seberapa mudah mereka ikut belajar. Ada yang
+                  lebih nyaman mendengarkan, ada yang butuh teks lebih besar,
+                  atau satu bagian bacaan dalam satu waktu.
+                </p>
+                <p className="mt-2">
+                  TemanBelajar membantu kamu mengatur cara belajar sesuai
+                  kebutuhanmu. Kamu bisa besarkan huruf, atur kontras, atau
+                  nyalakan penggaris baca. Kalau lebih nyaman mendengarkan,
+                  putar audio sambil mengikuti transkrip.
+                </p>
+                <p className="mt-2">
+                  Lalu, cek apa yang sudah kamu pahami. Manda, misalnya, sudah
+                  bisa mencari hipotenusa, tapi masih keliru saat mencari sisi
+                  siku-siku. TemanBelajar menunjukkan di mana letak salahnya dan
+                  menyarankan latihan yang sesuai.
+                </p>
+                <p className="mt-2">
+                  Kalau butuh jeda, geser jadwalnya. Progresmu tetap tersimpan,
+                  dan Mimo siap menemani saat kamu kembali. TemanBelajar. Ruang
+                  belajar yang bisa kamu sesuaikan.
+                </p>
+              </details>
+            </div>
+            <video
+              className="aspect-video w-full rounded-2xl bg-black"
+              controls
+              playsInline
+              preload="metadata"
+              aria-labelledby="film-title"
+            >
+              <source src="/media/temanbelajar.mp4" type="video/mp4" />
+              <track
+                default
+                kind="captions"
+                src="/media/temanbelajar-id.vtt"
+                srcLang="id"
+                label="Bahasa Indonesia"
+              />
+              <a href="/media/temanbelajar.mp4">Buka video TemanBelajar</a>
+            </video>
           </section>
 
           <section
