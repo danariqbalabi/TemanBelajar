@@ -407,6 +407,9 @@ it("menampilkan landing meski sesi tersimpan dan tidak memaksa onboarding yang b
     screen.queryByRole("button", { name: "Atur preferensi belajar" }),
   ).toBeNull();
   await clickDemo();
+  await userEvent.click(
+    await screen.findByRole("button", { name: "Lewati tur" }),
+  );
   expect(
     await screen.findByRole("button", { name: "Atur preferensi belajar" }),
   ).toBeTruthy();
@@ -445,6 +448,9 @@ it("starts the Mimo guide only after choosing demo and allows skipping", async (
   expect(
     await screen.findByRole("heading", { name: "Mulai dari satu konsep" }),
   ).toBeTruthy();
+  expect(
+    screen.queryByRole("button", { name: "Atur preferensi belajar" }),
+  ).toBeNull();
   await userEvent.click(screen.getByRole("button", { name: "Lewati tur" }));
   expect(screen.queryByText("Lewati tur")).toBeNull();
   session.mockRestore();

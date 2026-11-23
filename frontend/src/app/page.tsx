@@ -447,7 +447,7 @@ export default function Home() {
           {notice}
         </p>
       )}
-      {page === "Beranda" && profile.onboarding_step < 4 && (
+      {page === "Beranda" && !tour && profile.onboarding_step < 4 && (
         <section className="stitch-screen bg-secondary-container rounded-2xl p-space-lg mb-space-lg">
           <h2 className="font-card-title text-card-title text-primary ui-card-title">
             Atur ritme belajarmu saat kamu siap
