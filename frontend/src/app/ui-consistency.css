@@ -2,8 +2,8 @@
 .stitch-shell {
   --ui-font: "Plus Jakarta Sans", system-ui, sans-serif;
   --ui-heading-font: "Nunito", system-ui, sans-serif;
-  --ui-ink: #273b35;
-  --ui-divider: #e5e8e1;
+  --ui-ink: rgb(var(--tb-primary));
+  --ui-divider: rgb(var(--tb-divider));
   --ui-header-height: var(--app-header-height, 80px);
   font-family: var(--ui-font);
   font-size: 16px;
@@ -98,7 +98,7 @@
   top: 0;
   z-index: 50;
   height: auto;
-  background: white;
+  background: rgb(var(--tb-surface));
   border-bottom: 1px solid var(--ui-divider);
 }
 .final-design .standalone-header-inner {
@@ -125,7 +125,7 @@
   border-radius: 12px;
 }
 .final-design .standalone-header-actions button:hover {
-  background: #eaf6eb;
+  background: rgb(var(--tb-mint-tint));
 }
 .onboarding-shell > .final-onboarding {
   padding-top: 24px;
@@ -138,13 +138,13 @@
 .final-app .reader-toolbar {
   top: var(--ui-header-height);
   z-index: 30;
-  background: white;
+  background: rgb(var(--tb-surface));
 }
 .final-app .reader-toolbar button[aria-pressed="false"] {
   background: transparent;
 }
 .final-app .reader-toolbar button[aria-pressed="true"] {
-  background: #c8e8ce;
+  background: rgb(var(--tb-mint));
 }
 .final-app .reader-sidebar {
   position: static;
@@ -173,14 +173,14 @@
   position: sticky;
   bottom: 0;
   z-index: 20;
-  background: white;
+  background: rgb(var(--tb-surface));
   padding-bottom: max(12px, env(safe-area-inset-bottom));
 }
 .final-app #main > .working {
   position: static;
   padding: 12px 16px;
   border-radius: 12px;
-  background: #fff5d6;
+  background: rgb(var(--tb-butter-tint));
   font-size: 14px;
 }
 .final-design .stitch-reason {
@@ -194,12 +194,12 @@
   overflow-y: auto;
   border: 1px solid var(--ui-divider);
   border-radius: 20px;
-  background: white;
+  background: rgb(var(--tb-surface));
   color: var(--ui-ink);
   font-family: var(--ui-font);
   font-size: 16px;
   line-height: 1.6;
-  box-shadow: 0 20px 80px #11252033;
+  box-shadow: 0 20px 80px rgb(var(--tb-deep-alt) / 0.2);
 }
 .final-design .stitch-reason :is(h2, h3) {
   margin-bottom: 12px;
@@ -213,7 +213,7 @@
   border: 0;
   border-radius: 12px;
   background: var(--ui-ink);
-  color: white;
+  color: rgb(var(--tb-on-primary));
   font-size: 14px;
   font-weight: 600;
 }

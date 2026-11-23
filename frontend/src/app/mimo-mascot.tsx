@@ -47,6 +47,45 @@ const particles = [
   [-42, -40],
 ];
 
+// sinar matahari ditulis koordinatnya langsung, biar ga ketimpa aturan transform
+const sunRays = Array.from({ length: 8 }, (_, index) => {
+  const angle = (index * Math.PI) / 4;
+  const point = (radius: number) => [
+    +(24 + Math.sin(angle) * radius).toFixed(2),
+    +(24 - Math.cos(angle) * radius).toFixed(2),
+  ];
+  return [...point(15), ...point(21)];
+});
+
+// matahari di mode terang, bulan + bintang di mode gelap (diatur lewat css)
+function MimoSky() {
+  return (
+    <span className="mimo-sky" aria-hidden="true">
+      <svg className="mimo-sun" viewBox="0 0 48 48">
+        <g className="mimo-sun-rays">
+          {sunRays.map(([x1, y1, x2, y2], index) => (
+            <line key={index} x1={x1} y1={y1} x2={x2} y2={y2} />
+          ))}
+        </g>
+        <circle className="mimo-sun-core" cx="24" cy="24" r="10.5" />
+        <circle className="mimo-sun-cheek" cx="19.5" cy="26" r="1.6" />
+        <circle className="mimo-sun-cheek" cx="28.5" cy="26" r="1.6" />
+      </svg>
+      <svg className="mimo-moon" viewBox="0 0 48 48">
+        <path
+          className="mimo-moon-body"
+          d="M30.5 7.5a17 17 0 1 0 10 27.6A14 14 0 0 1 30.5 7.5Z"
+        />
+        <circle className="mimo-moon-spot" cx="17" cy="29" r="2.2" />
+        <circle className="mimo-moon-spot" cx="23" cy="36" r="1.4" />
+      </svg>
+      <i className="mimo-twinkle mimo-twinkle-one" />
+      <i className="mimo-twinkle mimo-twinkle-two" />
+      <i className="mimo-twinkle mimo-twinkle-three" />
+    </span>
+  );
+}
+
 export function MimoMascot({
   context = "Kenalan",
   variant = "inline",
@@ -208,6 +247,7 @@ export function MimoMascot({
               <i className="mimo-star mimo-star-two" />
             </span>
             <span className="mimo-floor" aria-hidden="true" />
+            <MimoSky />
           </button>
           <div className="mimo-controls">
             <button

@@ -8,6 +8,9 @@ import "@fontsource/nunito/800.css";
 import "@fontsource/nunito/900.css";
 import "@fontsource/plus-jakarta-sans/800.css";
 import "@fontsource/nunito/400.css";
+import "./theme.css";
+import "./theme-auto.css";
+import "./dark-mode.css";
 import "./globals.css";
 import "./stitch.css";
 import "./design-final.css";
@@ -20,6 +23,7 @@ import "./navbar.css";
 import "./demo-tour.css";
 import "./page-motion.css";
 import { CardMotion } from "./card-motion";
+import { themeScript } from "@/lib/theme-script";
 export const metadata: Metadata = {
   title: "TemanBelajar — belajar sesuai ritmemu",
   description: "Teman belajar adaptif untuk SMP dan SMA.",
@@ -28,7 +32,10 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="id">
+    <html lang="id" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>
         {children}
         <CardMotion />

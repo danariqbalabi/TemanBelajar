@@ -375,7 +375,7 @@ export function Catalog({
                   </div>
                   <button
                     onClick={() => onDetail(item)}
-                    className="bg-primary text-white rounded-xl px-5 py-3 font-bold"
+                    className="bg-primary text-on-primary rounded-xl px-5 py-3 font-bold"
                   >
                     Buka Ringkasan →
                   </button>
@@ -394,7 +394,7 @@ export function Catalog({
                       : "Tambahkan PDF atau tempel catatanmu untuk mulai belajar."}
                   </p>
                   <button
-                    className="mt-6 bg-primary text-white px-5 py-3 rounded-xl"
+                    className="mt-6 bg-primary text-on-primary px-5 py-3 rounded-xl"
                     onClick={() => {
                       if (materials.length) {
                         setQuery("");

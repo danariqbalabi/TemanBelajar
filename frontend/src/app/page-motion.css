@@ -38,16 +38,16 @@
   width: min(100%, 256px);
   padding: 14px 16px 18px;
   text-align: center;
-  border: 1px solid #fff;
+  border: 1px solid rgb(var(--tb-surface));
   border-radius: 40px 40px 32px 32px;
   background:
-    radial-gradient(ellipse at 14% 5%, #fff3d9 0%, transparent 58%),
-    radial-gradient(ellipse at 90% 38%, #e9e2fa 0%, transparent 52%),
-    linear-gradient(165deg, #f4fbf1, #eaf5ea 68%, #fbfcf6);
+    radial-gradient(ellipse at 14% 5%, rgb(var(--tb-auto-fff3d9)) 0%, transparent 58%),
+    radial-gradient(ellipse at 90% 38%, rgb(var(--tb-auto-e9e2fa)) 0%, transparent 52%),
+    linear-gradient(165deg, rgb(var(--tb-auto-f4fbf1)), rgb(var(--tb-auto-eaf5ea)) 68%, rgb(var(--tb-auto-fbfcf6)));
   box-shadow:
     0 18px 46px #283e3826,
     0 3px 9px #283e3812,
-    inset 0 0 0 3px #ffffff60;
+    inset 0 0 0 3px rgb(var(--tb-surface) / 0.376);
 }
 
 .mimo-page-art {
@@ -57,14 +57,14 @@
   width: 190px;
   height: 144px;
   max-width: 100%;
-  background: radial-gradient(ellipse at center, #fff9 0%, transparent 72%);
+  background: radial-gradient(ellipse at center, rgb(var(--tb-auto-ffffff) / 0.6) 0%, transparent 72%);
 }
 
 .mimo-page-art img {
   width: 144px;
   height: 144px;
   object-fit: contain;
-  filter: drop-shadow(0 9px 12px #273b3528);
+  filter: drop-shadow(0 9px 12px rgb(var(--tb-primary) / 0.157));
 }
 
 .mimo-spark {
@@ -76,12 +76,12 @@
 
 .mimo-spark-left {
   inset: 28px auto auto 13px;
-  color: #8a571b;
+  color: rgb(var(--tb-auto-8a571b));
 }
 
 .mimo-spark-right {
   inset: 61px 9px auto auto;
-  color: #62518c;
+  color: rgb(var(--tb-auto-62518c));
 }
 
 .mimo-page-caption {
@@ -92,11 +92,11 @@
   gap: 7px 11px;
   max-width: 100%;
   padding: 7px 13px;
-  border: 1px solid #ffffffd9;
+  border: 1px solid rgb(var(--tb-surface) / 0.851);
   border-radius: 999px;
-  background: #ffffffab;
-  color: #273b35;
-  box-shadow: 0 2px 6px #273b350d;
+  background: rgb(var(--tb-surface) / 0.671);
+  color: rgb(var(--tb-primary));
+  box-shadow: 0 2px 6px rgb(var(--tb-primary) / 0.051);
   font:
     800 0.9rem/1.35 Nunito,
     sans-serif;
@@ -111,21 +111,21 @@
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #557863;
+  background: rgb(var(--tb-auto-557863));
 }
 
 .mimo-page-dots i:nth-child(2) {
-  background: #796391;
+  background: rgb(var(--tb-auto-796391));
 }
 .mimo-page-dots i:nth-child(3) {
-  background: #99631e;
+  background: rgb(var(--tb-auto-99631e));
 }
 
 .mimo-page-overlay[data-high-contrast="true"]
   :is(.mimo-page-popup, .mimo-page-caption) {
-  border-color: #101a16;
-  background: white;
-  color: #101a16;
+  border-color: rgb(var(--tb-contrast-ink));
+  background: rgb(var(--tb-surface));
+  color: rgb(var(--tb-contrast-ink));
 }
 
 .mimo-page-overlay[data-reduced-motion="true"] {

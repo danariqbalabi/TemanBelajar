@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useScrollNavbar } from "./use-scroll-navbar";
 import { LandingHow } from "./landing-how";
 import { MimoMascot } from "./mimo-mascot";
+import { ThemeToggle } from "./theme-toggle";
 export function Landing({
   onContinue,
   onLogin,
@@ -71,6 +72,7 @@ export function Landing({
             </nav>
 
             <div className="flex items-center gap-3">
+              <ThemeToggle />
               <a
                 className="hidden sm:inline-flex px-4 py-2 rounded-xl text-sm font-bold text-primary border border-divider hover:bg-canvas hover:border-primary/30 transition-all"
                 href="#"
