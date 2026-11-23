@@ -11,18 +11,18 @@ afterEach(() => {
 
 it("mengganti mode gelap dan mengingat pilihannya", async () => {
   render(<ThemeToggle />);
-  const toggle = screen.getByRole("button", { name: "Mode gelap" });
-  expect(toggle.getAttribute("aria-pressed")).toBe("false");
+  const toggle = screen.getByRole("switch", { name: "Mode gelap" });
+  expect(toggle.getAttribute("aria-checked")).toBe("false");
 
   await userEvent.click(toggle);
   expect(document.documentElement.dataset.theme).toBe("dark");
   expect(localStorage.getItem("temanbelajar-theme")).toBe("dark");
-  expect(toggle.getAttribute("aria-pressed")).toBe("true");
+  expect(toggle.getAttribute("aria-checked")).toBe("true");
 
   await userEvent.click(toggle);
   expect(document.documentElement.dataset.theme).toBe("light");
   expect(localStorage.getItem("temanbelajar-theme")).toBe("light");
-  expect(toggle.getAttribute("aria-pressed")).toBe("false");
+  expect(toggle.getAttribute("aria-checked")).toBe("false");
 });
 
 it("membaca tema yang sudah terpasang sebelum halaman dimuat", () => {
@@ -30,7 +30,7 @@ it("membaca tema yang sudah terpasang sebelum halaman dimuat", () => {
   render(<ThemeToggle />);
   expect(
     screen
-      .getByRole("button", { name: "Mode gelap" })
-      .getAttribute("aria-pressed"),
+      .getByRole("switch", { name: "Mode gelap" })
+      .getAttribute("aria-checked"),
   ).toBe("true");
 });
