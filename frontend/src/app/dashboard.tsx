@@ -88,7 +88,7 @@ export function Dashboard({
                     >
                       spa
                     </span>
-                    Bebas Stres &amp; Zero-Streak Penalty
+                    Santai, tanpa hukuman
                   </span>
                 </div>
                 <h1
@@ -96,8 +96,7 @@ export function Dashboard({
                   id="beranda-greeting"
                 >{`Hai, ${profile.display_name}! Siap belajar santai bareng Mimo?`}</h1>
                 <p className="font-body text-body text-on-surface-variant leading-relaxed">
-                  Satu langkah kecil hari ini tanpa pusing. Semua jadwal dan
-                  materi sudah disesuaikan dengan kenyamanan matamu.
+                  Satu langkah kecil hari ini sudah cukup.
                 </p>
               </div>
 
@@ -258,7 +257,7 @@ export function Dashboard({
                       className="px-4 py-2 border border-divider rounded-xl"
                       onClick={() => navigate("Rencana Belajar")}
                     >
-                      Ubah jadwal
+                      Lihat jadwal
                     </button>
                   </div>
                   <div className="space-y-2">
@@ -373,15 +372,12 @@ export function Dashboard({
                     <h3 id="dashboard-rest-title" className="ui-card-title">
                       Butuh jeda?
                     </h3>
-                    <p>
-                      Kamu bisa ubah jadwal. Progres yang sudah tersimpan tetap
-                      ada.
-                    </p>
+                    <p>Geser jadwalnya, progresmu tetap aman.</p>
                     <button
                       type="button"
                       onClick={() => navigate("Rencana Belajar")}
                     >
-                      Buka rencana belajar <span aria-hidden="true">?</span>
+                      Lihat jadwal <span aria-hidden="true">→</span>
                     </button>
                   </div>
                 </section>
