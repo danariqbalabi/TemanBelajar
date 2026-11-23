@@ -62,12 +62,6 @@ export function ResultDesign({
         title="Latihan selesai"
         description={material.title}
         back={onBack}
-        actions={
-          <button className="workspace-button" onClick={() => window.print()}>
-            <UiIcon name="download" />
-            Cetak hasil
-          </button>
-        }
       />
       <section
         data-tour="result"
@@ -98,7 +92,20 @@ export function ResultDesign({
       </section>
       <div className="workspace-panel-heading">
         <h2>Pembahasan</h2>
-        <div className="workspace-actions">
+        <div
+          className="workspace-actions"
+          role="group"
+          aria-label="Alat pembahasan"
+        >
+          <button
+            className="workspace-button"
+            onClick={() =>
+              onSpeak(attempt.questions.map((q) => q.explanation).join(". "))
+            }
+          >
+            <UiIcon name="volume_up" />
+            Bacakan
+          </button>
           <button
             className="workspace-button"
             disabled={busy}
@@ -109,14 +116,9 @@ export function ResultDesign({
           <button className="workspace-button" onClick={copyReview}>
             Salin pembahasan
           </button>
-          <button
-            className="workspace-button"
-            onClick={() =>
-              onSpeak(attempt.questions.map((q) => q.explanation).join(". "))
-            }
-          >
-            <UiIcon name="volume_up" />
-            Bacakan
+          <button className="workspace-button" onClick={() => window.print()}>
+            <UiIcon name="download" />
+            Cetak hasil
           </button>
         </div>
       </div>
@@ -160,14 +162,22 @@ export function ResultDesign({
       </div>
       <p role="status">{notice || copied}</p>
       <footer className="workspace-actions workspace-footer">
-        <button className="workspace-button" disabled={busy} onClick={onRetry}>
-          Ulangi latihan
-        </button>
-        <button className="workspace-button" onClick={onPlanner}>
-          Lihat jadwal
+        <button
+          className="workspace-button primary"
+          disabled={busy}
+          onClick={onRecommend}
+        >
+          Lanjut belajar
+          <UiIcon name="arrow_forward" />
         </button>
         <button className="workspace-button" disabled={busy} onClick={onRest}>
           Istirahat dulu
+        </button>
+        <button className="workspace-button" disabled={busy} onClick={onRetry}>
+          Ulangi latihan
+        </button>
+        <button className="workspace-subtle-link" onClick={onPlanner}>
+          Lihat jadwal
         </button>
       </footer>
     </Workspace>
