@@ -76,6 +76,22 @@ export default function Home() {
     [recommendation, setRecommendation] = useState<Recommendation | null>(null),
     [landing, setLanding] = useState(true);
   const retry = useRef<null | (() => Promise<void>)>(null);
+  const unsavedSettings = useRef(false);
+  const markSettingsDirty = useCallback((dirty: boolean) => {
+    unsavedSettings.current = dirty;
+  }, []);
+  function goTo(destination: string) {
+    if (
+      unsavedSettings.current &&
+      !window.confirm(
+        "Perubahan di Pengaturan belum disimpan. Tetap pindah tanpa menyimpan?",
+      )
+    )
+      return false;
+    unsavedSettings.current = false;
+    setPage(destination);
+    return true;
+  }
   const workspaceEpoch = useRef(0);
   const dailyMinutes = useRef(defaultProfile.daily_minutes);
   const running = useRef(false);
@@ -393,7 +409,7 @@ export default function Home() {
     <DesignShell
       profile={profile}
       page={page}
-      navigate={setPage}
+      navigate={goTo}
       className={`${prefs.reduced_motion ? "calm" : ""} ${prefs.high_contrast ? "high-contrast" : ""}`}
       style={
         {
@@ -535,7 +551,8 @@ export default function Home() {
         />
       ) : page === "Pengaturan" ? (
         <Settings
-          onBack={() => setPage("Beranda")}
+          onBack={() => goTo("Beranda")}
+          onDirtyChange={markSettingsDirty}
           profile={profile}
           onSave={(p) => run(() => saveProfile(p))}
           busy={busy}

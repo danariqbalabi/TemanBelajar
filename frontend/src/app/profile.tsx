@@ -81,6 +81,7 @@ export function Settings(props: {
   account: Session;
   signOut: () => void;
   onBack: () => void;
+  onDirtyChange?: (dirty: boolean) => void;
 }) {
   return <SettingsDesign {...props} />;
 }

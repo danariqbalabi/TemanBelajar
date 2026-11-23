@@ -18,7 +18,7 @@ export function DesignShell({
   children: ReactNode;
   profile: Profile;
   page: string;
-  navigate: (p: string) => void;
+  navigate: (p: string) => boolean | void;
   className: string;
   style: CSSProperties;
 }) {
@@ -40,7 +40,7 @@ export function DesignShell({
     return () => observer.disconnect();
   }, []);
   function goTo(destination: string) {
-    navigate(destination);
+    if (navigate(destination) === false) return;
     window.scrollTo({ top: 0, behavior: "instant" });
   }
 

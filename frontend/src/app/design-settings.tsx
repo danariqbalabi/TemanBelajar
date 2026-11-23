@@ -25,6 +25,7 @@ export function SettingsDesign({
   signOut,
   onBack,
   onAccount,
+  onDirtyChange,
 }: {
   profile: Profile;
   onSave: (p: Profile) => void;
@@ -33,17 +34,32 @@ export function SettingsDesign({
   signOut: () => void;
   onBack: () => void;
   onAccount?: () => void;
+  onDirtyChange?: (dirty: boolean) => void;
 }) {
   const [value, setValue] = useState(profile),
+    [saved, setSaved] = useState(profile),
     [tab, setTab] = useState("accessibility"),
     [speechNotice, setSpeechNotice] = useState("");
+  if (saved !== profile) {
+    setSaved(profile);
+    setValue(profile);
+  }
   const prefs = value.preferences;
+  const dirty = JSON.stringify(value) !== JSON.stringify(profile);
   useEffect(
     () => () => {
       window.speechSynthesis?.cancel();
     },
     [],
   );
+  useEffect(() => {
+    onDirtyChange?.(dirty);
+    if (!dirty) return;
+    const warn = (event: BeforeUnloadEvent) => event.preventDefault();
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [dirty, onDirtyChange]);
+  useEffect(() => () => onDirtyChange?.(false), [onDirtyChange]);
   const update = <K extends keyof Preferences>(key: K, v: Preferences[K]) =>
     setValue((current) => ({
       ...current,
@@ -123,7 +139,7 @@ export function SettingsDesign({
           role="status"
           className="max-w-[1200px] w-full mx-auto px-margin text-sm ui-container"
         >
-          {JSON.stringify(value) === JSON.stringify(profile)
+          {!dirty
             ? "Preferensi tersimpan."
             : "Ada perubahan yang belum disimpan."}
         </p>
