@@ -85,7 +85,7 @@ export function JobDesign({
               disabled={busy}
               onClick={onProcess}
             >
-              {job.status === "failed" ? "Coba lagi" : "Mulai pemrosesan"}
+              {job.status === "failed" ? "Coba lagi" : "Siapkan materi"}
             </button>
           ) : null}
           <button

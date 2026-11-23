@@ -245,7 +245,7 @@ export function Materials({
                   })
                 }
               >
-                Muat pemrosesan lagi
+                Cek lagi
               </button>
             </div>
           )}
@@ -271,7 +271,7 @@ export function Materials({
           {" "}
           {jobs.length > 0 && (
             <section>
-              <h2>Pemrosesan materi</h2>
+              <h2>Materi yang sedang disiapkan</h2>
               {jobs.map((j) => (
                 <div className="job" key={j.id}>
                   <div>
@@ -311,7 +311,7 @@ export function Materials({
                         {j.status === "processing"
                           ? "Coba lanjutkan proses"
                           : j.status === "failed"
-                            ? "Ulang pemrosesan"
+                            ? "Siapkan ulang"
                             : "Susun bersama Mimo"}
                       </button>
                     )}
@@ -346,8 +346,8 @@ export function Materials({
                 </div>
               ))}
               <p className="footnote">
-                Pemrosesan dapat memerlukan sekitar 90 detik. Sumber tetap
-                tersimpan bila proses perlu diulang.
+                Menyiapkan materi bisa butuh sekitar 90 detik. Sumbermu tetap
+                tersimpan kalau perlu diulang.
               </p>
             </section>
           )}

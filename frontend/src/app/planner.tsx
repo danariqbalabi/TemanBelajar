@@ -230,7 +230,7 @@ export function Planner({
       await send();
       await refresh();
       await load(plan.id);
-      setMessage("Versi dipulihkan dengan menjaga kegiatan terlindungi.");
+      setMessage("Jadwal lama sudah dipakai lagi. Kegiatan yang sudah dikerjakan tetap aman.");
     });
   }
   const editorPanel = (
@@ -238,8 +238,8 @@ export function Planner({
       {" "}
       {activities && (
         <section>
-          <h2>Tinjau draf kegiatan</h2>
-          <p>Kegiatan selesai, berjalan, atau terkunci tetap dilindungi.</p>
+          <h2>Cek perubahan jadwal</h2>
+          <p>Kegiatan yang sudah atau sedang kamu kerjakan tidak ikut berubah.</p>
           {activities.map((a) => {
             const protectedItem =
               a.locked || ["active", "completed"].includes(a.status);
@@ -296,7 +296,7 @@ export function Planner({
                     setActivities(activities.filter((x) => x.id !== a.id))
                   }
                 >
-                  Hapus dari draf
+                  Hapus dari jadwal ini
                 </button>
               </div>
             );
@@ -309,7 +309,7 @@ export function Planner({
             >
               {plan ? "Buat usulan perubahan" : "Simpan rencana ini"}
             </button>
-            <button onClick={() => setActivities(null)}>Batalkan draf</button>
+            <button onClick={() => setActivities(null)}>Batalkan perubahan</button>
           </div>
         </section>
       )}
@@ -320,15 +320,15 @@ export function Planner({
       {" "}
       {plan && (
         <section>
-          <h2>Riwayat versi</h2>
+          <h2>Jadwal sebelumnya</h2>
           <p>
-            Pemulihan memeriksa kembali jadwal dan mempertahankan kegiatan yang
-            sudah dilindungi.
+            Kamu bisa pakai lagi jadwal lama. Kegiatan yang sudah dikerjakan
+            tetap aman.
           </p>
           {Object.keys(plan.history || {}).map((v) => (
             <div className="history-row" key={v}>
               <span>
-                Versi {v} • {plan.history[v].length} kegiatan
+                Jadwal ke-{v} · {plan.history[v].length} kegiatan
               </span>
               <button
                 disabled={busy || +v === plan.version}
@@ -342,12 +342,12 @@ export function Planner({
                     await refresh();
                     await load(plan.id);
                     setMessage(
-                      "Versi dipulihkan dengan tetap menjaga kegiatan terlindungi.",
+                      "Jadwal lama sudah dipakai lagi. Kegiatan yang sudah dikerjakan tetap aman.",
                     );
                   });
                 }}
               >
-                Pulihkan versi {v}
+                Pakai jadwal ke-{v}
               </button>
             </div>
           ))}

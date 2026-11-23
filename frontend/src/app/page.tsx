@@ -393,8 +393,8 @@ export default function Home() {
         <div className="notice" role="alert">
           <p>{error}</p>
           <p>
-            Input tetap tersedia. Jika versi berubah, muat data terbaru lalu
-            tinjau kembali.
+            Isianmu masih aman. Coba lagi, atau muat ulang kalau datanya
+            sudah berubah di perangkat lain.
           </p>
           <div className="actions">
             <button
@@ -413,12 +413,12 @@ export default function Home() {
                       await api<LearningSession>(`/sessions/${active.id}`),
                     );
                   setNotice(
-                    "Data terbaru dimuat. Tinjau kembali sebelum menyimpan.",
+                    "Data sudah dimuat ulang. Cek lagi sebelum menyimpan.",
                   );
                 })
               }
             >
-              Muat data terbaru
+              Muat ulang data
             </button>
           </div>
         </div>
