@@ -35,7 +35,6 @@ export function LandingHow() {
     >
       <header className="landing-how-heading">
         <div>
-          <span className="landing-how-kicker">CARA KERJA</span>
           <h2 id="cara-kerja-title">Mulai dalam 3 langkah.</h2>
         </div>
         <p>
