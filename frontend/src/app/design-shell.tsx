@@ -4,6 +4,7 @@ import { Brand } from "./brand";
 import { useScrollNavbar } from "./use-scroll-navbar";
 import { usePlayfulCards } from "./use-playful-cards";
 import { MimoMascot } from "./mimo-mascot";
+import { pageLabel } from "./page-labels";
 import { useEffect, useRef } from "react";
 import type { ReactNode, CSSProperties } from "react";
 import type { Profile } from "@/lib/types";
@@ -94,7 +95,7 @@ export function DesignShell({
                     goTo(destination);
                   }}
                 >
-                  {destination}
+                  {pageLabel(destination)}
                 </a>
               ))}
             </nav>

@@ -29,7 +29,7 @@ export function LearningStart({
   return (
     <Workspace screen={12}>
       <WorkspaceHeading
-        title="Mulai belajar"
+        title="Lanjut belajar"
         description="Lanjutkan langkahmu atau pilih materi untuk hari ini."
       />
       {recent && material && (
@@ -104,7 +104,7 @@ export function LearningStart({
             <h3>Belum ada materi untuk dipelajari</h3>
             <p>Tambahkan sumber belajarmu ke koleksi terlebih dahulu.</p>
             <button className="workspace-button primary" onClick={onMaterials}>
-              Buka Materi Saya
+              Buka Koleksi Materi
             </button>
           </div>
         )}

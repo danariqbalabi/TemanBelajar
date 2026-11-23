@@ -1,5 +1,6 @@
 ﻿import Image from "next/image";
 import { useEffect, useState } from "react";
+import { pageLabel } from "./page-labels";
 
 const CUE_DURATION = 750;
 
@@ -20,7 +21,7 @@ export function MimoLoading({
   const [navigation, setNavigation] = useState<string | null>(null);
   if (page !== previousPage) {
     setPreviousPage(page);
-    setNavigation(page && previousPage ? page : null);
+    setNavigation(page && previousPage ? pageLabel(page) : null);
   }
 
   useEffect(() => {
