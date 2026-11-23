@@ -3,7 +3,7 @@
   isolation: isolate;
   position: relative;
   font-family: "Plus Jakarta Sans", sans-serif;
-  color: #273b35;
+  color: rgb(var(--tb-primary));
   --mimo-jump: -52px;
 }
 .mimo-inline {
@@ -55,7 +55,7 @@
   bottom: 4%;
   height: 6%;
   border-radius: 50%;
-  background: #273b3510;
+  background: rgb(var(--tb-primary) / 0.063);
   z-index: -1;
 }
 .mimo-touch-hint {
@@ -63,13 +63,13 @@
   text-align: center;
   font-size: 10px;
   font-weight: 700;
-  color: #496550;
+  color: rgb(var(--tb-secondary));
   line-height: 1.5;
   margin-top: 3px;
 }
 .mimo-touch:focus-visible,
 .mimo-control:focus-visible {
-  outline: 3px solid #3b4c9b;
+  outline: 3px solid rgb(var(--tb-focus));
   outline-offset: 3px;
 }
 .mimo-touch:hover .mimo-stage:not([data-animating="true"]) {
@@ -101,7 +101,7 @@
   position: absolute;
   inset: 12%;
   border-radius: 50%;
-  background: radial-gradient(circle, #c8e8ce80, transparent 70%);
+  background: radial-gradient(circle, rgb(var(--tb-mint) / 0.502), transparent 70%);
   opacity: 0;
 }
 .mimo-ring {
@@ -110,12 +110,12 @@
   right: 20%;
   top: 22%;
   bottom: 18%;
-  border: 3px solid #c8e8ce;
+  border: 3px solid rgb(var(--tb-mint));
   border-radius: 50%;
   opacity: 0;
 }
 .mimo-ring-second {
-  border-color: #a8b7f5;
+  border-color: rgb(var(--tb-lavender));
   border-width: 2px;
 }
 .mimo-confetti {
@@ -131,25 +131,25 @@
   height: 10px;
   border-radius: 2px;
   opacity: 0;
-  background: #a8b7f5;
+  background: rgb(var(--tb-lavender));
 }
 .mimo-confetti i:nth-child(2n) {
-  background: #ffe7a3;
+  background: rgb(var(--tb-butter));
   border-radius: 50%;
   width: 7px;
   height: 7px;
 }
 .mimo-confetti i:nth-child(3n) {
-  background: #c8e8ce;
+  background: rgb(var(--tb-mint));
 }
 .mimo-confetti i:nth-child(4n) {
-  background: #ffca9d;
+  background: rgb(var(--tb-peach));
 }
 .mimo-star {
   position: absolute;
   width: 24px;
   height: 24px;
-  background: #ffe7a3;
+  background: rgb(var(--tb-butter));
   opacity: 0;
   clip-path: polygon(
     50% 0,
@@ -169,7 +169,7 @@
 .mimo-star-two {
   right: 5%;
   top: 35%;
-  background: #a8b7f5;
+  background: rgb(var(--tb-lavender));
   width: 18px;
   height: 18px;
 }
@@ -205,22 +205,22 @@
   place-items: center;
   width: 32px;
   height: 32px;
-  border: 1px solid #dce4d6;
+  border: 1px solid rgb(var(--tb-auto-dce4d6));
   padding: 0;
   border-radius: 50%;
-  background: #fffef9;
-  color: #496550;
+  background: rgb(var(--tb-auto-fffef9));
+  color: rgb(var(--tb-secondary));
   cursor: pointer;
 }
 .final-design .mimo-control:hover {
-  background: #eaf6eb;
+  background: rgb(var(--tb-mint-tint));
 }
 .mimo-control .material-symbols-outlined {
   font-size: 17px;
 }
 .mimo-control[aria-pressed="false"] {
-  color: #737b75;
-  background: #f8f7f2;
+  color: rgb(var(--tb-muted-gray));
+  background: rgb(var(--tb-canvas));
 }
 .mimo-dock {
   position: fixed;
@@ -236,7 +236,7 @@
   border-radius: 50%;
   background: radial-gradient(
     ellipse at 50% 70%,
-    #eaf6eb 0 45%,
+    rgb(var(--tb-mint-tint)) 0 45%,
     transparent 46%
   );
 }
@@ -268,10 +268,10 @@
   gap: 6px;
   min-height: 40px;
   padding: 8px 12px;
-  border: 1px solid #c8d8c3;
+  border: 1px solid rgb(var(--tb-auto-c8d8c3));
   border-radius: 24px;
-  background: #fffef9;
-  color: #496550;
+  background: rgb(var(--tb-auto-fffef9));
+  color: rgb(var(--tb-secondary));
   font-size: 10px;
   font-weight: 700;
 }
@@ -281,11 +281,11 @@
 .high-contrast .mimo-wake,
 .high-contrast .mimo-control {
   background: white;
-  color: #10251b;
-  border: 2px solid #10251b;
+  color: rgb(var(--tb-deep));
+  border: 2px solid rgb(var(--tb-deep));
 }
 .high-contrast .mimo-touch-hint {
-  color: #10251b;
+  color: rgb(var(--tb-deep));
 }
 @keyframes mimo-somersault {
   0% {

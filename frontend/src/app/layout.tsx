@@ -8,6 +8,8 @@ import "@fontsource/nunito/800.css";
 import "@fontsource/nunito/900.css";
 import "@fontsource/plus-jakarta-sans/800.css";
 import "@fontsource/nunito/400.css";
+import "./theme.css";
+import "./theme-auto.css";
 import "./globals.css";
 import "./stitch.css";
 import "./design-final.css";

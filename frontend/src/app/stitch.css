@@ -26,8 +26,8 @@
     "opsz" 24;
 }
 .stitch-shell {
-  background: #f8f7f2;
-  color: #273b35;
+  background: rgb(var(--tb-canvas));
+  color: rgb(var(--tb-primary));
   font-family: "Plus Jakarta Sans", sans-serif;
   font-size: 16px;
   line-height: 26px;
@@ -78,12 +78,12 @@
 .stitch-footer {
   margin: 0;
   padding: 16px 24px;
-  background: #f5f4ef;
+  background: rgb(var(--tb-canvas-alt));
   font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #505c55;
+  color: rgb(var(--tb-text-secondary));
 }
 .stitch-footer span {
   font-size: 13px;
@@ -98,12 +98,12 @@
   padding: 28px;
   border-radius: 20px;
   max-width: 520px;
-  background: #fff;
-  color: #273b35;
-  box-shadow: 0 20px 80px #11252033;
+  background: rgb(var(--tb-surface));
+  color: rgb(var(--tb-primary));
+  box-shadow: 0 20px 80px rgb(var(--tb-deep-alt) / 0.2);
 }
 .stitch-reason::backdrop {
-  background: #11252066;
+  background: rgb(var(--tb-deep-alt) / 0.4);
   backdrop-filter: blur(4px);
 }
 .stitch-reason h2 {
@@ -115,7 +115,7 @@
   margin-bottom: 16px;
 }
 .stitch-reason button {
-  background: #112520;
+  background: rgb(var(--tb-deep-alt));
   color: white;
   padding: 12px 20px;
   border: 0;
@@ -130,7 +130,7 @@
   border-radius: 12px;
 }
 .stitch-shell nav button[aria-current="page"] {
-  background: #c8e8ce;
+  background: rgb(var(--tb-mint));
 }
 .stitch-shell .stitch-dashboard .font-section-title {
   font-weight: 700;
@@ -144,7 +144,7 @@
   padding: 0;
   height: auto;
   display: block;
-  background: #ffffffdd;
+  background: rgb(var(--tb-surface) / 0.867);
 }
 .stitch-landing section {
   background: transparent;
@@ -172,11 +172,11 @@
   bottom: 20px;
   right: 24px;
   z-index: 50;
-  background: #112520;
+  background: rgb(var(--tb-deep-alt));
   color: white;
   padding: 12px 22px;
   border-radius: 12px;
-  box-shadow: 0 4px 16px #11252020;
+  box-shadow: 0 4px 16px rgb(var(--tb-deep-alt) / 0.125);
 }
 .stitch-landing-error {
   position: fixed;
@@ -184,7 +184,7 @@
   right: 24px;
   max-width: 360px;
   z-index: 50;
-  background: #fae7e5;
+  background: rgb(var(--tb-error-surface));
   padding: 18px;
   border-radius: 14px;
 }
@@ -226,19 +226,19 @@
   gap: 0;
 }
 .stitch-onboarding button[aria-pressed="false"] {
-  background: #f5f4ef !important;
-  color: #505c55 !important;
+  background: rgb(var(--tb-canvas-alt)) !important;
+  color: rgb(var(--tb-text-secondary)) !important;
   box-shadow: none !important;
 }
 .stitch-onboarding button[aria-pressed="true"] {
-  background: #c8e8ce !important;
-  color: #112520 !important;
+  background: rgb(var(--tb-mint)) !important;
+  color: rgb(var(--tb-deep-alt)) !important;
 }
 .stitch-onboarding .font-btn[aria-pressed="false"] .material-symbols-outlined {
   display: none;
 }
 .stitch-onboarding button[role="switch"][aria-checked="false"] {
-  background: #e3e3de !important;
+  background: rgb(var(--tb-auto-e3e3de)) !important;
 }
 .stitch-onboarding button[role="switch"][aria-checked="false"] > span {
   transform: translateX(0) !important;
@@ -253,16 +253,16 @@
   max-width: 100%;
 }
 .stitch-landing:not(.stitch-onboarding) button[aria-pressed="true"] {
-  background: #ffffff !important;
-  color: #112520 !important;
+  background: rgb(var(--tb-surface)) !important;
+  color: rgb(var(--tb-deep-alt)) !important;
 }
 .stitch-landing:not(.stitch-onboarding) button[aria-pressed="false"] {
   background: transparent !important;
-  color: #505c55 !important;
+  color: rgb(var(--tb-text-secondary)) !important;
 }
 .preview-ruler p:hover,
 .preview-ruler p:focus {
-  background: #c8e8ce;
+  background: rgb(var(--tb-mint));
 }
 .stitch-screen :where(section, article, figure) {
   margin: 0;
@@ -288,7 +288,7 @@
 }
 .stitch-reader .reference-ruler p:hover,
 .stitch-reader .reference-ruler p:focus {
-  background: #d1e8df;
+  background: rgb(var(--tb-auto-d1e8df));
   box-shadow: 0 2px 0 #91af87;
 }
 .stitch-reader :where(label) {
@@ -314,10 +314,10 @@
   background: white;
 }
 .stitch-quiz label[data-selected="true"] {
-  background: #c8e8ce66;
+  background: rgb(var(--tb-mint) / 0.4);
 }
 .stitch-quiz label:focus-within {
-  outline: 3px solid #3b4c9b;
+  outline: 3px solid rgb(var(--tb-focus));
   outline-offset: 3px;
 }
 .stitch-settings :where(label) {
@@ -336,7 +336,7 @@
   max-width: 100%;
 }
 .stitch-settings button[aria-pressed="true"] {
-  box-shadow: inset 0 0 0 2px #45654b;
+  box-shadow: inset 0 0 0 2px rgb(var(--tb-secondary-deep));
 }
 .stitch-settings section {
   scroll-margin-top: 90px;
@@ -344,7 +344,7 @@
 .high-contrast
   .stitch-shell
   :is(.text-text-secondary, .text-secondary, .text-on-surface-variant) {
-  color: #101a16 !important;
+  color: rgb(var(--tb-contrast-ink)) !important;
 }
 [hidden] {
   display: none !important;
@@ -514,16 +514,16 @@
 .revamp-onboarding button[aria-checked="true"],
 .revamp-onboarding button[aria-pressed="true"],
 .stitch-settings button[aria-pressed="true"] {
-  box-shadow: inset 0 0 0 2px #273b35;
-  background-color: #c8e8ce;
+  box-shadow: inset 0 0 0 2px rgb(var(--tb-primary));
+  background-color: rgb(var(--tb-mint));
 }
 .revamp-onboarding button[aria-checked="false"],
 .revamp-onboarding button[aria-pressed="false"] {
   box-shadow: none;
-  background-color: #fff;
+  background-color: rgb(var(--tb-surface));
 }
 .revamp-shell :is(button, a, input, select, textarea):focus-visible {
-  outline: 2px solid #3b4c9b;
+  outline: 2px solid rgb(var(--tb-focus));
   outline-offset: 2px;
 }
 .revamp-shell .stitch-screen :where(button) {
