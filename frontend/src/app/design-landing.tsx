@@ -118,7 +118,7 @@ export function Landing({
             <div className="lg:col-span-7 flex flex-col items-start">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-butter-tint border-2 border-primary/20 text-xs font-black tracking-wide uppercase text-primary mb-6 shadow-zine-sm">
                 <span>🌱</span>
-                <span>APLIKASI BELAJAR INKLUSIF · NO PRESSURE</span>
+                <span>APLIKASI BELAJAR INKLUSIF · TANPA TEKANAN</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-[#E5B638]"></span>
               </div>
 
@@ -218,9 +218,6 @@ export function Landing({
           >
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-5">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-butter-tint border border-butter text-xs font-bold uppercase tracking-wider text-primary mb-3">
-                  <span>🎨</span> Ragam Pilihan
-                </div>
                 <h2
                   className="font-nunito font-black text-3xl sm:text-4xl text-primary ui-section-title"
                   id="mode-title"
@@ -244,20 +241,10 @@ export function Landing({
                   <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
                     Teman Baca
                   </h3>
-                  <p className="text-base text-text-secondary leading-relaxed mb-5 font-medium">
+                  <p className="text-base text-text-secondary leading-relaxed font-medium">
                     Penggaris baca, spasi baris lega, dan font yang nyaman
                     dibaca.
                   </p>
-                </div>
-
-                <div className="bg-surface rounded-xl p-3 border border-primary/20 text-xs font-bold text-primary flex items-center justify-between">
-                  <span className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-mint"></span>{" "}
-                    Penggaris Fokus
-                  </span>
-                  <span className="text-primary font-black">
-                    Aktif (Tingkat 2)
-                  </span>
                 </div>
               </div>
 
@@ -271,19 +258,10 @@ export function Landing({
                   <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
                     Selangkah demi Selangkah
                   </h3>
-                  <p className="text-base text-text-secondary leading-relaxed mb-5 font-medium">
+                  <p className="text-base text-text-secondary leading-relaxed font-medium">
                     Materi dipecah jadi kartu kecil, satu per satu, dengan
                     jeda santai.
                   </p>
-                </div>
-
-                <div className="bg-surface rounded-xl p-3 border border-primary/20 text-xs font-bold text-primary flex items-center justify-between">
-                  <span>Langkah 1 dari 3</span>
-                  <div className="flex gap-1">
-                    <span className="w-5 h-2 bg-lavender rounded-full border border-primary"></span>
-                    <span className="w-5 h-2 bg-canvas rounded-full border border-divider"></span>
-                    <span className="w-5 h-2 bg-canvas rounded-full border border-divider"></span>
-                  </div>
                 </div>
               </div>
 
@@ -297,19 +275,10 @@ export function Landing({
                   <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
                     Dengarkan &amp; Jelajahi
                   </h3>
-                  <p className="text-base text-text-secondary leading-relaxed mb-5 font-medium">
+                  <p className="text-base text-text-secondary leading-relaxed font-medium">
                     Dengarkan materi seperti podcast, kecepatannya bisa kamu
                     atur.
                   </p>
-                </div>
-
-                <div className="bg-surface rounded-xl p-3 border border-primary/20 text-xs font-bold text-primary flex items-center justify-between">
-                  <span className="flex items-center gap-1">
-                    ▶ Suara Jernih 1.0x
-                  </span>
-                  <span className="font-mono text-xs text-text-secondary">
-                    03:45 / 07:12
-                  </span>
                 </div>
               </div>
 
@@ -323,17 +292,10 @@ export function Landing({
                   <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
                     Teks &amp; Visual
                   </h3>
-                  <p className="text-base text-text-secondary leading-relaxed mb-5 font-medium">
+                  <p className="text-base text-text-secondary leading-relaxed font-medium">
                     Diagram dan bagan dengan keterangan singkat yang gampang
                     diikuti.
                   </p>
-                </div>
-
-                <div className="bg-surface rounded-xl p-3 border border-primary/20 text-xs font-bold text-primary flex items-center justify-between">
-                  <span>Bagan Konsep Daun</span>
-                  <span className="text-xs bg-peach px-2 py-0.5 rounded-md font-bold">
-                    Diagram + Keterangan
-                  </span>
                 </div>
               </div>
 
@@ -347,17 +309,10 @@ export function Landing({
                   <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
                     Belajar Biasa
                   </h3>
-                  <p className="text-base text-text-secondary leading-relaxed mb-5 font-medium">
+                  <p className="text-base text-text-secondary leading-relaxed font-medium">
                     Bacaan rapi per bab, alat bantu tetap siap kalau
                     dibutuhkan.
                   </p>
-                </div>
-
-                <div className="bg-canvas rounded-xl p-3 border border-divider text-xs font-bold text-text-secondary flex items-center justify-between">
-                  <span>Aksesibilitas Universal</span>
-                  <span className="text-primary font-bold">
-                    Siap dipakai
-                  </span>
                 </div>
               </div>
 
@@ -455,9 +410,6 @@ export function Landing({
             id="aksesibilitas"
           >
             <div className="text-center max-w-2xl mx-auto mb-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lavender-tint border border-lavender text-xs font-bold uppercase tracking-wider text-primary mb-3">
-                <span>💜</span> Belajar Nyaman Untuk Semua
-              </div>
               <h2
                 className="font-nunito font-black text-3xl sm:text-4xl text-primary ui-section-title"
                 id="inclusive-title"
@@ -579,9 +531,6 @@ export function Landing({
           </section>
 
           <section className="mt-8 bg-gradient-to-r from-mint-tint via-butter-tint to-peach-tint rounded-feature p-6 sm:p-8 border-2 border-primary shadow-zine text-center relative overflow-hidden">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface border-2 border-primary text-xs font-black uppercase text-primary mb-6 shadow-zine-sm">
-              <span>🎒</span> AYO MULAI!
-            </div>
             <div className="max-w-2xl mx-auto relative z-10">
               <h2 className="font-nunito font-black text-3xl sm:text-5xl text-primary mb-4 leading-tight ui-section-title">
                 Siap mulai bareng Mimo?
