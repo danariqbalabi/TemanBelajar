@@ -1094,9 +1094,7 @@ export function SettingsDesign({
                         Profil &amp; Preferensi Belajar
                       </h1>
                       <p className="font-reading text-reading text-on-surface-variant leading-relaxed">
-                        Kelola profilmu, atur komitmen waktu harian tanpa rasa
-                        terbebani, serta kendalikan data belajarmu dengan aman
-                        dan transparan.
+                        Atur profil, waktu belajar harian, dan data belajarmu.
                       </p>
                     </div>
 
@@ -1537,11 +1535,8 @@ export function SettingsDesign({
                           info
                         </span>
                         <p className="font-metadata text-metadata text-on-surface leading-relaxed text-[13px]">
-                          <strong>Keterangan Transparan:</strong> Jika kamu
-                          mengubah target durasi harian, sistem akan otomatis
-                          menyesuaikan susunan di{" "}
-                          <em>Rencana Belajar (Layar 20 &amp; 21)</em> tanpa
-                          menghapus progres yang sudah kamu capai.
+                          Kalau target harian diubah, Rencana Belajar ikut
+                          menyesuaikan. Progresmu tetap aman.
                         </p>
                       </div>
 

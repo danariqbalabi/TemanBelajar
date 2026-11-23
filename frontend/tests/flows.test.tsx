@@ -453,7 +453,7 @@ describe("planner yang dapat ditinjau", () => {
       screen.getByRole("button", { name: "Edit rencana manual" }),
     );
     expect(
-      (screen.getByText("Hapus dari draf") as HTMLButtonElement).disabled,
+      (screen.getByText("Hapus dari jadwal ini") as HTMLButtonElement).disabled,
     ).toBe(true);
     expect(
       (screen.getAllByLabelText("Mulai")[0] as HTMLInputElement).disabled,
@@ -531,7 +531,7 @@ it("menyimpan sumber terlebih dahulu tanpa memulai AI diam-diam", async () => {
     screen.getByRole("button", { name: "Simpan sumber & lanjut" }),
   );
   expect(
-    await screen.findByRole("button", { name: "Mulai pemrosesan" }),
+    await screen.findByRole("button", { name: "Siapkan materi" }),
   ).toBeTruthy();
   expect(
     request.mock.calls.some((c) => String(c[0]).endsWith("/process")),
