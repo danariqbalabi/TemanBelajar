@@ -468,22 +468,25 @@ export function Landing({
                 TemanBelajar dirancang khusus agar setiap pelajar merasa
                 dihargai tanpa harus melabeli diri sendiri.
               </p>
+              <p className="text-text-secondary mt-2 text-base italic">
+                Cerita di bawah ini ilustrasi, bukan testimoni pengguna asli.
+              </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-4 mb-6">
               <div className="bg-surface rounded-card p-6 border-2 border-primary shadow-zine flex flex-col justify-between">
-                <p className="text-sm text-text-secondary leading-relaxed font-medium mb-4">
+                <p className="text-base text-text-secondary leading-relaxed font-medium mb-4">
                   “Dulu suka pusing kalau lihat teks bacaan panjang di buku
                   paket. Di TemanBelajar aku pakai penggaris fokus dan audio
-                  Mimo. Nilai Biologi dan IPA-ku naik pesat!”
+                  Mimo. Sekarang baca materi IPA nggak secapek dulu.”
                 </p>
                 <div className="flex items-center gap-3 pt-4 border-t border-divider">
                   <div className="w-9 h-9 rounded-full bg-mint text-primary font-black text-xs flex items-center justify-center border border-primary">
                     R
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-primary">Rania A.</p>
-                    <p className="text-[11px] text-text-secondary">
+                    <p className="text-sm font-bold text-primary">Rania A.</p>
+                    <p className="text-sm text-text-secondary">
                       Siswa Kelas 8 SMP · Jakarta
                     </p>
                   </div>
@@ -491,7 +494,7 @@ export function Landing({
               </div>
 
               <div className="bg-surface rounded-card p-6 border-2 border-primary shadow-zine flex flex-col justify-between">
-                <p className="text-sm text-text-secondary leading-relaxed font-medium mb-4">
+                <p className="text-base text-text-secondary leading-relaxed font-medium mb-4">
                   “Fitur &#x27;Geser ke Besok&#x27; ngebantu banget pas lagi
                   banyak tugas sekolah. Nggak ada hukuman pengurangan poin yang
                   bikin bersalah. Belajar jadi santai tapi konsisten.”
@@ -501,8 +504,8 @@ export function Landing({
                     F
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-primary">Fajar K.</p>
-                    <p className="text-[11px] text-text-secondary">
+                    <p className="text-sm font-bold text-primary">Fajar K.</p>
+                    <p className="text-sm text-text-secondary">
                       Siswa Kelas 11 SMA · Bandung
                     </p>
                   </div>
@@ -510,7 +513,7 @@ export function Landing({
               </div>
 
               <div className="bg-surface rounded-card p-6 border-2 border-primary shadow-zine flex flex-col justify-between">
-                <p className="text-sm text-text-secondary leading-relaxed font-medium mb-4">
+                <p className="text-base text-text-secondary leading-relaxed font-medium mb-4">
                   “Sebagai guru BK, saya sangat mengapresiasi pendekatan tanpa
                   diagnosis medis. Siswa yang punya gaya belajar berbeda bisa
                   langsung nyaman memilih modenya.”
@@ -520,10 +523,10 @@ export function Landing({
                     I
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-primary">
+                    <p className="text-sm font-bold text-primary">
                       Ibu Nurul W., M.Pd.
                     </p>
-                    <p className="text-[11px] text-text-secondary">
+                    <p className="text-sm text-text-secondary">
                       Konselor Pendidikan · Yogyakarta
                     </p>
                   </div>
@@ -537,7 +540,7 @@ export function Landing({
                 <h4 className="font-nunito font-extrabold text-base text-primary mb-1 ui-label-title">
                   Target WCAG 2.2 AA
                 </h4>
-                <p className="text-xs text-text-secondary">
+                <p className="text-base text-text-secondary">
                   Kontras tinggi teruji, navigasi keyboard penuh, dan fokus
                   visual yang jelas.
                 </p>
@@ -547,7 +550,7 @@ export function Landing({
                 <h4 className="font-nunito font-extrabold text-base text-primary mb-1 ui-label-title">
                   Privasi Terjaga
                 </h4>
-                <p className="text-xs text-text-secondary">
+                <p className="text-base text-text-secondary">
                   Data belajar hanya disimpan untuk kenyamananmu, tanpa profil
                   iklan komersial.
                 </p>
@@ -557,7 +560,7 @@ export function Landing({
                 <h4 className="font-nunito font-extrabold text-base text-primary mb-1 ui-label-title">
                   Kontrol Multi-Sensorik
                 </h4>
-                <p className="text-xs text-text-secondary">
+                <p className="text-base text-text-secondary">
                   Pengaturan kecepatan audio 0.75x–1.5x, spasi baris leluasa,
                   dan opsi kontras.
                 </p>
@@ -567,7 +570,7 @@ export function Landing({
                 <h4 className="font-nunito font-extrabold text-base text-primary mb-1 ui-label-title">
                   Tanpa Diagnosis Medis
                 </h4>
-                <p className="text-xs text-text-secondary">
+                <p className="text-base text-text-secondary">
                   Cukup pilih preferensi kenyamanan tanpa perlu mengisi tes atau
                   sertifikat medis.
                 </p>
