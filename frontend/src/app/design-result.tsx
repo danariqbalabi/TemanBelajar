@@ -22,6 +22,7 @@ export function ResultDesign({
   onRest,
   onSaveReview,
   onSpeak,
+  onRegister,
   notice,
 }: {
   attempt: Attempt;
@@ -38,6 +39,7 @@ export function ResultDesign({
   onSaveReview: () => void;
   onSpeak: (text?: string) => void;
   onPreferences?: (p: Partial<Preferences>) => void;
+  onRegister?: () => void;
   notice: string | null;
 }) {
   const correct = Object.values(attempt.answers).filter(
@@ -90,6 +92,17 @@ export function ResultDesign({
           <UiIcon name="arrow_forward" />
         </a>
       </section>
+      {onRegister && (
+        <aside className="workspace-actions workspace-demo-invite">
+          <p>
+            Ini masih mode demo. Buat akun gratis supaya progres belajarmu
+            selanjutnya tersimpan.
+          </p>
+          <button className="workspace-button" onClick={onRegister}>
+            Daftar gratis
+          </button>
+        </aside>
+      )}
       <div className="workspace-panel-heading">
         <h2>Pembahasan</h2>
         <div

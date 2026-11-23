@@ -25,6 +25,7 @@ export function Reader({
   onUpdate,
   refresh,
   onPlanner,
+  onRegister,
   onSettings = () => {},
   onBack = () => {},
   onPreferences,
@@ -40,6 +41,7 @@ export function Reader({
   onUpdate: (s: LearningSession) => void;
   refresh: () => Promise<void>;
   onPlanner: () => void;
+  onRegister?: () => void;
   onSettings?: () => void;
   onBack?: () => void;
   onPreferences?: (p: Partial<Preferences>) => void;
@@ -347,6 +349,7 @@ export function Reader({
         onSaveReview={saveReview}
         onSpeak={speak}
         onPreferences={onPreferences}
+        onRegister={onRegister}
         notice={
           audioNotice || (feedback && !attempt.questions.some((q) => q.id === feedback)
             ? feedback

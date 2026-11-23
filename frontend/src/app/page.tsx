@@ -602,6 +602,11 @@ export default function Home() {
           }}
           refresh={refresh}
           onPlanner={() => setPage("Rencana Belajar")}
+          onRegister={
+            account.user.is_anonymous
+              ? () => openAccount("register")
+              : undefined
+          }
         />
       ) : (
         <LearningStart
