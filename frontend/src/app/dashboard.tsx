@@ -286,7 +286,7 @@ export function Dashboard({
                             </p>
                           </div>
                           <button
-                            className="bg-primary text-white px-4 py-2 rounded-xl"
+                            className="px-4 py-2 rounded-xl border-2 border-primary bg-surface text-primary font-bold"
                             onClick={() => {
                               const selected = materials.find(
                                 (m) => m.id === a.material_id,
@@ -342,7 +342,7 @@ export function Dashboard({
                           max={m.concepts.length}
                         />
                         <button
-                          className="justify-self-start min-h-11 rounded-xl px-3 py-2 bg-primary text-white"
+                          className="justify-self-start min-h-11 rounded-xl px-3 py-2 border-2 border-primary bg-surface text-primary font-bold"
                           onClick={() => start(m)}
                         >
                           {sessions.some(
@@ -459,6 +459,9 @@ export function Dashboard({
                 {material && (
                   <section className="dashboard-panel dashboard-formats">
                     <h2 className="ui-card-title">Cara belajar</h2>
+                    <p className="text-text-secondary">
+                      Atau buka saran hari ini dengan cara lain:
+                    </p>
                     <div className="dashboard-format-grid">
                       {(
                         [
