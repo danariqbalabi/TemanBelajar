@@ -228,7 +228,7 @@ export function Landing({
                   5 Mode Belajar yang Bisa Kamu Pilih
                 </h2>
               </div>
-              <p className="text-text-secondary text-sm sm:text-base max-w-md font-medium">
+              <p className="text-text-secondary text-base max-w-md font-medium">
                 Tiap mode punya alat bantunya sendiri. Pilih yang paling pas
                 buatmu.
               </p>
@@ -240,17 +240,13 @@ export function Landing({
                     <div className="w-11 h-11 rounded-xl bg-surface border-2 border-primary flex items-center justify-center text-xl shadow-zine-sm">
                       📖
                     </div>
-                    <span className="bg-surface text-primary border border-primary/20 text-[11px] font-extrabold uppercase px-2.5 py-1 rounded-full">
-                      Reading Companion
-                    </span>
                   </div>
                   <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
                     Teman Baca
                   </h3>
-                  <p className="text-xs sm:text-sm text-text-secondary leading-relaxed mb-5 font-medium">
-                    Bantuan membaca ramah disleksia: penggaris fokus baca,
-                    pengaturan jarak spasi baris, font OpenDyslexic opsional,
-                    dan audio sinkron.
+                  <p className="text-base text-text-secondary leading-relaxed mb-5 font-medium">
+                    Penggaris baca, spasi baris lega, dan font yang nyaman
+                    dibaca.
                   </p>
                 </div>
 
@@ -271,17 +267,13 @@ export function Landing({
                     <div className="w-11 h-11 rounded-xl bg-surface border-2 border-primary flex items-center justify-center text-xl shadow-zine-sm">
                       🎯
                     </div>
-                    <span className="bg-surface text-primary border border-primary/20 text-[11px] font-extrabold uppercase px-2.5 py-1 rounded-full">
-                      Focus Navigator
-                    </span>
                   </div>
                   <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
                     Selangkah demi Selangkah
                   </h3>
-                  <p className="text-xs sm:text-sm text-text-secondary leading-relaxed mb-5 font-medium">
-                    Memecah materi kompleks menjadi kartu tugas mikro tunggal.
-                    Timer jeda istirahat ramah tanpa tekanan hitung mundur yang
-                    memicu cemas.
+                  <p className="text-base text-text-secondary leading-relaxed mb-5 font-medium">
+                    Materi dipecah jadi kartu kecil, satu per satu, dengan
+                    jeda santai.
                   </p>
                 </div>
 
@@ -301,17 +293,13 @@ export function Landing({
                     <div className="w-11 h-11 rounded-xl bg-surface border-2 border-primary flex items-center justify-center text-xl shadow-zine-sm">
                       🎧
                     </div>
-                    <span className="bg-surface text-primary border border-primary/20 text-[11px] font-extrabold uppercase px-2.5 py-1 rounded-full">
-                      Audio &amp; Explorer
-                    </span>
                   </div>
                   <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
                     Dengarkan &amp; Jelajahi
                   </h3>
-                  <p className="text-xs sm:text-sm text-text-secondary leading-relaxed mb-5 font-medium">
-                    Penyampaian podcast edukatif yang santai, dilengkapi
-                    waveform visual, kecepatan 0.75x–1.5x, serta alt-text
-                    deskriptif pada tiap gambar.
+                  <p className="text-base text-text-secondary leading-relaxed mb-5 font-medium">
+                    Dengarkan materi seperti podcast, kecepatannya bisa kamu
+                    atur.
                   </p>
                 </div>
 
@@ -331,17 +319,13 @@ export function Landing({
                     <div className="w-11 h-11 rounded-xl bg-surface border-2 border-primary flex items-center justify-center text-xl shadow-zine-sm">
                       🖼️
                     </div>
-                    <span className="bg-surface text-primary border border-primary/20 text-[11px] font-extrabold uppercase px-2.5 py-1 rounded-full">
-                      Visual &amp; Caption
-                    </span>
                   </div>
                   <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
                     Teks &amp; Visual
                   </h3>
-                  <p className="text-xs sm:text-sm text-text-secondary leading-relaxed mb-5 font-medium">
-                    Transkrip yang disinkronkan langsung dengan keterangan
-                    visual, bagan alir terstruktur, kartu konsep, dan rangkuman
-                    intisari diagram.
+                  <p className="text-base text-text-secondary leading-relaxed mb-5 font-medium">
+                    Diagram dan bagan dengan keterangan singkat yang gampang
+                    diikuti.
                   </p>
                 </div>
 
@@ -359,17 +343,13 @@ export function Landing({
                     <div className="w-11 h-11 rounded-xl bg-canvas border-2 border-primary flex items-center justify-center text-xl shadow-zine-sm">
                       📝
                     </div>
-                    <span className="bg-canvas text-primary border border-primary/20 text-[11px] font-extrabold uppercase px-2.5 py-1 rounded-full">
-                      Standard Learning
-                    </span>
                   </div>
                   <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
                     Belajar Biasa
                   </h3>
-                  <p className="text-xs sm:text-sm text-text-secondary leading-relaxed mb-5 font-medium">
-                    Tampilan artikel bacaan klasik yang rapi dengan navigasi bab
-                    terstruktur, catatan tepi, dan alat bantu aksesibilitas yang
-                    selalu siap dipanggil.
+                  <p className="text-base text-text-secondary leading-relaxed mb-5 font-medium">
+                    Bacaan rapi per bab, alat bantu tetap siap kalau
+                    dibutuhkan.
                   </p>
                 </div>
 
@@ -389,12 +369,11 @@ export function Landing({
                 <h3 className="font-nunito font-black text-xl text-primary mb-2 ui-card-title">
                   Bebas Ganti Kapan Saja
                 </h3>
-                <p className="text-xs sm:text-sm text-primary/90 font-medium leading-relaxed mb-4">
-                  Mata lelah membaca? Pindah ke mode audio hanya dengan satu
-                  klik tanpa mengulang dari awal sesi.
+                <p className="text-base text-primary/90 font-medium leading-relaxed mb-4">
+                  Mata lelah? Pindah ke audio tanpa mengulang dari awal.
                 </p>
                 <a
-                  className="inline-flex items-center gap-1.5 text-xs font-black text-primary underline underline-offset-4 hover:text-primary-hover"
+                  className="inline-flex items-center gap-1.5 text-base font-black text-primary underline underline-offset-4 hover:text-primary-hover"
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
