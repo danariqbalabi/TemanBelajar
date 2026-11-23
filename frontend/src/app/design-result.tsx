@@ -82,7 +82,7 @@ export function ResultDesign({
           <h2>
             {correct} dari {attempt.questions.length} jawaban tepat
           </h2>
-          <p>{displayName}, kamu bisa meninjau pembahasannya di bawah.</p>
+          <p>{displayName}, cek pembahasannya di bawah, ya.</p>
         </div>
         <a
           href="#"
@@ -92,7 +92,7 @@ export function ResultDesign({
             onRecommend();
           }}
         >
-          Mulai Rekomendasi Sekarang
+          Lanjut belajar
           <UiIcon name="arrow_forward" />
         </a>
       </section>
@@ -164,7 +164,7 @@ export function ResultDesign({
           Ulangi latihan
         </button>
         <button className="workspace-button" onClick={onPlanner}>
-          Rencana belajar
+          Lihat jadwal
         </button>
         <button className="workspace-button" disabled={busy} onClick={onRest}>
           Istirahat dulu

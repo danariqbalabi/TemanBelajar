@@ -193,7 +193,7 @@ describe("alur belajar", () => {
       screen.getByText("Cahaya, bukan air, menjadi sumber energi."),
     ).toBeTruthy();
     await userEvent.click(
-      screen.getByRole("link", { name: /Mulai Rekomendasi Sekarang/ }),
+      screen.getByRole("link", { name: /Lanjut belajar/ }),
     );
     expect((await screen.findAllByText(reason)).length).toBeGreaterThan(0);
     expect(screen.queryByText(/42%/)).toBeNull();
