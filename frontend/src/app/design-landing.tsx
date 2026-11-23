@@ -171,26 +171,6 @@ export function Landing({
               >
                 Masuk atau daftar dengan email
               </button>
-              <div className="flex flex-wrap items-center gap-y-2.5 gap-x-6 text-xs font-semibold text-text-secondary border-t border-divider pt-6 w-full">
-                <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-mint text-primary flex items-center justify-center font-black text-xs border border-primary/20">
-                    ✓
-                  </span>
-                  <span>Ramah pembaca layar</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-lavender text-primary flex items-center justify-center font-black text-xs border border-primary/20">
-                    ✓
-                  </span>
-                  <span>5 mode belajar fleksibel</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-butter text-primary flex items-center justify-center font-black text-xs border border-primary/20">
-                    ✓
-                  </span>
-                  <span>Rekomendasi tanpa bikin stres</span>
-                </div>
-              </div>
             </div>
 
             <div className="lg:col-span-5 relative flex flex-col items-center justify-center mt-6 lg:mt-0">
@@ -202,24 +182,12 @@ export function Landing({
                 <div className="relative bg-mint-tint border-2 border-primary rounded-feature rounded-tl-none p-6 sm:p-8 shadow-zine flex flex-col items-center justify-center overflow-visible">
                   <div className="absolute -top-3.5 right-6 w-20 h-5 washi-tape rotate-3 rounded-sm opacity-90 pointer-events-none"></div>
 
-                  <div className="absolute -left-4 sm:-left-8 top-16 bg-surface border-2 border-primary rounded-full px-3.5 py-1.5 text-xs font-bold text-primary shadow-zine-sm flex items-center gap-2 rotate-[-4deg] animate-pulse">
-                    <span>🎧</span> Audio bersuara jernih
-                  </div>
-
-                  <div className="absolute -right-3 sm:-right-7 top-32 bg-surface border-2 border-primary rounded-full px-3.5 py-1.5 text-xs font-bold text-primary shadow-zine-sm flex items-center gap-2 rotate-[3deg]">
-                    <span>⚡</span> Timer bebas cemas
-                  </div>
-
                   <div className="landing-mimo-stage w-full flex justify-center my-2">
                     <div className="landing-mimo-orbit" aria-hidden="true">
                       <span />
                       <span />
                     </div>
                     <MimoMascot context="Kenalan" />
-                  </div>
-
-                  <div className="absolute -bottom-4 right-8 bg-lavender-tint border-2 border-primary rounded-full px-4 py-1 text-xs font-bold text-primary shadow-zine-sm flex items-center gap-1.5 rotate-[-2deg]">
-                    <span>📖</span> Penggaris fokus baca
                   </div>
 
                   <div className="w-full mt-4 bg-surface border-2 border-primary rounded-card p-4 shadow-zine-sm flex items-start gap-3">
@@ -230,10 +198,7 @@ export function Landing({
                       👋
                     </span>
                     <div>
-                      <span className="text-[11px] font-black uppercase tracking-wider text-primary/70 block mb-0.5">
-                        Suara Mimo
-                      </span>
-                      <p className="font-nunito font-extrabold text-sm sm:text-base text-primary leading-snug">
+                      <p className="font-nunito font-extrabold text-base text-primary leading-snug">
                         “Hai! Mau dengerin, baca pelan-pelan, atau lihat diagram
                         visual? Kamu yang tentukan!”
                       </p>
