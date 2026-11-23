@@ -52,6 +52,9 @@ async function readWorkspace(minutes: number) {
 export default function Home() {
   const [tour, setTour] = useState(false);
   const [accountEntry, setAccountEntry] = useState(false);
+  const [accountMode, setAccountMode] = useState<"login" | "register">(
+    "login",
+  );
   const [account, setAccount] = useState<Session | null>(null),
     [ready, setReady] = useState(false),
     [loadedUserId, setLoadedUserId] = useState<string | null>(null),
@@ -276,6 +279,31 @@ export default function Home() {
     setOnboarding(false);
     setNotice("Preferensi tersimpan. Ritmemu bisa diubah kapan saja.");
   }
+  function openAccount(mode: "login" | "register") {
+    setAccountMode(mode);
+    setLanding(false);
+    setAccountEntry(true);
+    setError("");
+  }
+  async function startDemo() {
+    if (account) {
+      setAccountEntry(false);
+      if (account.user.is_anonymous) {
+        setPage("Beranda");
+        setTour(true);
+      }
+      setLanding(false);
+      return;
+    }
+    await run(async () => {
+      if (!auth) throw Error("Layanan akun belum tersedia.");
+      const { error: demoError } = await auth.auth.signInAnonymously();
+      if (demoError) throw demoError;
+      setLanding(false);
+      setAccountEntry(false);
+      setTour(true);
+    });
+  }
   const prefs = profile.preferences;
   const showAccount = landing || !account || accountEntry;
   const awaitingWorkspace = ready && !showAccount && loadedUserId !== userId;
@@ -310,24 +338,15 @@ export default function Home() {
     return withLoading(
       <Account
         landing={landing}
+        initialMode={accountMode}
         onClearError={() => {
           setError("");
           retry.current = null;
         }}
-        onLogin={() => {
-          setLanding(false);
-          setAccountEntry(true);
-          setError("");
-        }}
+        onLogin={() => openAccount("login")}
+        onRegister={() => openAccount("register")}
         onDemo={() => setTour(true)}
-        onContinue={() => {
-          setAccountEntry(false);
-          if (account?.user.is_anonymous) {
-            setPage("Beranda");
-            setTour(true);
-          }
-          setLanding(false);
-        }}
+        onContinue={startDemo}
         onBack={() => setLanding(true)}
         run={run}
         busy={busy}
@@ -512,6 +531,7 @@ export default function Home() {
           busy={busy}
           account={account}
           onAccount={() => {
+            setAccountMode("login");
             setAccountEntry(true);
             setError("");
           }}

@@ -7,14 +7,17 @@ import { MimoMascot } from "./mimo-mascot";
 export function Landing({
   onContinue,
   onLogin,
+  onRegister,
   error,
 }: {
   onContinue: () => void;
   onLogin?: () => void;
+  onRegister?: () => void;
   error: string;
 }) {
   const header = useRef<HTMLElement>(null);
   useScrollNavbar(header);
+  const register = onRegister || onLogin || onContinue;
   return (
     <>
       <div className="final-design final-screen-1 min-h-screen bg-canvas text-primary antialiased selection:bg-mint selection:text-primary relative overflow-x-hidden stitch-shell stitch-landing">
@@ -89,10 +92,10 @@ export function Landing({
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  onContinue();
+                  register();
                 }}
               >
-                <span>Mulai Belajar Gratis</span>
+                <span>Daftar gratis</span>
                 <span
                   className="material-symbols-outlined text-base"
                   aria-hidden="true"
@@ -138,9 +141,8 @@ export function Landing({
                 sendiri.
               </h1>
               <p className="text-lg sm:text-xl text-text-secondary leading-relaxed mb-8 max-w-xl font-medium">
-                Pilih cara belajar yang paling nyaman buat kamu. Mimo siap
-                nemenin pahami materi sekolah langkah demi langkah tanpa bikin
-                pusing dan tanpa tes diagnosis medis!
+                Mimo nemenin kamu pahami materi sekolah, selangkah demi
+                selangkah.
               </p>
 
               <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto mb-6">
@@ -152,7 +154,7 @@ export function Landing({
                     onContinue();
                   }}
                 >
-                  <span>Mulai belajar</span>
+                  <span>Coba demo gratis</span>
                   <span
                     className="material-symbols-outlined text-lg"
                     aria-hidden="true"
@@ -164,7 +166,7 @@ export function Landing({
                   className="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-surface hover:bg-mint-tint border-2 border-primary text-primary text-base font-bold px-7 py-3.5 rounded-xl shadow-zine-sm hover:shadow-zine transition-all"
                   href="#cara-kerja"
                 >
-                  Lihat Cara Kerjanya
+                  Lihat cara kerja
                 </a>
               </div>
 
@@ -180,7 +182,7 @@ export function Landing({
                   <span className="w-5 h-5 rounded-full bg-mint text-primary flex items-center justify-center font-black text-xs border border-primary/20">
                     ✓
                   </span>
-                  <span>Ramah pembaca layar (Target WCAG 2.2 AA)</span>
+                  <span>Ramah pembaca layar</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-5 h-5 rounded-full bg-lavender text-primary flex items-center justify-center font-black text-xs border border-primary/20">
@@ -205,10 +207,6 @@ export function Landing({
 
                 <div className="relative bg-mint-tint border-2 border-primary rounded-feature rounded-tl-none p-6 sm:p-8 shadow-zine flex flex-col items-center justify-center overflow-visible">
                   <div className="absolute -top-3.5 right-6 w-20 h-5 washi-tape rotate-3 rounded-sm opacity-90 pointer-events-none"></div>
-
-                  <div className="absolute top-3 right-3 bg-butter text-primary text-[11px] font-black px-3 py-1 rounded-full border-2 border-primary rotate-[-8deg] shadow-zine-sm">
-                    ✨ 100% Dukungan Siswa
-                  </div>
 
                   <div className="absolute -left-4 sm:-left-8 top-16 bg-surface border-2 border-primary rounded-full px-3.5 py-1.5 text-xs font-bold text-primary shadow-zine-sm flex items-center gap-2 rotate-[-4deg] animate-pulse">
                     <span>🎧</span> Audio bersuara jernih
@@ -252,69 +250,6 @@ export function Landing({
             </div>
           </section>
 
-          <section
-            aria-labelledby="film-title"
-            className="my-4 grid items-center gap-5 rounded-feature border border-divider bg-mint-tint p-5 sm:p-6 lg:grid-cols-[1fr_2fr]"
-          >
-            <div>
-              <h2
-                id="film-title"
-                className="ui-section-title font-nunito text-3xl font-black text-primary"
-              >
-                Belajar bareng Manda
-              </h2>
-              <p className="mt-3">
-                Dalam 58 detik, lihat cara Manda membaca, berlatih, dan
-                mengambil jeda.
-              </p>
-              <details className="mt-4">
-                <summary className="cursor-pointer font-bold">
-                  Baca transkrip video
-                </summary>
-                <p className="mt-2">
-                  Untuk pelajar penyandang disabilitas, cara materi disajikan
-                  bisa menentukan seberapa mudah mereka ikut belajar. Ada yang
-                  lebih nyaman mendengarkan, ada yang butuh teks lebih besar,
-                  atau satu bagian bacaan dalam satu waktu.
-                </p>
-                <p className="mt-2">
-                  TemanBelajar membantu kamu mengatur cara belajar sesuai
-                  kebutuhanmu. Kamu bisa besarkan huruf, atur kontras, atau
-                  nyalakan penggaris baca. Kalau lebih nyaman mendengarkan,
-                  putar audio sambil mengikuti transkrip.
-                </p>
-                <p className="mt-2">
-                  Lalu, cek apa yang sudah kamu pahami. Manda, misalnya, sudah
-                  bisa mencari hipotenusa, tapi masih keliru saat mencari sisi
-                  siku-siku. TemanBelajar menunjukkan di mana letak salahnya dan
-                  menyarankan latihan yang sesuai.
-                </p>
-                <p className="mt-2">
-                  Kalau butuh jeda, geser jadwalnya. Progresmu tetap tersimpan,
-                  dan Mimo siap menemani saat kamu kembali. TemanBelajar. Ruang
-                  belajar yang bisa kamu sesuaikan.
-                </p>
-              </details>
-            </div>
-            <video
-              className="aspect-video w-full rounded-2xl bg-black"
-              controls
-              playsInline
-              preload="metadata"
-              aria-labelledby="film-title"
-            >
-              <source src="/media/temanbelajar.mp4" type="video/mp4" />
-              <track
-                default
-                kind="captions"
-                src="/media/temanbelajar-id.vtt"
-                srcLang="id"
-                label="Bahasa Indonesia"
-              />
-              <a href="/media/temanbelajar.mp4">Buka video TemanBelajar</a>
-            </video>
-          </section>
-
           <LandingHow />
 
           <section
@@ -335,8 +270,8 @@ export function Landing({
                 </h2>
               </div>
               <p className="text-text-secondary text-sm sm:text-base max-w-md font-medium">
-                Setiap siswa punya keunikan cara memproses informasi. Beralih
-                mode kapan saja di tengah sesi tanpa reset kemajuan belajarmu.
+                Tiap mode punya alat bantunya sendiri. Pilih yang paling pas
+                buatmu.
               </p>
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -482,7 +417,7 @@ export function Landing({
                 <div className="bg-canvas rounded-xl p-3 border border-divider text-xs font-bold text-text-secondary flex items-center justify-between">
                   <span>Aksesibilitas Universal</span>
                   <span className="text-primary font-bold">
-                    Target WCAG 2.2 AA
+                    Siap dipakai
                   </span>
                 </div>
               </div>
@@ -507,7 +442,7 @@ export function Landing({
                     onContinue();
                   }}
                 >
-                  Coba di Demo Materi →
+                  Coba demo gratis →
                 </a>
               </div>
             </div>
@@ -546,10 +481,10 @@ export function Landing({
                     </span>
                     <span>
                       <strong className="text-primary">
-                        Pelacakan Nyata vs Estimasi:
+                        Progres Asli:
                       </strong>{" "}
-                      Sistem memisahkan capaian nyata latihan dari tebakan,
-                      sehingga kamu selalu tahu progres aslimu.
+                      Dihitung dari latihan yang benar-benar kamu kerjakan,
+                      bukan tebakan.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
@@ -558,10 +493,10 @@ export function Landing({
                     </span>
                     <span>
                       <strong className="text-primary">
-                        Alasan Transparan:
+                        Dijelasin Ulang:
                       </strong>{" "}
-                      Tidak ada kotak misterius — Mimo menjelaskan secara
-                      gamblang kenapa materi tertentu direkomendasikan.
+                      Jawaban belum tepat? Mimo bantu jelasin lagi dengan cara
+                      yang lain.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
@@ -570,10 +505,10 @@ export function Landing({
                     </span>
                     <span>
                       <strong className="text-primary">
-                        Jadwal Tanpa Hukuman:
+                        Latihan Santai:
                       </strong>{" "}
-                      Butuh jeda? Geser sisa waktu belajar 10 menit ke jadwal
-                      esok hari tanpa penalti.
+                      Soal singkat setelah membaca, tanpa nilai yang bikin
+                      tegang.
                     </span>
                   </li>
                 </ul>
@@ -586,7 +521,7 @@ export function Landing({
                       onContinue();
                     }}
                   >
-                    <span>Coba Demo Fotosintesis</span>
+                    <span>Coba demo gratis</span>
                     <span
                       className="material-symbols-outlined text-base"
                       aria-hidden="true"
@@ -595,7 +530,7 @@ export function Landing({
                     </span>
                   </a>
                   <span className="text-xs text-text-secondary font-medium">
-                    Gratis · Tanpa perlu daftar kartu
+                    Gratis · Tanpa perlu daftar
                   </span>
                 </div>
               </div>
@@ -626,20 +561,12 @@ export function Landing({
                   </p>
                   <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
                     <div className="flex items-center gap-2">
-                      <button
-                        className="bg-primary hover:bg-primary-hover text-surface text-xs font-extrabold px-4 py-2.5 rounded-xl shadow-sm transition-transform active:scale-95"
-                        type="button"
-                        onClick={onContinue}
-                      >
-                        Mulai Sekarang (15 Menit)
-                      </button>
-                      <button
-                        className="text-xs font-bold text-primary underline underline-offset-4 hover:text-primary-hover px-2 py-1"
-                        type="button"
-                        onClick={onContinue}
-                      >
-                        Lihat Alasannya
-                      </button>
+                      <span className="bg-primary text-surface text-xs font-extrabold px-4 py-2.5 rounded-xl shadow-sm">
+                        Mulai 15 menit
+                      </span>
+                      <span className="text-xs font-bold text-primary underline underline-offset-4 px-2 py-1">
+                        Lihat alasannya
+                      </span>
                     </div>
                     <span className="text-[11px] font-bold text-primary/70">
                       Biologi · Bab 3
@@ -689,18 +616,77 @@ export function Landing({
                           </p>
                         </div>
                       </div>
-                      <button
-                        className="text-[11px] font-bold text-primary hover:underline"
-                        type="button"
-                        onClick={onContinue}
-                      >
+                      <span className="text-[11px] font-bold text-primary">
                         Geser ke Besok
-                      </button>
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+          </section>
+
+          <section
+            aria-labelledby="film-title"
+            className="my-4 grid items-center gap-5 rounded-feature border border-divider bg-mint-tint p-5 sm:p-6 lg:grid-cols-[1fr_2fr]"
+          >
+            <div>
+              <h2
+                id="film-title"
+                className="ui-section-title font-nunito text-3xl font-black text-primary"
+              >
+                Belajar bareng Manda
+              </h2>
+              <p className="mt-3">
+                Dalam 58 detik, lihat cara Manda membaca, berlatih, dan
+                mengambil jeda.
+              </p>
+              <details className="mt-4">
+                <summary className="cursor-pointer font-bold">
+                  Baca transkrip video
+                </summary>
+                <p className="mt-2">
+                  Untuk pelajar penyandang disabilitas, cara materi disajikan
+                  bisa menentukan seberapa mudah mereka ikut belajar. Ada yang
+                  lebih nyaman mendengarkan, ada yang butuh teks lebih besar,
+                  atau satu bagian bacaan dalam satu waktu.
+                </p>
+                <p className="mt-2">
+                  TemanBelajar membantu kamu mengatur cara belajar sesuai
+                  kebutuhanmu. Kamu bisa besarkan huruf, atur kontras, atau
+                  nyalakan penggaris baca. Kalau lebih nyaman mendengarkan,
+                  putar audio sambil mengikuti transkrip.
+                </p>
+                <p className="mt-2">
+                  Lalu, cek apa yang sudah kamu pahami. Manda, misalnya, sudah
+                  bisa mencari hipotenusa, tapi masih keliru saat mencari sisi
+                  siku-siku. TemanBelajar menunjukkan di mana letak salahnya dan
+                  menyarankan latihan yang sesuai.
+                </p>
+                <p className="mt-2">
+                  Kalau butuh jeda, geser jadwalnya. Progresmu tetap tersimpan,
+                  dan Mimo siap menemani saat kamu kembali. TemanBelajar. Ruang
+                  belajar yang bisa kamu sesuaikan.
+                </p>
+              </details>
+            </div>
+            <video
+              className="aspect-video w-full rounded-2xl bg-black"
+              controls
+              playsInline
+              preload="metadata"
+              aria-labelledby="film-title"
+            >
+              <source src="/media/temanbelajar.mp4" type="video/mp4" />
+              <track
+                default
+                kind="captions"
+                src="/media/temanbelajar-id.vtt"
+                srcLang="id"
+                label="Bahasa Indonesia"
+              />
+              <a href="/media/temanbelajar.mp4">Buka video TemanBelajar</a>
+            </video>
           </section>
 
           <section
@@ -831,15 +817,15 @@ export function Landing({
 
           <section className="mt-8 bg-gradient-to-r from-mint-tint via-butter-tint to-peach-tint rounded-feature p-6 sm:p-8 border-2 border-primary shadow-zine text-center relative overflow-hidden">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface border-2 border-primary text-xs font-black uppercase text-primary mb-6 shadow-zine-sm">
-              <span>🎒</span> AYO BELAJAR BERSAMA MIMO!
+              <span>🎒</span> AYO MULAI!
             </div>
             <div className="max-w-2xl mx-auto relative z-10">
               <h2 className="font-nunito font-black text-3xl sm:text-5xl text-primary mb-4 leading-tight ui-section-title">
-                Siap belajar dengan caramu sendiri?
+                Siap mulai bareng Mimo?
               </h2>
               <p className="text-text-secondary text-base sm:text-lg mb-8 font-medium">
-                Mulai dalam 2 menit. Atur caramu yang paling nyaman, pilih mata
-                pelajaranmu, dan rasakan nikmatnya belajar tanpa rasa cemas.
+                Daftar untuk simpan progresmu, atau coba demo dulu tanpa
+                daftar.
               </p>
               <div className="flex flex-wrap justify-center items-center gap-4">
                 <a
@@ -847,10 +833,10 @@ export function Landing({
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
-                    onContinue();
+                    register();
                   }}
                 >
-                  <span>Daftar Gratis Sekarang</span>
+                  <span>Daftar gratis</span>
                   <span
                     className="material-symbols-outlined text-lg"
                     aria-hidden="true"
@@ -866,12 +852,11 @@ export function Landing({
                     onContinue();
                   }}
                 >
-                  Coba Demo Materi Fotosintesis
+                  Coba demo gratis
                 </a>
               </div>
               <p className="text-xs text-text-secondary mt-5 font-semibold">
-                ✨ 100% Gratis untuk Siswa · Tidak butuh kartu kredit atau
-                diagnosis medis
+                ✨ Gratis untuk siswa SMP &amp; SMA
               </p>
             </div>
           </section>
@@ -883,7 +868,7 @@ export function Landing({
               <div className="flex flex-col gap-2">
                 <Brand />
                 <span className="text-xs font-semibold text-text-secondary">
-                  Belajar dengan caramu.
+                  Belajar pelan-pelan juga boleh.
                 </span>
               </div>
 
@@ -910,15 +895,11 @@ export function Landing({
                   className="hover:text-primary transition-colors"
                   href="#aksesibilitas"
                 >
-                  Aksesibilitas (Target WCAG 2.2 AA)
+                  Aksesibilitas
                 </a>
                 <a
                   className="hover:text-primary transition-colors"
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onContinue();
-                  }}
+                  href="#aksesibilitas"
                 >
                   Privasi Siswa
                 </a>

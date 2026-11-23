@@ -20,20 +20,24 @@ export function Mimo() {
 }
 export function Account({
   landing,
+  initialMode,
   onContinue,
   onDemo,
   onBack,
   onLogin,
+  onRegister,
   onClearError,
   run,
   busy,
   error,
 }: {
   landing: boolean;
+  initialMode?: "login" | "register";
   onContinue: () => void;
   onDemo?: () => void;
   onBack: () => void;
   onLogin?: () => void;
+  onRegister?: () => void;
   onClearError?: () => void;
   run: Run;
   busy: boolean;
@@ -42,6 +46,7 @@ export function Account({
   if (!landing)
     return (
       <AccountDesign
+        initialMode={initialMode}
         onDemo={onDemo}
         onBack={onBack}
         run={run}
@@ -50,7 +55,14 @@ export function Account({
         onClearError={onClearError}
       />
     );
-  return <Landing onContinue={onContinue} onLogin={onLogin} error={error} />;
+  return (
+    <Landing
+      onContinue={onContinue}
+      onLogin={onLogin}
+      onRegister={onRegister}
+      error={error}
+    />
+  );
 }
 export function Onboarding(props: {
   initial: Profile;
