@@ -63,6 +63,7 @@ export default function Home() {
     [sessions, setSessions] = useState<LearningSession[]>([]),
     [plans, setPlans] = useState<Plan[]>([]),
     [page, setPage] = useState("Beranda"),
+    [readerReturn, setReaderReturn] = useState("Materi Saya"),
     [active, setActive] = useState<LearningSession | null>(null),
     [practiceRequested, setPracticeRequested] = useState(false),
     [error, setError] = useState(""),
@@ -253,6 +254,7 @@ export default function Home() {
       }
       setActive(s);
       setPracticeRequested(practice);
+      setReaderReturn(page === "Mulai Belajar" ? "Materi Saya" : page);
       setPage("Mulai Belajar");
       setSessions((items) => [s, ...items.filter((item) => item.id !== s.id)]);
       window.scrollTo({ top: 0, behavior: "instant" });
@@ -541,7 +543,7 @@ export default function Home() {
           preferences={prefs}
           displayName={profile.display_name}
           onSettings={() => setPage("Pengaturan")}
-          onBack={() => setPage("Materi Saya")}
+          onBack={() => setPage(readerReturn)}
           onPreferences={(patch) =>
             run(() =>
               saveProfile({ ...profile, preferences: { ...prefs, ...patch } }),

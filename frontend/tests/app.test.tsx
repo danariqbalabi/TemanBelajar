@@ -520,4 +520,10 @@ it("opens the reader when a recommendation points to a retired concept", async (
       ([path, , method]) => path === "/sessions" && method === "POST",
     )?.[1],
   ).toMatchObject({ concept_id: concept.id, material_id: material.id });
+  await userEvent.click(
+    screen.getByRole("button", { name: /Keluar dari bacaan/ }),
+  );
+  expect(
+    await screen.findByRole("button", { name: /Mulai belajar.*5 menit/i }),
+  ).toBeTruthy();
 });
