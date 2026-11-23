@@ -380,6 +380,47 @@ it("saves the complete editable profile while excluding server-owned fields", as
   expect(payload).not.toHaveProperty("id");
 });
 
+it("mengingatkan perubahan pengaturan yang belum disimpan sebelum pindah halaman", async () => {
+  request.mockImplementation(
+    async (path: string, body: unknown, method: string) => {
+      if (path === "/profile")
+        return method === "PUT"
+          ? { ...(body as object), revision: 3 }
+          : { ...defaultProfile, revision: 2, onboarding_step: 4 };
+      if (path.startsWith("/recommendations")) return null;
+      return { items: [] };
+    },
+  );
+  const confirm = vi.spyOn(window, "confirm").mockReturnValue(false);
+  render(<Home />);
+  await userEvent.click(
+    await screen.findByRole("link", { name: "Mulai Belajar Gratis" }),
+  );
+  await screen.findByRole("navigation");
+  await userEvent.click(
+    screen.getByRole("button", { name: /Buka pengaturan/ }),
+  );
+  await userEvent.click(screen.getByRole("button", { name: "Profil" }));
+  const name = await screen.findByLabelText("Nama Panggilan di Aplikasi");
+  await userEvent.clear(name);
+  await userEvent.type(name, "Manda baru");
+  const navigation = screen.getByRole("navigation", { name: "Navigasi utama" });
+  await userEvent.click(
+    within(navigation).getByRole("link", { name: "Beranda" }),
+  );
+  expect(confirm).toHaveBeenCalledTimes(1);
+  expect(screen.getByLabelText("Nama Panggilan di Aplikasi")).toBeTruthy();
+  await userEvent.click(
+    screen.getByRole("button", { name: "Simpan Perubahan Profil" }),
+  );
+  expect(await screen.findByText("Preferensi tersimpan.")).toBeTruthy();
+  await userEvent.click(
+    within(navigation).getByRole("link", { name: "Beranda" }),
+  );
+  expect(confirm).toHaveBeenCalledTimes(1);
+  expect(screen.queryByLabelText("Nama Panggilan di Aplikasi")).toBeNull();
+});
+
 it("menampilkan landing meski sesi tersimpan dan tidak memaksa onboarding yang belum selesai", async () => {
   request.mockImplementation(async (path: string) =>
     path === "/profile"
