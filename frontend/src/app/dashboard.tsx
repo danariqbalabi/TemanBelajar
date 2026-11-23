@@ -88,7 +88,7 @@ export function Dashboard({
                     >
                       spa
                     </span>
-                    Bebas Stres &amp; Zero-Streak Penalty
+                    Santai, tanpa hukuman
                   </span>
                 </div>
                 <h1
@@ -96,8 +96,7 @@ export function Dashboard({
                   id="beranda-greeting"
                 >{`Hai, ${profile.display_name}! Siap belajar santai bareng Mimo?`}</h1>
                 <p className="font-body text-body text-on-surface-variant leading-relaxed">
-                  Satu langkah kecil hari ini tanpa pusing. Semua jadwal dan
-                  materi sudah disesuaikan dengan kenyamanan matamu.
+                  Satu langkah kecil hari ini sudah cukup.
                 </p>
               </div>
 
@@ -258,7 +257,7 @@ export function Dashboard({
                       className="px-4 py-2 border border-divider rounded-xl"
                       onClick={() => navigate("Rencana Belajar")}
                     >
-                      Ubah jadwal
+                      Lihat jadwal
                     </button>
                   </div>
                   <div className="space-y-2">
@@ -287,7 +286,7 @@ export function Dashboard({
                             </p>
                           </div>
                           <button
-                            className="bg-primary text-white px-4 py-2 rounded-xl"
+                            className="px-4 py-2 rounded-xl border-2 border-primary bg-surface text-primary font-bold"
                             onClick={() => {
                               const selected = materials.find(
                                 (m) => m.id === a.material_id,
@@ -343,7 +342,7 @@ export function Dashboard({
                           max={m.concepts.length}
                         />
                         <button
-                          className="justify-self-start min-h-11 rounded-xl px-3 py-2 bg-primary text-white"
+                          className="justify-self-start min-h-11 rounded-xl px-3 py-2 border-2 border-primary bg-surface text-primary font-bold"
                           onClick={() => start(m)}
                         >
                           {sessions.some(
@@ -373,15 +372,12 @@ export function Dashboard({
                     <h3 id="dashboard-rest-title" className="ui-card-title">
                       Butuh jeda?
                     </h3>
-                    <p>
-                      Kamu bisa ubah jadwal. Progres yang sudah tersimpan tetap
-                      ada.
-                    </p>
+                    <p>Geser jadwalnya, progresmu tetap aman.</p>
                     <button
                       type="button"
                       onClick={() => navigate("Rencana Belajar")}
                     >
-                      Buka rencana belajar <span aria-hidden="true">?</span>
+                      Lihat jadwal <span aria-hidden="true">→</span>
                     </button>
                   </div>
                 </section>
@@ -463,6 +459,9 @@ export function Dashboard({
                 {material && (
                   <section className="dashboard-panel dashboard-formats">
                     <h2 className="ui-card-title">Cara belajar</h2>
+                    <p className="text-text-secondary">
+                      Atau buka saran hari ini dengan cara lain:
+                    </p>
                     <div className="dashboard-format-grid">
                       {(
                         [

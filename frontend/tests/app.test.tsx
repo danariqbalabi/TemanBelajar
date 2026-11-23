@@ -63,6 +63,12 @@ vi.mock("../src/lib/api", () => ({
   },
 }));
 import Home from "../src/app/page";
+async function clickDemo() {
+  const [hero] = await screen.findAllByRole("link", {
+    name: "Coba demo gratis",
+  });
+  await userEvent.click(hero);
+}
 it("separates the study launcher from the materials catalogue without an active session", async () => {
   request.mockImplementation(async (path: string) =>
     path === "/profile"
@@ -73,9 +79,7 @@ it("separates the study launcher from the materials catalogue without an active 
       : { items: [] },
   );
   render(<Home />);
-  await userEvent.click(
-    await screen.findByRole("link", { name: "Mulai Belajar Gratis" }),
-  );
+  await clickDemo();
   const navigation = await screen.findByRole("navigation");
   await userEvent.click(
     within(navigation).getByRole("link", { name: "Mulai Belajar" }),
@@ -110,6 +114,19 @@ it("separates the study launcher from the materials catalogue without an active 
       timeout: 1800,
     },
   );
+});
+it("tombol daftar gratis langsung membuka tab daftar", async () => {
+  render(<Home />);
+  const [signup] = await screen.findAllByRole("link", {
+    name: "Daftar gratis",
+  });
+  await userEvent.click(signup);
+  expect(
+    (await screen.findByRole("button", { name: "Daftar" })).getAttribute(
+      "aria-pressed",
+    ),
+  ).toBe("true");
+  expect(screen.getByRole("button", { name: "Buat akun" })).toBeTruthy();
 });
 afterEach(() => {
   cleanup();
@@ -238,9 +255,7 @@ it("ignores a late workspace response after switching accounts", async () => {
     return { items: [] };
   });
   render(<Home />);
-  await userEvent.click(
-    await screen.findByRole("link", { name: "Mulai Belajar Gratis" }),
-  );
+  await clickDemo();
   await waitFor(() => expect(request).toHaveBeenCalledWith("/materials"));
   second = true;
   act(() =>
@@ -267,9 +282,7 @@ it("keeps a failed bootstrap out of the workspace and supports retry", async () 
     return { items: [] };
   });
   render(<Home />);
-  await userEvent.click(
-    await screen.findByRole("link", { name: "Mulai Belajar Gratis" }),
-  );
+  await clickDemo();
   expect(
     await screen.findByRole("heading", {
       name: "Ruang belajar belum berhasil dimuat",
@@ -319,9 +332,7 @@ it("requests recommendations for recent material using the saved daily budget", 
     return { items: [] };
   });
   render(<Home />);
-  await userEvent.click(
-    await screen.findByRole("link", { name: "Mulai Belajar Gratis" }),
-  );
+  await clickDemo();
   await screen.findByRole("navigation");
   expect(request).toHaveBeenCalledWith(
     "/recommendations?material_id=recent&available_minutes=5",
@@ -345,9 +356,7 @@ it("saves the complete editable profile while excluding server-owned fields", as
     },
   );
   render(<Home />);
-  await userEvent.click(
-    await screen.findByRole("link", { name: "Mulai Belajar Gratis" }),
-  );
+  await clickDemo();
   await screen.findByRole("navigation");
   await userEvent.click(
     screen.getByRole("button", { name: /Buka pengaturan/ }),
@@ -393,9 +402,7 @@ it("mengingatkan perubahan pengaturan yang belum disimpan sebelum pindah halaman
   );
   const confirm = vi.spyOn(window, "confirm").mockReturnValue(false);
   render(<Home />);
-  await userEvent.click(
-    await screen.findByRole("link", { name: "Mulai Belajar Gratis" }),
-  );
+  await clickDemo();
   await screen.findByRole("navigation");
   await userEvent.click(
     screen.getByRole("button", { name: /Buka pengaturan/ }),
@@ -421,6 +428,38 @@ it("mengingatkan perubahan pengaturan yang belum disimpan sebelum pindah halaman
   expect(screen.queryByLabelText("Nama Panggilan di Aplikasi")).toBeNull();
 });
 
+it.each([
+  [500, "Coba lagi", "Muat ulang data"],
+  [409, "Muat ulang data", "Coba lagi"],
+])(
+  "banner error %i hanya menampilkan tombol yang relevan",
+  async (status, shown, hidden) => {
+    request.mockImplementation(
+      async (path: string, _body: unknown, method: string) => {
+        if (path === "/profile") {
+          if (method === "PUT") throw new ApiError(status, "gagal");
+          return { ...defaultProfile, revision: 2, onboarding_step: 4 };
+        }
+        if (path.startsWith("/recommendations")) return null;
+        return { items: [] };
+      },
+    );
+    render(<Home />);
+    await clickDemo();
+    await screen.findByRole("navigation");
+    await userEvent.click(
+      screen.getByRole("button", { name: /Buka pengaturan/ }),
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Profil" }));
+    await userEvent.click(
+      await screen.findByRole("button", { name: "Simpan Perubahan Profil" }),
+    );
+    const alert = await screen.findByRole("alert");
+    expect(within(alert).getByRole("button", { name: shown })).toBeTruthy();
+    expect(within(alert).queryByRole("button", { name: hidden })).toBeNull();
+  },
+);
+
 it("menampilkan landing meski sesi tersimpan dan tidak memaksa onboarding yang belum selesai", async () => {
   request.mockImplementation(async (path: string) =>
     path === "/profile"
@@ -438,8 +477,9 @@ it("menampilkan landing meski sesi tersimpan dan tidak memaksa onboarding yang b
   expect(
     screen.queryByRole("button", { name: "Atur preferensi belajar" }),
   ).toBeNull();
+  await clickDemo();
   await userEvent.click(
-    screen.getByRole("link", { name: "Mulai Belajar Gratis" }),
+    await screen.findByRole("button", { name: "Lewati tur" }),
   );
   expect(
     await screen.findByRole("button", { name: "Atur preferensi belajar" }),
@@ -475,14 +515,13 @@ it("starts the Mimo guide only after choosing demo and allows skipping", async (
   );
   render(<Home />);
   expect(screen.queryByText("Lewati tur")).toBeNull();
-  await userEvent.click(
-    await screen.findByRole("link", { name: "Mulai Belajar Gratis" }),
-  );
-  expect(screen.queryByText("Lewati tur")).toBeNull();
-  await userEvent.click(screen.getByRole("link", { name: "Coba demo Manda" }));
+  await clickDemo();
   expect(
     await screen.findByRole("heading", { name: "Mulai dari satu konsep" }),
   ).toBeTruthy();
+  expect(
+    screen.queryByRole("button", { name: "Atur preferensi belajar" }),
+  ).toBeNull();
   await userEvent.click(screen.getByRole("button", { name: "Lewati tur" }));
   expect(screen.queryByText("Lewati tur")).toBeNull();
   session.mockRestore();
@@ -497,9 +536,7 @@ it("starts the guide when returning with an existing demo session", async () => 
         : { items: [] },
   );
   render(<Home />);
-  await userEvent.click(
-    await screen.findByRole("link", { name: "Mulai Belajar Gratis" }),
-  );
+  await clickDemo();
   expect(
     await screen.findByRole("heading", { name: "Mulai dari satu konsep" }),
   ).toBeTruthy();
@@ -547,9 +584,7 @@ it("opens the reader when a recommendation points to a retired concept", async (
     },
   );
   render(<Home />);
-  await userEvent.click(
-    await screen.findByRole("link", { name: "Mulai Belajar Gratis" }),
-  );
+  await clickDemo();
   await userEvent.click(
     await screen.findByRole("button", { name: /Mulai belajar.*5 menit/i }),
   );
@@ -561,4 +596,10 @@ it("opens the reader when a recommendation points to a retired concept", async (
       ([path, , method]) => path === "/sessions" && method === "POST",
     )?.[1],
   ).toMatchObject({ concept_id: concept.id, material_id: material.id });
+  await userEvent.click(
+    screen.getByRole("button", { name: /Keluar dari bacaan/ }),
+  );
+  expect(
+    await screen.findByRole("button", { name: /Mulai belajar.*5 menit/i }),
+  ).toBeTruthy();
 });

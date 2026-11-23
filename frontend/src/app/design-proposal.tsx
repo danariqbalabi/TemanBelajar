@@ -35,7 +35,7 @@ export function ProposalDesign({
     <Workspace screen={21}>
       <WorkspaceHeading
         title="Tinjau perubahan jadwal"
-        description={`Versi ${proposal.base_version} - ${proposal.activities.length} kegiatan dalam usulan`}
+        description={`Dari jadwal ke-${proposal.base_version} · ${proposal.activities.length} kegiatan diusulkan`}
         back={onBack}
         actions={
           <button
@@ -66,7 +66,7 @@ export function ProposalDesign({
                   <strong>{activity.title}</strong>
                   <span className="workspace-muted">
                     {activity.duration_minutes} menit
-                    {activity.locked ? " - Terkunci" : ""}
+                    {activity.locked ? " - Tidak bisa diubah" : ""}
                     {activity.status === "completed" ? " - Selesai" : ""}
                   </span>
                 </li>
@@ -87,8 +87,8 @@ export function ProposalDesign({
       <footer className="workspace-selection-bar">
         <span className="workspace-muted">
           {ready
-            ? "Kegiatan selesai dan terkunci tetap dipertahankan."
-            : "Usulan ini sudah ditanggapi atau versinya berubah."}
+            ? "Kegiatan yang sudah dikerjakan tidak ikut berubah."
+            : "Usulan ini sudah dipakai, atau jadwalnya sudah berubah."}
         </span>
         <div className="workspace-actions">
           <button
@@ -122,12 +122,12 @@ export function ProposalDesign({
                 disabled={busy}
                 onClick={() => onRestore(Number(version))}
               >
-                Pulihkan versi {version}
+                Pakai jadwal ke-{version}
               </button>
             ))}
         </div>
         {!Object.keys(plan.history).length && (
-          <p>Belum ada versi sebelumnya.</p>
+          <p>Belum ada jadwal sebelumnya.</p>
         )}
       </details>
     </Workspace>

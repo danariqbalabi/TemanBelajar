@@ -52,6 +52,9 @@ async function readWorkspace(minutes: number) {
 export default function Home() {
   const [tour, setTour] = useState(false);
   const [accountEntry, setAccountEntry] = useState(false);
+  const [accountMode, setAccountMode] = useState<"login" | "register">(
+    "login",
+  );
   const [account, setAccount] = useState<Session | null>(null),
     [ready, setReady] = useState(false),
     [loadedUserId, setLoadedUserId] = useState<string | null>(null),
@@ -63,9 +66,11 @@ export default function Home() {
     [sessions, setSessions] = useState<LearningSession[]>([]),
     [plans, setPlans] = useState<Plan[]>([]),
     [page, setPage] = useState("Beranda"),
+    [readerReturn, setReaderReturn] = useState("Materi Saya"),
     [active, setActive] = useState<LearningSession | null>(null),
     [practiceRequested, setPracticeRequested] = useState(false),
     [error, setError] = useState(""),
+    [conflict, setConflict] = useState(false),
     [busy, setBusy] = useState(false),
     [notice, setNotice] = useState(""),
     [recommendation, setRecommendation] = useState<Recommendation | null>(null),
@@ -95,11 +100,13 @@ export default function Home() {
     running.current = true;
     setBusy(true);
     setError("");
+    setConflict(false);
     retry.current = action;
     try {
       await action();
       retry.current = null;
     } catch (e) {
+      setConflict(e instanceof ApiError && e.status === 409);
       setError(userMessage(e));
     } finally {
       running.current = false;
@@ -269,6 +276,7 @@ export default function Home() {
       }
       setActive(s);
       setPracticeRequested(practice);
+      setReaderReturn(page === "Mulai Belajar" ? "Materi Saya" : page);
       setPage("Mulai Belajar");
       setSessions((items) => [s, ...items.filter((item) => item.id !== s.id)]);
       window.scrollTo({ top: 0, behavior: "instant" });
@@ -291,6 +299,31 @@ export default function Home() {
     dailyMinutes.current = saved.daily_minutes;
     setOnboarding(false);
     setNotice("Preferensi tersimpan. Ritmemu bisa diubah kapan saja.");
+  }
+  function openAccount(mode: "login" | "register") {
+    setAccountMode(mode);
+    setLanding(false);
+    setAccountEntry(true);
+    setError("");
+  }
+  async function startDemo() {
+    if (account) {
+      setAccountEntry(false);
+      if (account.user.is_anonymous) {
+        setPage("Beranda");
+        setTour(true);
+      }
+      setLanding(false);
+      return;
+    }
+    await run(async () => {
+      if (!auth) throw Error("Layanan akun belum tersedia.");
+      const { error: demoError } = await auth.auth.signInAnonymously();
+      if (demoError) throw demoError;
+      setLanding(false);
+      setAccountEntry(false);
+      setTour(true);
+    });
   }
   const prefs = profile.preferences;
   const showAccount = landing || !account || accountEntry;
@@ -326,24 +359,15 @@ export default function Home() {
     return withLoading(
       <Account
         landing={landing}
+        initialMode={accountMode}
         onClearError={() => {
           setError("");
           retry.current = null;
         }}
-        onLogin={() => {
-          setLanding(false);
-          setAccountEntry(true);
-          setError("");
-        }}
+        onLogin={() => openAccount("login")}
+        onRegister={() => openAccount("register")}
         onDemo={() => setTour(true)}
-        onContinue={() => {
-          setAccountEntry(false);
-          if (account?.user.is_anonymous) {
-            setPage("Beranda");
-            setTour(true);
-          }
-          setLanding(false);
-        }}
+        onContinue={startDemo}
         onBack={() => setLanding(true)}
         run={run}
         busy={busy}
@@ -409,33 +433,38 @@ export default function Home() {
         <div className="notice" role="alert">
           <p>{error}</p>
           <p>
-            Input tetap tersedia. Jika versi berubah, muat data terbaru lalu
-            tinjau kembali.
+            {conflict
+              ? "Datanya sudah berubah di perangkat lain. Muat ulang dulu, lalu cek lagi."
+              : "Isianmu masih aman. Coba lagi, ya."}
           </p>
           <div className="actions">
-            <button
-              disabled={busy}
-              onClick={() => run(retry.current || refresh)}
-            >
-              Coba lagi
-            </button>
-            <button
-              disabled={busy}
-              onClick={() =>
-                run(async () => {
-                  await refresh();
-                  if (active)
-                    setActive(
-                      await api<LearningSession>(`/sessions/${active.id}`),
+            {!conflict && (
+              <button
+                disabled={busy}
+                onClick={() => run(retry.current || refresh)}
+              >
+                Coba lagi
+              </button>
+            )}
+            {conflict && (
+              <button
+                disabled={busy}
+                onClick={() =>
+                  run(async () => {
+                    await refresh();
+                    if (active)
+                      setActive(
+                        await api<LearningSession>(`/sessions/${active.id}`),
+                      );
+                    setNotice(
+                      "Data sudah dimuat ulang. Cek lagi sebelum menyimpan.",
                     );
-                  setNotice(
-                    "Data terbaru dimuat. Tinjau kembali sebelum menyimpan.",
-                  );
-                })
-              }
-            >
-              Muat data terbaru
-            </button>
+                  })
+                }
+              >
+                Muat ulang data
+              </button>
+            )}
           </div>
         </div>
       )}
@@ -444,7 +473,7 @@ export default function Home() {
           {notice}
         </p>
       )}
-      {page === "Beranda" && profile.onboarding_step < 4 && (
+      {page === "Beranda" && !tour && profile.onboarding_step < 4 && (
         <section className="stitch-screen bg-secondary-container rounded-2xl p-space-lg mb-space-lg">
           <h2 className="font-card-title text-card-title text-primary ui-card-title">
             Atur ritme belajarmu saat kamu siap
@@ -529,6 +558,7 @@ export default function Home() {
           busy={busy}
           account={account}
           onAccount={() => {
+            setAccountMode("login");
             setAccountEntry(true);
             setError("");
           }}
@@ -558,7 +588,7 @@ export default function Home() {
           preferences={prefs}
           displayName={profile.display_name}
           onSettings={() => setPage("Pengaturan")}
-          onBack={() => setPage("Materi Saya")}
+          onBack={() => setPage(readerReturn)}
           onPreferences={(patch) =>
             run(() =>
               saveProfile({ ...profile, preferences: { ...prefs, ...patch } }),

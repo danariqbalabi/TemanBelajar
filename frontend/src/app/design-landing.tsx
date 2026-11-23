@@ -7,14 +7,17 @@ import { MimoMascot } from "./mimo-mascot";
 export function Landing({
   onContinue,
   onLogin,
+  onRegister,
   error,
 }: {
   onContinue: () => void;
   onLogin?: () => void;
+  onRegister?: () => void;
   error: string;
 }) {
   const header = useRef<HTMLElement>(null);
   useScrollNavbar(header);
+  const register = onRegister || onLogin || onContinue;
   return (
     <>
       <div className="final-design final-screen-1 min-h-screen bg-canvas text-primary antialiased selection:bg-mint selection:text-primary relative overflow-x-hidden stitch-shell stitch-landing">
@@ -61,12 +64,6 @@ export function Landing({
               </a>
               <a
                 className="text-text-secondary hover:text-primary hover:bg-surface px-4 py-1.5 rounded-full text-sm font-semibold transition-all"
-                href="#contoh-nyata"
-              >
-                Contoh Nyata
-              </a>
-              <a
-                className="text-text-secondary hover:text-primary hover:bg-surface px-4 py-1.5 rounded-full text-sm font-semibold transition-all"
                 href="#aksesibilitas"
               >
                 Aksesibilitas
@@ -89,10 +86,10 @@ export function Landing({
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  onContinue();
+                  register();
                 }}
               >
-                <span>Mulai Belajar Gratis</span>
+                <span>Daftar gratis</span>
                 <span
                   className="material-symbols-outlined text-base"
                   aria-hidden="true"
@@ -121,7 +118,7 @@ export function Landing({
             <div className="lg:col-span-7 flex flex-col items-start">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-butter-tint border-2 border-primary/20 text-xs font-black tracking-wide uppercase text-primary mb-6 shadow-zine-sm">
                 <span>🌱</span>
-                <span>APLIKASI BELAJAR INKLUSIF · NO PRESSURE</span>
+                <span>APLIKASI BELAJAR INKLUSIF · TANPA TEKANAN</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-[#E5B638]"></span>
               </div>
 
@@ -138,9 +135,8 @@ export function Landing({
                 sendiri.
               </h1>
               <p className="text-lg sm:text-xl text-text-secondary leading-relaxed mb-8 max-w-xl font-medium">
-                Pilih cara belajar yang paling nyaman buat kamu. Mimo siap
-                nemenin pahami materi sekolah langkah demi langkah tanpa bikin
-                pusing dan tanpa tes diagnosis medis!
+                Mimo nemenin kamu pahami materi sekolah, selangkah demi
+                selangkah.
               </p>
 
               <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto mb-6">
@@ -152,7 +148,7 @@ export function Landing({
                     onContinue();
                   }}
                 >
-                  <span>Mulai belajar</span>
+                  <span>Coba demo gratis</span>
                   <span
                     className="material-symbols-outlined text-lg"
                     aria-hidden="true"
@@ -164,7 +160,7 @@ export function Landing({
                   className="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-surface hover:bg-mint-tint border-2 border-primary text-primary text-base font-bold px-7 py-3.5 rounded-xl shadow-zine-sm hover:shadow-zine transition-all"
                   href="#cara-kerja"
                 >
-                  Lihat Cara Kerjanya
+                  Lihat cara kerja
                 </a>
               </div>
 
@@ -175,26 +171,6 @@ export function Landing({
               >
                 Masuk atau daftar dengan email
               </button>
-              <div className="flex flex-wrap items-center gap-y-2.5 gap-x-6 text-xs font-semibold text-text-secondary border-t border-divider pt-6 w-full">
-                <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-mint text-primary flex items-center justify-center font-black text-xs border border-primary/20">
-                    ✓
-                  </span>
-                  <span>Ramah pembaca layar (Target WCAG 2.2 AA)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-lavender text-primary flex items-center justify-center font-black text-xs border border-primary/20">
-                    ✓
-                  </span>
-                  <span>5 mode belajar fleksibel</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-butter text-primary flex items-center justify-center font-black text-xs border border-primary/20">
-                    ✓
-                  </span>
-                  <span>Rekomendasi tanpa bikin stres</span>
-                </div>
-              </div>
             </div>
 
             <div className="lg:col-span-5 relative flex flex-col items-center justify-center mt-6 lg:mt-0">
@@ -206,28 +182,12 @@ export function Landing({
                 <div className="relative bg-mint-tint border-2 border-primary rounded-feature rounded-tl-none p-6 sm:p-8 shadow-zine flex flex-col items-center justify-center overflow-visible">
                   <div className="absolute -top-3.5 right-6 w-20 h-5 washi-tape rotate-3 rounded-sm opacity-90 pointer-events-none"></div>
 
-                  <div className="absolute top-3 right-3 bg-butter text-primary text-[11px] font-black px-3 py-1 rounded-full border-2 border-primary rotate-[-8deg] shadow-zine-sm">
-                    ✨ 100% Dukungan Siswa
-                  </div>
-
-                  <div className="absolute -left-4 sm:-left-8 top-16 bg-surface border-2 border-primary rounded-full px-3.5 py-1.5 text-xs font-bold text-primary shadow-zine-sm flex items-center gap-2 rotate-[-4deg] animate-pulse">
-                    <span>🎧</span> Audio bersuara jernih
-                  </div>
-
-                  <div className="absolute -right-3 sm:-right-7 top-32 bg-surface border-2 border-primary rounded-full px-3.5 py-1.5 text-xs font-bold text-primary shadow-zine-sm flex items-center gap-2 rotate-[3deg]">
-                    <span>⚡</span> Timer bebas cemas
-                  </div>
-
                   <div className="landing-mimo-stage w-full flex justify-center my-2">
                     <div className="landing-mimo-orbit" aria-hidden="true">
                       <span />
                       <span />
                     </div>
                     <MimoMascot context="Kenalan" />
-                  </div>
-
-                  <div className="absolute -bottom-4 right-8 bg-lavender-tint border-2 border-primary rounded-full px-4 py-1 text-xs font-bold text-primary shadow-zine-sm flex items-center gap-1.5 rotate-[-2deg]">
-                    <span>📖</span> Penggaris fokus baca
                   </div>
 
                   <div className="w-full mt-4 bg-surface border-2 border-primary rounded-card p-4 shadow-zine-sm flex items-start gap-3">
@@ -238,16 +198,145 @@ export function Landing({
                       👋
                     </span>
                     <div>
-                      <span className="text-[11px] font-black uppercase tracking-wider text-primary/70 block mb-0.5">
-                        Suara Mimo
-                      </span>
-                      <p className="font-nunito font-extrabold text-sm sm:text-base text-primary leading-snug">
+                      <p className="font-nunito font-extrabold text-base text-primary leading-snug">
                         “Hai! Mau dengerin, baca pelan-pelan, atau lihat diagram
                         visual? Kamu yang tentukan!”
                       </p>
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </section>
+
+          <LandingHow />
+
+          <section
+            aria-labelledby="mode-title"
+            className="py-8 sm:py-10 border-t-2 border-dashed border-divider"
+            id="mode-belajar"
+          >
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-5">
+              <div>
+                <h2
+                  className="font-nunito font-black text-3xl sm:text-4xl text-primary ui-section-title"
+                  id="mode-title"
+                >
+                  5 Mode Belajar yang Bisa Kamu Pilih
+                </h2>
+              </div>
+              <p className="text-text-secondary text-base max-w-md font-medium">
+                Tiap mode punya alat bantunya sendiri. Pilih yang paling pas
+                buatmu.
+              </p>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="bg-mint-tint rounded-feature p-6 border-2 border-primary shadow-zine flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-11 h-11 rounded-xl bg-surface border-2 border-primary flex items-center justify-center text-xl shadow-zine-sm">
+                      📖
+                    </div>
+                  </div>
+                  <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
+                    Teman Baca
+                  </h3>
+                  <p className="text-base text-text-secondary leading-relaxed font-medium">
+                    Penggaris baca, spasi baris lega, dan font yang nyaman
+                    dibaca.
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-lavender-tint rounded-feature p-6 border-2 border-primary shadow-zine flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-11 h-11 rounded-xl bg-surface border-2 border-primary flex items-center justify-center text-xl shadow-zine-sm">
+                      🎯
+                    </div>
+                  </div>
+                  <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
+                    Selangkah demi Selangkah
+                  </h3>
+                  <p className="text-base text-text-secondary leading-relaxed font-medium">
+                    Materi dipecah jadi kartu kecil, satu per satu, dengan
+                    jeda santai.
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-butter-tint rounded-feature p-6 border-2 border-primary shadow-zine flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-11 h-11 rounded-xl bg-surface border-2 border-primary flex items-center justify-center text-xl shadow-zine-sm">
+                      🎧
+                    </div>
+                  </div>
+                  <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
+                    Dengarkan &amp; Jelajahi
+                  </h3>
+                  <p className="text-base text-text-secondary leading-relaxed font-medium">
+                    Dengarkan materi seperti podcast, kecepatannya bisa kamu
+                    atur.
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-peach-tint rounded-feature p-6 border-2 border-primary shadow-zine flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-11 h-11 rounded-xl bg-surface border-2 border-primary flex items-center justify-center text-xl shadow-zine-sm">
+                      🖼️
+                    </div>
+                  </div>
+                  <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
+                    Teks &amp; Visual
+                  </h3>
+                  <p className="text-base text-text-secondary leading-relaxed font-medium">
+                    Diagram dan bagan dengan keterangan singkat yang gampang
+                    diikuti.
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-surface rounded-feature p-6 border-2 border-primary shadow-zine flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-11 h-11 rounded-xl bg-canvas border-2 border-primary flex items-center justify-center text-xl shadow-zine-sm">
+                      📝
+                    </div>
+                  </div>
+                  <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
+                    Belajar Biasa
+                  </h3>
+                  <p className="text-base text-text-secondary leading-relaxed font-medium">
+                    Bacaan rapi per bab, alat bantu tetap siap kalau
+                    dibutuhkan.
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-mint via-butter-tint to-lavender-tint rounded-feature p-6 border-2 border-primary shadow-zine flex flex-col justify-center items-start relative overflow-hidden">
+                <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-surface/30 rounded-full blur-xl pointer-events-none"></div>
+                <span aria-hidden="true" className="text-2xl mb-2">
+                  🔄
+                </span>
+                <h3 className="font-nunito font-black text-xl text-primary mb-2 ui-card-title">
+                  Bebas Ganti Kapan Saja
+                </h3>
+                <p className="text-base text-primary/90 font-medium leading-relaxed mb-4">
+                  Mata lelah? Pindah ke audio tanpa mengulang dari awal.
+                </p>
+                <a
+                  className="inline-flex items-center gap-1.5 text-base font-black text-primary underline underline-offset-4 hover:text-primary-hover"
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onContinue();
+                  }}
+                >
+                  Coba demo gratis →
+                </a>
               </div>
             </div>
           </section>
@@ -315,403 +404,12 @@ export function Landing({
             </video>
           </section>
 
-          <LandingHow />
-
-          <section
-            aria-labelledby="mode-title"
-            className="py-8 sm:py-10 border-t-2 border-dashed border-divider"
-            id="mode-belajar"
-          >
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-5">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-butter-tint border border-butter text-xs font-bold uppercase tracking-wider text-primary mb-3">
-                  <span>🎨</span> Ragam Pilihan
-                </div>
-                <h2
-                  className="font-nunito font-black text-3xl sm:text-4xl text-primary ui-section-title"
-                  id="mode-title"
-                >
-                  5 Mode Belajar yang Bisa Kamu Pilih
-                </h2>
-              </div>
-              <p className="text-text-secondary text-sm sm:text-base max-w-md font-medium">
-                Setiap siswa punya keunikan cara memproses informasi. Beralih
-                mode kapan saja di tengah sesi tanpa reset kemajuan belajarmu.
-              </p>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div className="bg-mint-tint rounded-feature p-6 border-2 border-primary shadow-zine flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-11 h-11 rounded-xl bg-surface border-2 border-primary flex items-center justify-center text-xl shadow-zine-sm">
-                      📖
-                    </div>
-                    <span className="bg-surface text-primary border border-primary/20 text-[11px] font-extrabold uppercase px-2.5 py-1 rounded-full">
-                      Reading Companion
-                    </span>
-                  </div>
-                  <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
-                    Teman Baca
-                  </h3>
-                  <p className="text-xs sm:text-sm text-text-secondary leading-relaxed mb-5 font-medium">
-                    Bantuan membaca ramah disleksia: penggaris fokus baca,
-                    pengaturan jarak spasi baris, font OpenDyslexic opsional,
-                    dan audio sinkron.
-                  </p>
-                </div>
-
-                <div className="bg-surface rounded-xl p-3 border border-primary/20 text-xs font-bold text-primary flex items-center justify-between">
-                  <span className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-mint"></span>{" "}
-                    Penggaris Fokus
-                  </span>
-                  <span className="text-primary font-black">
-                    Aktif (Tingkat 2)
-                  </span>
-                </div>
-              </div>
-
-              <div className="bg-lavender-tint rounded-feature p-6 border-2 border-primary shadow-zine flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-11 h-11 rounded-xl bg-surface border-2 border-primary flex items-center justify-center text-xl shadow-zine-sm">
-                      🎯
-                    </div>
-                    <span className="bg-surface text-primary border border-primary/20 text-[11px] font-extrabold uppercase px-2.5 py-1 rounded-full">
-                      Focus Navigator
-                    </span>
-                  </div>
-                  <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
-                    Selangkah demi Selangkah
-                  </h3>
-                  <p className="text-xs sm:text-sm text-text-secondary leading-relaxed mb-5 font-medium">
-                    Memecah materi kompleks menjadi kartu tugas mikro tunggal.
-                    Timer jeda istirahat ramah tanpa tekanan hitung mundur yang
-                    memicu cemas.
-                  </p>
-                </div>
-
-                <div className="bg-surface rounded-xl p-3 border border-primary/20 text-xs font-bold text-primary flex items-center justify-between">
-                  <span>Langkah 1 dari 3</span>
-                  <div className="flex gap-1">
-                    <span className="w-5 h-2 bg-lavender rounded-full border border-primary"></span>
-                    <span className="w-5 h-2 bg-canvas rounded-full border border-divider"></span>
-                    <span className="w-5 h-2 bg-canvas rounded-full border border-divider"></span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-butter-tint rounded-feature p-6 border-2 border-primary shadow-zine flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-11 h-11 rounded-xl bg-surface border-2 border-primary flex items-center justify-center text-xl shadow-zine-sm">
-                      🎧
-                    </div>
-                    <span className="bg-surface text-primary border border-primary/20 text-[11px] font-extrabold uppercase px-2.5 py-1 rounded-full">
-                      Audio &amp; Explorer
-                    </span>
-                  </div>
-                  <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
-                    Dengarkan &amp; Jelajahi
-                  </h3>
-                  <p className="text-xs sm:text-sm text-text-secondary leading-relaxed mb-5 font-medium">
-                    Penyampaian podcast edukatif yang santai, dilengkapi
-                    waveform visual, kecepatan 0.75x–1.5x, serta alt-text
-                    deskriptif pada tiap gambar.
-                  </p>
-                </div>
-
-                <div className="bg-surface rounded-xl p-3 border border-primary/20 text-xs font-bold text-primary flex items-center justify-between">
-                  <span className="flex items-center gap-1">
-                    ▶ Suara Jernih 1.0x
-                  </span>
-                  <span className="font-mono text-xs text-text-secondary">
-                    03:45 / 07:12
-                  </span>
-                </div>
-              </div>
-
-              <div className="bg-peach-tint rounded-feature p-6 border-2 border-primary shadow-zine flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-11 h-11 rounded-xl bg-surface border-2 border-primary flex items-center justify-center text-xl shadow-zine-sm">
-                      🖼️
-                    </div>
-                    <span className="bg-surface text-primary border border-primary/20 text-[11px] font-extrabold uppercase px-2.5 py-1 rounded-full">
-                      Visual &amp; Caption
-                    </span>
-                  </div>
-                  <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
-                    Teks &amp; Visual
-                  </h3>
-                  <p className="text-xs sm:text-sm text-text-secondary leading-relaxed mb-5 font-medium">
-                    Transkrip yang disinkronkan langsung dengan keterangan
-                    visual, bagan alir terstruktur, kartu konsep, dan rangkuman
-                    intisari diagram.
-                  </p>
-                </div>
-
-                <div className="bg-surface rounded-xl p-3 border border-primary/20 text-xs font-bold text-primary flex items-center justify-between">
-                  <span>Bagan Konsep Daun</span>
-                  <span className="text-xs bg-peach px-2 py-0.5 rounded-md font-bold">
-                    Diagram + Keterangan
-                  </span>
-                </div>
-              </div>
-
-              <div className="bg-surface rounded-feature p-6 border-2 border-primary shadow-zine flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-11 h-11 rounded-xl bg-canvas border-2 border-primary flex items-center justify-center text-xl shadow-zine-sm">
-                      📝
-                    </div>
-                    <span className="bg-canvas text-primary border border-primary/20 text-[11px] font-extrabold uppercase px-2.5 py-1 rounded-full">
-                      Standard Learning
-                    </span>
-                  </div>
-                  <h3 className="font-nunito font-extrabold text-xl text-primary mb-2 ui-card-title">
-                    Belajar Biasa
-                  </h3>
-                  <p className="text-xs sm:text-sm text-text-secondary leading-relaxed mb-5 font-medium">
-                    Tampilan artikel bacaan klasik yang rapi dengan navigasi bab
-                    terstruktur, catatan tepi, dan alat bantu aksesibilitas yang
-                    selalu siap dipanggil.
-                  </p>
-                </div>
-
-                <div className="bg-canvas rounded-xl p-3 border border-divider text-xs font-bold text-text-secondary flex items-center justify-between">
-                  <span>Aksesibilitas Universal</span>
-                  <span className="text-primary font-bold">
-                    Target WCAG 2.2 AA
-                  </span>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-br from-mint via-butter-tint to-lavender-tint rounded-feature p-6 border-2 border-primary shadow-zine flex flex-col justify-center items-start relative overflow-hidden">
-                <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-surface/30 rounded-full blur-xl pointer-events-none"></div>
-                <span aria-hidden="true" className="text-2xl mb-2">
-                  🔄
-                </span>
-                <h3 className="font-nunito font-black text-xl text-primary mb-2 ui-card-title">
-                  Bebas Ganti Kapan Saja
-                </h3>
-                <p className="text-xs sm:text-sm text-primary/90 font-medium leading-relaxed mb-4">
-                  Mata lelah membaca? Pindah ke mode audio hanya dengan satu
-                  klik tanpa mengulang dari awal sesi.
-                </p>
-                <a
-                  className="inline-flex items-center gap-1.5 text-xs font-black text-primary underline underline-offset-4 hover:text-primary-hover"
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onContinue();
-                  }}
-                >
-                  Coba di Demo Materi →
-                </a>
-              </div>
-            </div>
-          </section>
-
-          <section
-            aria-labelledby="showcase-title"
-            className="py-8 sm:py-10 border-t-2 border-dashed border-divider"
-            id="contoh-nyata"
-          >
-            <div className="bg-surface rounded-feature border-2 border-primary p-5 sm:p-6 shadow-zine grid lg:grid-cols-12 gap-6 items-center relative">
-              <div className="absolute -top-3.5 right-10 w-24 h-6 washi-tape rotate-[-2deg] rounded-sm pointer-events-none hidden sm:block"></div>
-
-              <div className="lg:col-span-6">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-mint-tint border border-mint text-xs font-extrabold text-primary mb-4">
-                  <span>🔬</span> CONTOH MATERI NYATA: BIOLOGI SMP/SMA
-                </div>
-                <h2
-                  className="font-nunito font-black text-3xl sm:text-4xl text-primary mb-4 leading-tight ui-section-title"
-                  id="showcase-title"
-                >
-                  Dari pemahaman konsep sampai latihan ramah cemas
-                </h2>
-                <p className="text-text-secondary text-base leading-relaxed mb-6 font-medium">
-                  Pada topik{" "}
-                  <strong className="text-primary font-bold">
-                    Fotosintesis &amp; Peran Cahaya
-                  </strong>
-                  , kamu bisa memilih menyimak penjelasan diagram kloroplas yang
-                  diuraikan perlahan atau mendengarkan penjelasan audio ringkas.
-                </p>
-                <ul className="space-y-3.5 mb-8 text-sm font-semibold text-text-secondary">
-                  <li className="flex items-start gap-3">
-                    <span className="w-6 h-6 rounded-full bg-mint text-primary font-black flex items-center justify-center text-xs shrink-0 border border-primary/20">
-                      ✓
-                    </span>
-                    <span>
-                      <strong className="text-primary">
-                        Pelacakan Nyata vs Estimasi:
-                      </strong>{" "}
-                      Sistem memisahkan capaian nyata latihan dari tebakan,
-                      sehingga kamu selalu tahu progres aslimu.
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-6 h-6 rounded-full bg-lavender text-primary font-black flex items-center justify-center text-xs shrink-0 border border-primary/20">
-                      ✓
-                    </span>
-                    <span>
-                      <strong className="text-primary">
-                        Alasan Transparan:
-                      </strong>{" "}
-                      Tidak ada kotak misterius — Mimo menjelaskan secara
-                      gamblang kenapa materi tertentu direkomendasikan.
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-6 h-6 rounded-full bg-butter text-primary font-black flex items-center justify-center text-xs shrink-0 border border-primary/20">
-                      ✓
-                    </span>
-                    <span>
-                      <strong className="text-primary">
-                        Jadwal Tanpa Hukuman:
-                      </strong>{" "}
-                      Butuh jeda? Geser sisa waktu belajar 10 menit ke jadwal
-                      esok hari tanpa penalti.
-                    </span>
-                  </li>
-                </ul>
-                <div className="flex flex-wrap items-center gap-3">
-                  <a
-                    className="inline-flex items-center gap-2 bg-primary hover:bg-primary-hover text-surface text-sm font-extrabold px-6 py-3.5 rounded-xl shadow-zine-sm hover:shadow-zine transition-all"
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      onContinue();
-                    }}
-                  >
-                    <span>Coba Demo Fotosintesis</span>
-                    <span
-                      className="material-symbols-outlined text-base"
-                      aria-hidden="true"
-                    >
-                      science
-                    </span>
-                  </a>
-                  <span className="text-xs text-text-secondary font-medium">
-                    Gratis · Tanpa perlu daftar kartu
-                  </span>
-                </div>
-              </div>
-
-              <div className="lg:col-span-6 space-y-5">
-                <div className="bg-mint rounded-card p-6 border-2 border-primary shadow-zine-sm relative">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      <span className="w-3 h-3 rounded-full bg-primary"></span>
-                      <span className="text-xs font-black uppercase tracking-wider text-primary">
-                        Rekomendasi Mimo Hari Ini
-                      </span>
-                    </div>
-                    <span className="bg-surface text-primary border border-primary/20 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
-                      ⏱️ 15 Menit
-                    </span>
-                  </div>
-                  <h3 className="font-nunito font-black text-xl text-primary mb-2 ui-card-title">
-                    Ulangi peran cahaya lewat audio santai
-                  </h3>
-                  <p className="text-xs sm:text-sm text-primary/90 font-medium mb-4 leading-relaxed bg-surface/60 p-3 rounded-xl border border-primary/10">
-                    “Di latihan terakhir, konsep{" "}
-                    <span className="font-bold underline decoration-wavy decoration-primary/40">
-                      peran fotolisis air dan cahaya
-                    </span>{" "}
-                    masih perlu diperkuat. Yuk, kita dengarkan penjelasannya
-                    dengan cara yang berbeda!”
-                  </p>
-                  <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-                    <div className="flex items-center gap-2">
-                      <button
-                        className="bg-primary hover:bg-primary-hover text-surface text-xs font-extrabold px-4 py-2.5 rounded-xl shadow-sm transition-transform active:scale-95"
-                        type="button"
-                        onClick={onContinue}
-                      >
-                        Mulai Sekarang (15 Menit)
-                      </button>
-                      <button
-                        className="text-xs font-bold text-primary underline underline-offset-4 hover:text-primary-hover px-2 py-1"
-                        type="button"
-                        onClick={onContinue}
-                      >
-                        Lihat Alasannya
-                      </button>
-                    </div>
-                    <span className="text-[11px] font-bold text-primary/70">
-                      Biologi · Bab 3
-                    </span>
-                  </div>
-                </div>
-
-                <div className="bg-canvas rounded-card p-5 border-2 border-primary shadow-zine-sm">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-bold text-text-secondary uppercase tracking-wider">
-                      Jadwal Fleksibelmu
-                    </span>
-                    <span className="text-xs text-text-secondary font-medium">
-                      Bisa digeser kapan pun
-                    </span>
-                  </div>
-                  <div className="space-y-2.5">
-                    <div className="bg-surface rounded-xl p-3 border border-divider flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-lg bg-mint-tint border border-mint text-primary font-black text-xs flex items-center justify-center">
-                          09.00
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-primary">
-                            Sesi Baca: Fotosintesis &amp; Klorofil
-                          </p>
-                          <p className="text-[11px] text-text-secondary">
-                            Mode Teman Baca · 15 menit
-                          </p>
-                        </div>
-                      </div>
-                      <span className="bg-mint text-primary text-[11px] font-black px-2.5 py-0.5 rounded-md border border-primary/20">
-                        Siap Mulai
-                      </span>
-                    </div>
-                    <div className="bg-surface/70 rounded-xl p-3 border border-divider/60 flex items-center justify-between opacity-80">
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-lg bg-lavender-tint border border-lavender text-primary font-black text-xs flex items-center justify-center">
-                          16.30
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-primary">
-                            Latihan Singkat: 2 Pertanyaan Reflektif
-                          </p>
-                          <p className="text-[11px] text-text-secondary">
-                            Bebas cemas · 5 menit
-                          </p>
-                        </div>
-                      </div>
-                      <button
-                        className="text-[11px] font-bold text-primary hover:underline"
-                        type="button"
-                        onClick={onContinue}
-                      >
-                        Geser ke Besok
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
           <section
             aria-labelledby="inclusive-title"
             className="py-8 sm:py-10 border-t-2 border-dashed border-divider"
             id="aksesibilitas"
           >
             <div className="text-center max-w-2xl mx-auto mb-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lavender-tint border border-lavender text-xs font-bold uppercase tracking-wider text-primary mb-3">
-                <span>💜</span> Belajar Nyaman Untuk Semua
-              </div>
               <h2
                 className="font-nunito font-black text-3xl sm:text-4xl text-primary ui-section-title"
                 id="inclusive-title"
@@ -722,22 +420,25 @@ export function Landing({
                 TemanBelajar dirancang khusus agar setiap pelajar merasa
                 dihargai tanpa harus melabeli diri sendiri.
               </p>
+              <p className="text-text-secondary mt-2 text-base italic">
+                Cerita di bawah ini ilustrasi, bukan testimoni pengguna asli.
+              </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-4 mb-6">
               <div className="bg-surface rounded-card p-6 border-2 border-primary shadow-zine flex flex-col justify-between">
-                <p className="text-sm text-text-secondary leading-relaxed font-medium mb-4">
+                <p className="text-base text-text-secondary leading-relaxed font-medium mb-4">
                   “Dulu suka pusing kalau lihat teks bacaan panjang di buku
                   paket. Di TemanBelajar aku pakai penggaris fokus dan audio
-                  Mimo. Nilai Biologi dan IPA-ku naik pesat!”
+                  Mimo. Sekarang baca materi IPA nggak secapek dulu.”
                 </p>
                 <div className="flex items-center gap-3 pt-4 border-t border-divider">
                   <div className="w-9 h-9 rounded-full bg-mint text-primary font-black text-xs flex items-center justify-center border border-primary">
                     R
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-primary">Rania A.</p>
-                    <p className="text-[11px] text-text-secondary">
+                    <p className="text-sm font-bold text-primary">Rania A.</p>
+                    <p className="text-sm text-text-secondary">
                       Siswa Kelas 8 SMP · Jakarta
                     </p>
                   </div>
@@ -745,7 +446,7 @@ export function Landing({
               </div>
 
               <div className="bg-surface rounded-card p-6 border-2 border-primary shadow-zine flex flex-col justify-between">
-                <p className="text-sm text-text-secondary leading-relaxed font-medium mb-4">
+                <p className="text-base text-text-secondary leading-relaxed font-medium mb-4">
                   “Fitur &#x27;Geser ke Besok&#x27; ngebantu banget pas lagi
                   banyak tugas sekolah. Nggak ada hukuman pengurangan poin yang
                   bikin bersalah. Belajar jadi santai tapi konsisten.”
@@ -755,8 +456,8 @@ export function Landing({
                     F
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-primary">Fajar K.</p>
-                    <p className="text-[11px] text-text-secondary">
+                    <p className="text-sm font-bold text-primary">Fajar K.</p>
+                    <p className="text-sm text-text-secondary">
                       Siswa Kelas 11 SMA · Bandung
                     </p>
                   </div>
@@ -764,7 +465,7 @@ export function Landing({
               </div>
 
               <div className="bg-surface rounded-card p-6 border-2 border-primary shadow-zine flex flex-col justify-between">
-                <p className="text-sm text-text-secondary leading-relaxed font-medium mb-4">
+                <p className="text-base text-text-secondary leading-relaxed font-medium mb-4">
                   “Sebagai guru BK, saya sangat mengapresiasi pendekatan tanpa
                   diagnosis medis. Siswa yang punya gaya belajar berbeda bisa
                   langsung nyaman memilih modenya.”
@@ -774,10 +475,10 @@ export function Landing({
                     I
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-primary">
+                    <p className="text-sm font-bold text-primary">
                       Ibu Nurul W., M.Pd.
                     </p>
-                    <p className="text-[11px] text-text-secondary">
+                    <p className="text-sm text-text-secondary">
                       Konselor Pendidikan · Yogyakarta
                     </p>
                   </div>
@@ -791,7 +492,7 @@ export function Landing({
                 <h4 className="font-nunito font-extrabold text-base text-primary mb-1 ui-label-title">
                   Target WCAG 2.2 AA
                 </h4>
-                <p className="text-xs text-text-secondary">
+                <p className="text-base text-text-secondary">
                   Kontras tinggi teruji, navigasi keyboard penuh, dan fokus
                   visual yang jelas.
                 </p>
@@ -801,7 +502,7 @@ export function Landing({
                 <h4 className="font-nunito font-extrabold text-base text-primary mb-1 ui-label-title">
                   Privasi Terjaga
                 </h4>
-                <p className="text-xs text-text-secondary">
+                <p className="text-base text-text-secondary">
                   Data belajar hanya disimpan untuk kenyamananmu, tanpa profil
                   iklan komersial.
                 </p>
@@ -811,7 +512,7 @@ export function Landing({
                 <h4 className="font-nunito font-extrabold text-base text-primary mb-1 ui-label-title">
                   Kontrol Multi-Sensorik
                 </h4>
-                <p className="text-xs text-text-secondary">
+                <p className="text-base text-text-secondary">
                   Pengaturan kecepatan audio 0.75x–1.5x, spasi baris leluasa,
                   dan opsi kontras.
                 </p>
@@ -821,7 +522,7 @@ export function Landing({
                 <h4 className="font-nunito font-extrabold text-base text-primary mb-1 ui-label-title">
                   Tanpa Diagnosis Medis
                 </h4>
-                <p className="text-xs text-text-secondary">
+                <p className="text-base text-text-secondary">
                   Cukup pilih preferensi kenyamanan tanpa perlu mengisi tes atau
                   sertifikat medis.
                 </p>
@@ -830,16 +531,13 @@ export function Landing({
           </section>
 
           <section className="mt-8 bg-gradient-to-r from-mint-tint via-butter-tint to-peach-tint rounded-feature p-6 sm:p-8 border-2 border-primary shadow-zine text-center relative overflow-hidden">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface border-2 border-primary text-xs font-black uppercase text-primary mb-6 shadow-zine-sm">
-              <span>🎒</span> AYO BELAJAR BERSAMA MIMO!
-            </div>
             <div className="max-w-2xl mx-auto relative z-10">
               <h2 className="font-nunito font-black text-3xl sm:text-5xl text-primary mb-4 leading-tight ui-section-title">
-                Siap belajar dengan caramu sendiri?
+                Siap mulai bareng Mimo?
               </h2>
               <p className="text-text-secondary text-base sm:text-lg mb-8 font-medium">
-                Mulai dalam 2 menit. Atur caramu yang paling nyaman, pilih mata
-                pelajaranmu, dan rasakan nikmatnya belajar tanpa rasa cemas.
+                Daftar untuk simpan progresmu, atau coba demo dulu tanpa
+                daftar.
               </p>
               <div className="flex flex-wrap justify-center items-center gap-4">
                 <a
@@ -847,10 +545,10 @@ export function Landing({
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
-                    onContinue();
+                    register();
                   }}
                 >
-                  <span>Daftar Gratis Sekarang</span>
+                  <span>Daftar gratis</span>
                   <span
                     className="material-symbols-outlined text-lg"
                     aria-hidden="true"
@@ -866,12 +564,11 @@ export function Landing({
                     onContinue();
                   }}
                 >
-                  Coba Demo Materi Fotosintesis
+                  Coba demo gratis
                 </a>
               </div>
               <p className="text-xs text-text-secondary mt-5 font-semibold">
-                ✨ 100% Gratis untuk Siswa · Tidak butuh kartu kredit atau
-                diagnosis medis
+                ✨ Gratis untuk siswa SMP &amp; SMA
               </p>
             </div>
           </section>
@@ -883,7 +580,7 @@ export function Landing({
               <div className="flex flex-col gap-2">
                 <Brand />
                 <span className="text-xs font-semibold text-text-secondary">
-                  Belajar dengan caramu.
+                  Belajar pelan-pelan juga boleh.
                 </span>
               </div>
 
@@ -902,23 +599,13 @@ export function Landing({
                 </a>
                 <a
                   className="hover:text-primary transition-colors"
-                  href="#contoh-nyata"
+                  href="#aksesibilitas"
                 >
-                  Contoh Nyata
+                  Aksesibilitas
                 </a>
                 <a
                   className="hover:text-primary transition-colors"
                   href="#aksesibilitas"
-                >
-                  Aksesibilitas (Target WCAG 2.2 AA)
-                </a>
-                <a
-                  className="hover:text-primary transition-colors"
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onContinue();
-                  }}
                 >
                   Privasi Siswa
                 </a>

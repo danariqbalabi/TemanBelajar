@@ -6,6 +6,10 @@ import { LandingHow } from "../src/app/landing-how";
 afterEach(cleanup);
 it("lets visitors try formats, reasons and a schedule without changing account data", async () => {
   render(<LandingHow />);
+  expect(
+    screen.getByRole("heading", { name: "Mulai dalam 3 langkah." }),
+  ).toBeTruthy();
+  expect(screen.queryByText(/bukan progres akunmu/)).toBeNull();
   await userEvent.click(screen.getByRole("button", { name: "Fokus" }));
   expect(screen.getByText("Satu konsep dulu.")).toBeTruthy();
   expect(
