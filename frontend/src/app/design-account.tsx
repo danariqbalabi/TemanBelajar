@@ -132,9 +132,9 @@ export function AccountDesign({
         <section className="workspace-auth-art">
           <span className="workspace-eyebrow">TemanBelajar</span>
           <h1>
-            Ruang untuk <br />
-            belajar dengan <br />
-            caramu.
+            Simpan <br />
+            progres <br />
+            belajarmu.
           </h1>
           <div className="workspace-auth-shapes" aria-hidden="true">
             <span>

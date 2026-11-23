@@ -141,9 +141,8 @@ export function Landing({
                 sendiri.
               </h1>
               <p className="text-lg sm:text-xl text-text-secondary leading-relaxed mb-8 max-w-xl font-medium">
-                Pilih cara belajar yang paling nyaman buat kamu. Mimo siap
-                nemenin pahami materi sekolah langkah demi langkah tanpa bikin
-                pusing dan tanpa tes diagnosis medis!
+                Mimo nemenin kamu pahami materi sekolah, selangkah demi
+                selangkah.
               </p>
 
               <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto mb-6">
@@ -183,7 +182,7 @@ export function Landing({
                   <span className="w-5 h-5 rounded-full bg-mint text-primary flex items-center justify-center font-black text-xs border border-primary/20">
                     ✓
                   </span>
-                  <span>Ramah pembaca layar (Target WCAG 2.2 AA)</span>
+                  <span>Ramah pembaca layar</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-5 h-5 rounded-full bg-lavender text-primary flex items-center justify-center font-black text-xs border border-primary/20">
@@ -208,10 +207,6 @@ export function Landing({
 
                 <div className="relative bg-mint-tint border-2 border-primary rounded-feature rounded-tl-none p-6 sm:p-8 shadow-zine flex flex-col items-center justify-center overflow-visible">
                   <div className="absolute -top-3.5 right-6 w-20 h-5 washi-tape rotate-3 rounded-sm opacity-90 pointer-events-none"></div>
-
-                  <div className="absolute top-3 right-3 bg-butter text-primary text-[11px] font-black px-3 py-1 rounded-full border-2 border-primary rotate-[-8deg] shadow-zine-sm">
-                    ✨ 100% Dukungan Siswa
-                  </div>
 
                   <div className="absolute -left-4 sm:-left-8 top-16 bg-surface border-2 border-primary rounded-full px-3.5 py-1.5 text-xs font-bold text-primary shadow-zine-sm flex items-center gap-2 rotate-[-4deg] animate-pulse">
                     <span>🎧</span> Audio bersuara jernih
@@ -275,8 +270,8 @@ export function Landing({
                 </h2>
               </div>
               <p className="text-text-secondary text-sm sm:text-base max-w-md font-medium">
-                Setiap siswa punya keunikan cara memproses informasi. Beralih
-                mode kapan saja di tengah sesi tanpa reset kemajuan belajarmu.
+                Tiap mode punya alat bantunya sendiri. Pilih yang paling pas
+                buatmu.
               </p>
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -422,7 +417,7 @@ export function Landing({
                 <div className="bg-canvas rounded-xl p-3 border border-divider text-xs font-bold text-text-secondary flex items-center justify-between">
                   <span>Aksesibilitas Universal</span>
                   <span className="text-primary font-bold">
-                    Target WCAG 2.2 AA
+                    Siap dipakai
                   </span>
                 </div>
               </div>
@@ -486,10 +481,10 @@ export function Landing({
                     </span>
                     <span>
                       <strong className="text-primary">
-                        Pelacakan Nyata vs Estimasi:
+                        Progres Asli:
                       </strong>{" "}
-                      Sistem memisahkan capaian nyata latihan dari tebakan,
-                      sehingga kamu selalu tahu progres aslimu.
+                      Dihitung dari latihan yang benar-benar kamu kerjakan,
+                      bukan tebakan.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
@@ -498,10 +493,10 @@ export function Landing({
                     </span>
                     <span>
                       <strong className="text-primary">
-                        Alasan Transparan:
+                        Dijelasin Ulang:
                       </strong>{" "}
-                      Tidak ada kotak misterius — Mimo menjelaskan secara
-                      gamblang kenapa materi tertentu direkomendasikan.
+                      Jawaban belum tepat? Mimo bantu jelasin lagi dengan cara
+                      yang lain.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
@@ -510,10 +505,10 @@ export function Landing({
                     </span>
                     <span>
                       <strong className="text-primary">
-                        Jadwal Tanpa Hukuman:
+                        Latihan Santai:
                       </strong>{" "}
-                      Butuh jeda? Geser sisa waktu belajar 10 menit ke jadwal
-                      esok hari tanpa penalti.
+                      Soal singkat setelah membaca, tanpa nilai yang bikin
+                      tegang.
                     </span>
                   </li>
                 </ul>
@@ -822,15 +817,15 @@ export function Landing({
 
           <section className="mt-8 bg-gradient-to-r from-mint-tint via-butter-tint to-peach-tint rounded-feature p-6 sm:p-8 border-2 border-primary shadow-zine text-center relative overflow-hidden">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface border-2 border-primary text-xs font-black uppercase text-primary mb-6 shadow-zine-sm">
-              <span>🎒</span> AYO BELAJAR BERSAMA MIMO!
+              <span>🎒</span> AYO MULAI!
             </div>
             <div className="max-w-2xl mx-auto relative z-10">
               <h2 className="font-nunito font-black text-3xl sm:text-5xl text-primary mb-4 leading-tight ui-section-title">
-                Siap belajar dengan caramu sendiri?
+                Siap mulai bareng Mimo?
               </h2>
               <p className="text-text-secondary text-base sm:text-lg mb-8 font-medium">
-                Mulai dalam 2 menit. Atur caramu yang paling nyaman, pilih mata
-                pelajaranmu, dan rasakan nikmatnya belajar tanpa rasa cemas.
+                Daftar untuk simpan progresmu, atau coba demo dulu tanpa
+                daftar.
               </p>
               <div className="flex flex-wrap justify-center items-center gap-4">
                 <a
@@ -861,8 +856,7 @@ export function Landing({
                 </a>
               </div>
               <p className="text-xs text-text-secondary mt-5 font-semibold">
-                ✨ 100% Gratis untuk Siswa · Tidak butuh kartu kredit atau
-                diagnosis medis
+                ✨ Gratis untuk siswa SMP &amp; SMA
               </p>
             </div>
           </section>
@@ -874,7 +868,7 @@ export function Landing({
               <div className="flex flex-col gap-2">
                 <Brand />
                 <span className="text-xs font-semibold text-text-secondary">
-                  Belajar dengan caramu.
+                  Belajar pelan-pelan juga boleh.
                 </span>
               </div>
 
@@ -901,7 +895,7 @@ export function Landing({
                   className="hover:text-primary transition-colors"
                   href="#aksesibilitas"
                 >
-                  Aksesibilitas (Target WCAG 2.2 AA)
+                  Aksesibilitas
                 </a>
                 <a
                   className="hover:text-primary transition-colors"
