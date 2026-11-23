@@ -392,16 +392,11 @@ export function Landing({
               controls
               playsInline
               preload="metadata"
+              poster="/media/temanbelajar-sampul.jpg"
               aria-labelledby="film-title"
             >
+              {/* subtitle sudah nempel di videonya, jadi ga pakai track biar ga dobel */}
               <source src="/media/temanbelajar.mp4" type="video/mp4" />
-              <track
-                default
-                kind="captions"
-                src="/media/temanbelajar-id.vtt"
-                srcLang="id"
-                label="Bahasa Indonesia"
-              />
               <a href="/media/temanbelajar.mp4">Buka video TemanBelajar</a>
             </video>
           </section>
