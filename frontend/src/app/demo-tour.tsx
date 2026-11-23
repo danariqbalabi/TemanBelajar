@@ -282,16 +282,12 @@ export function DemoTour({
     anchor &&
     height - anchor.bottom < Math.min(250, height * 0.42) &&
     anchor.top > height - anchor.bottom;
-  const panels = spot
-    ? [
-        { inset: `0 0 ${height - spot.top}px` },
-        { inset: `${spot.bottom}px 0 0` },
-        {
-          inset: `${spot.top}px ${width - spot.left}px ${height - spot.bottom}px 0`,
-        },
-        { inset: `${spot.top}px 0 ${height - spot.bottom}px ${spot.right}px` },
-      ]
-    : [{ inset: 0 }];
+  // satu lapisan dengan lubang, biar ga ada garis di sambungan blur
+  const shade = spot
+    ? {
+        clipPath: `polygon(evenodd, 0 0, ${width}px 0, ${width}px ${height}px, 0 ${height}px, 0 0, ${spot.left}px ${spot.top}px, ${spot.left}px ${spot.bottom}px, ${spot.right}px ${spot.bottom}px, ${spot.right}px ${spot.top}px, ${spot.left}px ${spot.top}px)`,
+      }
+    : undefined;
   const fallback = () => {
     const selector = steps[liveStep.current][0];
     const target = selector && document.querySelector<HTMLElement>(selector);
@@ -302,11 +298,13 @@ export function DemoTour({
   };
   return createPortal(
     <div className="demo-tour">
-      {step !== "finish" &&
-        hasTarget &&
-        panels.map((style, index) => (
-          <div key={index} className="demo-tour-shade" style={style} />
-        ))}
+      {step !== "finish" && hasTarget && (
+        <div
+          className="demo-tour-shade"
+          data-spotlight={spot ? "true" : "false"}
+          style={shade}
+        />
+      )}
       {anchor && (
         <div
           className="demo-tour-ring"
