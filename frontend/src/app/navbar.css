@@ -1,9 +1,9 @@
 /* Shared header tokens apply equally to Beranda, workspaces and the landing. */
 .final-design {
-  --nav-paper: #fffef9;
-  --nav-ink: #273b35;
-  --nav-line: #e5e8e1;
-  --nav-active: #c8e8ce;
+  --nav-paper: rgb(var(--tb-auto-fffef9));
+  --nav-ink: rgb(var(--tb-primary));
+  --nav-line: rgb(var(--tb-divider));
+  --nav-active: rgb(var(--tb-mint));
 }
 .final-app .app-header,
 .stitch-landing > header {
@@ -37,7 +37,7 @@
 }
 .final-app .app-navigation a:hover,
 .stitch-landing > header nav a:hover {
-  background: #eaf6eb;
+  background: rgb(var(--tb-mint-tint));
 }
 .final-app .app-navigation a[aria-current="page"] {
   background: var(--nav-active);
@@ -69,12 +69,12 @@
     border-color 180ms ease;
 }
 .final-app .app-profile:hover {
-  background: #eaf6eb;
-  border-color: #d5e4d1;
+  background: rgb(var(--tb-mint-tint));
+  border-color: rgb(var(--tb-auto-d5e4d1));
 }
 .final-app .app-profile[aria-current="page"] {
-  border-color: #abc9a9;
-  background: #eaf6eb;
+  border-color: rgb(var(--tb-auto-abc9a9));
+  background: rgb(var(--tb-mint-tint));
 }
 .final-app .app-profile .app-avatar {
   width: 36px;
@@ -86,7 +86,7 @@
   font:
     800 15px/1 "Plus Jakarta Sans",
     sans-serif;
-  border: 1px solid #b4d7b9;
+  border: 1px solid rgb(var(--tb-auto-b4d7b9));
 }
 .final-app .app-profile .app-profile-name {
   display: flex;
@@ -104,21 +104,21 @@
 }
 .app-profile-name > span:last-child {
   font-size: 11px;
-  color: #59665d;
+  color: rgb(var(--tb-muted-ink));
 }
 .app-profile > .material-symbols-outlined {
   font-size: 18px;
 }
 .final-app .app-profile:focus-visible {
-  outline: 3px solid #3b4c9b;
+  outline: 3px solid rgb(var(--tb-focus));
   outline-offset: 3px;
 }
 .high-contrast .app-header {
-  border-color: #273b35;
+  border-color: rgb(var(--tb-primary));
 }
 .high-contrast .app-profile .app-avatar {
-  background: #273b35;
-  color: #fff;
+  background: rgb(var(--tb-primary));
+  color: rgb(var(--tb-on-primary));
 }
 @media (max-width: 1199px) {
   .final-app .app-header-inner {

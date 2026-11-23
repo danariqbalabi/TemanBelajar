@@ -1,0 +1,336 @@
+/* mode gelap: hijau tua yang hangat, bukan hitam pekat */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* permukaan */
+  --tb-canvas: 17 25 22;
+  --tb-canvas-alt: 22 32 28;
+  --tb-background: 17 25 22;
+  --tb-surface: 26 36 32;
+  --tb-surface-bright: 34 46 41;
+  --tb-surface-dim: 20 29 25;
+  --tb-surface-container-lowest: 26 36 32;
+  --tb-surface-container-low: 29 41 36;
+  --tb-surface-container: 33 46 40;
+  --tb-surface-container-high: 38 52 46;
+  --tb-surface-container-highest: 43 58 51;
+  --tb-surface-variant: 43 58 51;
+  --tb-surface-tint: 160 196 184;
+  --tb-paper: 33 32 26;
+  --tb-inverse-surface: 228 236 230;
+  --tb-inverse-on-surface: 26 36 32;
+
+  /* teks */
+  --tb-primary: 207 230 216;
+  --tb-primary-container: 207 230 216;
+  --tb-primary-hover: 226 242 232;
+  --tb-primary-pressed: 186 214 198;
+  --tb-on-primary: 16 32 26;
+  --tb-on-primary-container: 40 62 54;
+  --tb-on-surface: 228 236 230;
+  --tb-on-background: 228 236 230;
+  --tb-on-surface-variant: 180 192 185;
+  --tb-text-secondary: 176 190 182;
+  --tb-contrast-ink: 242 248 244;
+  --tb-deep: 226 240 232;
+  --tb-deep-alt: 220 236 228;
+  --tb-muted-ink: 164 178 170;
+  --tb-muted-gray: 152 162 156;
+  --tb-inverse-primary: 39 59 53;
+
+  /* garis */
+  --tb-divider: 50 63 57;
+  --tb-outline: 132 142 137;
+  --tb-outline-variant: 66 79 73;
+  --tb-control-border: 122 138 128;
+
+  /* hijau sekunder */
+  --tb-secondary: 158 198 170;
+  --tb-secondary-deep: 150 192 162;
+  --tb-on-secondary: 16 32 26;
+  --tb-secondary-container: 46 80 60;
+  --tb-on-secondary-container: 184 218 194;
+  --tb-secondary-fixed: 46 80 60;
+  --tb-secondary-fixed-dim: 60 96 74;
+  --tb-on-secondary-fixed: 220 240 226;
+  --tb-on-secondary-fixed-variant: 184 218 194;
+  --tb-primary-fixed: 40 60 52;
+  --tb-primary-fixed-dim: 58 80 72;
+  --tb-on-primary-fixed: 226 240 232;
+  --tb-on-primary-fixed-variant: 190 214 204;
+
+  /* aksen pastel versi malam */
+  --tb-mint: 46 80 60;
+  --tb-mint-tint: 27 43 35;
+  --tb-butter: 94 80 38;
+  --tb-butter-tint: 42 39 27;
+  --tb-lavender: 74 84 140;
+  --tb-lavender-tint: 32 33 50;
+  --tb-peach: 112 74 48;
+  --tb-peach-tint: 45 35 29;
+
+  /* status */
+  --tb-focus: 166 180 255;
+  --tb-success: 134 212 164;
+  --tb-warning: 240 202 124;
+  --tb-error: 255 168 166;
+  --tb-on-error: 60 10 12;
+  --tb-error-surface: 62 30 30;
+  --tb-error-container: 92 32 34;
+  --tb-on-error-container: 255 206 202;
+  --tb-tertiary: 188 198 255;
+  --tb-on-tertiary: 20 30 80;
+  --tb-tertiary-container: 62 72 140;
+  --tb-on-tertiary-container: 214 220 255;
+  --tb-tertiary-fixed: 50 58 110;
+  --tb-tertiary-fixed-dim: 72 82 140;
+  --tb-on-tertiary-fixed: 220 225 255;
+  --tb-on-tertiary-fixed-variant: 200 208 255;
+
+  /* lapisan peredup tur harus tetap gelap */
+  --tb-auto-15241d: 4 9 7;
+}
+
+/* header pakai permukaan hijau tua, bukan kertas krem */
+:root[data-theme="dark"] .final-design {
+  --nav-paper: rgb(var(--tb-surface));
+}
+
+/* logo png tulisannya gelap: dibalik biar kebaca, rona hijaunya tetap */
+:root[data-theme="dark"] .brand-logo {
+  filter: invert(1) hue-rotate(180deg) brightness(1.05);
+}
+
+/* transisi halus pas ganti tema, kecuali yang minta gerakan dikurangi */
+@media (prefers-reduced-motion: no-preference) {
+  /* saklar & langit mimo punya animasi sendiri, jangan ditimpa */
+  :root.theme-switching,
+  :root.theme-switching
+    *:not(.theme-toggle, .theme-toggle *, .mimo-sky, .mimo-sky *) {
+    transition:
+      background-color 260ms ease,
+      border-color 260ms ease,
+      color 260ms ease !important;
+  }
+}
+
+/* saklar langit siang/malam. warnanya tetap (ga ikut tema) karena dia nunjukin dua-duanya */
+.theme-toggle {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  outline: none !important;
+  cursor: pointer;
+}
+.theme-toggle:focus-visible .theme-toggle-track {
+  outline: 3px solid rgb(var(--tb-focus));
+  outline-offset: 3px;
+}
+.theme-toggle-track {
+  position: relative;
+  display: block;
+  width: 64px;
+  height: 32px;
+  border-radius: 999px;
+  overflow: hidden;
+  /* siang: langit mint */
+  background: linear-gradient(180deg, #b9e3d6 0%, #dcf2e6 70%, #eaf6eb 100%);
+  box-shadow:
+    inset 0 2px 4px rgb(39 59 53 / 0.18),
+    0 1px 0 rgb(255 255 255 / 0.6);
+}
+.theme-toggle-track::after {
+  /* malam: hijau tua ke lavender, dipudarin masuk */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #142a24 0%, #213451 55%, #3b4282 100%);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.theme-toggle[aria-checked="true"] .theme-toggle-track::after {
+  opacity: 1;
+}
+
+/* awan: wadahnya geser pas ganti, tiap awan goyang pelan sendiri-sendiri */
+.theme-toggle-clouds {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transition: translate 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.theme-toggle-clouds i {
+  position: absolute;
+  border-radius: 999px;
+  background: #ffffff;
+  opacity: 0.95;
+  box-shadow: 0 1px 2px rgb(39 59 53 / 0.14);
+  transition:
+    background 0.6s ease,
+    opacity 0.6s ease;
+}
+.theme-toggle-clouds i:nth-child(1) {
+  width: 22px;
+  height: 11px;
+  left: 4px;
+  bottom: 3px;
+}
+.theme-toggle-clouds i:nth-child(2) {
+  width: 14px;
+  height: 14px;
+  left: 11px;
+  bottom: 7px;
+}
+.theme-toggle-clouds i:nth-child(3) {
+  width: 20px;
+  height: 9px;
+  left: 20px;
+  bottom: 1px;
+  opacity: 0.75;
+}
+/* malam: awan pindah ke kanan dan jadi lavender samar */
+.theme-toggle[aria-checked="true"] .theme-toggle-clouds {
+  translate: 26px 0;
+}
+.theme-toggle[aria-checked="true"] .theme-toggle-clouds i {
+  background: #a8b7f5;
+  opacity: 0.35;
+  box-shadow: none;
+}
+
+/* bintang */
+.theme-toggle-stars {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.theme-toggle[aria-checked="true"] .theme-toggle-stars {
+  opacity: 1;
+}
+.theme-toggle-stars i {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #fff3c4;
+}
+.theme-toggle-stars i:nth-child(1) { left: 36px; top: 6px; }
+.theme-toggle-stars i:nth-child(2) { left: 46px; top: 12px; width: 3px; height: 3px; }
+.theme-toggle-stars i:nth-child(3) { left: 56px; top: 7px; }
+.theme-toggle-stars i:nth-child(4) { left: 41px; top: 21px; }
+.theme-toggle-stars i:nth-child(5) { left: 53px; top: 24px; width: 1.5px; height: 1.5px; }
+
+/* bola: matahari di kanan (siang), bulan di kiri (malam).
+   muternya = jarak geser / keliling bola (32px / 81.7px x 360deg = ~141deg), jadi beneran menggelinding */
+.theme-toggle-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  z-index: 2;
+  width: 26px;
+  height: 26px;
+  translate: 32px 0;
+  rotate: 0deg;
+  transition:
+    translate 0.7s cubic-bezier(0.34, 1.3, 0.5, 1),
+    rotate 0.7s cubic-bezier(0.34, 1.3, 0.5, 1);
+}
+.theme-toggle[aria-checked="true"] .theme-toggle-knob {
+  translate: 0 0;
+  rotate: -141deg;
+}
+.theme-toggle-knob svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.theme-toggle-sun,
+.theme-toggle-moon {
+  transition: opacity 0.45s ease;
+}
+.theme-toggle-sun line {
+  stroke: #f4b23a;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+.theme-toggle-sun-core {
+  fill: #ffd45c;
+  stroke: #f0a52a;
+  stroke-width: 1.2;
+  filter: drop-shadow(0 1px 1.5px rgb(120 80 10 / 0.35));
+}
+.theme-toggle-sun-cheek {
+  fill: #f59a7b;
+  opacity: 0.8;
+}
+.theme-toggle-moon {
+  opacity: 0;
+}
+.theme-toggle-moon path {
+  fill: #f3efe0;
+  stroke: #d7d2bf;
+  stroke-width: 1;
+  filter: drop-shadow(0 0 3px rgb(243 239 224 / 0.45));
+}
+.theme-toggle-moon circle {
+  fill: #d4cfbb;
+}
+.theme-toggle[aria-checked="true"] .theme-toggle-sun {
+  opacity: 0;
+}
+.theme-toggle[aria-checked="true"] .theme-toggle-moon {
+  opacity: 1;
+}
+.theme-toggle:hover .theme-toggle-knob svg {
+  scale: 1.08;
+  transition: scale 0.2s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .theme-toggle[aria-checked="true"] .theme-toggle-stars i {
+    animation: theme-toggle-twinkle 2.2s ease-in-out infinite;
+  }
+  .theme-toggle-stars i:nth-child(2) { animation-delay: 0.5s !important; }
+  .theme-toggle-stars i:nth-child(3) { animation-delay: 1.1s !important; }
+  .theme-toggle-stars i:nth-child(4) { animation-delay: 1.6s !important; }
+  .theme-toggle-clouds i:nth-child(1) {
+    animation: theme-toggle-drift 5.5s ease-in-out infinite;
+  }
+  .theme-toggle-clouds i:nth-child(2) {
+    animation: theme-toggle-drift 7s ease-in-out -2s infinite;
+  }
+  .theme-toggle-clouds i:nth-child(3) {
+    animation: theme-toggle-drift-back 6.2s ease-in-out -1s infinite;
+  }
+  @keyframes theme-toggle-twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+  @keyframes theme-toggle-drift {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 4px -1px; }
+  }
+  @keyframes theme-toggle-drift-back {
+    0%, 100% { translate: 0 0; }
+    50% { translate: -4px 0; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle *,
+  .theme-toggle-track::after {
+    animation: none !important;
+    transition-duration: 1ms !important;
+  }
+}
+.calm .theme-toggle * {
+  animation: none !important;
+}

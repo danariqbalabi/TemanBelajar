@@ -4,6 +4,7 @@ import { Brand } from "./brand";
 import { useScrollNavbar } from "./use-scroll-navbar";
 import { usePlayfulCards } from "./use-playful-cards";
 import { MimoMascot } from "./mimo-mascot";
+import { ThemeToggle } from "./theme-toggle";
 import { pageLabel } from "./page-labels";
 import { useEffect, useRef } from "react";
 import type { ReactNode, CSSProperties } from "react";
@@ -100,6 +101,7 @@ export function DesignShell({
               ))}
             </nav>
             <div className="app-header-tools">
+              <ThemeToggle />
               <ProfileSettingsButton
                 name={profile.display_name}
                 active={page === "Pengaturan"}

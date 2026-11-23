@@ -21,7 +21,7 @@
 }
 .final-design header[data-nav-compact="true"][data-scroll-nav="shown"] {
   transform: translateY(0) scaleX(0.98);
-  box-shadow: 0 8px 24px #273b3510;
+  box-shadow: 0 8px 24px rgb(var(--tb-primary) / 0.063);
   border-radius: 0 0 22px 22px;
 }
 .final-design header[data-scroll-nav]:has(:focus-visible) {

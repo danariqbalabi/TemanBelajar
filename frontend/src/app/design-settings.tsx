@@ -67,8 +67,12 @@ export function SettingsDesign({
     }));
   const previewStyle = {
     ...readingStyle(prefs),
-    color: prefs.high_contrast ? "#101a16" : "#273b35",
-    backgroundColor: prefs.high_contrast ? "#fff" : "#faf3e4",
+    color: prefs.high_contrast
+      ? "rgb(var(--tb-contrast-ink))"
+      : "rgb(var(--tb-primary))",
+    backgroundColor: prefs.high_contrast
+      ? "rgb(var(--tb-surface))"
+      : "rgb(var(--tb-auto-faf3e4))",
   };
 
   function openSettingsGroup(id: string) {
@@ -273,7 +277,7 @@ export function SettingsDesign({
                       </div>
                       <button
                         onClick={speak}
-                        className="bg-primary text-white px-5 py-3 rounded-xl mt-5"
+                        className="bg-primary text-on-primary px-5 py-3 rounded-xl mt-5"
                       >
                         Coba suara
                       </button>
