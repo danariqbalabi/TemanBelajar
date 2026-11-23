@@ -39,6 +39,6 @@ it("mengirim tautan masuk dari form revamp dengan redirect lokal", async () => {
 it("tombol demo revamp membuat sesi anonim nyata", async () => {
   demo.mockResolvedValue({ error: null });
   render(<AccountDesign onBack={vi.fn()} run={run} busy={false} error="" />);
-  await userEvent.click(screen.getByRole("link", { name: "Coba demo Manda" }));
+  await userEvent.click(screen.getByRole("link", { name: "Coba demo gratis" }));
   expect(demo).toHaveBeenCalledOnce();
 });

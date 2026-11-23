@@ -35,27 +35,26 @@ export function LandingHow() {
     >
       <header className="landing-how-heading">
         <div>
-          <span className="landing-how-kicker">CARANYA SESIMPEL INI</span>
-          <h2 id="cara-kerja-title">Belajar, pakai caramu.</h2>
+          <h2 id="cara-kerja-title">Mulai dalam 3 langkah.</h2>
         </div>
         <p>
-          Coba klik elemennya.
+          Pilih cara belajar, pelajari materinya,
           <br />
-          Ini contoh interaksi, bukan progres akunmu.
+          lalu atur jadwal sesukamu.
         </p>
       </header>
       <div className="landing-how-grid">
         <article className="landing-how-format">
           <div className="landing-how-card-top">
-            <span className="landing-how-number">01 / CARA BELAJAR</span>
+            <span className="landing-how-number">01 / PILIH CARA BELAJAR</span>
             <span className="landing-how-spark" aria-hidden="true">
               ✳
             </span>
           </div>
           <h3>
-            Satu materi.
+            Baca, fokus,
             <br />
-            Banyak cara masuknya.
+            atau dengarkan.
           </h3>
           <div className="landing-how-preview" data-mode={mode}>
             <span className="landing-how-paper-clip" aria-hidden="true" />
@@ -111,12 +110,12 @@ export function LandingHow() {
         </article>
         <article className="landing-how-reason">
           <div className="landing-how-card-top">
-            <span className="landing-how-number">02 / LANGKAH BERIKUTNYA</span>
+            <span className="landing-how-number">02 / BELAJAR MATERI</span>
             <span className="landing-how-orbit" aria-hidden="true">
               <UiIcon name="explore" />
             </span>
           </div>
-          <h3>Kenapa materi ini disarankan?</h3>
+          <h3>Mimo saranin materi yang pas.</h3>
           <div className="landing-how-suggestion">
             <span className="landing-how-mini-icon">
               <UiIcon name="eco" />
@@ -146,7 +145,7 @@ export function LandingHow() {
         </article>
         <article className="landing-how-time">
           <div className="landing-how-card-top">
-            <span className="landing-how-number">03 / WAKTU BELAJAR</span>
+            <span className="landing-how-number">03 / ATUR JADWAL</span>
             <span className="landing-how-doodle" aria-hidden="true">
               ↗
             </span>
