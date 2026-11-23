@@ -70,6 +70,7 @@ export default function Home() {
     [active, setActive] = useState<LearningSession | null>(null),
     [practiceRequested, setPracticeRequested] = useState(false),
     [error, setError] = useState(""),
+    [conflict, setConflict] = useState(false),
     [busy, setBusy] = useState(false),
     [notice, setNotice] = useState(""),
     [recommendation, setRecommendation] = useState<Recommendation | null>(null),
@@ -83,11 +84,13 @@ export default function Home() {
     running.current = true;
     setBusy(true);
     setError("");
+    setConflict(false);
     retry.current = action;
     try {
       await action();
       retry.current = null;
     } catch (e) {
+      setConflict(e instanceof ApiError && e.status === 409);
       setError(userMessage(e));
     } finally {
       running.current = false;
@@ -414,33 +417,38 @@ export default function Home() {
         <div className="notice" role="alert">
           <p>{error}</p>
           <p>
-            Isianmu masih aman. Coba lagi, atau muat ulang kalau datanya
-            sudah berubah di perangkat lain.
+            {conflict
+              ? "Datanya sudah berubah di perangkat lain. Muat ulang dulu, lalu cek lagi."
+              : "Isianmu masih aman. Coba lagi, ya."}
           </p>
           <div className="actions">
-            <button
-              disabled={busy}
-              onClick={() => run(retry.current || refresh)}
-            >
-              Coba lagi
-            </button>
-            <button
-              disabled={busy}
-              onClick={() =>
-                run(async () => {
-                  await refresh();
-                  if (active)
-                    setActive(
-                      await api<LearningSession>(`/sessions/${active.id}`),
+            {!conflict && (
+              <button
+                disabled={busy}
+                onClick={() => run(retry.current || refresh)}
+              >
+                Coba lagi
+              </button>
+            )}
+            {conflict && (
+              <button
+                disabled={busy}
+                onClick={() =>
+                  run(async () => {
+                    await refresh();
+                    if (active)
+                      setActive(
+                        await api<LearningSession>(`/sessions/${active.id}`),
+                      );
+                    setNotice(
+                      "Data sudah dimuat ulang. Cek lagi sebelum menyimpan.",
                     );
-                  setNotice(
-                    "Data sudah dimuat ulang. Cek lagi sebelum menyimpan.",
-                  );
-                })
-              }
-            >
-              Muat ulang data
-            </button>
+                  })
+                }
+              >
+                Muat ulang data
+              </button>
+            )}
           </div>
         </div>
       )}

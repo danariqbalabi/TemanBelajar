@@ -389,6 +389,40 @@ it("saves the complete editable profile while excluding server-owned fields", as
   expect(payload).not.toHaveProperty("id");
 });
 
+it.each([
+  [500, "Coba lagi", "Muat ulang data"],
+  [409, "Muat ulang data", "Coba lagi"],
+])(
+  "banner error %i hanya menampilkan tombol yang relevan",
+  async (status, shown, hidden) => {
+    request.mockImplementation(
+      async (path: string, _body: unknown, method: string) => {
+        if (path === "/profile") {
+          if (method === "PUT") throw new ApiError(status, "gagal");
+          return { ...defaultProfile, revision: 2, onboarding_step: 4 };
+        }
+        if (path.startsWith("/recommendations")) return null;
+        return { items: [] };
+      },
+    );
+    render(<Home />);
+    await userEvent.click(
+      await screen.findByRole("link", { name: "Mulai Belajar Gratis" }),
+    );
+    await screen.findByRole("navigation");
+    await userEvent.click(
+      screen.getByRole("button", { name: /Buka pengaturan/ }),
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Profil" }));
+    await userEvent.click(
+      await screen.findByRole("button", { name: "Simpan Perubahan Profil" }),
+    );
+    const alert = await screen.findByRole("alert");
+    expect(within(alert).getByRole("button", { name: shown })).toBeTruthy();
+    expect(within(alert).queryByRole("button", { name: hidden })).toBeNull();
+  },
+);
+
 it("menampilkan landing meski sesi tersimpan dan tidak memaksa onboarding yang belum selesai", async () => {
   request.mockImplementation(async (path: string) =>
     path === "/profile"
