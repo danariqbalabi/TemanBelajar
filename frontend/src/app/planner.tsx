@@ -230,7 +230,9 @@ export function Planner({
       await send();
       await refresh();
       await load(plan.id);
-      setMessage("Jadwal lama sudah dipakai lagi. Kegiatan yang sudah dikerjakan tetap aman.");
+      setMessage(
+        "Jadwal lama sudah dipakai lagi. Kegiatan yang sudah dikerjakan tetap aman.",
+      );
     });
   }
   const editorPanel = (
@@ -239,7 +241,9 @@ export function Planner({
       {activities && (
         <section>
           <h2>Cek perubahan jadwal</h2>
-          <p>Kegiatan yang sudah atau sedang kamu kerjakan tidak ikut berubah.</p>
+          <p>
+            Kegiatan yang sudah atau sedang kamu kerjakan tidak ikut berubah.
+          </p>
           {activities.map((a) => {
             const protectedItem =
               a.locked || ["active", "completed"].includes(a.status);
@@ -309,7 +313,9 @@ export function Planner({
             >
               {plan ? "Buat usulan perubahan" : "Simpan rencana ini"}
             </button>
-            <button onClick={() => setActivities(null)}>Batalkan perubahan</button>
+            <button onClick={() => setActivities(null)}>
+              Batalkan perubahan
+            </button>
           </div>
         </section>
       )}
@@ -402,6 +408,17 @@ export function Planner({
         onRecompute={recompute}
         onEdit={() => {
           if (plan) setActivities(plan.activities.map((a) => ({ ...a })));
+        }}
+        onMove={(activity, days) => {
+          const start = new Date(activity.start_at);
+          start.setUTCDate(start.getUTCDate() + days);
+          setActivities((draft) =>
+            (draft ?? plan?.activities ?? []).map((item) =>
+              item.id === activity.id
+                ? { ...item, start_at: start.toISOString() }
+                : item,
+            ),
+          );
         }}
         onAddManual={addManual}
         onSave={plan ? propose : create}

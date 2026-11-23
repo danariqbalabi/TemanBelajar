@@ -20,6 +20,7 @@ export function PlanDesign({
   onSuggest,
   onRecompute,
   onEdit,
+  onMove,
   onAddManual,
   onSave,
   onRefresh,
@@ -50,6 +51,7 @@ export function PlanDesign({
   onSuggest: () => void;
   onRecompute: () => void;
   onEdit: () => void;
+  onMove: (activity: Activity, days: number) => void;
   onAddManual: () => void;
   onSave: () => void;
   onRefresh: () => void;
@@ -67,12 +69,13 @@ export function PlanDesign({
   const [proposalHidden, setProposalHidden] = useState(false);
   function openControls() {
     setControls(true);
-    document
-      .getElementById("plan-controls")
-      ?.scrollIntoView?.({ block: "start" });
+    requestAnimationFrame(() =>
+      document.getElementById("plan-controls")?.scrollIntoView?.({ block: "start" }),
+    );
   }
   const zone = plan?.timezone || profile.timezone;
   const [dayOffset, setDayOffset] = useState(0);
+  const [dragging, setDragging] = useState<string | null>(null);
   const activities = (plan?.activities || []).toSorted((a, b) =>
     a.start_at.localeCompare(b.start_at),
   );
@@ -156,6 +159,11 @@ export function PlanDesign({
               Tambah aktivitas atau istirahat
             </button>
           </div>
+          {activities.some((a) => !a.locked && a.status === "pending") && (
+            <p>
+              Tarik pegangan kegiatan ke tab hari tujuan, lalu tinjau usulannya.
+            </p>
+          )}
           <div className="workspace-day-tabs">
             {[
               [-1, "Kemarin"],
@@ -165,7 +173,13 @@ export function PlanDesign({
             ].map(([offset, label]) => (
               <button
                 key={offset}
+                data-plan-day={offset}
                 aria-pressed={dayOffset === offset}
+                style={
+                  dragging && dayOffset !== offset
+                    ? { outline: "2px dashed currentColor", outlineOffset: 2 }
+                    : undefined
+                }
                 onClick={() => setDayOffset(Number(offset))}
               >
                 {label}
@@ -202,6 +216,59 @@ export function PlanDesign({
                   </span>
                   <h3>{activity.title}</h3>
                   <div className="workspace-actions">
+                    {!busy &&
+                      !activity.locked &&
+                      activity.status === "pending" && (
+                        <button
+                          type="button"
+                          className="workspace-button"
+                          aria-label={"Geser jadwal " + activity.title}
+                          style={{
+                            touchAction: "none",
+                            cursor:
+                              dragging === activity.id ? "grabbing" : "grab",
+                          }}
+                          onPointerDown={(event) => {
+                            if (event.button !== 0 || !event.isPrimary) return;
+                            event.currentTarget.setPointerCapture(
+                              event.pointerId,
+                            );
+                            setDragging(activity.id);
+                          }}
+                          onPointerCancel={() => setDragging(null)}
+                          onLostPointerCapture={() => setDragging(null)}
+                          onPointerUp={(event) => {
+                            if (
+                              !event.currentTarget.hasPointerCapture(
+                                event.pointerId,
+                              )
+                            )
+                              return;
+                            setDragging(null);
+                            const target = document
+                              .elementFromPoint(event.clientX, event.clientY)
+                              ?.closest<HTMLElement>("[data-plan-day]");
+                            if (
+                              !target ||
+                              Number(target.dataset.planDay) === dayOffset
+                            )
+                              return;
+                            onMove(
+                              activity,
+                              Number(target.dataset.planDay) - dayOffset,
+                            );
+                            openControls();
+                          }}
+                          onClick={(event) => {
+                            if (event.detail === 0) {
+                              onEdit();
+                              openControls();
+                            }
+                          }}
+                        >
+                          <UiIcon name="drag_indicator" /> Geser jadwal
+                        </button>
+                      )}
                     <button
                       className="workspace-button primary"
                       disabled={busy || !activity.material_id}
