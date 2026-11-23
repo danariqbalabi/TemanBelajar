@@ -104,7 +104,7 @@ export function Catalog({
                   <span className="text-on-surface-variant font-metadata text-metadata">{`${materials.length} materi · ${jobs.filter((j) => j.status !== "ready").length} unggahan belum siap`}</span>
                 </div>
                 <h1 className="font-display text-page-title text-primary tracking-tight ui-page-title">
-                  Materi Saya
+                  Koleksi Materi
                 </h1>
                 <p className="font-body text-body text-on-surface-variant">
                   Pilih materi. Temukan cara belajarmu.

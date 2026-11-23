@@ -82,22 +82,22 @@ it("separates the study launcher from the materials catalogue without an active 
   await clickDemo();
   const navigation = await screen.findByRole("navigation");
   await userEvent.click(
-    within(navigation).getByRole("link", { name: "Mulai Belajar" }),
+    within(navigation).getByRole("link", { name: "Lanjut Belajar" }),
   );
   expect(
-    await screen.findByRole("heading", { name: "Mulai belajar" }),
+    await screen.findByRole("heading", { name: "Lanjut belajar" }),
   ).toBeTruthy();
   expect(
     screen.queryByRole("button", { name: /Tambah Materi Baru/ }),
   ).toBeNull();
   await userEvent.click(
-    screen.getByRole("button", { name: "Buka Materi Saya" }),
+    screen.getByRole("button", { name: "Buka Koleksi Materi" }),
   );
   expect(
-    await screen.findByRole("heading", { name: "Materi Saya" }),
+    await screen.findByRole("heading", { name: "Koleksi Materi" }),
   ).toBeTruthy();
   const popup = document.querySelector('[data-kind="navigation"]');
-  expect(popup?.textContent).toContain("Materi Saya");
+  expect(popup?.textContent).toContain("Koleksi Materi");
   expect(popup?.getAttribute("data-visible")).toBe("true");
   expect(popup?.querySelector(".mimo-page-dots")).toBeTruthy();
   expect(

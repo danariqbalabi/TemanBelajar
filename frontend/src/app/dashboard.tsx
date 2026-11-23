@@ -196,7 +196,7 @@ export function Dashboard({
                         {recommendation?.action === "RESCHEDULE"
                           ? "Atur jadwal"
                           : !material
-                            ? "Buka Materi Saya"
+                            ? "Buka Koleksi Materi"
                             : `${recommendation?.action === "PRACTICE" ? "Mulai latihan" : "Mulai belajar"} · ${recommendation?.estimated_minutes || concept?.estimated_minutes || profile.daily_minutes} menit`}
                       </span>
                       <span
